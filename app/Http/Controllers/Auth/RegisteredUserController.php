@@ -4,47 +4,41 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
-    public function create(): View
+    public function create()
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'full_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
+        // Tạo mã xác minh
+        $verificationCode = rand(100000, 999999);
+
+        // Lưu tạm thời thông tin người dùng vào session
+        $request->session()->put('user_data', [
+            'full_name' => $request->full_name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => bcrypt($request->password), // Mã hóa mật khẩu
+            'verification_code' => $verificationCode,
         ]);
 
-        event(new Registered($user));
+        // Gửi email xác minh
+        Mail::to($request->email)->send(new VerificationMail($verificationCode));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        // Chuyển hướng đến trang nhập mã xác minh
+        return redirect()->route('verification.show')->with('email', $request->email);
     }
 }
