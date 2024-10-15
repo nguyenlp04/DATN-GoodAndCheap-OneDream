@@ -34,7 +34,7 @@ class VerificationController extends Controller
             // Đăng nhập người dùng
             Auth::login($user);
 
-            return redirect()->route('dashboard')->with('success', 'Tài khoản đã được xác minh!');
+            return redirect()->route('home')->with('success', 'Tài khoản đã được xác minh!');
         }
 
         return back()->with('error', 'Mã xác nhận không hợp lệ.');

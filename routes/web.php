@@ -1,23 +1,35 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/home', function () {
+    return view('home');
+})->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/account', [AccountController::class, 'index'])->name('account');
+    Route::post('/account/update', [AccountController::class, 'updateProfile'])->name('account.update');
+    // Route hiển thị danh sách đơn hàng
+    Route::get('/account/orders', [AccountController::class, 'showOrders'])->name('account.orders');
+    // Route hiển thị trang quản lý (Manager)
+    Route::get('/account/manager', [AccountController::class, 'showManager'])->name('account.manager');
+    // Route hiển thị địa chỉ của người dùng
+    Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
+    // Route hiển thị chi tiết tài khoản của người dùng
+    Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -68,7 +80,7 @@ Route::prefix('category')->group(function () {
 // Grouped routes for account management
 Route::prefix('account')->group(function () {
 
-    Route::get('/employee-management',[StaffController::class,'index']);
+    Route::get('/employee-management', [StaffController::class, 'index']);
     Route::get('/confirm', function () {
         return view('admin.account.confirm-partner');
     });
