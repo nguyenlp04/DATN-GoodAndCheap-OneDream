@@ -77,10 +77,17 @@ Route::prefix('category')->group(function () {
 //     return view('admin.categories.index');
 // });
 
-// Grouped routes for account management
+// Grouped routes for account management   - Nguyễn Quang Cường
 Route::prefix('account')->group(function () {
 
     Route::get('/employee-management', [StaffController::class, 'index']);
+    Route::post('/employee-management', [StaffController::class, 'store'])->name('addStaff');
+    Route::get('/employee-management/employeedetails/edit/{id}', [StaffController::class, 'edit'])->name('editStaff');
+    Route::put('/employee-management/employeedetails/update/{id}', [StaffController::class, 'update'])->name('updateStaff');
+    Route::delete('/employee-management/employeedetails/delete/{id}', [StaffController::class, 'destroy'])->name('deleteStaff');
+
+
+
     Route::get('/confirm', function () {
         return view('admin.account.confirm-partner');
     });
