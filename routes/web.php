@@ -33,6 +33,7 @@ require __DIR__ . '/auth.php';
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
+
 use App\Http\Controllers\StaffController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
@@ -108,4 +109,14 @@ Route::prefix('payment')->group(function () {
     Route::get('/account', function () {
         return view('admin.payments.receiving-account');
     });
+});
+
+
+// Hiếu trương 
+use App\Http\Controllers\Partner\ChannelController as PartnerChannelController;
+use App\Http\Controllers\Partner\ProductController as PartnerProductController;
+
+Route::prefix('partner')->group(function () {
+    Route::resource('channels', PartnerChannelController::class);
+    Route::resource('products', PartnerProductController::class);
 });

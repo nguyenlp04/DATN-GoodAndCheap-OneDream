@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Partner;
 
-use App\Models\Channel;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ChannelController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $channels = Channel::all();
-        return view('admin.partner.channels.index', compact('channels'));
+        //
     }
 
     /**
@@ -21,7 +20,7 @@ class ChannelController extends Controller
      */
     public function create()
     {
-        return view('admin.partner.channels.create');
+        //
     }
 
     /**
@@ -45,7 +44,7 @@ class ChannelController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.partner.channels.edit');
+        //
     }
 
     /**
@@ -62,9 +61,5 @@ class ChannelController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-    public function orders()
-    {
-        return view('admin.parnet.orders.index');
     }
 }
