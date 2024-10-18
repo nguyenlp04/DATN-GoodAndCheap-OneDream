@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaleNewsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
+    // Route hiển thị chi tiết from đăng tin bán hàng
+    Route::get('/sale_news', [SaleNewsController::class, 'index'])->name('sale_news');
 });
 
 require __DIR__ . '/auth.php';
@@ -96,9 +99,10 @@ Route::get('/blogs', function () {
 Route::get('/notifications', function () {
     return view('admin.notifications.index');
 });
-Route::get('/order-affiliate', function () {
-    return view('admin.orders.index');
-});
+
+use App\Http\Controllers\Admin\OrderController;
+
+Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
