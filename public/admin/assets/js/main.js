@@ -116,3 +116,40 @@ let menu, animate;
   // Auto update menu collapsed/expanded based on the themeConfig
   window.Helpers.setCollapsed(true, false);
 })();
+
+
+
+// hide and  show
+$(document).ready(function() {
+       
+  $('.toggle-status-form button').on('click', function(e) {
+      e.preventDefault(); 
+      var form = $(this).closest('form');
+      var button = $(this);
+      var icon = button.find('i');
+      var tooltip = button.find('.tooltip-text'); 
+
+      $.ajax({
+          url: form.attr('action'),
+          method: 'POST',
+          data: form.serialize(),
+          success: function(response) {
+              
+              if (response.status === 1) {
+                  //if status = 1
+                  icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                  tooltip.text('Show');
+                  button.removeClass('text-secondary').addClass('text-primary');
+              } else if (response.status === 0) {
+                  // if status = 0 
+                  icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                  tooltip.text('Hide');
+                  button.removeClass('text-primary').addClass('text-secondary');
+              }
+          },
+          error: function(xhr) {
+              console.log('Error:', xhr.responseText);
+          }
+      });
+  });
+});

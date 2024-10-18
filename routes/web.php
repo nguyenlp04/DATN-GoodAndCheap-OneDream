@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,11 +77,13 @@ Route::prefix('account')->group(function () {
         return view('admin.account.lock-account');
     });
 });
+route::get('/blogs/add',[BlogController::class,'create'])->name('blogs.create');
+route::get('/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
+Route::resource('blogs', BlogController::class);
+Route::post('/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
 
 
-Route::get('/blogs', function () {
-    return view('admin.blogs.index');
-});
 Route::get('/notifications', function () {
     return view('admin.notifications.index');
 });
