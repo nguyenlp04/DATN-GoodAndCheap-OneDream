@@ -56,6 +56,15 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'blackblaze' => [
+            'driver' => 's3',
+            'key' => env('BLACKBLAZE_ACCESS_KEY_ID'),
+            'secret' => env('BLACKBLAZE_SECRET_ACCESS_KEY'),
+            'region' => env('BLACKBLAZE_DEFAULT_REGION'),
+            'bucket' => env('BLACKBLAZE_BUCKET'),
+            'endpoint' => env('BLACKBLAZE_URL'),
+            'visibility' => 'public',
+        ],
 
     ],
 

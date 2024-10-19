@@ -107,10 +107,10 @@
                         <h4 class="mb-1">Add A New Category</h4>
                     </div>
                     <div class="d-flex align-content-center flex-wrap gap-4">
-                        <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
+                        <!-- <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
                             <button class="btn btn-label-primary">Save draft</button>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish product</button>
+                        </div> -->
+                        <button type="submit" class="btn btn-primary" id="publish-product">Publish product</button>
                     </div>
 
                 </div>
@@ -126,8 +126,8 @@
                                 <!-- Các nút nằm ngang hàng với tiêu đề -->
                                 <div>
 
-                                    <button id="add-subcategory" type="button" class="btn btn-info ml-2">Add Subcategory</button>
-                                    <button type="submit" class="btn btn-primary">Create Category</button>
+                                    <button id="add-subcategory" type="button" class="btn btn-primary ml-2">Add Subcategory</button>
+                                    <!-- <button type="submit" class="btn btn-primary">Create Category</button> -->
                                 </div>
                             </div>
                             <div class="card-body">
@@ -191,21 +191,21 @@
                             </div>
                         </div>
                         <div class="card mb-6">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Variants</h5>
-                            <button type="button" class="btn btn-primary" id="btn-add-variant">
-                                <i class="bx bx-plus bx-sm me-2"></i>
-                                Add Variant
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div id="add-variant">
-                                <!-- New variants will be inserted here -->
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Variants</h5>
+                                <button type="button" class="btn btn-primary" id="btn-add-variant">
+                                    <i class="bx bx-plus bx-sm me-2"></i>
+                                    Add Variant
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div id="add-variant">
+                                    <!-- New variants will be inserted here -->
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </div>
-                    
+
 
                     <script>
                         document.getElementById('btn-add-variant').addEventListener('click', function() {
@@ -235,6 +235,34 @@
                                 e.target.closest('.variant-item').remove();
                             }
                         });
+                        document.getElementById('publish-product').addEventListener('click', function() {
+                            // Lấy giá trị của Category Name
+                            const categoryName = document.getElementById('category_name').value.trim();
+                            
+                            // Lấy tất cả các trường Variant
+                            const variants = document.getElementsByName('variants[]');
+
+                            // Biến để kiểm tra có lỗi hay không
+                            let hasError = false;
+
+                            // Kiểm tra nếu Category Name trống
+                            if (categoryName == "") {
+                                console.log("Category Name is required.");
+                                hasError = true;
+                            }
+
+                            // Kiểm tra nếu không có Variant nào
+                            if (variants.length == 0) {
+                                console.log("At least one variant is required.");
+                                hasError = true;
+                            }
+
+                            // Nếu không có lỗi thì submit form
+                            if (!hasError) {
+                                document.querySelector('form').submit();
+                            }
+                        });
+                        
                     </script>
 
                 </div>
@@ -247,9 +275,7 @@
             <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                 <div class="mb-2 mb-md-0">
                     ©
-                    <script>
-                        document.write(new Date().getFullYear());
-                    </script>
+                    
                     , made with ❤️ by
                     <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
                 </div>

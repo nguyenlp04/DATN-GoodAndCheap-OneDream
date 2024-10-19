@@ -12,6 +12,7 @@
 =========================================================
  -->
 <!-- beautify ignore:start -->
+ 
 <html
   lang="en"
   class="light-style layout-menu-fixed"
@@ -41,6 +42,8 @@
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <!-- Icons. Uncomment required icon fonts -->
@@ -65,6 +68,30 @@
   </head>
 
   <body>
+    <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Signed in successfully"
+      });
+      setTimeout(() => {
+        Toast.fire({
+        icon: "error",
+        title: "Signed in error"
+      });
+      }, 4000);
+    </script>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
