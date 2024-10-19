@@ -4,15 +4,21 @@ namespace App\Http\Controllers\Partner;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class ProductController extends Controller
+class PartnerProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('partner.products.index');
+
+        // -- Theo dõi --- 
+        $followers = DB::table('user_followers')
+            ->where('partner_id', $partner_id) // Lọc theo đối tác
+            ->select(DB::raw('count(*) as total_follows'))
+            ->first();
     }
 
     /**
@@ -20,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('partner.products.create');
+        //
     }
 
     /**
@@ -44,7 +50,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        return view('partner.products.edit');
+        //
     }
 
     /**

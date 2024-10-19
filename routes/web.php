@@ -115,8 +115,12 @@ Route::prefix('payment')->group(function () {
 // Hiếu trương 
 use App\Http\Controllers\Partner\ChannelController as PartnerChannelController;
 use App\Http\Controllers\Partner\ProductController as PartnerProductController;
+use App\Http\Controllers\Partner\OrderController as PartnerOrderController;
+use App\Http\Controllers\Partner\PartnerProfileController as PartnerProfileController;
 
 Route::prefix('partner')->group(function () {
     Route::resource('channels', PartnerChannelController::class);
     Route::resource('products', PartnerProductController::class);
+    Route::resource('orders', PartnerOrderController::class);
+    Route::resource('profile', PartnerProfileController::class);
 });

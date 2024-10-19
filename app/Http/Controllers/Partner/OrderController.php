@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Partner;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('partner.products.index');
+        return view('partner.orders.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('partner.products.create');
+        return view('partner.orders.create');
     }
 
     /**
@@ -44,7 +44,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        return view('partner.products.edit');
+        return view('partner.orders.edit');
     }
 
     /**

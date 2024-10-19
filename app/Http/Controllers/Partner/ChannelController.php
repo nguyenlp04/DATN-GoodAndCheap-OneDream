@@ -16,7 +16,7 @@ class ChannelController extends Controller
      */
     public function index()
     {
-        $channels = Channel::paginate(10);
+        $channels = Channel::all();
         return view('partner.channels.index', compact('channels'));
     }
 
