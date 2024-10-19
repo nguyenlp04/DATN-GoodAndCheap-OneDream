@@ -31,7 +31,7 @@
 
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
-                
+
 
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -103,13 +103,13 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
-            
-            
+
+
                 <div class="app-ecommerce" data-select2-id="21">
-                
+
                   <!-- Add Product -->
                   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
-                
+
                     <div class="d-flex flex-column justify-content-center">
                       <h4 class="mb-1">Add a new Product</h4>
                     </div>
@@ -118,11 +118,11 @@
                         <button class="btn btn-label-primary">Save draft</button></div>
                       <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish product</button>
                     </div>
-                
+
                   </div>
-                
+
                   <div class="row" data-select2-id="20">
-                
+
                     <!-- First column-->
                     <div class="col-12 col-lg-8">
                       <!-- Product Information -->
@@ -157,7 +157,7 @@
                               <p class="h6 text-muted d-block fw-normal mb-2">or</p>
                               <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse image</button>
                             </div>
-                            
+
                           </form>
                         </div>
                       </div>
@@ -172,11 +172,11 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div id="add-variant">
                         <!-- New variants will be inserted here -->
                     </div>
-                  
+
                      <!-- Variants List -->
                      <div class="card mb-6">
                         <div class="card-header">
@@ -193,199 +193,16 @@
                                     <!-- Variant combinations will be added here -->
                                 </tbody>
                             </table>
-                         
+
                         </div>
                       </div>
                       <!-- /Variants List -->
-                    <script>
-                     let variants = [];
 
-                    // Add variant button event listener
-                    document.getElementById('btn-add-variant').addEventListener('click', function () {
-                        createVariantCard();
-                    });
 
-                    // Function to create a new variant card
-                    function createVariantCard(variantData = { variant: '', options: [''] }) {
-                        const variantHTML = `
-                            <div class="card mb-6 variant-card">
-                                <div class="card-header">
-                                    <span class="card-title mb-0">Name Variant</span>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control option-input" placeholder="Select Or Enter A Variation" value="${variantData.variant}">
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <span class="mb-0">Option</span>
-                                    <div class="options-container">
-                                        ${variantData.options.map(option => `
-                                            <div class="col-12 mt-2">
-                                                <input type="text" class="form-control option-value" placeholder="Enter an Option" value="${option}">
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                    <div class="col-12 mt-3 text-end">
-                                        <button type="button" class="btn btn-primary btn-done" disabled>Done</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        document.getElementById('add-variant').insertAdjacentHTML('beforeend', variantHTML);
-                        addBlurEventToOptionInputs();
-                        addDoneButtonEventListener();
-                        validateVariantInputs();
-                    }
 
-                    // Function to add blur event listeners to option inputs
-                    function addBlurEventToOptionInputs() {
-                        const optionInputs = document.querySelectorAll('.option-value');
-                        optionInputs[optionInputs.length - 1].addEventListener('blur', function () {
-                            if (this.value.trim() !== '' && !this.nextElementSibling?.classList?.contains('option-value')) {
-                                const newInputHTML = `
-                                    <div class="col-12 mt-2">
-                                        <input type="text" class="form-control option-value" placeholder="Enter an Option">
-                                    </div>
-                                `;
-                                this.parentElement.insertAdjacentHTML('afterend', newInputHTML);
-                                addBlurEventToOptionInputs();
-                            }
-                            validateVariantInputs();
-                        });
-                    }
-
-                    // Function to validate variant inputs and control "Done" button state
-                    function validateVariantInputs() {
-                        const variantCards = document.querySelectorAll('.variant-card');
-                        variantCards.forEach(function (card) {
-                            const nameVariantInput = card.querySelector('.option-input');
-                            const optionInputs = card.querySelectorAll('.option-value');
-                            const doneButton = card.querySelector('.btn-done');
-
-                            const isNameVariantValid = nameVariantInput.value.trim() !== '';
-                            const isAtLeastOneOptionValid = Array.from(optionInputs).some(input => input.value.trim() !== '');
-
-                            doneButton.disabled = !(isNameVariantValid && isAtLeastOneOptionValid);
-                        });
-                    }
-
-                    // Function to add event listeners to "Done" buttons
-                    function addDoneButtonEventListener() {
-                        const doneButtons = document.querySelectorAll('.btn-done');
-                        doneButtons[doneButtons.length - 1].addEventListener('click', function () {
-                            const variantCard = this.closest('.variant-card');
-                            const nameVariantInput = variantCard.querySelector('.option-input');
-                            const optionInputs = variantCard.querySelectorAll('.option-value');
-
-                            if (this.textContent === 'Done') {
-                                // Remove the last empty input if it exists
-                                if (optionInputs.length > 0 && optionInputs[optionInputs.length - 1].value.trim() === '') {
-                                    optionInputs[optionInputs.length - 1].parentElement.remove();
-                                }
-
-                                // Save the variant to the variants list
-                                const variantName = nameVariantInput.value.trim();
-                                const options = Array.from(optionInputs).map(input => input.value.trim()).filter(val => val !== '');
-
-                                // Update the variants array (check if variant already exists)
-                                const existingVariantIndex = variants.findIndex(v => v.variantName === variantName);
-                                if (existingVariantIndex !== -1) {
-                                    // Update the existing variant
-                                    variants[existingVariantIndex].options = options;
-                                } else {
-                                    // Add a new variant
-                                    if (variantName && options.length > 0) {
-                                        variants.push({ variantName: variantName, options: options });
-                                    }
-                                }
-
-                                // Generate the combinations table
-                                generateVariantCombinationsTable();
-
-                                // Disable input fields after done
-                                optionInputs.forEach(input => input.disabled = true);
-                                nameVariantInput.disabled = true;
-                                this.textContent = 'Edit';
-
-                            } else {
-                                // Enable input fields for editing
-                                optionInputs.forEach(input => input.disabled = false);
-                                nameVariantInput.disabled = false;
-
-                                // Add a new empty input option automatically when editing
-                                const newInputHTML = `
-                                    <div class="col-12 mt-2">
-                                        <input type="text" class="form-control option-value" placeholder="Enter an Option">
-                                    </div>
-                                `;
-                                variantCard.querySelector('.options-container').insertAdjacentHTML('beforeend', newInputHTML);
-                                addBlurEventToOptionInputs();
-
-                                this.textContent = 'Done';
-                            }
-                        });
-                    }
-
-                    // Function to generate the variant combinations table
-                    function generateVariantCombinationsTable() {
-                        const headers = document.getElementById('variant-list-header');
-                        const body = document.getElementById('variant-list-body');
-
-                        // Clear previous headers and rows
-                        headers.innerHTML = '';
-                        body.innerHTML = '';
-                        console.log(variants);
-                        
-                        // Create table headers
-                        variants.forEach(variant => {
-                            const th = document.createElement('th');
-                            th.textContent = variant.variantName;
-                            headers.appendChild(th);
-                        });
-
-                        headers.innerHTML += '<th>Quantity</th><th>Price</th>';
-
-                        // Generate combinations
-                        const combinations = generateCombinations(variants.map(v => v.options));
-                        console.log("combinations: ", combinations);
-
-                        // Create table rows for each combination
-                        combinations.forEach(combination => {
-                            const row = document.createElement('tr');
-                            combination.forEach(value => {
-                                const td = document.createElement('td');
-                                td.textContent = value;
-                                row.appendChild(td);
-                            });
-
-                            // Add quantity and price fields
-                            row.innerHTML += `
-                                <td><input type="number" class="form-control" placeholder="Quantity"></td>
-                                <td><input type="number" class="form-control" placeholder="Price"></td>
-                            `;
-                            body.appendChild(row);
-                        });
-                    }
-
-                    // Helper function to generate all combinations of options
-                    function generateCombinations(arrays) {
-                        return arrays.reduce((acc, curr) => {
-                            const result = [];
-                            acc.forEach(a => {
-                                curr.forEach(c => {
-                                    result.push([...a, c]);
-                                });
-                            });
-                            return result;
-                        }, [[]]);
-                    }
-
-                    </script>
-                      <!-- /Variants -->
-                     
-                    
                     </div>
                     <!-- /Second column -->
-                
+
                     <!-- Second column -->
                     <div class="col-12 col-lg-4" data-select2-id="19">
                       <!-- Organize Card -->
@@ -447,7 +264,7 @@
                   , made with ❤️ by
                   <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
                 </div>
-               
+
               </div>
             </footer>
             <!-- / Footer -->

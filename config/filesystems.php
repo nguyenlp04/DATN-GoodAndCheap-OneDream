@@ -29,6 +29,15 @@ return [
     */
 
     'disks' => [
+        'blackblaze' => [
+            'driver' => 's3',
+            'key' => env('BLACKBLAZE_ACCESS_KEY_ID'),
+            'secret' => env('BLACKBLAZE_SECRET_ACCESS_KEY'),
+            'region' => env('BLACKBLAZE_DEFAULT_REGION'),
+            'bucket' => env('BLACKBLAZE_BUCKET'),
+            'endpoint' => env('BLACKBLAZE_URL'),
+            'visibility' => 'public',
+        ],
 
         'local' => [
             'driver' => 'local',
@@ -40,7 +49,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
