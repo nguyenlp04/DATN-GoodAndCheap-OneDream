@@ -51,6 +51,15 @@ Route::post('/verify', [VerificationController::class, 'verify'])->name('verific
 
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
 
+// Route::get('/test', function () {
+//     if (Auth::check()) {
+//         $userId = Auth::id();
+//         return view('test', ['userId' => $userId]);
+//     } else {
+//         return "User is not logged in";
+//     }
+// });
+
 
 // Dashboard route
 Route::get('/dashboard', function () {
@@ -62,9 +71,12 @@ Route::prefix('product')->group(function () {
     Route::get('/', function () {
         return view('admin.products.index');
     });
-    Route::get('/add', function () {
-        return view('admin.products.add-product');
-    });
+    // Route::get('/add', function () {
+    //     return view('admin.products.add-product');
+    // });
+
+    Route::get('/add', [ProductController::class, 'create'])->name('products.create');
+
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
@@ -72,8 +84,8 @@ Route::prefix('product')->group(function () {
 
 // Grouped routes for categoris
 Route::prefix('category')->group(function () {
-        Route::get('/', [CategoryController::class, 'index']);
-        Route::get('/add', [CategoryController::class, 'create']);
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::match(['get', 'post'], '/add', [CategoryController::class, 'store'])->name('addCategory');
 });
 
 // // Other routes
