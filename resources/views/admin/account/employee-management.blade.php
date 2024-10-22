@@ -169,9 +169,9 @@
                                <th>ID-Staff</th>
                                <th>Name</th>
                                <th>Email</th>
-                               <th>Trạng thái</th>
-                               <th>Xem</th>
-                               <th>Chức năng </th>
+                               <th>Status</th>
+                               <th>View</th>
+                               <th> </th>
 
                              </tr>
                            </thead>
@@ -191,7 +191,7 @@
                                    @endif
                                </td>
 
-                               {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> --}}
+
                                    <div class="modal fade" id="modal{{ $item->staff_id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $item->staff_id }}" aria-hidden="true">
                                    <div class="modal-dialog">
                                      <div class="modal-content">
@@ -210,21 +210,22 @@
                                                @else
                                                    <img src="{{ asset($item->avata) }}" alt=""  width="100px">
                                                @endif
-                                                   {{-- <img src="http://127.0.0.1:8000/storage/avata/avata_staff1729105812.jpg" alt="" srcset=""> --}}
+
                                                </div>
                                                <div class="col-md-5 mx-2">
 
-                                               <p><strong>Tên:</strong><br>{{ $item -> full_name }}</p>
-                                               <p><strong>Email:</strong><br>{{ $item ->email }}</p>
-                                               <p><strong>Địa chỉ:</strong><br>{{ $item ->address }}</p>
-                                               <p><strong>Chức vụ:</strong><br>{{ $item -> role }}</p>
-                                               <p><strong>Trạng thái:</strong><br>
-                                               @if($item->status == 0)
-                                                   Khóa
-                                               @else
-                                                   Hoạt động
-                                               @endif </p>
-                                               <p><strong>Hoạt động từ ngày:</strong><br>{{ $item -> created_at }}</p>
+                                                <p><strong>Name:</strong><br>{{ $item -> full_name }}</p>
+                                                <p><strong>Email:</strong><br>{{ $item -> email }}</p>
+                                                <p><strong>Address:</strong><br>{{ $item -> address }}</p>
+                                                <p><strong>Role:</strong><br>{{ $item -> role }}</p>
+                                                <p><strong>Status:</strong><br>
+                                                @if($item->status == 0)
+                                                    Locked
+                                                @else
+                                                    Active
+                                                @endif
+                                                </p>
+                                                <p><strong>Active since:</strong><br>{{ $item -> created_at }}</p>
                                            </div>
 
                                            </div>
@@ -341,8 +342,8 @@
         function confirmDelete(event,staffID) {
             event.preventDefault();
             Swal.fire({
-                title: "Bạn chắc chứ?",
-                text: "Nếu đồng ý sẽ không thể khôi phục! - Các sản phẩm thuộc danh mục này cũng sẽ bị xoá!",
+                title: "Are you sure??",
+                text: "If you agree, it will not be possible to restore! - Products belonging to this user will also be deleted!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",

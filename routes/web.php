@@ -34,6 +34,7 @@ require __DIR__ . '/auth.php';
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\UsermanagementController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -88,9 +89,11 @@ Route::prefix('account')->group(function () {
 
 
 
-    Route::get('/confirm', function () {
-        return view('admin.account.confirm-partner');
-    });
+    Route::get('/user-account-management', [UsermanagementController::class, 'index']);
+    Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
+    Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
+
+    // });
     Route::get('/lock', function () {
         return view('admin.account.lock-account');
     });
