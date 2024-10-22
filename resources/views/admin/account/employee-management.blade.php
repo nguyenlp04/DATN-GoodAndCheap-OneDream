@@ -206,7 +206,7 @@
                                                                             @if (is_null($item->avata) || $item->avata === '')
                                                                             <img src="https://img.lovepik.com/png/20231019/customer-login-avatar-client-gray-head-portrait_269373_wh860.png" alt="" class="" width="100px">
                                                                             @else
-                                                                            <img src="{{ asset($item->avata) }}" alt="" width="100px">
+                                                                            <img src="https://goodandcheap.s3.us-east-005.backblazeb2.com/image/staff/1729527519_3005d1b239494b5fba1944ea3847017c~tplv-omjb5zjo8w-origin-jpeg.jpeg" alt="" width="100px">
                                                                             @endif
                                                                             {{-- <img src="http://127.0.0.1:8000/storage/avata/avata_staff1729105812.jpg" alt="" srcset=""> --}}
                                                                         </div>
@@ -285,14 +285,9 @@
             @section('script-link-css')
 
             <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-            <script src="https://kit.fontawesome.com/aa64dc9752.js" crossorigin="anonymous"></script>
             <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
 
-            {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
-            {{-- no ko buton dc  --}}
-            <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-            <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+            
 
             <script>
                 document.getElementById('btnBrowse').addEventListener('click', function() {
@@ -322,49 +317,4 @@
                     });
                 });
             </script>
-            <script>
-                new DataTable('#example');
-            </script>
-
-            @if (session('alert'))
-            <script>
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "bottom-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-                Toast.fire({
-                    icon: "{{ session('alert')['type'] }}",
-                    title: "{{ session('alert')['message'] }}"
-                });
-            </script>
-            @endif
-
-
-            <script>
-                function confirmDelete(event, staffID) {
-                    event.preventDefault();
-                    Swal.fire({
-                        title: "Bạn chắc chứ?",
-                        text: "Nếu đồng ý sẽ không thể khôi phục! - Các sản phẩm thuộc danh mục này cũng sẽ bị xoá!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-
-                            document.getElementById(`delete-form-${staffID}`).submit();
-                        }
-                    });
-                }
-            </script>
-
             @endsection

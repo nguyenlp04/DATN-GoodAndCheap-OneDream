@@ -81,26 +81,7 @@
             <!-- New variants will be inserted here -->
           </div>
 
-          <!-- Variants List -->
-          <div class="card mb-6">
-            <div class="card-header">
-              <h5 class="card-tile mb-0">Variants List</h5>
-            </div>
-            <div class="card-body">
-              <table id="variant-list-table" class="table table-bordered">
-                <thead>
-                  <tr id="variant-list-header">
-                    <!-- Variant headers will be dynamically added here -->
-                  </tr>
-                </thead>
-                <tbody id="variant-list-body">
-                  <!-- Variant combinations will be added here -->
-                </tbody>
-              </table>
-
-            </div>
-          </div>
-          <!-- /Variants List -->
+         
           <script>
             let variants = [];
 
@@ -132,7 +113,6 @@
                     `).join('')}
                 </div>
                 <div class="col-12 mt-3 text-end">
-                    <button type="button" class="btn btn-danger btn-remove-variant">Remove Variant</button>
                     <button type="button" class="btn btn-primary btn-done" disabled>Done</button>
                 </div>
             </div>
@@ -142,7 +122,6 @@
               addBlurEventToOptionInputs();
               addDoneButtonEventListener();
               addRemoveOptionEventListener();
-              addRemoveVariantEventListener();
               validateVariantInputs();
             }
 
@@ -158,22 +137,7 @@
               });
             }
 
-            // Function to add event listener for removing variant
-            function addRemoveVariantEventListener() {
-              const removeVariantButtons = document.querySelectorAll('.btn-remove-variant');
-              removeVariantButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                  const variantCard = this.closest('.variant-card');
-                  variantCard.remove();
-                  validateVariantInputs();
-                  // Remove variant from the variants array if it's already saved
-                  const variantName = variantCard.querySelector('.option-input').value.trim();
-                  variants = variants.filter(v => v.variantName !== variantName);
-                  generateVariantCombinationsTable();
-                });
-              });
-            }
-
+            
             // Function to add blur event listeners to option inputs
             function addBlurEventToOptionInputs() {
               const optionInputs = document.querySelectorAll('.option-value');
@@ -288,60 +252,7 @@
               });
             }
 
-
-            // Function to generate the variant combinations table
-            function generateVariantCombinationsTable() {
-              const headers = document.getElementById('variant-list-header');
-              const body = document.getElementById('variant-list-body');
-
-              // Clear previous headers and rows
-              headers.innerHTML = '';
-              body.innerHTML = '';
-
-              // Create table headers
-              variants.forEach(variant => {
-                const th = document.createElement('th');
-                th.textContent = variant.variantName;
-                headers.appendChild(th);
-              });
-
-              headers.innerHTML += '<th>Quantity</th><th>Price</th>';
-
-              // Generate combinations
-              const combinations = generateCombinations(variants.map(v => v.options));
-
-              // Create table rows for each combination
-              combinations.forEach(combination => {
-                const row = document.createElement('tr');
-                combination.forEach(value => {
-                  const td = document.createElement('td');
-                  td.textContent = value;
-                  row.appendChild(td);
-                });
-
-                // Add quantity and price fields
-                row.innerHTML += `
-            <td><input type="number" class="form-control" placeholder="Quantity"></td>
-            <td><input type="number" class="form-control" placeholder="Price"></td>
-        `;
-                body.appendChild(row);
-              });
-            }
-
-            // Helper function to generate all combinations of options
-            function generateCombinations(arrays) {
-              return arrays.reduce((acc, curr) => {
-                const result = [];
-                acc.forEach(a => {
-                  curr.forEach(c => {
-                    result.push([...a, c]);
-                  });
-                });
-                return result;
-              }, [
-                []
-              ]);
-            }
+           
           </script>
           <!-- /Variants -->
 
@@ -357,27 +268,49 @@
               <h5 class="card-title mb-0">Organize</h5>
             </div>
             <div class="card-body" data-select2-id="17">
-              <!-- Vendor -->
-              <div class="mb-6">
-            <label for="category" class="form-label">Category</label>
-            <select id="category" name="category_id" class="form-select" required>
-                <option value="">Select Category</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name_category }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Subcategory -->
-        <div class="mb-6">
-            <label for="subcategory" class="form-label">Subcategory</label>
-            <select id="subcategory" name="subcategory_id" class="form-select" required>
-                <option value="">Select Subcategory</option>
-                @foreach($subcategories as $subcategory)
-                    <option value="{{ $subcategory->id }}">{{ $subcategory->name_subcategory }}</option>
-                @endforeach
-            </select>
-        </div>
+              <div class="mb-3">
+                <label for="category" class="form-label">Category Name:</label>
+                <select id="category" name="category_id" class="form-select" required>
+                  <option value="">Select Category Name</option>
+                  @foreach ($categories as $category)
+                  <option value="{{ $category->category_id }}">{{ $category->name_category }}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="mb-3" id="subcategory-section" style="display: none;">
+                <label for="subcategory" class="form-label">SubCategory Name:</label>
+                <select id="subcategory" name="subcategory_id" class="form-select">
+                </select>
+              </div>
+              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+              <script>
+                $(document).ready(function() {
+                  $('#category').change(function() {
+                    var categoryId = $(this).val();
+                    console.log("Category ID: ", categoryId); 
+                    if (categoryId) {
+                      $.ajax({
+                        url: '/get-subcategories/' + categoryId,
+                        type: 'GET',
+                        success: function(data) {
+                          console.log(data); 
+                          $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
+                          $.each(data, function(index, subcategory) {
+                            $('#subcategory').append('<option value="' + subcategory.sub_category_id + '">' + subcategory.name_sub_category + '</option>');
+                          });
+                          $('#subcategory-section').show(); 
+                        },
+                        error: function(xhr, status, error) {
+                          console.error("Error fetching subcategories:", error); 
+                        }
+                      });
+                    } else {
+                      $('#subcategory').empty().append('<option value="">Chọn danh mục con</option>');
+                      $('#subcategory-section').hide(); // Ẩn phần danh mục con nếu không có danh mục nào được chọn
+                    }
+                  });
+                });
+              </script>
               <!-- Status -->
               <div class="mb-6 col ecommerce-select2-dropdown" data-select2-id="47">
                 <label class="form-label mb-1" for="status-org">Status
@@ -398,23 +331,6 @@
     </div>
   </div>
   <!-- / Content -->
-
-  <!-- Footer -->
-  <footer class="content-footer footer bg-footer-theme">
-    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-      <div class="mb-2 mb-md-0">
-        ©
-        <script>
-          document.write(new Date().getFullYear());
-        </script>
-        , made with ❤️ by
-        <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
-      </div>
-
-    </div>
-  </footer>
-  <!-- / Footer -->
-
   <div class="content-backdrop fade"></div>
 </div>
 <!-- Content wrapper -->
