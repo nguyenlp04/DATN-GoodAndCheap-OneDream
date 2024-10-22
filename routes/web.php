@@ -80,15 +80,13 @@ Route::prefix('category')->group(function () {
 
 // Grouped routes for account management   - Nguyễn Quang Cường
 Route::prefix('account')->group(function () {
-
+// staffx
     Route::get('/employee-management', [StaffController::class, 'index']);
     Route::post('/employee-management', [StaffController::class, 'store'])->name('addStaff');
     Route::get('/employee-management/employeedetails/edit/{id}', [StaffController::class, 'edit'])->name('editStaff');
     Route::put('/employee-management/employeedetails/update/{id}', [StaffController::class, 'update'])->name('updateStaff');
     Route::delete('/employee-management/employeedetails/delete/{id}', [StaffController::class, 'destroy'])->name('deleteStaff');
-
-
-
+// account user
     Route::get('/user-account-management', [UsermanagementController::class, 'index']);
     Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
     Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
