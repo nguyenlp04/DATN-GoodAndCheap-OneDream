@@ -30,6 +30,8 @@
     <title>Vertical Layouts - Forms | OneDream Dashboard</title>
 
     <meta name="description" content="" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset("/../admin/assets/img/favicon/favicon.ico") }}" />
@@ -44,7 +46,7 @@
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/fonts/boxicons.css") }}" />
-
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/css/core.css") }}" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/css/theme-default.css") }}" class="template-customizer-theme-css" />
@@ -230,11 +232,26 @@
             </li>
 
             <!-- Blogs -->
-            <li class="menu-item {{ Request::is('blogs') ? 'active' : '' }}">
-                <a href="{{ url('blogs') }}" class="menu-link">
+            <li class="menu-item {{ Request::is('blogs') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bxl-blogger"></i>
-                    <div data-i18n="Analytics">Blogs</div>
+                    <div data-i18n="Analytics">Blog </div>
                 </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Request::is('admin/blogs') ? 'active' : '' }}">
+                        <a href="{{ url('admin/blogs') }}" class="menu-link">
+                            <div data-i18n="Blogs">Blogs List</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('admin/blogs/add') ? 'active' : '' }}">
+                        <a href="{{ url('admin/blogs/add') }}" class="menu-link">
+                            <div data-i18n="Add blogs">Add Blogs</div>
+                        </a>
+                    </li>
+                   
+                </ul>
+
+
             </li>
 
             <!-- Notification -->

@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleNewsController;
@@ -45,6 +45,19 @@ Route::post('/verify', [VerificationController::class, 'verify'])->name('verific
 
 
 
+//router blogs
+
+route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
+route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
+Route::resource('admin/blogs', BlogController::class);
+Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+
+
+Route::get('/notifications', function () {
+    return view('admin.notifications.index');
+});
+Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
 
 
 // Dashboard route
@@ -93,9 +106,7 @@ Route::prefix('account')->group(function () {
 });
 
 
-Route::get('/blogs', function () {
-    return view('admin.blogs.index');
-});
+
 Route::get('/notifications', function () {
     return view('admin.notifications.index');
 });
@@ -113,3 +124,5 @@ Route::prefix('payment')->group(function () {
         return view('admin.payments.receiving-account');
     });
 });
+
+
