@@ -107,9 +107,12 @@ Route::get('/notifications', function () {
     return view('admin.notifications.index');
 });
 
-use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
+// routes/web.php
+Route::post('/admin/orders/update-status/{order_id}', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+Route::get('/demo', [OrderController::class, 'demo'])->name('demo');
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
