@@ -97,14 +97,26 @@
                       <p><strong>Phương thức thanh toán:</strong> {{ $item->payment_method_name }}</p>
                       <p><strong>Trạng thái:</strong> {{ $item->status }}</p>
                       <!-- Hiển thị chi tiết sản phẩm trong đơn hàng -->
-                      <p>
-                        <strong>Chi tiết sản phẩm:</strong>
-                      </p>
-                      @foreach ($item->order_details as $detail)
+                      <!-- Hiển thị chi tiết sản phẩm trong đơn hàng, nhóm theo kênh -->
+                      <p><strong>Chi tiết sản phẩm:</strong></p>
+
+                      @php
+                      // Nhóm sản phẩm theo channel_id
+                      $groupedDetails = $item->order_details->groupBy('channel_id');
+                      @endphp
+
+                      @foreach ($groupedDetails as $channelId => $details)
+                      <!-- Hiển thị thông tin kênh chỉ một lần -->
+                      <div class="channel-info">
+                        <img src="{{ asset($details->first()->image_channel) }}" alt="Channel Logo">
+                        <p>Kênh: {{ $details->first()->name_channel }}</p>
+                      </div>
+
+                      @foreach ($details as $detail)
                       <div class="small"> <!-- Thêm class "small" để điều chỉnh kích thước font -->
                         <div class="row align-items-center mb-2">
                           <div class="col-md-2">
-                            <img src="{{ asset($detail->first_image) }}" class="img-fluid" alt="">
+                            <img src="{{ asset($detail->first_image) }}" class="img-fluid" alt="Sản phẩm">
                           </div>
                           <div class="col-md-7">
                             <h6 class="mb-0">{{ $detail->name_product }}</h6>
@@ -118,6 +130,8 @@
                       </div>
                       <hr>
                       @endforeach
+                      @endforeach
+
                       <br>
                       <p><strong>Tổng cộng:</strong> ${{ number_format($item->price, 0) }}</p>
                     </div>
@@ -142,7 +156,23 @@
 
 @section('script-link-css')
 <!-- Bootstrap CSS -->
+<style>
+  .channel-info {
+    display: flex;
+    align-items: center;
+  }
 
+  .channel-info img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 50%;
+  }
+
+  .channel-info p {
+    margin: 0;
+  }
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://kit.fontawesome.com/aa64dc9752.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">

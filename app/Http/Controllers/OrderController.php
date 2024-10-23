@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+
+
     public function index()
     {
         // Lấy danh sách đơn hàng cùng thông tin người dùng và phương thức thanh toán
@@ -17,7 +19,6 @@ class OrderController extends Controller
             ->join('users', 'orders.user_id', '=', 'users.user_id')
             ->select('orders.*', 'payment_method.content as payment_method_name', 'users.full_name')
             ->get();
-
         // Lấy thông tin chi tiết cho từng order
         foreach ($orders as $order) {
             $orderDetails = DB::table('order_details AS od')
