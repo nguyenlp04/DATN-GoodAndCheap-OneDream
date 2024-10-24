@@ -132,13 +132,14 @@
                             </div>
                             <div class="card-body">
                                 <!-- Hiển thị thông báo thành công -->
-                                @if(session('success'))
-                                <div class="alert alert-success">{{ session('success') }}</div>
+                                @if(session('errors'))
+                                <div class="alert alert-errros">{{ session('errors') }}</div>
                                 @endif
 
                                 <!-- Form thêm Blog -->
                                 <form action="{{ route('blogs.store') }}" method="POST">
                                     @csrf
+                                    
                                     <div class="mb-6">
                                     <label class="form-label">Title:</label>
                                     <input type="text" name="title" class="form-control mb-3" placeholder="Enter blog title">
@@ -153,6 +154,26 @@
                                     @endif
 
                                         </div>
+
+                                        <!-- Media -->
+                                    <script src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.js"></script>
+                                    <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
+                                    <div class="card mb-6">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0 card-title">Blog Image</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="/upload" class="dropzone needsclick p-0 dz-clickable" id="dropzone-basic">
+                                        <div class="dz-message needsclick">
+                                            <p class="h4 needsclick pt-4 mb-2">Drag and drop your image here</p>
+                                            <p class="h6 text-muted d-block fw-normal mb-2">or</p>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse image</button>
+                                        </div>
+
+                                        </form>
+                                    </div>
+                                    </div>
+                                    <!-- /Media -->
                                        <button type="submit" class="btn btn-primary">Create Blog</button>
                                 </form>
 

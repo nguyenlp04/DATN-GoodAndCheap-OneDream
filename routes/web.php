@@ -30,6 +30,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
     // Route hiển thị chi tiết from đăng tin bán hàng
     Route::get('/sale_news', [SaleNewsController::class, 'index'])->name('sale_news');
+    //router blogs
+
+route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
+route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
+Route::resource('admin/blogs', BlogController::class);
+Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+
+
+Route::get('/notifications', function () {
+    return view('admin.notifications.index');
+});
 });
 
 require __DIR__ . '/auth.php';
@@ -45,18 +57,7 @@ Route::post('/verify', [VerificationController::class, 'verify'])->name('verific
 
 
 
-//router blogs
 
-route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
-route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
-Route::resource('admin/blogs', BlogController::class);
-Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
-Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
-
-
-Route::get('/notifications', function () {
-    return view('admin.notifications.index');
-});
 Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
 
 
