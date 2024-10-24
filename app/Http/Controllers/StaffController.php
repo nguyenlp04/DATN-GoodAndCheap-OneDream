@@ -42,19 +42,30 @@ class StaffController extends Controller
         ]);
 
 
-        if ($request->hasFile('avata')) {
-            $imageName = 'avata_staff' . time() . '.' . $request->avata->extension();
-            Storage::disk('public')->putFileAs('avatas', $request->file('avata'), $imageName);
-        }else{
+        // if ($request->hasFile('avata')) {
+        //     $imageName = 'avata_staff' . time() . '.' . $request->avata->extension();
+        //     Storage::disk('public')->putFileAs('avatas', $request->file('avata'), $imageName);
+        // }else{
 
-            $imageName = null;
+        //     $imageName = null;
+        // }
+
+
+        if ($request->hasFile('avata')) {
+            $originalFileName = basename($request->file('avata')->getClientOriginalName());
+            $fileName = time() . '_' . $originalFileName;
+            $filePath = '/image/staff/' . $fileName; 
+            Storage::disk('blackblaze')->put($filePath, file_get_contents($request->file('avata')), 'private');
         }
+
+
+
         $data = [
             'full_name' => $validatedData['full_name'],
             'email' => $validatedData['email'],
             'address' => $validatedData['address'],
             'password' => $validatedData['password'],
-            'avata' => $imageName ? 'storage/avatas/'.$imageName : null,
+            'avata' => $filePath ? $filePath : null,
             'role' => 'staff',
             'status'=> 1,
             'created_at' => now(),

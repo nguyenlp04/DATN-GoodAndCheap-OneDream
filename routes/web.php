@@ -3,6 +3,12 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('home');
@@ -31,10 +37,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\StaffController;
-use App\Http\Controllers\UsermanagementController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -43,34 +45,55 @@ Route::post('/verify', [VerificationController::class, 'verify'])->name('verific
 
 
 
+// Route::get('/test', function () {
+//     return view('test');
+// });
+
+Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
+
+// Route::get('/test', function () {
+//     if (Auth::check()) {
+//         $userId = Auth::id();
+//         return view('test', ['userId' => $userId]);
+//     } else {
+//         return "User is not logged in";
+//     }
+// });
 
 
 // Dashboard route
-// Route::get('/dashboard', function () {
-//     return view('admin.index');
-// });
+Route::get('/dashboard', function () {
+    return view('admin.index');
+});
 
 // Grouped routes for products
 Route::prefix('product')->group(function () {
     Route::get('/', function () {
         return view('admin.products.index');
     });
-    Route::get('/add', function () {
-        return view('admin.products.add-product');
-    });
+    // Route::get('/add', function () {
+    //     return view('admin.products.add-product');
+    // });
+
+    Route::get('/add', [ProductController::class, 'create']);
+    
+
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
 });
 
+
+Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSubcategories']);
+
+Route::get('/products/add-product', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
+
 // Grouped routes for categoris
 Route::prefix('category')->group(function () {
-    Route::get('/', function () {
-        return view('admin.categories.index');
-    });
-    Route::get('/add', function () {
-        return view('admin.categories.add-category');
-    });
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::match(['get', 'post'], '/add', [CategoryController::class, 'store'])->name('addCategory');
 });
 
 // // Other routes

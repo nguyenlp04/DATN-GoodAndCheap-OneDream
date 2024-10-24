@@ -42,6 +42,8 @@
       rel="stylesheet"
     />
 
+    <script src="https://kit.fontawesome.com/aa64dc9752.js" crossorigin="anonymous"></script>
+
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/fonts/boxicons.css") }}" />
@@ -196,11 +198,6 @@
                             <div data-i18n="Add Product">Add Category</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('category/variant') ? 'active' : '' }}">
-                        <a href="{{ url('category') }}" class="menu-link">
-                            <div data-i18n="Add Category">Add Variant</div>
-                        </a>
-                    </li>
                 </ul>
             </li>
 
@@ -212,8 +209,8 @@
                     <div data-i18n="Account Management">Account</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('account/add') ? 'active' : '' }}">
-                        <a href="{{ url('account/add') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('account/employee-management/*') || Request::is('account/employee-management') ? 'active' : '' }}">
+                        <a href="{{ url('account/employee-management') }}" class="menu-link">
                             <div data-i18n="Add Affiliate Account">Add Affiliate Account</div>
                         </a>
                     </li>
@@ -675,5 +672,6 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    @include('layouts.script-admin')
   </body>
 </html>
