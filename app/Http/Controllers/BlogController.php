@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
 use Illuminate\Http\Request;
@@ -30,53 +32,72 @@ class BlogController extends Controller
 
     // Lưu bài viết mới
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|max:255',
-           'content' => 'required|string|min:6',
-        ]);
-    
-        // Lấy ID của người dùng đăng nhập hiện tại
-        $staffId = Auth::id();
-    
-        // Tạo mới bài viết với staff_id
-        Blog::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'staff_id' => $staffId,
-           
-        ]);
-    
-        return redirect()->route('blogs.index')->with('success', 'Bài viết đã được thêm thành công');
-    }
-    
-    // Hiển thị form sửa bài viết
-    public function edit(Blog $blog)
-    {
-        return view('admin.blogs.edit', compact('blog'));
+{
+    // Xác thực dữ liệu
+    $request->validate([
+        'title' => 'required|max:255',
+        'content' => 'required|string',
+        'short_description' => 'min:10|string|max:255', // Kiểm tra mô tả ngắn
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
+    ]);
+
+    // Lấy ID của người dùng đăng nhập hiện tại
+    $staffId = Auth::id();
+
+    // Xử lý ảnh
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('images', 'public'); 
     }
 
-    // Cập nhật bài viết
-    public function update(Request $request, Blog $blog)
-    {
-        // Xác thực dữ liệu đầu vào
-        $request->validate([
-            'title' => 'required|string|max:255',
-           'content' => 'required|string|min:6',
-            'status' => 'required|in:0,1', // Xác thực giá trị trạng thái
-        ]);
-    
-        // Cập nhật thông tin bài viết
-        $blog->title = $request->title;
-        $blog->content = $request->content;
-        $blog->status = $request->status; // Cập nhật trạng thái
-        $blog->save(); // Lưu thay đổi vào cơ sở dữ liệu
-    
-        // Chuyển hướng về trang danh sách với thông báo thành công
-        return redirect()->route('blogs.index')->with('success', 'Bài viết đã được cập nhật thành công!');
-    }
-    
 
+    Blog::create([
+        'title' => $request->title,
+        'content' => $request->content,
+        'staff_id' => $staffId,
+        'image' => $imagePath, 
+        'short_description' => $request->short_description, 
+    ]);
+
+    return redirect()->route('blogs.index')->with('success', 'Bài viết đã được thêm thành công');
+}
+
+public function update(Request $request, Blog $blog)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string|min:6',
+        'short_description' => 'required|string|min:10|max:255',
+        'status' => 'required|in:0,1',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ảnh có thể không bắt buộc
+    ]);
+
+    $blog->title = $request->title;
+    $blog->content = $request->content;
+    $blog->short_description = $request->short_description; // Cập nhật mô tả ngắn
+    $blog->status = $request->status;
+
+    // Xử lý ảnh
+    if ($request->hasFile('image')) {
+        // Xóa ảnh cũ nếu có
+        if ($blog->image) {
+            Storage::disk('public')->delete($blog->image);
+        }
+        // Lưu ảnh mới
+        $imagePath = $request->file('image')->store('images', 'public');
+        $blog->image = $imagePath; // Cập nhật đường dẫn ảnh
+    }
+
+    $blog->save(); // Lưu thay đổi
+
+    return redirect()->route('blogs.index')->with('success', 'Bài viết đã được cập nhật thành công!');
+}
+
+ // Hiển thị form sửa bài viết
+ public function edit(Blog $blog)
+ {
+     return view('admin.blogs.edit', compact('blog'));
+ }
     // Xóa bài viết
     public function destroy(Blog $blog)
     {

@@ -136,8 +136,9 @@
                                 <div class="alert alert-success">{{ session('success') }}</div>
                                 @endif
 
-                                <!-- Form thêm Blog -->
-                                <form action="{{ route('blogs.update', $blog->blog_id) }}" method="POST">
+                                <!-- For sửa thêm Blog -->
+                                <form action="{{ route('blogs.update', $blog->blog_id) }}" method="POST" enctype="multipart/form-data">
+
                                 @csrf
                                 @method('PUT') 
                                     <div class="mb-6">
@@ -146,7 +147,11 @@
                                     @if ($errors->has('title'))
                                         <div class="text-danger">{{ $errors->first('title') }}</div>
                                     @endif
-
+                                    <label class="form-label">Short Description:</label>
+                                    <input type="text" name="short_description" class="form-control mb-3" placeholder="Enter short description" value="{{ $blog->short_description }}">
+                                    @if ($errors->has('short_description'))
+                                        <div class="text-danger">{{ $errors->first('short_description') }}</div>
+                                    @endif
                                     <label class="form-label">Content:</label>
                                     <textarea name="content" class="form-control mb-3" >{{ $blog->content }}</textarea>
                                     @if ($errors->has('content'))
@@ -158,6 +163,15 @@
                                         <option value="1" {{ $blog->status == 1 ? 'selected' : '' }}>Show</option>
                                         <option value="0" {{ $blog->status == 0 ? 'selected' : '' }}>Hiden</option>
                                     </select>
+                                   
+
+                                    <label class="form-label">Image:</label>
+                                    <input type="file" name="image" class="form-control mb-3">
+                                    <img src="{{ asset('storage/' . $blog->image) }}" alt="Blog Image" style="width: 70px; height: auto;">
+                                    @if ($errors->has('image'))
+                                        <div class="text-danger">{{ $errors->first('image') }}</div>
+                                    @endif
+
                                         </div>
                                        <button type="submit" class="btn btn-primary">Update blog</button>
                                 </form>

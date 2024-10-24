@@ -25,7 +25,6 @@
             </div>
             <!-- /Search -->
             <ul class="navbar-nav flex-row align-items-center ms-auto">
-                <!-- Place this tag where you want the button to render. -->
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="{{ url("javascript:void(0);") }}" data-bs-toggle="dropdown">
@@ -53,30 +52,6 @@
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{ url("profile.html") }}">
-                                <i class="bx bx-user me-2"></i>
-                                <span class="align-middle">My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url("#") }}">
-                                <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url("#") }}">
-                                <span class="d-flex align-items-center align-middle">
-                                    <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                    <span class="flex-grow-1 align-middle">Billing</span>
-                                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <div class="dropdown-divider"></div>
-                        </li>
-                        <li>
                             <a class="dropdown-item" href="{{ url("auth-login-basic.html") }}">
                                 <i class="bx bx-power-off me-2"></i>
                                 <span class="align-middle">Log Out</span>
@@ -95,10 +70,9 @@
     <div class="content-wrapper">
         <!-- Content -->
 
-        <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
+        <div class="container-xxl flex-grow-1 container-p-y">
 
-
-            <div class="app-ecommerce" data-select2-id="21">
+            <div class="app-ecommerce">
 
                 <!-- Add Product -->
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
@@ -107,7 +81,8 @@
                         <h4 class="mb-1">Add A New Blog</h4>
                     </div>
                     <div class="d-flex align-content-center flex-wrap gap-4">
-                        <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
+                        <div class="d-flex gap-4">
+                            <button class="btn btn-label-secondary">Discard</button>
                             <button class="btn btn-label-primary">Save draft</button>
                         </div>
                         <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish </button>
@@ -115,78 +90,58 @@
 
                 </div>
 
-                <div class="row" data-select2-id="20">
+                <div class="row">
 
                     <!-- First column-->
                     <div class="col-12 col-lg-12">
                         <!-- Blog Information -->
                         <div class="card mb-6">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Blog information</h5>
-                                <!-- Các nút nằm ngang hàng với tiêu đề -->
-                                <div>
-
-                                    
-                               
-                                </div>
+                                <h5 class="card-title mb-0">Blog Information</h5>
                             </div>
                             <div class="card-body">
-                                <!-- Hiển thị thông báo thành công -->
-                                @if(session('errors'))
-                                <div class="alert alert-errros">{{ session('errors') }}</div>
+                                <!-- Hiển thị thông báo lỗi -->
+                                @if($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 @endif
 
                                 <!-- Form thêm Blog -->
-                                <form action="{{ route('blogs.store') }}" method="POST">
+                                <form action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     
-                                    <div class="mb-6">
-                                    <label class="form-label">Title:</label>
-                                    <input type="text" name="title" class="form-control mb-3" placeholder="Enter blog title">
-                                    @if ($errors->has('title'))
-                                        <div class="text-danger">{{ $errors->first('title') }}</div>
-                                    @endif
-
-                                    <label class="form-label">Content:</label>
-                                    <textarea name="content" class="form-control" ></textarea>
-                                    @if ($errors->has('content'))
-                                        <div class="text-danger">{{ $errors->first('content') }}</div>
-                                    @endif
-
-                                        </div>
-
-                                        <!-- Media -->
-                                    <script src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.js"></script>
-                                    <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
-                                    <div class="card mb-6">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0 card-title">Blog Image</h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Title:</label>
+                                        <input type="text" name="title" class="form-control" placeholder="Enter blog title">
                                     </div>
-                                    <div class="card-body">
-                                        <form action="/upload" class="dropzone needsclick p-0 dz-clickable" id="dropzone-basic">
-                                        <div class="dz-message needsclick">
-                                            <p class="h4 needsclick pt-4 mb-2">Drag and drop your image here</p>
-                                            <p class="h6 text-muted d-block fw-normal mb-2">or</p>
-                                            <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse image</button>
-                                        </div>
 
-                                        </form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Short Description:</label>
+                                        <input type="text" name="short_description" class="form-control" placeholder="Enter short description">
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Content:</label>
+                                        <textarea name="content" class="form-control" placeholder="Enter blog content"></textarea>
                                     </div>
-                                    <!-- /Media -->
-                                       <button type="submit" class="btn btn-primary">Create Blog</button>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Blog Image:</label>
+                                        <input type="file" name="image" class="form-control">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Create Blog</button>
                                 </form>
 
-                              
                             </div>
                         </div>
                         
-                        
-                        
                     </div>
-                  
-                    
-
                 </div>
             </div>
         </div>
@@ -203,7 +158,6 @@
                     , made with ❤️ by
                     <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
                 </div>
-
             </div>
         </footer>
         <!-- / Footer -->

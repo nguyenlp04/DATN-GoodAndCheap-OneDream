@@ -10,5 +10,11 @@ class Blog extends Model
 
     protected $table = 'blogs'; // Tên bảng
     protected $primaryKey = 'blog_id'; // Khóa chính nếu không phải là id mặc định
-    protected $fillable = ['title', 'content', 'staff_id', 'status'];
+    protected $fillable = [
+        'title',
+        'content',
+        'staff_id',
+        'image',
+        'short_description',
+    ];
 }
