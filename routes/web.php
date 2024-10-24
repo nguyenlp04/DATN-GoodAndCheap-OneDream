@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('home');
@@ -74,12 +75,20 @@ Route::prefix('product')->group(function () {
     //     return view('admin.products.add-product');
     // });
 
-    Route::get('/add', [ProductController::class, 'create'])->name('products.create');
+    Route::get('/add', [ProductController::class, 'create']);
+    
 
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
 });
+
+
+Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSubcategories']);
+
+Route::get('/products/add-product', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
 
 // Grouped routes for categoris
 Route::prefix('category')->group(function () {

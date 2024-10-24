@@ -34,91 +34,88 @@ class CategoryController extends Controller
         if ($request->isMethod('get')) {
             return view('admin.categories.add-category');
         }
-        // try {
+        try {
             
-        //     $validatedData = $request->validate([
-        //         'name_category' => 'required|string|max:255',
-        //         'description' => 'nullable|string|max:1000',
-        //         'subcategories' => 'required|array',
-        //         'subcategories.*' => 'string|max:255',
-        //         'variants' => 'required|array',
-        //         'variants.*' => 'required|string|max:255',
-        //         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        //     ]);
+            $validatedData = $request->validate([
+                'name_category' => 'required|string|max:255',
+                'description' => 'nullable|string|max:1000',
+                'subcategories' => 'required|array',
+                'subcategories.*' => 'string|max:255',
+                'variants' => 'required|array',
+                'variants.*' => 'required|string|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
     
 
-        //     // $fileName = time() . '.' . $request->image->extension(); 
-        //     // $filePath = '/image/category/' . $fileName; 
-        //     // Storage::disk('blackblaze')->put(basename($filePath), file_get_contents($fileName), 'private');
+            // $fileName = time() . '.' . $request->image->extension(); 
+            // $filePath = '/image/category/' . $fileName; 
+            // Storage::disk('blackblaze')->put(basename($filePath), file_get_contents($fileName), 'private');
 
-        //     if ($request->hasFile('image')) {
-        //         $originalFileName = basename($request->file('image')->getClientOriginalName());
-        //         $fileName = time() . '_' . $originalFileName;
-        //         $filePath = '/image/category/' . $fileName; 
-            
-        //         Storage::disk('blackblaze')->put($filePath, file_get_contents($request->file('image')), 'private');
-        //     }
+            if ($request->hasFile('image')) {
+                $originalFileName = basename($request->file('image')->getClientOriginalName());
+                $fileName = time() . '_' . $originalFileName;
+                $filePath = '/image/category/' . $fileName; 
+                Storage::disk('blackblaze')->put($filePath, file_get_contents($request->file('image')), 'private');
+            }
 
-        //     $dataCategory = [
-        //         'staff_id' => Auth::id(),
-        //         'name_category' => $validatedData['name_category'],
-        //         'description' => $validatedData['description'],
-        //         // 'subcategories' => $validatedData['subcategories'],
-        //         // 'variants' => $validatedData['variants'],
-        //         'image_category' => $fileName ? $fileName : null,
-        //         'status'=> 1,
-        //         'created_at' => now(),
-        //     ];
-        //     // $query=DB::table('categories')->insert($dataCategory);
+            $dataCategory = [
+                'staff_id' => Auth::id(),
+                'name_category' => $validatedData['name_category'],
+                'description' => $validatedData['description'],
+                // 'subcategories' => $validatedData['subcategories'],
+                // 'variants' => $validatedData['variants'],
+                'image_category' => $filePath ? $filePath : null,
+                'status'=> 1,
+                'created_at' => now(),
+            ];
+            // $query=DB::table('categories')->insert($dataCategory);
 
-        //     $categoryId = DB::table('categories')->insertGetId($dataCategory);
+            $categoryId = DB::table('categories')->insertGetId($dataCategory);
 
-        //     if (!empty($validatedData['subcategories'])) {
-        //         foreach ($validatedData['subcategories'] as $subcategory) {
-        //             $dataSubCategory = [
-        //                 'category_id' => $categoryId, 
-        //                 'name_sub_category' => $subcategory,
-        //                 'image_sub_category' => 'image_sub_category',
-        //                 'description' => 'description',
-        //                 'status'=> 1,
-        //                 'created_at' => now(),
-        //             ];
+            if (!empty($validatedData['subcategories'])) {
+                foreach ($validatedData['subcategories'] as $subcategory) {
+                    $dataSubCategory = [
+                        'category_id' => $categoryId, 
+                        'name_sub_category' => $subcategory,
+                        'status'=> 1,
+                        'created_at' => now(),
+                    ];
         
-        //             $querySubCategory = DB::table('sub_categories')->insert($dataSubCategory);
-        //         }
-        //     }
+                    $querySubCategory = DB::table('sub_categories')->insert($dataSubCategory);
+                }
+            }
 
 
-        //     if (!empty($validatedData['variants'])) {
-        //         foreach ($validatedData['variants'] as $variant) {
-        //             $dataVariantCategory = [
-        //                 'sub_category_id' => $categoryId,
-        //                 'attributes_name' => $variant, 
+            if (!empty($validatedData['variants'])) {
+                foreach ($validatedData['variants'] as $variant) {
+                    $dataVariantCategory = [
+                        'sub_category_id' => $categoryId,
+                        'attributes_name' => $variant, 
                         
-        //             ];
+                    ];
         
-        //             $queryVariantCategory = DB::table('subcategory_attributes')->insert($dataVariantCategory);
-        //         }
-        //     }
+                    $queryVariantCategory = DB::table('subcategory_attributes')->insert($dataVariantCategory);
+                }
+            }
 
-        //     if($categoryId && $querySubCategory && $queryVariantCategory){
-        //         return redirect()->back()->with('alert',[
-        //             'type'=>'success',
-        //             'message'=>'Added Successfully !'
-        //     ]);
-        //     }else{
-        //         return redirect()->back()->with('alert',[
-        //             'type'=>'error',
-        //             'message'=>'Không thành công !'
-        //     ]);
+            if($categoryId && $querySubCategory && $queryVariantCategory){
+                return redirect()->back()->with('alert',[
+                    'type'=>'success',
+                    'message'=>'Added Successfully !'
+            ]);
+            }else{
+                return redirect()->back()->with('alert',[
+                    'type'=>'error',
+                    'message'=>'Không thành công !'
+            ]);
     
-        //     }
-        // } catch (\Exception $e) {
-        //     return redirect()->back()->with('alert', [
-        //         'type' => 'error',
-        //         'message' => 'Lỗi: ' . $e->getMessage()
-        //     ]);
-        // }
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Lỗi: ' . $e->getMessage()
+            ]);
+        }
     }
 
     /**
