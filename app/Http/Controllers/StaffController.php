@@ -13,7 +13,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        // return view('admin.account.add-staffs');
+
         $data = DB::table('staffs')->get();
     return view('admin.account.employee-management',['data'=>$data]);
     }
@@ -63,19 +63,19 @@ class StaffController extends Controller
         if($query){
             return redirect()->back()->with('alert',[
                 'type'=>'success',
-                'message'=>'Thêm thàh thành công !'
+                'message'=>'More Success !'
         ]);
         }else{
             return redirect()->back()->with('alert',[
                 'type'=>'error',
-                'message'=>'Không thành công !'
+                'message'=>'Failure !'
         ]);
 
         }
     } catch (\Exception $e) {
         return redirect()->back()->with('alert', [
             'type' => 'error',
-            'message' => 'Lỗi: ' . $e->getMessage()
+            'message' => 'error: ' . $e->getMessage()
         ]);
     }
 
@@ -141,18 +141,18 @@ class StaffController extends Controller
             if ($query) {
                 return redirect()->back()->with('alert', [
                     'type' => 'success',
-                    'message' => 'Thêm thành công !'
+                    'message' => 'Success !'
                 ]);
             } else {
                 return redirect()->back()->with('alert', [
                     'type' => 'error',
-                    'message' => 'Không thành công !'
+                    'message' => 'Failure !'
                 ]);
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
-                'message' => 'Lỗi: ' . $e->getMessage()
+                'message' => 'error: ' . $e->getMessage()
             ]);
         }
 
@@ -169,12 +169,12 @@ class StaffController extends Controller
 
             return redirect()->back()->with('alert',[
                 'type'=>'success',
-                'message'=>'Xóa thành công !'
+                'message'=>'Delete successful !'
         ]);
         }else{
             return redirect()->back()->with('alert',[
                 'type'=>'error',
-                'message'=>'Không tìm thấy !'
+                'message'=>'Not found !'
         ]);
         }
     }
