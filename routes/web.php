@@ -1,12 +1,14 @@
 <?php
 
+
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
@@ -14,9 +16,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware(['auth', 'verified'])->name('home');
+// Route::get('/home', function () {
+//     return view('home');
+// })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -76,7 +78,7 @@ Route::prefix('product')->group(function () {
     // });
 
     Route::get('/add', [ProductController::class, 'create']);
-    
+
 
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
