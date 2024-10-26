@@ -11,6 +11,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
     return view('home');
@@ -140,5 +141,12 @@ Route::prefix('payment')->group(function () {
     });
     Route::get('/account', function () {
         return view('admin.payments.receiving-account');
+    });
+});
+
+
+Route::prefix('message')->group(function () {
+    Route::get('/', function () {
+        return view('message.message');
     });
 });
