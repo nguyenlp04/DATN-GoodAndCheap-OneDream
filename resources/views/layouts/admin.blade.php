@@ -219,7 +219,7 @@
                             <div data-i18n="Confirm Partner">Confirm Partner</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('account/lock') ? 'active' : '' }}">
+                    <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
                         <a href="{{ url('account/lock') }}" class="menu-link">
                             <div data-i18n="Lock Account">Lock Account (affiliate)</div>
                         </a>

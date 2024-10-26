@@ -266,21 +266,6 @@
                 </div>
             </div>
 
-               <!-- First column-->
-               <div class="col-12 col-lg-12">
-                 <!-- Product Information -->
-                 <div class="card mb-6">
-                   <div class="card-body">
-                       <table id="example" class="table table-striped" style="width:100%">
-                           <thead>
-                             <tr>
-                               <th>ID-Staff</th>
-                               <th>Name</th>
-                               <th>Email</th>
-                               <th>Status</th>
-                               <th>View</th>
-                               <th> </th>
-
             @endsection
             @section('script-link-css')
 
