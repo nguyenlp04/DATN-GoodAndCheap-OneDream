@@ -137,44 +137,52 @@
                                 @endif
 
                                 <!-- For sửa thêm notification -->
-                                <form action="{{ route('notifications.update', $notification->notification_id) }}" method="POST" enctype="multipart/form-data">
-
-                                @csrf
-                                @method('PUT') 
+                                <form action="{{ route('notifications.update', $notifications->id_notifications) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT') 
                                     <div class="mb-6">
-                                    <label class="form-label">Title:</label>
-                                    <input type="text" name="title" class="form-control mb-3" placeholder="Enter notification title" value="{{ $notification->title }}">
-                                    @if ($errors->has('title'))
-                                        <div class="text-danger">{{ $errors->first('title') }}</div>
-                                    @endif
-                                    <label class="form-label">Short Description:</label>
-                                    <input type="text" name="short_description" class="form-control mb-3" placeholder="Enter short description" value="{{ $notification->short_description }}">
-                                    @if ($errors->has('short_description'))
-                                        <div class="text-danger">{{ $errors->first('short_description') }}</div>
-                                    @endif
-                                    <label class="form-label">Content:</label>
-                                    <textarea name="content" class="form-control mb-3" >{{ $notification->content }}</textarea>
-                                    @if ($errors->has('content'))
-                                        <div class="text-danger">{{ $errors->first('content') }}</div>
-                                    @endif
-                                    <label for="status">Status:</label>
-
-                                    <select name="status" id="status" class="form-select mb-2" >
-                                        <option value="1" {{ $notification->status == 1 ? 'selected' : '' }}>Show</option>
-                                        <option value="0" {{ $notification->status == 0 ? 'selected' : '' }}>Hiden</option>
-                                    </select>
-                                   
-
-                                    <label class="form-label">Image:</label>
-                                    <input type="file" name="image" class="form-control mb-3">
-                                    <img src="{{ asset('storage/' . $notification->image) }}" alt="notification Image" style="width: 70px; height: auto;">
-                                    @if ($errors->has('image'))
-                                        <div class="text-danger">{{ $errors->first('image') }}</div>
-                                    @endif
-
-                                        </div>
-                                       <button type="submit" class="btn btn-primary">Update notification</button>
+                                        <label class="form-label">Title:</label>
+                                        <input type="text" name="title" class="form-control mb-3" placeholder="Enter notification title" value="{{ old('title', $notifications->title) }}">
+                                        @if ($errors->has('title'))
+                                            <div class="text-danger">{{ $errors->first('title') }}</div>
+                                        @endif
+                                
+                                        <label class="form-label">Content:</label>
+                                        <textarea name="content" class="form-control mb-3">{{ old('content', $notifications->content) }}</textarea>
+                                        @if ($errors->has('content'))
+                                            <div class="text-danger">{{ $errors->first('content') }}</div>
+                                        @endif
+                                
+                                        <label for="status">Status:</label>
+                                        <select name="status" id="status" class="form-select mb-2">
+                                            <option value="public" {{ old('status', $notifications->status) == 'public' ? 'selected' : '' }}>Public</option>
+                                            <option value="private" {{ old('status', $notifications->status) == 'private' ? 'selected' : '' }}>Private</option>
+                                        </select>
+                                        @if ($errors->has('status'))
+                                            <div class="text-danger">{{ $errors->first('status') }}</div>
+                                        @endif
+                                
+                                        <label for="type">Type:</label>
+                                        <select name="type" id="type" class="form-select mb-2">
+                                            <option value="website" {{ old('type', $notifications->type) == 'website' ? 'selected' : '' }}>Website</option>
+                                            <option value="user" {{ old('type', $notifications->type) == 'user' ? 'selected' : '' }}>User</option>
+                                            <option value="channel" {{ old('type', $notifications->type) == 'channel' ? 'selected' : '' }}>Channel</option>
+                                        </select>
+                                        @if ($errors->has('type'))
+                                            <div class="text-danger">{{ $errors->first('type') }}</div>
+                                        @endif
+                                
+                                        <label class="form-label">Image:</label>
+                                        <input type="file" name="image" class="form-control mb-3">
+                                        <img src="{{ asset('storage/' . $notifications->image) }}" alt="notification Image" style="width: 70px; height: auto;">
+                                        @if ($errors->has('image'))
+                                            <div class="text-danger">{{ $errors->first('image') }}</div>
+                                        @endif
+                                    </div>
+                                
+                                    <button type="submit" class="btn btn-primary">Update notification</button>
                                 </form>
+                                
 
                               
                             </div>

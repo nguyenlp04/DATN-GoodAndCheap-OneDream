@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+
 class NotificationController extends Controller
 {
     /**
@@ -57,7 +58,7 @@ class NotificationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $notifications = Notification::findOrFail($id);
         return view('admin.notifications.edit', compact('notifications'));
@@ -82,25 +83,6 @@ class NotificationController extends Controller
 
         return redirect()->route('notifications.index')->with('success', 'Notification updated successfully');
     }
-    // public function updateStatus(Request $request, $id)
-    // {
-    //     $notification = Notification::findOrFail($id);
-    //     $notification->status = $request->input('status');
-    //     $notification->save();
-
-    //     return redirect()->back()->with('success', 'Status updated successfully');
-    // }
-
-    // public function updateType(Request $request, $id)
-    // {
-    //     $notification = Notification::findOrFail($id);
-    //     $notification->type = $request->input('type');
-    //     $notification->save();
-
-    //     return redirect()->back()->with('success', 'Type updated successfully');
-    // }
-
-
     /**
      * Remove the specified resource from storage.
      */
@@ -115,23 +97,33 @@ class NotificationController extends Controller
 
         return redirect()->route('notifications.index')->with('success', 'Notification deleted successfully');
     }
-
-    public function toggleStatus($id)
+    public function trashed()
     {
-        // Lấy ID người dùng hiện tại
-        $userId = Auth::id();
+        $notifications = Notification::onlyTrashed()->get();
+        return view('admin.notifications.trashed', compact('notifications'));
+    }
 
-        // Tìm bài viết bằng ID
-        $notifications = Notification::findOrFail($id);
+    public function restore($id)
+    {
+        $notifications =  Notification::withTrashed()->findOrFail($id);
+        $notifications->restore();
+        return redirect()->route('notifications.index')->with('success', 'notifications restored successfully');
+    }
+    public function forceDelete($id)
+    {
+        $notifications = Notification::onlyTrashed()->findOrFail($id);
+        $notifications->forceDelete();
+        return redirect()->route('notifications.index')->with('success', 'Notification deleted permanently successfully');
+    }
 
-        // Chuyển đổi trạng thái (1: Hiện, 0: Ẩn)
-        $notifications->status = $notifications->status == 1 ? 0 : 1;
-        $notifications->save();
-
-        // Trả về phản hồi JSON với trạng thái mới
+    public function toggleStatus(Request $request, $id)
+    {
+        $notification = Notification::findOrFail($id);
+        $notification->status = $notification->status === "public" ? "private" : "public";
+        $notification->save();
         return response()->json([
-            'status' => $notifications->status,
-            'message' => 'Trạng thái bài viết đã được cập nhật thành công.',
+            'status' => $notification->status,
+            'message' => 'Trạng thái thông báo đã được cập nhật thành công.',
         ]);
     }
 }

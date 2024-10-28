@@ -111,12 +111,6 @@ Route::prefix('account')->group(function () {
 
 
 
-Route::resource('notifications', NotificationController::class);
-Route::get('notifications/create', [NotificationController::class, 'create'])->name('notifications.create');
-Route::get('notifications/edit/{id}/', [NotificationController::class, 'edit']);
-Route::get('notifications/trash', [NotificationController::class, 'trash']);
-Route::post('/notifications/{id}/update-status', [NotificationController::class, 'updateStatus'])->name('notifications.updateStatus');
-Route::post('/notifications/{id}/update-type', [NotificationController::class, 'updateType'])->name('notifications.updateType');
 
 use App\Http\Controllers\Admin\OrderController;
 
@@ -132,6 +126,9 @@ Route::prefix('payment')->group(function () {
     });
 });
 
+
+
+// --- Hieu truong partner routes --------------------------------
 use App\Http\Controllers\Partner\ChannelController as PartnerChannelController;
 use App\Http\Controllers\Partner\ProductController as PartnerProductController;
 use App\Http\Controllers\Partner\OrderController as PartnerOrderController;
@@ -143,3 +140,17 @@ Route::prefix('partner')->group(function () {
     Route::resource('orders', PartnerOrderController::class);
     Route::resource('profile', PartnerProfileController::class);
 });
+
+// -- notifications routes --------------------------------
+Route::prefix('notifications')->name('notifications.')->group(function () {
+    Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có route cho nó
+    Route::get('/create', [NotificationController::class, 'create'])->name('create');
+    Route::get('/edit/{id}', [NotificationController::class, 'edit'])->name('edit');
+    Route::get('/trashed', [NotificationController::class, 'trashed'])->name('trashed');
+    Route::delete('/destroy/{id}', [NotificationController::class, 'destroy'])->name('destroy');
+    Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
+    Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
+    Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
+});
+
+// -- upgrage partnet routes --

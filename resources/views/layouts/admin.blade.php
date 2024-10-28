@@ -269,16 +269,17 @@
                           <div data-i18n="Add notifications">Add notifications</div>
                       </a>
                   </li>
-                  <li class="menu-item {{ Request::is('notifications/edit ') ? 'active' : '' }}">
-                    <a href="{{ url('notifications/edit') }}" class="menu-link">
-                        <div data-i18n="edit notifications">Edit notifications</div>
+                
+                  <li class="menu-item {{ Request::is ('notifications/trashed') ? 'active' : '' }}">
+                    <a href="{{ url('/notifications/trashed') }}" class="menu-link">
+                        <div data-i18n="Trash notifications">Trash notifications</div>
                     </a>
+
                 </li>
-                <li class="menu-item {{ Request::is('notifications/trash ') ? 'active' : '' }}">
-                  <a href="{{ url('notifications/trash') }}" class="menu-link">
-                      <div data-i18n="trash notifications">Trash notifications</div>
-                  </a>
-              </li>
+                
+                
+                
+              
                  
               </ul>
 

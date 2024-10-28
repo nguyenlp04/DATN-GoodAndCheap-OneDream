@@ -3,7 +3,6 @@
 <!-- Layout container -->
 <div class="layout-page">
   <!-- Navbar -->
-
   <nav
     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
     id="layout-navbar">
@@ -14,7 +13,6 @@
     </div>
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-      <!-- Search -->
       <div class="navbar-nav align-items-center">
         <div class="nav-item d-flex align-items-center">
           <i class="bx bx-search fs-4 lh-0"></i>
@@ -25,13 +23,7 @@
             aria-label="Search..." />
         </div>
       </div>
-      <!-- /Search -->
-
       <ul class="navbar-nav flex-row align-items-center ms-auto">
-        <!-- Place this tag where you want the button to render. -->
-
-
-        <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
           <a class="nav-link dropdown-toggle hide-arrow" href="{{ url("javascript:void(0);") }}" data-bs-toggle="dropdown">
             <div class="avatar avatar-online">
@@ -89,7 +81,6 @@
             </li>
           </ul>
         </li>
-        <!--/ User -->
       </ul>
     </div>
   </nav>
@@ -99,111 +90,90 @@
   <!-- Content wrapper -->
   <div class="content-wrapper">
     <!-- Content -->
-
     <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
-
-
       <div class="app-ecommerce" data-select2-id="21">
-
         <!-- Add notifications -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
-
           <div class="d-flex flex-column justify-content-center">
-            <h4 class="mb-1">notifications</h4>
+            <h4 class="mb-1">Notifications</h4>
           </div>
-
         </div>
        
         <div class="row" data-select2-id="20">
-
           <!-- First column-->
           <div class="col-12 col-lg-12">
-            <!-- notifications Information -->
+            <!-- Notifications Information -->
             <div class="card mb-6">
               <div class="card-body">
-                <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-              <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css"> -->
+                <table id="example" class="table table-striped" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Image</th>
+                      <th class="px-1">Start date</th>
+                      <th class="px-1">Update date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($notifications as $notification)
+                      <tr>
+                          <td>{{ Str::limit($notification->title, 50) }}</td>
+                          <td><img src="{{ asset('storage/' . $notification->image) }}" alt="Notification Image" style="width: 70px;"></td>
+                          <td>{{ $notification->created_at->format('Y-m-d') }}</td>
+                          <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
+                          <td class="d-flex align-items-center">
+                            <form action="{{ route('notifications.restore', $notification->id_notifications) }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning me-2" title="Restore">
+                                    <i class="fas fa-trash-restore"></i>
+                                </button>
+                            </form>
+                            <form action="{{ route('notifications.forceDelete', $notification->id_notifications) }}" method="POST" onsubmit="return confirmDelete()" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" title="Delete Permanently">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                          </td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>Title</th>
+                      <th>Image</th>
+                      <th class="px-1">Start date</th>
+                      <th class="px-1">Update date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </tfoot>
+                </table>
 
-            
-              <table id="example" class="table table-striped" style="width:100%">
-                <thead>
-                  <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Title</th>
-                    <th>Image</th>
-                    <th class="px-1">Start date</th>
-                    <th class="px-1">Update date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                   
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($notifications as $notification)
-            <tr>
-                <td>{{ Str::limit($notification->title, 50) }}</td>
-                <td><img src="{{ asset('storage/' . $notification->image) }}" alt="Notification Image" style="width: 70px;"></td>
-                <td>{{ $notification->created_at->format('Y-m-d') }}</td>
-                <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
-                <td>
-                  <button type="button" class="btn btn-sm {{ $notification->status == 'public' ? 'btn-primary' : 'btn-secondary' }}" data-id="{{ $notification->id_notifications }}" onclick="toggleStatus(this)">
-                      <i class="fas {{ $notification->status == 'public' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
-                      <span>{{ $notification->status == 'public' ? 'Public' : 'Private' }}</span>
-                  </button>
-              </td>
-                <td class="d-flex align-items-center">
-                  <a href="{{ route('notifications.edit', $notification->id_notifications) }}" class="btn btn-warning me-2">
-                      <i class="fas fa-edit"></i>
-                  </a>
-                  <form action="{{ route('notifications.destroy', $notification->id_notifications) }}" method="POST" class="d-inline">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-danger">
-                          <i class="fas fa-trash"></i>
-                      </button>
-                  </form>
-              </td>
-              
-            </tr>
-            @endforeach
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Title</th>
-                    <th>Image</th> <!-- Khớp với thead -->
-                    <th class="px-1">Start date</th>
-                    <th class="px-1">Update date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                    
-                  </tr>
-                </tfoot>
-              </table>
+                <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      @if(session('success'))
+                          Swal.fire({
+                              position: 'top-end',
+                              icon: 'success',
+                              title: '{{ session('success') }}',
+                              showConfirmButton: false,
+                              timer: 1500
+                          });
+                      @endif
 
-                 <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    @if(session('success'))
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: '{{ session('success') }}',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    @endif
-
-                    @if(session('error'))
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: '{{ session('error') }}',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    @endif
-                });
-            </script>
+                      @if(session('error'))
+                          Swal.fire({
+                              position: 'top-end',
+                              icon: 'error',
+                              title: '{{ session('error') }}',
+                              showConfirmButton: false,
+                              timer: 1500
+                          });
+                      @endif
+                  });
+                </script>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
                 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
@@ -212,26 +182,29 @@
                   new DataTable('#example');
                 </script>
                
-              <script>
-                function toggleStatus(button) {
-                    const notificationId = $(button).data('id');
-                    
-                    $.ajax({
-                        url: `/notifications/toggleStatus/${notificationId}`,
-                        type: 'PATCH',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            Swal.fire(response.message, '', response.status === "public" ? 'success' : 'warning');
-                            location.reload(); // Refresh để cập nhật lại trạng thái
-                        },
-                        error: function() {
-                            Swal.fire('Error', 'Unable to toggle status', 'error');
-                        }
-                    });
-                }
-            </script>
+                <script>
+                  function toggleStatus(button) {
+                      const notificationId = $(button).data('id');
+                      
+                      $.ajax({
+                          url: `/notifications/toggleStatus/${notificationId}`,
+                          type: 'PATCH',
+                          data: {
+                              _token: '{{ csrf_token() }}'
+                          },
+                          success: function(response) {
+                              Swal.fire(response.message, '', response.status === "public" ? 'success' : 'warning');
+                              location.reload(); // Refresh để cập nhật lại trạng thái
+                          },
+                          error: function() {
+                              Swal.fire('Error', 'Unable to toggle status', 'error');
+                          }
+                      });
+                  }
+                  function confirmDelete() {
+        return confirm('Are you sure you want to delete this notification?');
+    }
+                </script>
               </div>
             </div>
           </div>
@@ -252,13 +225,10 @@
           , made with ❤️ by
           <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
         </div>
-
       </div>
     </footer>
     <!-- / Footer -->
-
-    <div class="content-backdrop fade"></div>
   </div>
-  <!-- Content wrapper -->
+  <!-- / Content wrapper -->
 </div>
 @endsection

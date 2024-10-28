@@ -24,9 +24,9 @@ class Notification extends FormRequest
         return [
             'title' => ['required', 'string'],
             'content' => ['required', 'string'],
-            'image' => ['required', 'image', 'mimes:png'],
-            // 'type' => ['required', 'string'],
-            // 'status' => ['required', 'boolean'],
+            'image' => ['required', 'image', 'mimes:jpeg,jpg,png,gif,svg'],
+            'type' => ['nullable', 'string'],
+            'status' => ['nullable', 'string'],
         ];
     }
 
@@ -41,8 +41,6 @@ class Notification extends FormRequest
             'title.required' => 'Please enter the notification title.',
             'content.required' => 'Please enter the notification content.',
             'image.required' => 'Please provide an image for the notification.',
-            // 'type.required' => 'Please select a notification type.',
-            // 'status.required' => 'Please specify the status of the notification.',
         ];
     }
 }
