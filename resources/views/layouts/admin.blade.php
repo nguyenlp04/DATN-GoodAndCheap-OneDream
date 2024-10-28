@@ -253,15 +253,37 @@
 
 
             </li>
+            <li class="menu-item {{ Request::is('notifications') ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bxl-blogger"></i>
+                  <div data-i18n="Analytics">Notifications </div>
+              </a>
+              <ul class="menu-sub">
+                  <li class="menu-item {{ Request::is('notifications') ? 'active' : '' }}">
+                      <a href="{{ url('notifications') }}" class="menu-link">
+                          <div data-i18n="Notifications">Notifications List</div>
+                      </a>
+                  </li>
+                  <li class="menu-item {{ Request::is('notifications/create ') ? 'active' : '' }}">
+                      <a href="{{ url('notifications/create') }}" class="menu-link">
+                          <div data-i18n="Add notifications">Add notifications</div>
+                      </a>
+                  </li>
+                  <li class="menu-item {{ Request::is('notifications/edit ') ? 'active' : '' }}">
+                    <a href="{{ url('notifications/edit') }}" class="menu-link">
+                        <div data-i18n="edit notifications">Edit notifications</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ Request::is('notifications/trash ') ? 'active' : '' }}">
+                  <a href="{{ url('notifications/trash') }}" class="menu-link">
+                      <div data-i18n="trash notifications">Trash notifications</div>
+                  </a>
+              </li>
+                 
+              </ul>
 
-            <!-- Notification -->
-            <li class="menu-item {{ Request::is('notifications') ? 'active' : '' }}">
-                <a href="{{ url('notifications') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-bell"></i>
-                    <div data-i18n="Analytics">Notification</div>
-                </a>
-            </li>
 
+          </li>
             <!-- Order Management (Affiliate) -->
             <li class="menu-item {{ Request::is('order-affiliate') ? 'active' : '' }}">
                 <a href="{{ url('order-affiliate') }}" class="menu-link">

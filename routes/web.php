@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
@@ -32,22 +33,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/sale_news', [SaleNewsController::class, 'index'])->name('sale_news');
     //router blogs
 
-route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
-route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
-Route::resource('admin/blogs', BlogController::class);
-Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
-Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+    route::get('admin/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
+    route::get('admin/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
+    Route::resource('admin/blogs', BlogController::class);
+    Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+    Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
 
 
-Route::get('/notifications', function () {
-    return view('admin.notifications.index');
-});
+    Route::get('/notifications', function () {
+        return view('admin.notifications.index');
+    });
 });
 
 require __DIR__ . '/auth.php';
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StaffController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
@@ -108,9 +110,13 @@ Route::prefix('account')->group(function () {
 
 
 
-Route::get('/notifications', function () {
-    return view('admin.notifications.index');
-});
+
+Route::resource('notifications', NotificationController::class);
+Route::get('notifications/create', [NotificationController::class, 'create'])->name('notifications.create');
+Route::get('notifications/edit/{id}/', [NotificationController::class, 'edit']);
+Route::get('notifications/trash', [NotificationController::class, 'trash']);
+Route::post('/notifications/{id}/update-status', [NotificationController::class, 'updateStatus'])->name('notifications.updateStatus');
+Route::post('/notifications/{id}/update-type', [NotificationController::class, 'updateType'])->name('notifications.updateType');
 
 use App\Http\Controllers\Admin\OrderController;
 
@@ -126,4 +132,14 @@ Route::prefix('payment')->group(function () {
     });
 });
 
+use App\Http\Controllers\Partner\ChannelController as PartnerChannelController;
+use App\Http\Controllers\Partner\ProductController as PartnerProductController;
+use App\Http\Controllers\Partner\OrderController as PartnerOrderController;
+use App\Http\Controllers\Partner\PartnerProfileController as PartnerProfileController;
 
+Route::prefix('partner')->group(function () {
+    Route::resource('channels', PartnerChannelController::class);
+    Route::resource('products', PartnerProductController::class);
+    Route::resource('orders', PartnerOrderController::class);
+    Route::resource('profile', PartnerProfileController::class);
+});
