@@ -15,7 +15,8 @@ class ImageUploadController extends Controller
             $filePath = '/image/category/' . $fileName; 
 
             $path = Storage::disk('blackblaze')->put(basename($filePath), file_get_contents($fileName), 'private');
-            dd($path);
+            $url = Storage::disk('blackblaze')->url(basename($filePath));
+            dd($url,2);
         } catch (\Exception $ex) {
             dd($ex);
         }

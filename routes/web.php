@@ -69,26 +69,32 @@ Route::get('/dashboard', function () {
 
 // Grouped routes for products
 Route::prefix('product')->group(function () {
-    Route::get('/', function () {
-        return view('admin.products.index');
-    });
-    // Route::get('/add', function () {
-    //     return view('admin.products.add-product');
-    // });
+    Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
 
-    Route::get('/add', [ProductController::class, 'create']);
+    // Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products.index');
+
     
+    Route::get('/add', function () {
+        return view('admin.products.add-product');
+    });
+
+    Route::post('/add', [ProductController::class, 'store'])->name('add.product');
+    Route::get('/add', [ProductController::class, 'create'])->name('products.create');
 
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
+
+    // Route::post('/save-variants', [ProductController::class, 'saveVariants'])->name('save.variants');
+
 });
+
+
 
 
 Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSubcategories']);
 
-Route::get('/products/add-product', [ProductController::class, 'create'])->name('products.create');
-Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+// Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 
 
 // Grouped routes for categoris
