@@ -1,206 +1,52 @@
 @extends('layouts.client_layout')
 @section('content')
 
-<style type="text/css">
-    body {
-        margin-top: 20px;
-    }
-
-    .chat-online {
-        color: #34ce57;
-    }
-
-    .chat-offline {
-        color: #e4606d;
-    }
-
-    .chat-messages,
-    .list-user-mess {
-        display: flex;
-        flex-direction: column;
-        max-height: 400px;
-        overflow-y: auto;
-        padding: 10px;
-    }
-
-    .list-user-mess {
-        overflow-y: auto;
-    }
-
-    .chat-message-left,
-    .chat-message-right {
-        display: flex;
-        flex-shrink: 0;
-    }
-
-    .chat-message-left {
-        margin-right: auto;
-    }
-
-    .chat-message-right {
-        flex-direction: row-reverse;
-        margin-left: auto;
-    }
-
-    .py-3 {
-        padding-top: 1rem !important;
-        padding-bottom: 1rem !important;
-    }
-
-    .px-4 {
-        padding-right: 1.5rem !important;
-        padding-left: 1.5rem !important;
-    }
-
-    .flex-grow-0 {
-        flex-grow: 0 !important;
-    }
-
-    .border-top {
-        border-top: 1px solid #dee2e6 !important;
-    }
-</style>
-
+<link rel="stylesheet" href="{{ asset('message/css.css') }}">
+    @php
+        $loggedIn_userId = auth()->user()->user_id;
+        $loggedIn_userName = auth()->user()->full_name;
+    @endphp
 <main class="content-message">
     <div class="container p-0">
         <h1 class="h3 m-3">Messages</h1>
         <div class="card">
             <div class="row g-0">
-                <div class="col-12 col-lg-5 col-xl-3 border-right">
+                <div class="col-12 col-lg-5 col-xl-3 border-right" >
 
-                    <div class="px-4 d-none d-md-block">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <input type="text" class="form-control my-3" placeholder="Search...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-user-mess">
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="badge bg-success float-right">5</div>
+
+                    <div  id="conversations" class="list-user-mess  d-md-block"  >
+
+                        @foreach ($data as $item )
+                        <a    class="list-group-item list-group-item-action border-0  user-item"  data-id="{{$item['user']->user_id}}" data-name="{{$item['user']->full_name}}">
                             <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1" alt="Vanessa Tucker" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Vanessa Tucker
-                                    <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="badge bg-success float-right">2</div>
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mr-1" alt="William Harris" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    William Harris
-                                    <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Sharon Lessman
-                                    <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="rounded-circle mr-1" alt="Christina Mason" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Christina Mason
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1" alt="Fiona Green" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Fiona Green
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mr-1" alt="Doris Wilder" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Doris Wilder
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar4.png" class="rounded-circle mr-1" alt="Haley Kennedy" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Haley Kennedy
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
+                                @if ($item['user']->image_user == null)
                                 <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
+                                @else
+                                <img src="{{ asset($item['user']->image_user) }}" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
+                                @endif
                                 <div class="flex-grow-1 ml-3">
-                                    Jennifer Chang
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
+                                    {{ $item['user']->full_name }}
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Jennifer Chang
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                                </div>
-                            </div>
-                        </a><a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Jennifer Chang
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                                </div>
-                            </div>
-                        </a><a href="#" class="list-group-item list-group-item-action border-0">
-                            <div class="d-flex align-items-start">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
-                                <div class="flex-grow-1 ml-3">
-                                    Jennifer Chang
-                                    <div class="small"><span class="fas fa-circle chat-offline"></span> Offline</div>
-                                </div>
-                            </div>
-                        </a>
+                        @endforeach
                     </div>
                     <hr class="d-block d-lg-none mt-1 mb-0">
                 </div>
                 <div class="col-12 col-lg-7 col-xl-9">
-                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                    <div id="border-bottom" class="py-2 px-4 d-lg-block">
                         <div class="d-flex align-items-center py-1">
-                            <div class="position-relative">
+
+                            <div class="position-relative d-none" id="recipientimgContainer"   >
                                 <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
                             </div>
-                            <div class="flex-grow-1 pl-3">
-                                <strong>Sharon Lessman</strong>
-                                <div class="text-muted small"><em>Typing...</em></div>
+                            <div class="flex-grow-1 pl-3 d-none" id="recipientNameContainer"  >
+                                <strong id="recipient-name-display"></strong>
+                                {{-- <div class="text-muted small"><em>Typing...</em></div> --}}
                             </div>
+
                             <div>
-                                <button class="btn btn-primary btn-lg mr-1 px-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone feather-lg">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                    </svg>
-                                </button>
-                                <button class="btn btn-info btn-lg mr-1 px-3 d-none d-md-inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video feather-lg">
-                                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                                    </svg>
-                                </button>
-                                <button class="btn btn-light border btn-lg px-3">
+                                <button id="togglecvn" class="btn btn-light border btn-lg px-3 d-lg-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal feather-lg">
                                         <circle cx="12" cy="12" r="1"></circle>
                                         <circle cx="19" cy="12" r="1"></circle>
@@ -211,135 +57,14 @@
                         </div>
                     </div>
                     <div class="position-relative">
-                        <div class="chat-messages p-4">
-                            <div class="chat-message-right pb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:33 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                    <div class="font-weight-bold mb-1">You</div>
-                                    Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-                                </div>
-                            </div>
-                            <div class="chat-message-left pb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                    <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                                    Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-                                </div>
-                            </div>
-                            <div class="chat-message-right mb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:35 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                    <div class="font-weight-bold mb-1">You</div>
-                                    Cum ea graeci tractatos.
-                                </div>
-                            </div>
-                            <div class="chat-message-left pb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:36 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                    <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                                    Sed pulvinar, massa vitae interdum pulvinar, risus lectus porttitor magna, vitae commodo lectus mauris et velit.
-                                    Proin ultricies placerat imperdiet. Morbi varius quam ac venenatis tempus.
-                                </div>
-                            </div>
-                            <div class="chat-message-left pb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:37 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                    <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                                    Cras pulvinar, sapien id vehicula aliquet, diam velit elementum orci.
-                                </div>
-                            </div>
-                            <div class="chat-message-right mb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:38 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                    <div class="font-weight-bold mb-1">You</div>
-                                    Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-                                </div>
-                            </div>
-                            <div class="chat-message-left pb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:39 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                    <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                                    Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-                                </div>
-                            </div>
-                            <div class="chat-message-right mb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:40 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                    <div class="font-weight-bold mb-1">You</div>
-                                    Cum ea graeci tractatos.
-                                </div>
-                            </div>
-                            <div class="chat-message-right mb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:41 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                    <div class="font-weight-bold mb-1">You</div>
-                                    Morbi finibus, lorem id placerat ullamcorper, nunc enim ultrices massa, id dignissim metus urna eget purus.
-                                </div>
-                            </div>
-                            <div class="chat-message-left pb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:42 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                    <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                                    Sed pulvinar, massa vitae interdum pulvinar, risus lectus porttitor magna, vitae commodo lectus mauris et velit.
-                                    Proin ultricies placerat imperdiet. Morbi varius quam ac venenatis tempus.
-                                </div>
-                            </div>
-                            <div class="chat-message-right mb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:43 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                    <div class="font-weight-bold mb-1">You</div>
-                                    Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-                                </div>
-                            </div>
-                            <div class="chat-message-left pb-4">
-                                <div>
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                                    <div class="text-muted small text-nowrap mt-2">2:44 am</div>
-                                </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                    <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                                    Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-                                </div>
-                            </div>
+                        <div id="chat-container" class="chat-messages p-4" style="min-height: 380px;">
+                            <h3 class="text-center content-cente"> You haven't selected any conversations yet</h3>
                         </div>
                     </div>
-                    <div class="flex-grow-0 py-3 px-4 border-top">
+                    <div id="showinput" class="flex-grow-0 py-3 px-4 border-top d-none" >
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Type your message">
-                            <button class="btn btn-primary">Send</button>
+                            <input type="text" class="form-control" style="margin: 8.6px;" id="msg-input" onkeypress="checkEnter(event)" >
+                            <button  onclick="sendMessage(currentChannel)" class="btn btn-primary">Send</button>
                         </div>
                     </div>
                 </div>
@@ -347,4 +72,225 @@
         </div>
     </div>
 </main>
+
+<script>
+    document.getElementById('togglecvn').addEventListener('click', function() {
+        var myDiv = document.getElementById('conversations');
+        myDiv.classList.toggle('d-none');
+    });
+</script>
+
+
+
+<script>
+     function checkEnter(event) {
+        if (event.key === 'Enter') {
+            sendMessage(currentChannel);
+        }
+    }
+
+    var ably = new Ably.Realtime.Promise({
+        key: '4d5fHg.WXPepQ:AXXlxQ75Vq4OJgEfb_7IwwwzYTKJc_gZ5tSC9TM_Zs4'
+     });
+
+      var recipientId = null;
+      var currentChannel = null;
+      var recipientName = null;
+      var login_userId = '<?php echo $loggedIn_userId; ?>';
+      // console.log(login_userId);
+      var UserList = $('#conversations');
+    //   var v =document.getElementById('v1');
+
+      UserList.on('click', 'a', function() {
+          recipientId = $(this).attr('data-id');
+          recipientName = $(this).attr('data-name');
+          $('#recipient-name-display').text(recipientName);
+          $('#recipientNameContainer').removeClass('d-none');
+          $('#recipientimgContainer').removeClass('d-none');
+          $('#showinput').removeClass('d-none');
+          $('#border-bottom').addClass('border-bottom');
+          UserList.find('a').removeClass('selected-user');  // Remove from all anchors
+            $(this).addClass('selected-user');  // Add to the clicked anchor
+
+            console.log('Recipient ID: ', recipientId);
+            console.log('Recipient Name: ', recipientName);
+
+
+
+          $.ajax({
+              url: "{{ route('message.checkconversations') }}",
+              method: 'GET',
+              data: { recipientId: recipientId },
+              success: function(response) {
+                  if (response.channelExists) {
+                      subscribeToChannel(response.channelName);
+
+
+                  } else {
+                      createNewChannel(recipientId);
+
+
+                  }
+              },
+              error: function(xhr, status, error) { console.error(error); }
+          });
+      });
+
+      function sendMessage(currentChannel) {
+          var messageInput = document.getElementById('msg-input');
+          var message = messageInput.value.trim();
+
+          if (message !== '') {
+              $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var baseUrl = '{{ route('message.savemessage',['namechannel'=>':namechannel']) }}';
+               var fullUrl = baseUrl.replace(':namechannel',currentChannel.name);
+
+    $.ajax({
+        url: `${fullUrl}`,
+        method: 'POST',
+        data: {
+            conversation_name: currentChannel.name,
+            message_person: login_userId,
+            data: message
+        },
+        success: function(response) {
+            if (response.success) {
+                currentChannel.publish(currentChannel.name, { text: message, sender: 'local' });
+                messageInput.value = '';
+
+
+
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', xhr.responseText);
+        }
+    });
+    }
+
+      }
+
+
+
+
+      function subscribeToChannel(channelName) {
+        localStorage.setItem('channelName', channelName);
+          if (currentChannel) {
+              currentChannel.unsubscribe();
+          }
+          currentChannel = ably.channels.get(channelName);
+
+        var baseUrl = '{{ route('message.getmessage',['name'=>':channelName']) }}';
+        var fullUrl = baseUrl.replace(':channelName',channelName);
+
+          $.ajax({
+              url:  `${fullUrl}`,
+              method: 'GET',
+
+              success: function(response) {
+
+                  if(response.getmessExists){
+
+                  response.messages.forEach((msg) => {
+                      oldMessage(msg, recipientName);
+                      console.log(msg.message_person );
+
+                  });
+                  }else{
+                  console.log(5);
+
+                  }
+
+              }
+          });
+
+          currentChannel.subscribe(function(message) {
+              displayMessage(message, recipientName);
+          });
+          $('#chat-container').html('');
+
+      }
+
+      function createNewChannel(recipientId) {
+
+      $.ajax({
+          url: '{{ route('message.createconversations') }}',
+          method: 'GET',
+          data: { recipientId: recipientId },
+          success: function (response) {
+              if(response.success == true)
+
+              subscribeToChannel(response.channelName);
+              else
+              console.log(response.error);
+          },
+
+      });
+  }
+
+      function displayMessage(messageObject, recipientName) {
+        var isLocalSender = messageObject.connectionId == ably.connection.id;
+
+          const chatContainer = $('#chat-container');
+
+            const message1 =` <div class="chat-message-right mb-4">
+                                <div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+
+                                    ${messageObject.data.text}.
+                                </div>
+                            </div>`
+
+
+
+          const message2=` <div class="chat-message-left pb-4">
+                                <div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+
+                                   ${messageObject.data.text}
+                                </div>
+                            </div>`
+
+          chatContainer.append(isLocalSender ? message1 : message2);
+          chatContainer.scrollTop(chatContainer[0].scrollHeight);
+      }
+
+      function oldMessage(messageObject, recipientName) {
+          var isLocalSender = messageObject.message_person == login_userId ;
+          const chatContainer = $('#chat-container');
+
+          const message2 =` <div class="chat-message-right mb-4">
+                                <div>
+                                    <div class="text-muted small text-nowrap mt-2">  ${new Date(messageObject.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+
+                                    ${messageObject.data}
+                                </div>
+                            </div>`
+
+
+
+          const message1=` <div class="chat-message-left pb-4">
+                                <div>
+
+                                    <div class="text-muted small text-nowrap mt-2"> ${new Date(messageObject.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+
+                                   ${messageObject.data}
+                                </div>
+                            </div>`
+
+          chatContainer.append(isLocalSender ? message2 : message1);
+          chatContainer.scrollTop(chatContainer[0].scrollHeight);
+
+      }
+  </script>
 @endsection

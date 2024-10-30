@@ -8,9 +8,10 @@ use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\StaffController;
-use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
@@ -146,7 +147,9 @@ Route::prefix('payment')->group(function () {
 
 
 Route::prefix('message')->group(function () {
-    Route::get('/', function () {
-        return view('message.message');
-    });
-});
+    Route::get('/conversations',[ConversationController::class,'loadConversations'] )->name('message.conversations');
+    Route::get('/check-conversations',[ConversationController::class,'CheckConversation'] )->name('message.checkconversations');
+    Route::get('/create-conversations',[ConversationController::class,'CreateConversation'])->name('message.createconversations');
+    Route::post('/save-message/{namechannel}', [MessageController::class, 'store'])->name('message.savemessage');
+    Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
+})->middleware(['auth', 'verified']);
