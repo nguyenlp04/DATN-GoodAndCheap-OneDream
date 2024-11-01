@@ -132,9 +132,11 @@ Route::prefix('payment')->group(function () {
 use App\Http\Controllers\Partner\ChannelController as PartnerChannelController;
 use App\Http\Controllers\Partner\ProductController as PartnerProductController;
 use App\Http\Controllers\Partner\OrderController as PartnerOrderController;
+use App\Http\Controllers\Partner\PartnerController;
 use App\Http\Controllers\Partner\PartnerProfileController as PartnerProfileController;
 
 Route::prefix('partner')->group(function () {
+    Route::resource('partner', PartnerController::class);
     Route::resource('channels', PartnerChannelController::class);
     Route::resource('products', PartnerProductController::class);
     Route::resource('orders', PartnerOrderController::class);
@@ -154,3 +156,10 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
 });
 
 // -- upgrage partnet routes --
+
+Route::get('partner/product/', function () {
+    return view('partner/products/index');
+});
+Route::get('partner/product/add', function () {
+    return view('partner/products/create');
+});
