@@ -25,7 +25,13 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="{{ asset('assets/images/icons/browserconfig.xml') }}">
     <meta name="theme-color" content="#ffffff">
+    <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <!-- Các thẻ meta khác của bạn -->
+    </head>
 
+    <script src="https://cdn.ably.com/lib/ably.min-1.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
