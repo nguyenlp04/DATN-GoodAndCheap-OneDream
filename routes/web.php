@@ -42,7 +42,7 @@ route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.upd
 Route::resource('admin/blogs', BlogController::class);
 Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
 Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
-Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
+
 
 
 
@@ -60,7 +60,7 @@ Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('
 Route::post('/verify', [VerificationController::class, 'verify'])->name('verification.verify');
 
 
-
+Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
 // Route::get('/test', function () {
 //     return view('test');
 // });
