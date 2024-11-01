@@ -24,7 +24,7 @@ class Notification extends FormRequest
         return [
             'title' => ['required', 'string'],
             'content' => ['required', 'string'],
-            'image' => ['required', 'image', 'mimes:jpeg,jpg,png,gif,svg'],
+            'image' => ['image', 'mimes:jpeg,jpg,png,gif,svg'],
             'type' => ['nullable', 'string'],
             'status' => ['nullable', 'string'],
         ];

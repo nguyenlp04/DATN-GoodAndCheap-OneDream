@@ -123,13 +123,13 @@
                           <td>{{ $notification->created_at->format('Y-m-d') }}</td>
                           <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
                           <td class="d-flex align-items-center">
-                            <form action="{{ route('notifications.restore', $notification->id_notifications) }}" method="POST" class="d-inline">
+                            <form action="{{ route('notifications.restore', $notification->notification_id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-warning me-2" title="Restore">
                                     <i class="fas fa-trash-restore"></i>
                                 </button>
                             </form>
-                            <form action="{{ route('notifications.forceDelete', $notification->id_notifications) }}" method="POST" onsubmit="return confirmDelete()" class="d-inline">
+                            <form action="{{ route('notifications.forceDelete', $notification->notification_id) }}" method="POST" onsubmit="return confirmDelete()" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger" title="Delete Permanently">

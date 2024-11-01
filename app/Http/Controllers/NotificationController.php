@@ -62,7 +62,7 @@ class NotificationController extends Controller
     {
         $notifications = Notification::findOrFail($id);
         return view('admin.notifications.edit', compact('notifications'));
-    }
+        }
 
     /**
      * Update the specified resource in storage.

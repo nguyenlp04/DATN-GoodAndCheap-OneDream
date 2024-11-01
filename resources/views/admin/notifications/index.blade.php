@@ -146,16 +146,16 @@
                 <td>{{ $notification->created_at->format('Y-m-d') }}</td>
                 <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
                 <td>
-                  <button type="button" id="bt-tb{{ $notification->id_notifications }}" class="btn btn-sm {{ $notification->status == 'public' ? 'btn-primary' : 'btn-secondary' }}" data-id="{{ $notification->id_notifications }}" onclick="toggleStatus(this)">
-                      <i id="bt-i{{ $notification->id_notifications }}" class="fas {{ $notification->status == 'public' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
-                      <span id="bt-sp{{ $notification->id_notifications }}">{{ $notification->status == 'public' ? 'Public' : 'Private' }}</span>
+                  <button type="button" id="bt-tb{{ $notification->notification_id }}" class="btn btn-sm {{ $notification->status == 'public' ? 'btn-primary' : 'btn-secondary' }}" data-id="{{ $notification->notification_id }}" onclick="toggleStatus(this)">
+                      <i id="bt-i{{ $notification->notification_id }}" class="fas {{ $notification->status == 'public' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                      <span id="bt-sp{{ $notification->notification_id }}">{{ $notification->status == 'public' ? 'Public' : 'Private' }}</span>
                   </button>
               </td>
                 <td class="d-flex align-items-center">
-                  <a href="{{ route('notifications.edit', $notification->id_notifications) }}" class="btn btn-warning me-2">
+                  <a href="{{ route('notifications.edit', $notification->notification_id) }}" class="btn btn-warning me-2">
                       <i class="fas fa-edit"></i>
                   </a>
-                  <form action="{{ route('notifications.destroy', $notification->id_notifications) }}" method="POST" class="d-inline">
+                  <form action="{{ route('notifications.destroy', $notification->notification_id) }}" method="POST" class="d-inline">
                       @csrf
                       @method('DELETE')
                       <button type="submit" class="btn btn-danger">

@@ -137,7 +137,7 @@
                                 @endif
 
                                 <!-- For sửa thêm notification -->
-                                <form action="{{ route('notifications.update', $notifications->id_notifications) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('notifications.update', $notifications->notification_id) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT') 
                                     <div class="mb-6">

@@ -112,9 +112,6 @@ Route::prefix('account')->group(function () {
 
 
 
-use App\Http\Controllers\Admin\OrderController;
-
-Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
@@ -129,17 +126,17 @@ Route::prefix('payment')->group(function () {
 
 
 // --- Hieu truong partner routes --------------------------------
-use App\Http\Controllers\Partner\ChannelController as PartnerChannelController;
-use App\Http\Controllers\Partner\ProductController as PartnerProductController;
-use App\Http\Controllers\Partner\OrderController as PartnerOrderController;
+use App\Http\Controllers\Partner\ChannelController;
+use App\Http\Controllers\Partner\ProductController;
+use App\Http\Controllers\Partner\OrderController;
 use App\Http\Controllers\Partner\PartnerController;
-use App\Http\Controllers\Partner\PartnerProfileController as PartnerProfileController;
+use App\Http\Controllers\Partner\PartnerProfileController;
 
 Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
-    Route::resource('channels', PartnerChannelController::class);
-    Route::resource('products', PartnerProductController::class);
-    Route::resource('orders', PartnerOrderController::class);
+    Route::resource('channels', ChannelController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class);
     Route::resource('profile', PartnerProfileController::class);
 });
 
@@ -148,6 +145,7 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có route cho nó
     Route::get('/create', [NotificationController::class, 'create'])->name('create');
     Route::get('/edit/{id}', [NotificationController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update');
     Route::get('/trashed', [NotificationController::class, 'trashed'])->name('trashed');
     Route::delete('/destroy/{id}', [NotificationController::class, 'destroy'])->name('destroy');
     Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
@@ -156,7 +154,7 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
 });
 
 // -- upgrage partnet routes --
-
+Route::get('partner/order', [OrderController::class, 'index']);
 Route::get('partner/product/', function () {
     return view('partner/products/index');
 });

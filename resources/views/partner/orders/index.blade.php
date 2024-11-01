@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('partner.layouts.dashboard')
 @section('content')
 <script src="https://kit.fontawesome.com/aa64dc9752.js" crossorigin="anonymous"></script>
 <!-- Layout container -->

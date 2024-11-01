@@ -190,10 +190,10 @@
             <!-- Account Management -->
             
             <!-- Order Management (Affiliate) -->
-            <li class="menu-item {{ Request::is('order-affiliate') ? 'active' : '' }}">
-                <a href="{{ url('order-affiliate') }}" class="menu-link">
+            <li class="menu-item {{ Request::is('partner/order') ? 'active' : '' }}">
+                <a href="{{ url('partner/order') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-package"></i>
-                    <div data-i18n="Analytics">Order (Affiliate)</div>
+                    <div data-i18n="Analytics">Order </div>
                 </a>
             </li>
 
