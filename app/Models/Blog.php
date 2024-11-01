@@ -17,4 +17,9 @@ class Blog extends Model
         'image',
         'short_description',
     ];
+    public function staff()
+{
+    return $this->belongsTo(Staff::class, 'staff_id', 'staff_id');
+}
+
 }

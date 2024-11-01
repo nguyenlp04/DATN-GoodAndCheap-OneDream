@@ -16,9 +16,11 @@ class BlogController extends Controller
     }
 
     public function listing()
-    {
+    {  $topBlogs = Blog::orderBy('views', 'desc') // Sắp xếp theo số lượt xem giảm dần
+        ->take(5) // Lấy 5 bài viết có views cao nhất
+        ->get();
         $blogs = Blog::all(); // Lấy tất cả bài viết từ cơ sở dữ liệu
-        return view('blocks.blog.listting_blog', compact('blogs')); // Trả về view với danh sách blog
+        return view('blocks.blog.listting_blog', compact('blogs','topBlogs')); // Trả về view với danh sách blog
     }
 
     // Hiển thị form thêm bài viết
