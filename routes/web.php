@@ -1,7 +1,8 @@
 <?php
-
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaleNewsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -32,6 +33,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
+    // Route hiển thị chi tiết from đăng tin bán hàng
+    Route::get('/sale_news', [SaleNewsController::class, 'index'])->name('sale_news');
+    //router blogs
+
+route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
+route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
+Route::resource('admin/blogs', BlogController::class);
+Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
+
+
+
+Route::get('/notifications', function () {
+    return view('admin.notifications.index');
+});
 });
 
 require __DIR__ . '/auth.php';
@@ -112,15 +129,14 @@ Route::prefix('account')->group(function () {
 });
 
 
-Route::get('/blogs', function () {
-    return view('admin.blogs.index');
-});
+
 Route::get('/notifications', function () {
     return view('admin.notifications.index');
 });
-Route::get('/order-affiliate', function () {
-    return view('admin.orders.index');
-});
+
+use App\Http\Controllers\Admin\OrderController;
+
+Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
@@ -131,3 +147,5 @@ Route::prefix('payment')->group(function () {
         return view('admin.payments.receiving-account');
     });
 });
+
+

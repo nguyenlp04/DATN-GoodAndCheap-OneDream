@@ -186,10 +186,10 @@
                             </li>
 
                             <li>
-                                <a href="blog.html" class="sf-with-ul">Blog</a>
+                                <a href="{{ route('blogs.listting') }}" class="sf-with-ul">Blog</a>
 
                                 <ul>
-                                    <li><a href="blog.html">Classic</a></li>
+                                    <li><a href="/blog.html">Classic</a></li>
                             </li>
                         </ul>
                         </li>
