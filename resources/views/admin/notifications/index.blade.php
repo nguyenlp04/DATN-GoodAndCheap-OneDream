@@ -146,9 +146,9 @@
                 <td>{{ $notification->created_at->format('Y-m-d') }}</td>
                 <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
                 <td>
-                  <button type="button" class="btn btn-sm {{ $notification->status == 'public' ? 'btn-primary' : 'btn-secondary' }}" data-id="{{ $notification->id_notifications }}" onclick="toggleStatus(this)">
-                      <i class="fas {{ $notification->status == 'public' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
-                      <span>{{ $notification->status == 'public' ? 'Public' : 'Private' }}</span>
+                  <button type="button" id="bt-tb{{ $notification->id_notifications }}" class="btn btn-sm {{ $notification->status == 'public' ? 'btn-primary' : 'btn-secondary' }}" data-id="{{ $notification->id_notifications }}" onclick="toggleStatus(this)">
+                      <i id="bt-i{{ $notification->id_notifications }}" class="fas {{ $notification->status == 'public' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                      <span id="bt-sp{{ $notification->id_notifications }}">{{ $notification->status == 'public' ? 'Public' : 'Private' }}</span>
                   </button>
               </td>
                 <td class="d-flex align-items-center">
@@ -215,6 +215,7 @@
               <script>
                 function toggleStatus(button) {
                     const notificationId = $(button).data('id');
+                    // console.log(notificationId);
                     
                     $.ajax({
                         url: `/notifications/toggleStatus/${notificationId}`,
@@ -223,8 +224,38 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            Swal.fire(response.message, '', response.status === "public" ? 'success' : 'warning');
-                            location.reload(); // Refresh để cập nhật lại trạng thái
+                            // Swal.fire(response.message, '', response.status === "public" ? 'success' : 'warning');
+                            
+        
+                                // Tạo selector cho id động
+                                var selector = '#bt-tb' + notificationId;
+                                var selector1 = '#bt-i' + notificationId;
+                                var selector2 = '#bt-sp' + notificationId;
+                            $(selector2).html('')
+                            $(selector).removeClass('btn-primary');
+                            $(selector).removeClass('btn-secondary');
+                            $(selector1).removeClass('fa-eye');
+                            $(selector1).removeClass('fa-eye-slash');
+
+                            if(response.status === "public"){
+                            $(selector1).addClass('fa-eye');
+                            $(selector2).html(response.status)
+                            $(selector).addClass('btn-primary');
+
+                            }else{
+                            $(selector2).html(response.status)
+
+                            $(selector1).addClass('fa-eye-slash');
+                            $(selector).addClass('btn-secondary');
+                            }
+
+
+
+                            
+
+                            
+
+                            // location.reload();
                         },
                         error: function() {
                             Swal.fire('Error', 'Unable to toggle status', 'error');
