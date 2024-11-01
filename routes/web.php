@@ -123,8 +123,6 @@ Route::prefix('payment')->group(function () {
     });
 });
 
-
-
 // --- Hieu truong partner routes --------------------------------
 use App\Http\Controllers\Partner\ChannelController;
 use App\Http\Controllers\Partner\ProductController;
@@ -152,12 +150,12 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
     Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
 });
+Route::prefix('partners')->name('partners.')->group(function () {
+    Route::resource('/', PartnerController::class);
+    Route::get('order', [OrderController::class, 'index']);
+    Route::get('order/{id}', [OrderController::class, 'show']);
 
-// -- upgrage partnet routes --
-Route::get('partner/order', [OrderController::class, 'index']);
-Route::get('partner/product/', function () {
-    return view('partner/products/index');
-});
-Route::get('partner/product/add', function () {
-    return view('partner/products/create');
+    Route::get('product', [ProductController::class, 'index']);
+    Route::get('product/add', [ProductController::class, 'create']);
+    Route::get('product/show/{id}', [ProductController::class, 'show']);
 });

@@ -159,13 +159,13 @@
                     <div data-i18n="Product Management">Product Management</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('product/') ? 'active' : '' }}">
-                        <a href="{{ url('partner/product/') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('partners/product/') ? 'active' : '' }}">
+                        <a href="{{ url('partners/product/') }}" class="menu-link">
                             <div data-i18n="Hide Product">Product</div>
                         </a>
                     </li>
                     <li class="menu-item {{ Request::is('product/add') ? 'active' : '' }}">
-                        <a href="{{ url('partner/product/add') }}" class="menu-link">
+                        <a href="{{ url('partners/product/add') }}" class="menu-link">
                             <div data-i18n="Add Product">Add Product</div>
                         </a>
                     </li>
@@ -190,8 +190,8 @@
             <!-- Account Management -->
             
             <!-- Order Management (Affiliate) -->
-            <li class="menu-item {{ Request::is('partner/order') ? 'active' : '' }}">
-                <a href="{{ url('partner/order') }}" class="menu-link">
+            <li class="menu-item {{ Request::is('partners/order') ? 'active' : '' }}">
+                <a href="{{ url('partners/order') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-package"></i>
                     <div data-i18n="Analytics">Order </div>
                 </a>
