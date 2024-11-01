@@ -1,23 +1,26 @@
 <?php
 
+
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware(['auth', 'verified'])->name('home');
+// Route::get('/home', function () {
+//     return view('home');
+// })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -77,7 +80,7 @@ Route::prefix('product')->group(function () {
     // });
 
     Route::get('/add', [ProductController::class, 'create']);
-    
+
 
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
@@ -144,7 +147,9 @@ Route::prefix('payment')->group(function () {
 
 
 Route::prefix('message')->group(function () {
-    Route::get('/', function () {
-        return view('message.message');
-    });
-});
+    Route::get('/conversations',[ConversationController::class,'loadConversations'] )->name('message.conversations');
+    Route::get('/check-conversations',[ConversationController::class,'CheckConversation'] )->name('message.checkconversations');
+    Route::get('/create-conversations',[ConversationController::class,'CreateConversation'])->name('message.createconversations');
+    Route::post('/save-message/{namechannel}', [MessageController::class, 'store'])->name('message.savemessage');
+    Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
+})->middleware(['auth', 'verified']);
