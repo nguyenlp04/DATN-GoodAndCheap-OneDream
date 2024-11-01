@@ -24,10 +24,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed'],
         ]);
 
-        // Tạo mã xác minh
         $verificationCode = rand(100000, 999999);
 
-        // Lưu tạm thời thông tin người dùng vào session
         $request->session()->put('user_data', [
             'full_name' => $request->full_name,
             'email' => $request->email,
@@ -35,10 +33,10 @@ class RegisteredUserController extends Controller
             'verification_code' => $verificationCode,
         ]);
 
-        // Gửi email xác minh
+        $request->session()->put('email', $request->email);
+
         Mail::to($request->email)->send(new VerificationMail($verificationCode));
 
-        // Chuyển hướng đến trang nhập mã xác minh
-        return redirect()->route('verification.show')->with('email', $request->email);
+        return redirect()->route('verification.show');
     }
 }
