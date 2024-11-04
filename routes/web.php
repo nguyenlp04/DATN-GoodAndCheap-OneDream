@@ -78,12 +78,25 @@ Route::post('/verify', [VerificationController::class, 'verify'])->name('verific
 
 
 Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
+Route::prefix('partner')->group(function () {
+    Route::resource('partner', PartnerController::class);
+    Route::resource('channels', ChannelController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('profile', PartnerProfileController::class);
+});
+Route::prefix('partners')->name('partners.')->group(function () {
+    Route::resource('/', PartnerController::class);
+    Route::resource('/orders/', OrderController::class);
+    Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
 
-
-// Dashboard route
-// Route::get('/dashboard', function () {
-//     return view('admin.index');
-// });
+    Route::resource('/product/', ProductController::class);
+    Route::get('/trashed', [ProductController::class, 'trashed'])->name('trashed');
+    Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
+    Route::post('restore/{id}/', [ProductController::class, 'restore'])->name('restore');
+    Route::delete('forceDelete/{id}/', [ProductController::class, 'forceDelete'])->name('forceDelete');
+    Route::patch('/toggleStatus/{id}', [ProductController::class, 'toggleStatus'])->name('toggleStatus');
+});
 
 // Grouped routes for products
 Route::prefix('product')->group(function () {
@@ -121,13 +134,6 @@ Route::prefix('account')->group(function () {
         return view('admin.account.lock-account');
     });
 });
-
-
-
-
-
-
-// Grouped routes for payments
 Route::prefix('payment')->group(function () {
     Route::get('/method', function () {
         return view('admin.payments.payment-method');
@@ -135,30 +141,4 @@ Route::prefix('payment')->group(function () {
     Route::get('/account', function () {
         return view('admin.payments.receiving-account');
     });
-});
-
-// --- Hieu truong partner routes --------------------------------
-
-
-Route::prefix('partner')->group(function () {
-    Route::resource('partner', PartnerController::class);
-    Route::resource('channels', ChannelController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('orders', OrderController::class);
-    Route::resource('profile', PartnerProfileController::class);
-});
-
-// -- notifications routes --------------------------------
-
-Route::prefix('partners')->name('partners.')->group(function () {
-    Route::resource('/', PartnerController::class);
-    Route::resource('/orders/', OrderController::class);
-    Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
-
-    Route::resource('/product/', ProductController::class);
-    Route::get('/trashed', [ProductController::class, 'trashed'])->name('trashed');
-    Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
-    Route::post('restore/{id}/', [ProductController::class, 'restore'])->name('restore');
-    Route::delete('forceDelete/{id}/', [ProductController::class, 'forceDelete'])->name('forceDelete');
-    Route::patch('/toggleStatus/{id}', [ProductController::class, 'toggleStatus'])->name('toggleStatus');
 });
