@@ -5,6 +5,13 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleNewsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Partner\ChannelController;
+use App\Http\Controllers\Partner\ProductController;
+use App\Http\Controllers\Partner\OrderController;
+use App\Http\Controllers\Partner\PartnerController;
+use App\Http\Controllers\Partner\PartnerProfileController;
+use App\Http\Controllers\NotificationController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -43,13 +50,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/notifications', function () {
         return view('admin.notifications.index');
     });
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có route cho nó
+        Route::get('/create', [NotificationController::class, 'create'])->name('create');
+        Route::get('/edit/{id}', [NotificationController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update');
+        Route::get('/trashed', [NotificationController::class, 'trashed'])->name('trashed');
+        Route::delete('/destroy/{id}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
+        Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
+        Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
+    });
 });
 
 require __DIR__ . '/auth.php';
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StaffController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
@@ -91,10 +108,7 @@ Route::prefix('category')->group(function () {
     });
 });
 
-// // Other routes
-// Route::get('/category', function () {
-//     return view('admin.categories.index');
-// });
+
 
 // Grouped routes for account management
 Route::prefix('account')->group(function () {
@@ -124,11 +138,7 @@ Route::prefix('payment')->group(function () {
 });
 
 // --- Hieu truong partner routes --------------------------------
-use App\Http\Controllers\Partner\ChannelController;
-use App\Http\Controllers\Partner\ProductController;
-use App\Http\Controllers\Partner\OrderController;
-use App\Http\Controllers\Partner\PartnerController;
-use App\Http\Controllers\Partner\PartnerProfileController;
+
 
 Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
@@ -139,23 +149,16 @@ Route::prefix('partner')->group(function () {
 });
 
 // -- notifications routes --------------------------------
-Route::prefix('notifications')->name('notifications.')->group(function () {
-    Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có route cho nó
-    Route::get('/create', [NotificationController::class, 'create'])->name('create');
-    Route::get('/edit/{id}', [NotificationController::class, 'edit'])->name('edit');
-    Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update');
-    Route::get('/trashed', [NotificationController::class, 'trashed'])->name('trashed');
-    Route::delete('/destroy/{id}', [NotificationController::class, 'destroy'])->name('destroy');
-    Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
-    Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
-    Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
-});
+
 Route::prefix('partners')->name('partners.')->group(function () {
     Route::resource('/', PartnerController::class);
-    Route::get('order', [OrderController::class, 'index']);
-    Route::get('order/{id}', [OrderController::class, 'show']);
+    Route::resource('/orders/', OrderController::class);
+    Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
 
-    Route::get('product', [ProductController::class, 'index']);
-    Route::get('product/add', [ProductController::class, 'create']);
-    Route::get('product/show/{id}', [ProductController::class, 'show']);
+    Route::resource('/product/', ProductController::class);
+    Route::get('/trashed', [ProductController::class, 'trashed'])->name('trashed');
+    Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
+    Route::post('restore/{id}/', [ProductController::class, 'restore'])->name('restore');
+    Route::delete('forceDelete/{id}/', [ProductController::class, 'forceDelete'])->name('forceDelete');
+    Route::patch('/toggleStatus/{id}', [ProductController::class, 'toggleStatus'])->name('toggleStatus');
 });
