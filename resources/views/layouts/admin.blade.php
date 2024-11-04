@@ -44,6 +44,9 @@
       rel="stylesheet"
     />
 
+    <script src="https://kit.fontawesome.com/aa64dc9752.js" crossorigin="anonymous"></script>
+
+
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/fonts/boxicons.css") }}" />
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css" rel="stylesheet">
@@ -197,11 +200,6 @@
                             <div data-i18n="Add Product">Add Category</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('category/variant') ? 'active' : '' }}">
-                        <a href="{{ url('category') }}" class="menu-link">
-                            <div data-i18n="Add Category">Add Variant</div>
-                        </a>
-                    </li>
                 </ul>
             </li>
 
@@ -213,8 +211,8 @@
                     <div data-i18n="Account Management">Account</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('account/add') ? 'active' : '' }}">
-                        <a href="{{ url('account/add') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('account/employee-management/*') || Request::is('account/employee-management') ? 'active' : '' }}">
+                        <a href="{{ url('account/employee-management') }}" class="menu-link">
                             <div data-i18n="Add Affiliate Account">Add Affiliate Account</div>
                         </a>
                     </li>
@@ -223,7 +221,7 @@
                             <div data-i18n="Confirm Partner">Confirm Partner</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('account/lock') ? 'active' : '' }}">
+                    <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
                         <a href="{{ url('account/lock') }}" class="menu-link">
                             <div data-i18n="Lock Account">Lock Account (affiliate)</div>
                         </a>
@@ -363,7 +361,7 @@
                     <div data-i18n="Account">Account</div>
                   </a>
                 </li>
-                
+
               </ul>
             </li>
             <li class="menu-item">
@@ -408,7 +406,7 @@
               </ul>
             </li>
             <!-- Components -->
-          
+
             <!-- User interface -->
             <li class="menu-item">
               <a href="{{ url("javascript:void(0)") }}" class="menu-link menu-toggle">
@@ -436,7 +434,7 @@
                     <div data-i18n="Buttons">Buttons</div>
                   </a>
                 </li>
-                
+
                 <li class="menu-item">
                   <a href="{{ url("ui-collapse.html") }}" class="menu-link">
                     <div data-i18n="Collapse">Collapse</div>
@@ -447,7 +445,7 @@
                     <div data-i18n="Dropdowns">Dropdowns</div>
                   </a>
                 </li>
-             
+
                 <li class="menu-item">
                   <a href="{{ url("ui-list-groups.html") }}" class="menu-link">
                     <div data-i18n="List Groups">List groups</div>
@@ -458,7 +456,7 @@
                     <div data-i18n="Modals">Modals</div>
                   </a>
                 </li>
-                
+
                 <li class="menu-item">
                   <a href="{{ url("ui-offcanvas.html") }}" class="menu-link">
                     <div data-i18n="Offcanvas">Offcanvas</div>
@@ -494,11 +492,11 @@
                     <div data-i18n="Tooltips & Popovers">Tooltips &amp; popovers</div>
                   </a>
                 </li>
-               
+
               </ul>
             </li>
 
-            
+
 
             <!-- Forms & Tables -->
             <!-- Forms -->
@@ -571,11 +569,121 @@
         </aside>
         <!-- / Menu -->
 
+        <div class="layout-page">
+            <!-- Navbar -->
+
+            <nav
+              class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+              id="layout-navbar"
+            >
+              <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a class="nav-item nav-link px-0 me-xl-4" href="{{ url("javascript:void(0)") }}">
+                  <i class="bx bx-menu bx-sm"></i>
+                </a>
+              </div>
+
+              <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                <!-- Search -->
+                <div class="navbar-nav align-items-center">
+                  <div class="nav-item d-flex align-items-center">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                    <input
+                      type="text"
+                      class="form-control border-0 shadow-none"
+                      placeholder="Search..."
+                      aria-label="Search..."
+                    />
+                  </div>
+                </div>
+                <!-- /Search -->
+
+                <ul class="navbar-nav flex-row align-items-center ms-auto">
+                  <!-- Place this tag where you want the button to render. -->
+
+
+                  <!-- User -->
+                  <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="{{ url("javascript:void(0);") }}" data-bs-toggle="dropdown">
+                      <div class="avatar avatar-online">
+                        <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
+                      </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <a class="dropdown-item" href="{{ url("#") }}">
+                          <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                              <div class="avatar avatar-online">
+                                <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
+                              </div>
+                            </div>
+                            <div class="flex-grow-1">
+                              <span class="fw-semibold d-block">John Doe</span>
+                              <small class="text-muted">Admin</small>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{{ url("profile.html") }}">
+                          <i class="bx bx-user me-2"></i>
+                          <span class="align-middle">My Profile</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{{ url("#") }}">
+                          <i class="bx bx-cog me-2"></i>
+                          <span class="align-middle">Settings</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{{ url("#") }}">
+                          <span class="d-flex align-items-center align-middle">
+                            <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                            <span class="flex-grow-1 align-middle">Billing</span>
+                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                          </span>
+                        </a>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{{ url("auth-login-basic.html") }}">
+                          <i class="bx bx-power-off me-2"></i>
+                          <span class="align-middle">Log Out</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!--/ User -->
+                </ul>
+              </div>
+            </nav>
         <!-- Layout container -->
         @yield('content')
+        @yield('script-link-css')
 
-        
         <!-- / Layout page -->
+          <!-- Footer -->
+          <footer class="content-footer footer bg-footer-theme">
+            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+              <div class="mb-2 mb-md-0">
+                ©
+                <script>
+                  document.write(new Date().getFullYear());
+              </script>
+                , made with ❤️ by
+                <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
+              </div>
+
+            </div>
+          </footer>
+          <!-- / Footer -->
+        </div>
       </div>
 
       <!-- Overlay -->
@@ -583,7 +691,7 @@
     </div>
     <!-- / Layout wrapper -->
 
-    
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -604,5 +712,6 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    @include('layouts.script-admin')
   </body>
 </html>

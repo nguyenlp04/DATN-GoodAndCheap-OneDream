@@ -1,103 +1,13 @@
 @extends('layouts.admin')
 @section('content')
-<!-- Layout container -->
-<div class="layout-page">
-    <!-- Navbar -->
-    <nav
-        class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-        id="layout-navbar">
-        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-4" href="{{ url("javascript:void(0)") }}">
-                <i class="bx bx-menu bx-sm"></i>
-            </a>
-        </div>
-        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-            <!-- Search -->
-            <div class="navbar-nav align-items-center">
-                <div class="nav-item d-flex align-items-center">
-                    <i class="bx bx-search fs-4 lh-0"></i>
-                    <input
-                        type="text"
-                        class="form-control border-0 shadow-none"
-                        placeholder="Search..."
-                        aria-label="Search..." />
-                </div>
-            </div>
-            <!-- /Search -->
-            <ul class="navbar-nav flex-row align-items-center ms-auto">
-                <!-- Place this tag where you want the button to render. -->
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                    <a class="nav-link dropdown-toggle hide-arrow" href="{{ url("javascript:void(0);") }}" data-bs-toggle="dropdown">
-                        <div class="avatar avatar-online">
-                            <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="{{ url("#") }}">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="avatar avatar-online">
-                                            <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <span class="fw-semibold d-block">John Doe</span>
-                                        <small class="text-muted">Admin</small>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <div class="dropdown-divider"></div>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url("profile.html") }}">
-                                <i class="bx bx-user me-2"></i>
-                                <span class="align-middle">My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url("#") }}">
-                                <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url("#") }}">
-                                <span class="d-flex align-items-center align-middle">
-                                    <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                    <span class="flex-grow-1 align-middle">Billing</span>
-                                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <div class="dropdown-divider"></div>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ url("auth-login-basic.html") }}">
-                                <i class="bx bx-power-off me-2"></i>
-                                <span class="align-middle">Log Out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!--/ User -->
-            </ul>
-        </div>
-    </nav>
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
 
-    <!-- / Navbar -->
+    <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
 
-    <!-- Content wrapper -->
-    <div class="content-wrapper">
-        <!-- Content -->
-
-        <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
-
-
+        <form action="{{ route('addCategory')}}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="app-ecommerce" data-select2-id="21">
 
                 <!-- Add Product -->
@@ -106,11 +16,14 @@
                     <div class="d-flex flex-column justify-content-center">
                         <h4 class="mb-1">Add A New Category</h4>
                     </div>
+                    <!-- Form Add Category -->
+
+
                     <div class="d-flex align-content-center flex-wrap gap-4">
-                        <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
+                        <!-- <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
                             <button class="btn btn-label-primary">Save draft</button>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish product</button>
+                        </div> -->
+                        <button type="submit" class="btn btn-primary" id="publish-product">Publish product</button>
                     </div>
 
                 </div>
@@ -118,42 +31,40 @@
                 <div class="row" data-select2-id="20">
 
                     <!-- First column-->
-                    <div class="col-12 col-lg-12">
-                        <!-- Product Information -->
+                    <!-- <div class="col-12 col-lg-12"> -->
+                    <!-- Product Information -->
+                    <div class="col-12 col-lg-8">
                         <div class="card mb-6">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Product information</h5>
                                 <!-- Các nút nằm ngang hàng với tiêu đề -->
                                 <div>
 
-                                    <button id="add-subcategory" type="button" class="btn btn-info ml-2">Add Subcategory</button>
-                                    <button type="submit" class="btn btn-primary">Create Category</button>
+                                    <button id="add-subcategory" type="button" class="btn btn-primary ml-2">Add Subcategory</button>
+                                    <!-- <button type="submit" class="btn btn-primary">Create Category</button> -->
                                 </div>
                             </div>
                             <div class="card-body">
-                                <!-- Hiển thị thông báo thành công -->
-                                @if(session('success'))
-                                <div class="alert alert-success">{{ session('success') }}</div>
-                                @endif
 
-                                <!-- Form thêm Category -->
-                                <form action="" method="POST">
-                                    @csrf
-                                    <div class="mb-6">
-                                        <label for="category_name" class="form-label">Category Name:</label>
-                                        <input type="text" name="category_name" class="form-control" id="category_name" required placeholder="Enter category name">
-                                    </div>
+                                <div class="mb-6">
+                                    <label for="name_category" class="form-label">Category Name:</label>
+                                    <input type="text" name="name_category" class="form-control" id="name_category" required placeholder="Enter category name">
+                                </div>
+                                <div class="mb-6">
+                                    <label for="description_category" class="form-label">Category Description</label>
+                                    <textarea class="form-control" id="description_category" name="description" rows="3"></textarea>
+                                </div>
 
-                                    <!-- Thêm Subcategories -->
-                                    <div class="mb-6" id="subcategory-section" style="display: none;">
-                                        <label for="subcategories" class="form-label">Subcategories:</label>
-                                        <div id="subcategory-wrapper">
-                                            <div class="input-group mb-2">
+                                <!-- Thêm Subcategories -->
+                                <div class="mb-6" id="subcategory-section" style="display: none;">
+                                    <label for="subcategories" class="form-label">Subcategories:</label>
+                                    <div id="subcategory-wrapper">
+                                        <div class="input-group mb-2">
 
-                                            </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+
 
                                 <!-- Script thêm/xóa Subcategory -->
                                 <script>
@@ -188,9 +99,41 @@
                                         }
                                     });
                                 </script>
+
                             </div>
                         </div>
-                        <div class="card mb-6">
+                    </div>
+                    <div class="col-12 col-lg-4">
+
+                        <div class="card mb-6" data-select2-id="18">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Upload Imgae</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="dropzone p-0 dz-clickable" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 11.5rem;">
+                                    <!-- @isset($dataStaffID)
+                                    @if($dataStaffID->image == null) -->
+                                    <img id="preview_img" class=" mt-3 rounded" style="width: 100px; height: auto;">
+                                    <!-- @else -->
+                                    <img id="preview_img" src="{{ asset($dataStaffID->image) }}" class="mt-3 border rounded" style="width: 100px; height: auto;">
+                                    <!-- @endif
+                                    @endisset -->
+                                    <img id="preview_img" class=" mt-3 rounded" style="width: 100px; height: auto;">
+                                    <div style="font-weight: 500; text-align: center; width: 300px; height: 2.5rem;">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse image</button>
+                                        <input type="file" id="fileInput" name="image" style="display: none">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="card mb-6">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="card-title mb-0">Variants</h5>
                             <button type="button" class="btn btn-primary" id="btn-add-variant">
@@ -204,8 +147,8 @@
                             </div>
                         </div>
                     </div>
-                    </div>
-                    
+                    <!-- </div> -->
+
 
                     <script>
                         document.getElementById('btn-add-variant').addEventListener('click', function() {
@@ -235,31 +178,103 @@
                                 e.target.closest('.variant-item').remove();
                             }
                         });
+                        document.getElementById('publish-product').addEventListener('click', function() {
+                            // Lấy giá trị của Category Name
+                            const categoryName = document.getElementById('name_category').value.trim();
+
+                            // Lấy tất cả các trường Variant
+                            const variants = document.getElementsByName('variants[]');
+
+                            // Biến để kiểm tra có lỗi hay không
+                            let hasError = false;
+
+                            // Kiểm tra nếu Category Name trống
+                            if (categoryName == "") {
+                                console.log("Category Name is required.");
+                                hasError = true;
+                            }
+
+                            // Kiểm tra nếu không có Variant nào
+                            if (variants.length == 0) {
+                                console.log("At least one variant is required.");
+                                hasError = true;
+                            }
+
+                            // Nếu không có lỗi thì submit form
+                            if (!hasError) {
+                                document.querySelector('form').submit();
+                            }
+                        });
                     </script>
 
                 </div>
             </div>
-        </div>
-        <!-- / Content -->
-
-        <!-- Footer -->
-        <footer class="content-footer footer bg-footer-theme">
-            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                    ©
-                    <script>
-                        document.write(new Date().getFullYear());
-                    </script>
-                    , made with ❤️ by
-                    <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
-                </div>
-
-            </div>
-        </footer>
-        <!-- / Footer -->
-
-        <div class="content-backdrop fade"></div>
+        </form>
     </div>
-    <!-- Content wrapper -->
+    <!-- / Content -->
+    <div class="content-backdrop fade"></div>
 </div>
+<!-- Content wrapper -->
+@endsection
+
+@section('script-link-css')
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://kit.fontawesome.com/aa64dc9752.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
+
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
+{{-- no ko buton dc  --}}
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    document.getElementById('btnBrowse').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('fileInput');
+        const previewImg = document.getElementById('preview_img');
+
+        input.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('hidden');
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                previewImg.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
+@if (session('alert'))
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    Toast.fire({
+        icon: "{{ session('alert')['type'] }}",
+        title: "{{ session('alert')['message'] }}"
+    });
+</script>
+@endif
 @endsection

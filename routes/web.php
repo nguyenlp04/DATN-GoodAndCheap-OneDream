@@ -4,7 +4,6 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleNewsController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Partner\ChannelController;
 use App\Http\Controllers\Partner\ProductController;
 use App\Http\Controllers\Partner\OrderController;
@@ -13,13 +12,26 @@ use App\Http\Controllers\Partner\PartnerProfileController;
 use App\Http\Controllers\NotificationController;
 
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\UsermanagementController;
+
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware(['auth', 'verified'])->name('home');
+// Route::get('/home', function () {
+//     return view('home');
+// })->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -65,9 +77,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\StaffController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -75,6 +84,10 @@ Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('
 Route::post('/verify', [VerificationController::class, 'verify'])->name('verification.verify');
 
 
+
+// Route::get('/test', function () {
+//     return view('test');
+// });
 
 
 Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
@@ -98,38 +111,68 @@ Route::prefix('partners')->name('partners.')->group(function () {
     Route::patch('/toggleStatus/{id}', [ProductController::class, 'toggleStatus'])->name('toggleStatus');
 });
 
+Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
+
+
+
+// Dashboard route
+Route::get('/dashboard', function () {
+    return view('admin.index');
+});
+
 // Grouped routes for products
 Route::prefix('product')->group(function () {
-    Route::get('/', function () {
-        return view('admin.products.index');
-    });
+    Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
+
+    // Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products.index');
+
+    
     Route::get('/add', function () {
         return view('admin.products.add-product');
     });
+
+    Route::post('/add', [ProductController::class, 'store'])->name('add.product');
+    Route::get('/add', [ProductController::class, 'create'])->name('products.create');
+
+
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
+
+    // Route::post('/save-variants', [ProductController::class, 'saveVariants'])->name('save.variants');
+
 });
+
+
+
+
+Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSubcategories']);
+
+// Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
 
 // Grouped routes for categoris
 Route::prefix('category')->group(function () {
-    Route::get('/', function () {
-        return view('admin.categories.index');
-    });
-    Route::get('/add', function () {
-        return view('admin.categories.add-category');
-    });
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::match(['get', 'post'], '/add', [CategoryController::class, 'store'])->name('addCategory');
 });
 
 
 
-// Grouped routes for account management
+// Grouped routes for account management   - Nguyễn Quang Cường
 Route::prefix('account')->group(function () {
-
+// staffx
     Route::get('/employee-management', [StaffController::class, 'index']);
-    Route::get('/confirm', function () {
-        return view('admin.account.confirm-partner');
-    });
+    Route::post('/employee-management', [StaffController::class, 'store'])->name('addStaff');
+    Route::get('/employee-management/employeedetails/edit/{id}', [StaffController::class, 'edit'])->name('editStaff');
+    Route::put('/employee-management/employeedetails/update/{id}', [StaffController::class, 'update'])->name('updateStaff');
+    Route::delete('/employee-management/employeedetails/delete/{id}', [StaffController::class, 'destroy'])->name('deleteStaff');
+// account user
+    Route::get('/user-account-management', [UsermanagementController::class, 'index']);
+    Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
+    Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
+
+    // });
     Route::get('/lock', function () {
         return view('admin.account.lock-account');
     });
@@ -142,3 +185,12 @@ Route::prefix('payment')->group(function () {
         return view('admin.payments.receiving-account');
     });
 });
+
+
+Route::prefix('message')->group(function () {
+    Route::get('/conversations',[ConversationController::class,'loadConversations'] )->name('message.conversations');
+    Route::get('/check-conversations',[ConversationController::class,'CheckConversation'] )->name('message.checkconversations');
+    Route::get('/create-conversations',[ConversationController::class,'CreateConversation'])->name('message.createconversations');
+    Route::post('/save-message/{namechannel}', [MessageController::class, 'store'])->name('message.savemessage');
+    Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
+})->middleware(['auth', 'verified']);
