@@ -1,5 +1,16 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaleNewsController;
+use App\Http\Controllers\Partner\ChannelController;
+use App\Http\Controllers\Partner\ProductController;
+use App\Http\Controllers\Partner\OrderController;
+use App\Http\Controllers\Partner\PartnerController;
+use App\Http\Controllers\Partner\PartnerProfileController;
+use App\Http\Controllers\NotificationController;
+
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
@@ -38,6 +49,31 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
+    // Route hiển thị chi tiết from đăng tin bán hàng
+    Route::get('/sale_news', [SaleNewsController::class, 'index'])->name('sale_news');
+    //router blogs
+
+    route::get('admin/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
+    route::get('admin/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
+    Route::resource('admin/blogs', BlogController::class);
+    Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+    Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+
+
+    Route::get('/notifications', function () {
+        return view('admin.notifications.index');
+    });
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có route cho nó
+        Route::get('/create', [NotificationController::class, 'create'])->name('create');
+        Route::get('/edit/{id}', [NotificationController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update');
+        Route::get('/trashed', [NotificationController::class, 'trashed'])->name('trashed');
+        Route::delete('/destroy/{id}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
+        Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
+        Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
+    });
 });
 
 require __DIR__ . '/auth.php';
@@ -54,16 +90,30 @@ Route::post('/verify', [VerificationController::class, 'verify'])->name('verific
 //     return view('test');
 // });
 
+
+Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
+Route::prefix('partner')->group(function () {
+    Route::resource('partner', PartnerController::class);
+    Route::resource('channels', ChannelController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('profile', PartnerProfileController::class);
+});
+Route::prefix('partners')->name('partners.')->group(function () {
+    Route::resource('/', PartnerController::class);
+    Route::resource('/orders/', OrderController::class);
+    Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
+
+    Route::resource('/product/', ProductController::class);
+    Route::get('/trashed', [ProductController::class, 'trashed'])->name('trashed');
+    Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
+    Route::post('restore/{id}/', [ProductController::class, 'restore'])->name('restore');
+    Route::delete('forceDelete/{id}/', [ProductController::class, 'forceDelete'])->name('forceDelete');
+    Route::patch('/toggleStatus/{id}', [ProductController::class, 'toggleStatus'])->name('toggleStatus');
+});
+
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
 
-// Route::get('/test', function () {
-//     if (Auth::check()) {
-//         $userId = Auth::id();
-//         return view('test', ['userId' => $userId]);
-//     } else {
-//         return "User is not logged in";
-//     }
-// });
 
 
 // Dashboard route
@@ -108,10 +158,7 @@ Route::prefix('category')->group(function () {
     Route::match(['get', 'post'], '/add', [CategoryController::class, 'store'])->name('addCategory');
 });
 
-// // Other routes
-// Route::get('/category', function () {
-//     return view('admin.categories.index');
-// });
+
 
 // Grouped routes for account management   - Nguyễn Quang Cường
 Route::prefix('account')->group(function () {
@@ -131,19 +178,6 @@ Route::prefix('account')->group(function () {
         return view('admin.account.lock-account');
     });
 });
-
-
-Route::get('/blogs', function () {
-    return view('admin.blogs.index');
-});
-Route::get('/notifications', function () {
-    return view('admin.notifications.index');
-});
-Route::get('/order-affiliate', function () {
-    return view('admin.orders.index');
-});
-
-// Grouped routes for payments
 Route::prefix('payment')->group(function () {
     Route::get('/method', function () {
         return view('admin.payments.payment-method');
