@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleNewsController;
 use App\Http\Controllers\Partner\ChannelController;
 use App\Http\Controllers\Partner\ProductController;
@@ -10,9 +8,6 @@ use App\Http\Controllers\Partner\OrderController;
 use App\Http\Controllers\Partner\PartnerController;
 use App\Http\Controllers\Partner\PartnerProfileController;
 use App\Http\Controllers\NotificationController;
-
-
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ImageUploadController;
