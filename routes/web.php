@@ -11,6 +11,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UsermanagementController;
 
@@ -76,7 +77,7 @@ Route::prefix('product')->group(function () {
 
     // Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products.index');
 
-    
+
     Route::get('/add', function () {
         return view('admin.products.add-product');
     });
@@ -159,4 +160,12 @@ Route::prefix('message')->group(function () {
     Route::get('/create-conversations',[ConversationController::class,'CreateConversation'])->name('message.createconversations');
     Route::post('/save-message/{namechannel}', [MessageController::class, 'store'])->name('message.savemessage');
     Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
+})->middleware(['auth', 'verified']);
+
+Route::prefix('cart')->group(function () {
+    Route::get('/cart-detail',[CartController::class,'show'] )->name('cart.detail');
+    Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
+    Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
+
+
 })->middleware(['auth', 'verified']);

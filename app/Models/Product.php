@@ -10,7 +10,8 @@ class Product extends Model
     use HasFactory;
 
     protected $table = 'products';
-    protected $fillable = ['name', 'description', 'price', 'category_id', 'subcategory_id', 'image', 'created_at']; 
+    protected $primaryKey = 'product_id';
+    protected $fillable = ['name', 'description', 'price', 'category_id', 'subcategory_id', 'image', 'created_at'];
 
     public function category()
     {
@@ -21,4 +22,10 @@ class Product extends Model
     {
         return $this->belongsTo(Subcategory::class);
     }
+
+    public function firstImage()
+    {
+        return $this->hasOne(Imgproduct::class, 'product_id');
+    }
+
 }
