@@ -19,9 +19,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-// Route::get('/home', function () {
-//     return view('home');
-// })->middleware(['auth', 'verified'])->name('home');
+Route::get('/home', function () {
+    return view('home');
+})->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -86,6 +86,8 @@ Route::prefix('product')->group(function () {
     Route::get('/add', [ProductController::class, 'create'])->name('products.create');
 
 
+    Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('deleteProduct');
+
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
@@ -106,6 +108,8 @@ Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSub
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
     Route::match(['get', 'post'], '/add', [CategoryController::class, 'store'])->name('addCategory');
+    Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('deleteCategory');
+
 });
 
 // // Other routes

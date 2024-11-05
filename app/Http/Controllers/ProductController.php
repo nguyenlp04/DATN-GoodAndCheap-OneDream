@@ -168,8 +168,27 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $product_id)
     {
-        //
+        try {
+            $product = Product::find($product_id);
+            if ($product) {
+                $product->is_delete = '1';
+                $product->save();
+                return redirect()->back()->with('alert', [
+                    'type' => 'success',
+                    'message' => 'Product deleted successfully!'
+                ]);
+            }
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Product not found!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => ' Error : ' . $th->getMessage()
+            ]);
+        }
     }
 }

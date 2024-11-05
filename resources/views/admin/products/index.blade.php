@@ -25,57 +25,88 @@
           <!-- Product Information -->
           <div class="card mb-6">
             <div class="card-body">
-              <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-              <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css"> -->
-
-              <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+              <!-- <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
             {{ json_encode($data, JSON_PRETTY_PRINT) }}
-        </pre>
+        </pre> -->
               <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                   <tr>
                     <th>ID Product</th>
                     <th>Product</th>
-                    <th>Price</th>
+                    <!-- <th>Price</th> -->
                     <th>Category</th>
+                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                @foreach($data as $product)
+                  @foreach($data as $product)
                   <tr>
-                    <td>{{ $product->product_id }}</td>
-                    
                     <td>
-                    <div class="row">
-                      <div class="col-md-7 d-flex">
-                        <img src="{{ asset( $product->image_name) }}" alt="Image Product" class="rounded img-fluid me-2">
-                        {{ $product->name_product }}
+                      <div>
+                        <span class="badge bg-info my-1">ID: {{ $product->product_id }}</span>
                       </div>
-                    </div>  
-                    <!-- <img src="https://autopro8.mediacdn.vn/2020/8/30/photo-1-1598770695329180553093.jpg" alt="Product Image" class="img-fluid rounded">{{ $product->name_product }}</td> -->
-                    <td>{{ $product->price }}</td>
-                    <td>{{ $product->category_name }}</td>
-                    <td></td>
-                    <!-- <td>
-                      @if($product->image_name)
-                      <img src="{{ asset('storage/' . $product->image_name) }}" alt="Product Image" style="width: 100px;">
+                      <div>
+                        <span class="badge bg-info my-1">$ {{ number_format($product->price, 2) }}</span>
+                      </div>
+                      <div>
+                        <span class="badge bg-info my-1"> {{ date('D, d M Y', strtotime($product->created_at)) }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div style="min-width: 80px; max-width: 80px;">
+                          <img src="{{ asset( $product->image_name) }}" alt="Image Product" class="rounded img-fluid" style="width: 100%; height: auto; object-fit: cover;">
+                        </div>
+                        <div class="flex-grow-1 d-flex align-items-center">
+                          <p class="mb-0 text-truncate-3 ms-3 w-100">{{ $product->name_product }}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="bg-light rounded">
+                      <span class="badge bg-primary">{{ $product->category_name }}</span>
+                      <span class="text-muted"> &#8594; </span>
+                      <span class="badge bg-secondary">{{ $product->sub_category_name }}</span>
+                    </td>
+                    <td class="bg-light rounded">
+                      @if ($product->status == 1)
+                      <span class="badge bg-success">Active</span>
                       @else
-                      <span>No Image</span>
+                      <span class="badge bg-danger">Deactive</span>
                       @endif
-                    </td> -->
+                    </td>
+                    <td>
+                      <div class="container">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#"><span><i class="fa-solid fa-eye me-1"></i></span>View</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"> <span><i class="fa-solid fa-pen-to-square me-1"></i></span>Edit</a>
+                            </li>
+                            <li>
+                              <a onclick="confirmDelete(event, {{ $product->product_id }})">
+                                <form id="delete-form-{{ $product->product_id }}" action="{{ route('deleteProduct', $product->product_id) }}" method="POST" style="display:inline;">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit" class="dropdown-item">
+                                    <span><i class="fa-solid fa-trash me-1"></i></span>Delete
+                                  </button>
+                                </form>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
                   @endforeach
                 </tbody>
               </table>
-              <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-              <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-              <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-              <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-              <script>
-                new DataTable('#example');
-              </script>
-
             </div>
           </div>
         </div>

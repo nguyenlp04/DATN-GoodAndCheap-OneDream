@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
 
 
 
@@ -15,7 +17,19 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+
+        $data = Category::select('categories.*')
+            ->selectRaw('COUNT(DISTINCT sub_categories.sub_category_id) AS sub_category_count')
+            ->selectRaw('COUNT(subcategory_attributes.subcategory_attribute_id) AS attribute_count')
+            ->leftJoin('sub_categories', 'categories.category_id', '=', 'sub_categories.category_id')
+            ->leftJoin('subcategory_attributes', 'sub_categories.sub_category_id', '=', 'subcategory_attributes.sub_category_id')
+            ->where('categories.is_delete', '=', '0')
+            ->groupBy('categories.category_id')
+            ->orderBy('categories.created_at', 'DESC')
+            ->get();
+
+
+        return view('admin.categories.index', ['data' => $data]);
     }
 
     /**
@@ -35,7 +49,7 @@ class CategoryController extends Controller
             return view('admin.categories.add-category');
         }
         try {
-            
+
             $validatedData = $request->validate([
                 'name_category' => 'required|string|max:255',
                 'description' => 'nullable|string|max:1000',
@@ -45,17 +59,11 @@ class CategoryController extends Controller
                 'variants.*' => 'required|string|max:255',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
-    
-
-            // $fileName = time() . '.' . $request->image->extension(); 
-            // $filePath = '/image/category/' . $fileName; 
-            // Storage::disk('blackblaze')->put(basename($filePath), file_get_contents($fileName), 'private');
 
             if ($request->hasFile('image')) {
-                $originalFileName = basename($request->file('image')->getClientOriginalName());
-                $fileName = time() . '_' . $originalFileName;
-                $filePath = '/image/category/' . $fileName; 
-                Storage::disk('blackblaze')->put($filePath, file_get_contents($request->file('image')), 'private');
+                $imageName = 'category_' . time() . '_' . uniqid() . '.' . $request->image->extension();
+                $imagePath = 'storage/category/' . $imageName;
+                Storage::disk('public')->putFileAs('category', $request->file('image'), $imageName);
             }
 
             $dataCategory = [
@@ -64,8 +72,8 @@ class CategoryController extends Controller
                 'description' => $validatedData['description'],
                 // 'subcategories' => $validatedData['subcategories'],
                 // 'variants' => $validatedData['variants'],
-                'image_category' => $filePath ? $filePath : null,
-                'status'=> 1,
+                'image_category' => $imagePath ? $imagePath : null,
+                'status' => 1,
                 'created_at' => now(),
             ];
             // $query=DB::table('categories')->insert($dataCategory);
@@ -75,12 +83,12 @@ class CategoryController extends Controller
             if (!empty($validatedData['subcategories'])) {
                 foreach ($validatedData['subcategories'] as $subcategory) {
                     $dataSubCategory = [
-                        'category_id' => $categoryId, 
+                        'category_id' => $categoryId,
                         'name_sub_category' => $subcategory,
-                        'status'=> 1,
+                        'status' => 1,
                         'created_at' => now(),
                     ];
-        
+
                     $querySubCategory = DB::table('sub_categories')->insert($dataSubCategory);
                 }
             }
@@ -90,25 +98,24 @@ class CategoryController extends Controller
                 foreach ($validatedData['variants'] as $variant) {
                     $dataVariantCategory = [
                         'sub_category_id' => $categoryId,
-                        'attributes_name' => $variant, 
-                        
+                        'attributes_name' => $variant,
+
                     ];
-        
+
                     $queryVariantCategory = DB::table('subcategory_attributes')->insert($dataVariantCategory);
                 }
             }
 
-            if($categoryId && $querySubCategory && $queryVariantCategory){
-                return redirect()->back()->with('alert',[
-                    'type'=>'success',
-                    'message'=>'Added Successfully !'
-            ]);
-            }else{
-                return redirect()->back()->with('alert',[
-                    'type'=>'error',
-                    'message'=>'Không thành công !'
-            ]);
-    
+            if ($categoryId && $querySubCategory && $queryVariantCategory) {
+                return redirect()->back()->with('alert', [
+                    'type' => 'success',
+                    'message' => 'Added Successfully !'
+                ]);
+            } else {
+                return redirect()->back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'Không thành công !'
+                ]);
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('alert', [
@@ -145,8 +152,28 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $category_id)
     {
-        //
+        // dd($category);
+        try {
+            $category = Category::find($category_id);
+            if ($category) {
+                $category->is_delete = '1';
+                $category->save();
+                return redirect()->back()->with('alert', [
+                    'type' => 'success',
+                    'message' => 'Category deleted successfully!'
+                ]);
+            }
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Category not found!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => ' Error : ' . $th->getMessage()
+            ]);
+        }
     }
 }
