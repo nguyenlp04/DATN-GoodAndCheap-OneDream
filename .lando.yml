@@ -11,9 +11,15 @@ services:
     build_as_root:
       - apt-get update -y
       - apt-get install -y zip unzip
+      - chown -R www-data:www-data /var/app/storage
+      - chmod -R 775 /var/app/storage
+      - php artisan storage:link
     overrides:
       ports:
         - 8081:80  # Đặt cổng 8081 cho dự án này
+    volumes:
+      - ../app:/var/app
+      - storage:/var/app/storage
 
   database:
     type: mysql:8.0
@@ -28,6 +34,8 @@ tooling:
     service: appserver
   artisan:
     service: appserver
+volumes:
+  storage: {}  # Định nghĩa volume storage
 
 env:
   - DB_CONNECTION=mysql
