@@ -40,12 +40,14 @@
                                             addresses</a>, and <a href="#tab-account" class="tab-trigger-link">edit
                                             your password and account details</a>.
                                     </p>
-                                </div><!-- .End .tab-pane -->
-                            </div><!-- End .col-lg-9 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-                </div><!-- End .dashboard -->
-            </div><!-- End .page-content -->
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .dashboard -->
+    </div><!-- End .page-content -->
 </main><!-- End .main -->
 
 @endsection
