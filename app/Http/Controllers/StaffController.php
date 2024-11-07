@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 
 class StaffController extends Controller
@@ -15,7 +17,7 @@ class StaffController extends Controller
     {
 
         $data = DB::table('staffs')->get();
-    return view('admin.account.employee-management',['data'=>$data]);
+        return view('admin.account.employee-management', ['data' => $data]);
     }
 
     /**
@@ -23,8 +25,8 @@ class StaffController extends Controller
      */
     public function create()
     {
-    $data = DB::table('staffs')->get();
-    return view('admin.account.employee-management',['data'=>$data]);
+        $data = DB::table('staffs')->get();
+        return view('admin.account.employee-management', ['data' => $data]);
     }
 
     /**
@@ -32,64 +34,60 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-    try {
-        $validatedData = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'address' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-            'avata' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'full_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'address' => 'required|string|max:255',
+                'password' => 'required|string|min:8',
+                'avata' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
 
-        // if ($request->hasFile('avata')) {
-        //     $imageName = 'avata_staff' . time() . '.' . $request->avata->extension();
-        //     Storage::disk('public')->putFileAs('avatas', $request->file('avata'), $imageName);
-        // }else{
+            // if ($request->hasFile('avata')) {
+            //     $imageName = 'avata_staff' . time() . '.' . $request->avata->extension();
+            //     Storage::disk('public')->putFileAs('avatas', $request->file('avata'), $imageName);
+            // }else{
 
-        //     $imageName = null;
-        // }
+            //     $imageName = null;
+            // }
 
+            if ($request->hasFile('avata')) {
+                $originalFileName = basename($request->file('avata')->getClientOriginalName());
+                $fileName = time() . '_' . $originalFileName;
+                $filePath = '/image/staff/' . $fileName;
+                Storage::disk('blackblaze')->put($filePath, file_get_contents($request->file('avata')), 'private');
+            }
 
-        if ($request->hasFile('avata')) {
-            $originalFileName = basename($request->file('avata')->getClientOriginalName());
-            $fileName = time() . '_' . $originalFileName;
-            $filePath = '/image/staff/' . $fileName; 
-            Storage::disk('blackblaze')->put($filePath, file_get_contents($request->file('avata')), 'private');
+            $data = [
+                'full_name' => $validatedData['full_name'],
+                'email' => $validatedData['email'],
+                'address' => $validatedData['address'],
+                'password' => Hash::make($validatedData['password']), // Mã hóa mật khẩu
+                // 'password' => $validatedData['password'],
+                'avata' => $filePath ? $filePath : null,
+                'role' => 'staff',
+                'status' => 1,
+                'created_at' => now(),
+            ];
+            $query = DB::table('staffs')->insert($data);
+            if ($query) {
+                return redirect()->back()->with('alert', [
+                    'type' => 'success',
+                    'message' => 'More Success !'
+                ]);
+            } else {
+                return redirect()->back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'Failure !'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'error: ' . $e->getMessage()
+            ]);
         }
-
-
-
-        $data = [
-            'full_name' => $validatedData['full_name'],
-            'email' => $validatedData['email'],
-            'address' => $validatedData['address'],
-            'password' => $validatedData['password'],
-            'avata' => $filePath ? $filePath : null,
-            'role' => 'staff',
-            'status'=> 1,
-            'created_at' => now(),
-        ];
-        $query=DB::table('staffs')->insert($data);
-        if($query){
-            return redirect()->back()->with('alert',[
-                'type'=>'success',
-                'message'=>'More Success !'
-        ]);
-        }else{
-            return redirect()->back()->with('alert',[
-                'type'=>'error',
-                'message'=>'Failure !'
-        ]);
-
-        }
-    } catch (\Exception $e) {
-        return redirect()->back()->with('alert', [
-            'type' => 'error',
-            'message' => 'error: ' . $e->getMessage()
-        ]);
-    }
-
     }
 
     /**
@@ -105,11 +103,11 @@ class StaffController extends Controller
      */
     public function edit(string $id)
     {
-        $data= DB::table('staffs')->get();
-        $dataStaffID= DB::table('staffs')->where('staff_id',$id)->first();
-        return view('admin.account.employee-management',[
-            'data'=>$data,
-            'dataStaffID'=>$dataStaffID,
+        $data = DB::table('staffs')->get();
+        $dataStaffID = DB::table('staffs')->where('staff_id', $id)->first();
+        return view('admin.account.employee-management', [
+            'data' => $data,
+            'dataStaffID' => $dataStaffID,
         ]);
     }
 
@@ -119,35 +117,35 @@ class StaffController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-        $check=DB::table('staffs')->where('staff_id', $id)->first();
-        $validatedData = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'status' => 'required|integer',
-            'avata' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-        $data = [
-            'full_name' => $validatedData['full_name'],
-            'address' => $validatedData['address'],
-            'role' => 'staff',
-            'status'=> $validatedData['status'],
-            'updated_at' => now(),
-        ];
-        if ($request->hasFile('avata')) {
-            if(! $check->avata== null ){
-            if (file_exists(public_path($check->avata))) {
-                unlink(public_path($check->avata));
+            $check = DB::table('staffs')->where('staff_id', $id)->first();
+            $validatedData = $request->validate([
+                'full_name' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'status' => 'required|integer',
+                'avata' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+            $data = [
+                'full_name' => $validatedData['full_name'],
+                'address' => $validatedData['address'],
+                'role' => 'staff',
+                'status' => $validatedData['status'],
+                'updated_at' => now(),
+            ];
+            if ($request->hasFile('avata')) {
+                if (! $check->avata == null) {
+                    if (file_exists(public_path($check->avata))) {
+                        unlink(public_path($check->avata));
+                    }
+                }
 
-            }}
+                $imageName = 'avata_staff' . time() . '.' . $request->avata->extension();
+                Storage::disk('public')->putFileAs('avatas', $request->file('avata'), $imageName);
+                $data['avata'] = 'storage/avatas/' . $imageName;
+            } else {
+                $data['avata'] = $check ? $check->avata : null;
+            }
 
-            $imageName = 'avata_staff' . time() . '.' . $request->avata->extension();
-            Storage::disk('public')->putFileAs('avatas', $request->file('avata'), $imageName);
-            $data['avata'] ='storage/avatas/'.$imageName;
-        }else{
-            $data['avata'] = $check ? $check->avata : null;
-        }
-
-        $query = DB::table('staffs')->where('staff_id',$id)->update($data);
+            $query = DB::table('staffs')->where('staff_id', $id)->update($data);
 
             if ($query) {
                 return redirect()->back()->with('alert', [
@@ -166,7 +164,6 @@ class StaffController extends Controller
                 'message' => 'error: ' . $e->getMessage()
             ]);
         }
-
     }
 
     /**
@@ -174,19 +171,19 @@ class StaffController extends Controller
      */
     public function destroy(string $id)
     {
-        $check =  DB::table('staffs')->where('staff_id',$id)->first();
+        $check =  DB::table('staffs')->where('staff_id', $id)->first();
         if ($check) {
             DB::table('staffs')->where('staff_id', $id)->delete();
 
-            return redirect()->back()->with('alert',[
-                'type'=>'success',
-                'message'=>'Delete successful !'
-        ]);
-        }else{
-            return redirect()->back()->with('alert',[
-                'type'=>'error',
-                'message'=>'Not found !'
-        ]);
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Delete successful !'
+            ]);
+        } else {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Not found !'
+            ]);
         }
     }
 }

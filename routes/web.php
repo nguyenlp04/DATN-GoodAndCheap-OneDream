@@ -13,12 +13,22 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
     return view('home');
 });
 
+
+Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
+Route::post('staff/login', [StaffAuthController::class, 'login']);
+Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
+// Route::get('staff/dashboard', [StaffDashboardController::class, 'index'])->middleware('auth:staff');
+
+Route::get('staff/dashboard', function () {
+    return view('welcome');
+})->middleware('auth:staff');
 // Route::get('/home', function () {
 //     return view('home');
 // })->middleware(['auth', 'verified'])->name('home');
@@ -115,13 +125,13 @@ Route::prefix('category')->group(function () {
 
 // Grouped routes for account management   - Nguyễn Quang Cường
 Route::prefix('account')->group(function () {
-// staffx
+    // staffx
     Route::get('/employee-management', [StaffController::class, 'index']);
     Route::post('/employee-management', [StaffController::class, 'store'])->name('addStaff');
     Route::get('/employee-management/employeedetails/edit/{id}', [StaffController::class, 'edit'])->name('editStaff');
     Route::put('/employee-management/employeedetails/update/{id}', [StaffController::class, 'update'])->name('updateStaff');
     Route::delete('/employee-management/employeedetails/delete/{id}', [StaffController::class, 'destroy'])->name('deleteStaff');
-// account user
+    // account user
     Route::get('/user-account-management', [UsermanagementController::class, 'index']);
     Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
     Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
@@ -155,17 +165,15 @@ Route::prefix('payment')->group(function () {
 
 
 Route::prefix('message')->group(function () {
-    Route::get('/conversations',[ConversationController::class,'loadConversations'] )->name('message.conversations');
-    Route::get('/check-conversations',[ConversationController::class,'CheckConversation'] )->name('message.checkconversations');
-    Route::get('/create-conversations',[ConversationController::class,'CreateConversation'])->name('message.createconversations');
+    Route::get('/conversations', [ConversationController::class, 'loadConversations'])->name('message.conversations');
+    Route::get('/check-conversations', [ConversationController::class, 'CheckConversation'])->name('message.checkconversations');
+    Route::get('/create-conversations', [ConversationController::class, 'CreateConversation'])->name('message.createconversations');
     Route::post('/save-message/{namechannel}', [MessageController::class, 'store'])->name('message.savemessage');
     Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
 })->middleware(['auth', 'verified']);
 
 Route::prefix('cart')->group(function () {
-    Route::get('/cart-detail',[CartController::class,'show'] )->name('cart.detail');
+    Route::get('/cart-detail', [CartController::class, 'show'])->name('cart.detail');
     Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
     Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
-
-
 })->middleware(['auth', 'verified']);
