@@ -173,3 +173,25 @@ Route::prefix('cart')->group(function () {
 
 
 })->middleware(['auth', 'verified']);
+
+
+
+// Grouped routes for Trash
+Route::prefix('trash')->group(function () {
+    Route::get('/user', function () {
+        return view('admin.index');
+    });
+    Route::get('/product', function () {
+        return view('admin.index');
+    });
+    Route::get('/channel', function () {
+        return view('admin.index');
+    });
+    Route::get('/category', function () {
+        return view('admin.index');
+    });
+    Route::get('/blog', function () {
+        return view('admin.index');
+    });
+    
+});

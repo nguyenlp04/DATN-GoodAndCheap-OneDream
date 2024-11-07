@@ -271,6 +271,41 @@
                 </ul>
             </li>
 
+            <!-- Trash -->
+            <li class="menu-item {{ Request::is('trash/*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-trash"></i>
+                    <div data-i18n="Trash">Trash</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Request::is('trash/user') ? 'active' : '' }}">
+                        <a href="{{ url('trash/user') }}" class="menu-link">
+                            <div data-i18n="Trash User">User</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/product') ? 'active' : '' }}">
+                        <a href="{{ url('trash/product') }}" class="menu-link">
+                            <div data-i18n="Trash Product">Product</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/channel') ? 'active' : '' }}">
+                        <a href="{{ url('trash/channel') }}" class="menu-link">
+                            <div data-i18n="Trash Channel">Channel</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/category') ? 'active' : '' }}">
+                        <a href="{{ url('trash/category') }}" class="menu-link">
+                            <div data-i18n="Trash Category">Category</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/blog') ? 'active' : '' }}">
+                        <a href="{{ url('trash/blog') }}" class="menu-link">
+                            <div data-i18n="Trash Blog">Blog</div>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </li>
 
             <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
 
