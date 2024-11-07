@@ -1,20 +1,6 @@
 @extends('layouts.client_layout')
 
 @section('content')
-<style>
-    .delivery-success {
-        color: #28a745;
-        /* Màu xanh lá cho thành công */
-        font-weight: bold;
-    }
-
-    .order-complete {
-        color: #007bff;
-        /* Màu xanh dương cho hoàn thành */
-        font-weight: bold;
-    }
-</style>
-
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
@@ -111,8 +97,6 @@
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
-
-
 @foreach ($orders as $order)
 @if ($order->status == 'completed')
 <!-- Modal -->
@@ -139,15 +123,12 @@
                             <h6 class="mb-1" style="font-size: 1.2rem;">{{ $orderDetail->name_product }}</h6>
                             <p class="mb-0">Số lượng: <strong>{{ $orderDetail->stock }}</strong></p>
                             <p class="mb-0">Category: <strong>{{ $orderDetail->size ?? 'M' }}</strong></p>
-
-                            <!-- Đánh giá sao cho sản phẩm -->
-                            <div class="star-rating">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <input type="radio" name="rating_{{ $orderDetail->product_id }}" value="{{ $i }}" id="star{{ $i }}_{{ $orderDetail->product_id }}">
-                                    <label for="star{{ $i }}_{{ $orderDetail->product_id }}" class="fas fa-star text-warning"></label>
-                                    @endfor
+                            <div class="rating">
+                                @for ($i = 5; $i >= 1; $i--)
+                                <input type="radio" name="rating_{{ $orderDetail->product_id }}" value="{{ $i }}" id="star{{ $i }}_{{ $orderDetail->product_id }}">
+                                <label for="star{{ $i }}_{{ $orderDetail->product_id }}"></label>
+                                @endfor
                             </div>
-
                             <!-- Nội dung đánh giá cho sản phẩm -->
                             <div class="form-group">
                                 <label for="review-content-{{ $orderDetail->product_id }}">Nội dung đánh giá</label>
@@ -156,10 +137,9 @@
                         </div>
                     </div>
                     @endforeach
-
                     <!-- Nút gửi đánh giá -->
                     <div class="form-group text-center mt-4">
-                        <input type="hidden" name="order_id" value="{{ $order->order_id }}">
+                        <!-- <input type="hidden" name="order_id" value="{{ $order->order_id }}"> -->
                         <button type="submit" class="btn btn-primary btn-lg">GỬI ĐÁNH GIÁ <i class="fas fa-paper-plane ml-2"></i></button>
                     </div>
                 </form>
@@ -167,13 +147,50 @@
         </div>
     </div>
 </div>
-
-
 @endif
 @endforeach
 @endsection
 @section('script-link-css')
 <style>
+    .delivery-success {
+        color: #28a745;
+        /* Màu xanh lá cho thành công */
+        font-weight: bold;
+    }
+
+    .order-complete {
+        color: #007bff;
+        /* Màu xanh dương cho hoàn thành */
+        font-weight: bold;
+    }
+
+    .rating {
+        display: inline-block;
+    }
+
+    .rating input {
+        display: none;
+    }
+
+    .rating label {
+        float: right;
+        cursor: pointer;
+        color: #ccc;
+        transition: color 0.3s;
+    }
+
+    .rating label:before {
+        content: '\2605';
+        font-size: 30px;
+    }
+
+    .rating input:checked~label,
+    .rating label:hover,
+    .rating label:hover~label {
+        color: #ffc107;
+        transition: color 0.3s;
+    }
+
     .badge-danger {
         background-color: #dc3545;
         color: #fff;
