@@ -106,17 +106,19 @@
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Details of Dohioue Wall Clock</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              <h4 class="modal-title text-truncate-1">Details of {{ $product->name_product }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                               <table class="table">
                                 <tbody>
                                   <tr data-dt-row="2" data-dt-column="2">
-                                    <td>Product:</td>
-                                    <td>
+                                    <td class="col-3">Product:</td>
+                                    <td class="col-9">
                                       <div class="d-flex justify-content-start align-items-center product-name">
                                         <div class="avatar-wrapper">
-                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary"><img src="{{ asset( $product->image_name) }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;"></div>
+                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
+                                            <img src="{{ asset($product->image_name) }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                          </div>
                                         </div>
                                         <div class="d-flex flex-column">
                                           <h6 class="mb-0 text-truncate-1">{{ $product->name_product }}</h6>
@@ -126,24 +128,28 @@
                                     </td>
                                   </tr>
                                   <tr data-dt-row="2" data-dt-column="3">
-                                    <td>Category:</td>
-                                    <td>
+                                    <td class="col-3">Category:</td>
+                                    <td class="col-9">
                                       <span class="badge bg-primary">{{ $product->category_name }}</span>
                                       <span class="text-muted"> &#8594; </span>
                                       <span class="badge bg-secondary">{{ $product->sub_category_name }}</span>
                                     </td>
                                   </tr>
                                   <tr data-dt-row="2" data-dt-column="6">
-                                    <td>Price:</td>
-                                    <td><span>${{ number_format($product->price, 2) }}</span></td>
+                                    <td class="col-3">Price:</td>
+                                    <td class="col-9"><span>${{ number_format($product->price, 2) }}</span></td>
                                   </tr>
                                   <tr data-dt-row="2" data-dt-column="7">
-                                    <td>Quantity:</td>
-                                    <td><span>804</span></td>
+                                    <td class="col-3">Quantity:</td>
+                                    <td class="col-9"><span>{{ $product->quantity }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="1">
+                                    <td class="col-3">Weight:</td>
+                                    <td class="col-9"><span>{{ $product->weight }} Grams (g)</span></td>
                                   </tr>
                                   <tr data-dt-row="2" data-dt-column="8">
-                                    <td>Status:</td>
-                                    <td class="bg-light rounded">
+                                    <td class="col-3">Status:</td>
+                                    <td class="col-8 bg-light rounded">
                                       @if ($product->status == 1)
                                       <span class="badge bg-label-success">Active</span>
                                       @else
@@ -151,20 +157,17 @@
                                       @endif
                                     </td>
                                   </tr>
-                                  <tr data-dt-row="2" data-dt-column="9">
-                                    <td>Created At:</td>
-                                    <td><span>{{ date('D, d M Y', strtotime($product->created_at)) }}</span></td>
-                                  </tr>
                                   <tr data-dt-row="2" data-dt-column="10">
-                                    <td>Create By:</td>
-                                    <td><span>{{ $product->staff_id }}</span></td>
+                                    <td class="col-3">Create By:</td>
+                                    <td class="col-9"><span>{{ $product->staff_full_name }}</span></td>
                                   </tr>
-                                  <tr data-dt-row="2" data-dt-column="11">
-                                    <td>Channel ID:</td>
-                                    <td><span>{{ $product->channel_id }}</span></td>
+                                  <tr data-dt-row="2" data-dt-column="9">
+                                    <td class="col-3">Created At:</td>
+                                    <td class="col-9"><span>{{ date('D, d M Y', strtotime($product->created_at)) }}</span></td>
                                   </tr>
                                 </tbody>
                               </table>
+
                             </div>
                           </div>
                         </div>
@@ -174,9 +177,6 @@
                   @endforeach
                 </tbody>
               </table>
-              <script>
-    new DataTable('#example');
-</script>
             </div>
           </div>
         </div>
@@ -185,10 +185,6 @@
     </div>
   </div>
   <!-- / Content -->
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
-
-
   <div class="content-backdrop fade"></div>
 </div>
 <!-- Content wrapper -->

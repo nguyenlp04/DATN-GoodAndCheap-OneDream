@@ -43,7 +43,17 @@
                 <!-- Price -->
                 <div class="mb-6">
                   <label class="form-label" for="ecommerce-product-price">Price</label>
-                  <input type="number" class="form-control" id="ecommerce-product-price" placeholder="Product title" name="price" aria-label="Product price">
+                  <input type="number" class="form-control" id="ecommerce-product-price" placeholder="Price" name="price" aria-label="Product price">
+                </div>
+                <!-- Quantity -->
+                <div class="mb-6">
+                  <label class="form-label" for="ecommerce-product-quantity">Quantity</label>
+                  <input type="number" class="form-control" id="ecommerce-product-quantity" placeholder="Quantity" name="quantity" aria-label="Product quantity">
+                </div>
+                <!-- Weight -->
+                <div class="mb-6">
+                  <label class="form-label" for="ecommerce-product-weight">Weight (g)</label>
+                  <input type="number" class="form-control" id="ecommerce-product-weight" placeholder="Weight (g)" name="weight" aria-label="Product weight">
                 </div>
                 <!-- Description -->
                 <div>

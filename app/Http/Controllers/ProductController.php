@@ -24,13 +24,16 @@ class ProductController extends Controller
         ->leftJoin('photo_gallery', 'products.product_id', '=', 'photo_gallery.product_id')
         ->leftJoin('sub_categories', 'products.sub_category_id', '=', 'sub_categories.sub_category_id')
         ->leftJoin('categories', 'sub_categories.category_id', '=', 'categories.category_id')
+        ->leftJoin('staffs', 'products.staff_id', '=', 'staffs.staff_id')
         ->select(
             'products.*', 
             DB::raw('MIN(photo_gallery.image_name) as image_name'), 
             'categories.name_category as category_name', 
-            'sub_categories.name_sub_category as sub_category_name'
+            'sub_categories.name_sub_category as sub_category_name',
+            'staffs.full_name as staff_full_name'
         )
         ->where('products.is_delete', '=', '0')
+        ->whereNotNull('products.staff_id')
         ->groupBy('products.product_id')
         ->get();
     
@@ -77,6 +80,8 @@ class ProductController extends Controller
                 'images.*' => 'required|max:2048',
                 'productTitle' => 'required|string|max:255',
                 'price' => 'required|numeric|min:0',
+                'quantity' => 'required|numeric|min:0',
+                'weight' => 'required|numeric|min:0',
                 'description' => 'required|string|max:255',
                 'category_id' => 'required|integer',
                 'subcategory_id' => 'integer',
@@ -89,12 +94,16 @@ class ProductController extends Controller
             $productData = [
                 'staff_id' => Auth::id(),
                 'sub_category_id' => $validatedData['subcategory_id'],
-                'channel_id' => 1,
+                'channel_id' => NULL,
                 'name_product' => $validatedData['productTitle'],
                 'price' => $validatedData['price'],
+                'quantity' => $validatedData['quantity'],
+                'weight' => $validatedData['weight'],
                 'data' => json_encode([
                     'productTitle' => $validatedData['productTitle'],
                     'price' => $validatedData['price'],
+                    'quantity' => $validatedData['quantity'],
+                    'weight' => $validatedData['weight'],
                     'category_id' => $validatedData['category_id'],
                     'subcategory_id' => $validatedData['subcategory_id'],
                     'description' => $validatedData['description'],

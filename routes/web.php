@@ -179,19 +179,19 @@ Route::prefix('cart')->group(function () {
 // Grouped routes for Trash
 Route::prefix('trash')->group(function () {
     Route::get('/user', function () {
-        return view('admin.trash.user');
+        return view('admin.index');
     });
     Route::get('/product', function () {
-        return view('admin.trash.product');
+        return view('admin.index');
     });
     Route::get('/channel', function () {
-        return view('admin.trash.channel');
+        return view('admin.index');
     });
     Route::get('/category', function () {
-        return view('admin.trash.category');
+        return view('admin.index');
     });
     Route::get('/blog', function () {
-        return view('admin.trash.blog');
+        return view('admin.index');
     });
     
 });
