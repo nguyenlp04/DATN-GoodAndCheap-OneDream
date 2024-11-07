@@ -26,7 +26,7 @@ class CategoryController extends Controller
         ->selectRaw('GROUP_CONCAT(DISTINCT subcategory_attributes.attributes_name ORDER BY sub_categories.sub_category_id) AS attribute_names') 
         ->selectRaw('staffs.full_name AS staff_full_name')
         ->leftJoin('sub_categories', 'categories.category_id', '=', 'sub_categories.category_id')
-        ->leftJoin('subcategory_attributes', 'categories.category_id', '=', 'subcategory_attributes.sub_category_id')
+        ->leftJoin('subcategory_attributes', 'categories.category_id', '=', 'subcategory_attributes.category_id')
         ->leftJoin('staffs', 'categories.staff_id', '=', 'staffs.staff_id') 
         ->where('categories.is_delete', '=', '0')
         ->groupBy('categories.category_id')  
