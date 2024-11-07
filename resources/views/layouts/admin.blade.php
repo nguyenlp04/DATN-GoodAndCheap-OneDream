@@ -271,6 +271,25 @@
                 </ul>
             </li>
 
+            <!-- Trash -->
+            <li class="menu-item {{ Request::is('trash/*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bxl-paypal"></i>
+                    <div data-i18n="Trash">Payment</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
+                        <a href="{{ url('payment/method') }}" class="menu-link">
+                            <div data-i18n="Payment Method">Payment Method</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
+                        <a href="{{ url('payment/account') }}" class="menu-link">
+                            <div data-i18n="Receiving Account">Receiving Account</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
 

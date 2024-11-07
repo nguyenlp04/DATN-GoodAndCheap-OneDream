@@ -47,7 +47,7 @@
                         <span class="badge bg-info my-1">ID: {{ $product->product_id }}</span>
                       </div>
                       <div>
-                        <span class="badge bg-info my-1">$ {{ number_format($product->price, 2) }}</span>
+                        <span class="badge bg-info my-1">${{ number_format($product->price, 2) }}</span>
                       </div>
                       <div>
                         <span class="badge bg-info my-1"> {{ date('D, d M Y', strtotime($product->created_at)) }}</span>
@@ -56,7 +56,7 @@
                     <td>
                       <div class="d-flex align-items-center">
                         <div style="min-width: 80px; max-width: 80px;">
-                          <img src="{{ asset( $product->image_name) }}" alt="Image Product" class="rounded img-fluid" style="width: 100%; height: auto; object-fit: cover;">
+                          <img src="{{ asset( $product->image_name) }}" alt="Image Product" class="rounded img-fluid" style="width: 100%; object-fit: cover;">
                         </div>
                         <div class="flex-grow-1 d-flex align-items-center">
                           <p class="mb-0 text-truncate-3 ms-3 w-100">{{ $product->name_product }}</p>
@@ -70,9 +70,9 @@
                     </td>
                     <td class="bg-light rounded">
                       @if ($product->status == 1)
-                      <span class="badge bg-success">Active</span>
+                      <span class="badge bg-label-success">Active</span>
                       @else
-                      <span class="badge bg-danger">Deactive</span>
+                      <span class="badge bg-label-danger">Deactive</span>
                       @endif
                     </td>
                     <td>
@@ -82,7 +82,7 @@
                             <i class="bx bx-dots-vertical-rounded"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li>
+                            <li data-bs-toggle="modal" data-bs-target="#modal{{ $product->product_id }}">
                               <a class="dropdown-item" href="#"><span><i class="fa-solid fa-eye me-1"></i></span>View</a>
                             </li>
                             <li>
@@ -102,11 +102,81 @@
                           </ul>
                         </div>
                       </div>
+                      <div class="modal fade" id="modal{{ $product->product_id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $product->product_id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Details of Dohioue Wall Clock</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <table class="table">
+                                <tbody>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td>Product:</td>
+                                    <td>
+                                      <div class="d-flex justify-content-start align-items-center product-name">
+                                        <div class="avatar-wrapper">
+                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary"><img src="{{ asset( $product->image_name) }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;"></div>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                          <h6 class="mb-0 text-truncate-1">{{ $product->name_product }}</h6>
+                                          <small class="text-truncate-1">{{ $product->description }}</small>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="3">
+                                    <td>Category:</td>
+                                    <td>
+                                      <span class="badge bg-primary">{{ $product->category_name }}</span>
+                                      <span class="text-muted"> &#8594; </span>
+                                      <span class="badge bg-secondary">{{ $product->sub_category_name }}</span>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="6">
+                                    <td>Price:</td>
+                                    <td><span>${{ number_format($product->price, 2) }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="7">
+                                    <td>Quantity:</td>
+                                    <td><span>804</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="8">
+                                    <td>Status:</td>
+                                    <td class="bg-light rounded">
+                                      @if ($product->status == 1)
+                                      <span class="badge bg-label-success">Active</span>
+                                      @else
+                                      <span class="badge bg-label-danger">Deactive</span>
+                                      @endif
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="9">
+                                    <td>Created At:</td>
+                                    <td><span>{{ date('D, d M Y', strtotime($product->created_at)) }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="10">
+                                    <td>Create By:</td>
+                                    <td><span>{{ $product->staff_id }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="11">
+                                    <td>Channel ID:</td>
+                                    <td><span>{{ $product->channel_id }}</span></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   @endforeach
                 </tbody>
               </table>
+              <script>
+    new DataTable('#example');
+</script>
             </div>
           </div>
         </div>
@@ -115,6 +185,8 @@
     </div>
   </div>
   <!-- / Content -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
 
 
   <div class="content-backdrop fade"></div>
