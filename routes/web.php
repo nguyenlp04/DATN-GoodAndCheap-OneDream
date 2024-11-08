@@ -165,6 +165,4 @@ Route::prefix('partners')->name('partners.')->group(function () {
     Route::delete('forceDelete/{id}/', [PartnerProductController::class, 'forceDelete'])->name('forceDelete');
     Route::patch('/toggleStatus/{id}', [PartnerProductController::class, 'toggleStatus'])->name('toggleStatus');
 });
-Route::get('/partner/profile/', function () {
-    return view('partner.profiles.profile_partners');
-});
+Route::resource('channels', ChannelController::class);
