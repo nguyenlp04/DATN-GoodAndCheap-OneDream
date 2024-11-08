@@ -268,12 +268,6 @@
 
             @endsection
             @section('script-link-css')
-
-            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-            <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
-
-            
-
             <script>
                 document.getElementById('btnBrowse').addEventListener('click', function() {
                     document.getElementById('fileInput').click();

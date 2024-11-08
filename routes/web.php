@@ -166,3 +166,25 @@ Route::prefix('partners')->name('partners.')->group(function () {
     Route::patch('/toggleStatus/{id}', [PartnerProductController::class, 'toggleStatus'])->name('toggleStatus');
 });
 Route::resource('channels', ChannelController::class);
+
+
+
+// Grouped routes for Trash
+Route::prefix('trash')->group(function () {
+    Route::get('/user', function () {
+        return view('admin.index');
+    });
+    Route::get('/product', function () {
+        return view('admin.index');
+    });
+    Route::get('/channel', function () {
+        return view('admin.index');
+    });
+    Route::get('/category', function () {
+        return view('admin.index');
+    });
+    Route::get('/blog', function () {
+        return view('admin.index');
+    });
+    
+});
