@@ -13,11 +13,13 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
     return view('home');
 });
+Route::post('/submit-review', [ReviewController::class, 'store'])->name('submit.review');
 
 // Route::get('/home', function () {
 //     return view('home');

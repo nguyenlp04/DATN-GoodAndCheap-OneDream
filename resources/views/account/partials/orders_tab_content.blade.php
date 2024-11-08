@@ -59,16 +59,16 @@
         <h5>Total: <span class="text-danger">₫{{ number_format($order->price, 0, ',', '.') }}</span></h5>
     </div>
     <div class="d-flex justify-content-start mt-2">
-        @if ($order->status == 'completed')
+        @if ($order->status == 'completed' && $order->is_reviewed != 'reviewed')
         <button type="button" class="btn btn-outline-secondary mr-2" data-toggle="modal" data-target="#review-modal-{{ $order->order_id }}">
             Đánh giá sản phẩm
         </button>
         @endif
+
         <button class="btn btn-outline-secondary mr-2">Contact Seller</button>
         <button class="btn btn-outline-secondary">Buy Again</button>
     </div>
 </div>
-
 @endforeach
 
 <!-- Review Modal -->

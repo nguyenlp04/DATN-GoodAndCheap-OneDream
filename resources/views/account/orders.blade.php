@@ -24,6 +24,11 @@
                     <div class="col-md-8 col-lg-9">
                         <div class="tab-content">
                             <div class="container">
+                                @if(session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                                @endif
 
                                 <!-- Tab Navigation -->
                                 <ul class="nav nav-pills" id="orderStatusTab" role="tablist">
@@ -98,7 +103,7 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
 @foreach ($orders as $order)
-@if ($order->status == 'completed')
+@if ($order->status == 'completed' && $order->is_reviewed != 'reviewed')
 <!-- Modal -->
 <div class="modal fade" id="review-modal-{{ $order->order_id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -110,14 +115,10 @@
 
                 <h5 class="text-center mb-4">Đánh giá sản phẩm</h5>
 
-                <form action="" method="POST">
-                    @csrf
-                    @foreach ($order->order_details as $orderDetail)
+                <form action="{{ route('submit.review') }}" method="POST"> @csrf @foreach ($order->order_details as $orderDetail)
                     <div class="d-flex align-items-start mb-4">
                         <!-- Ảnh sản phẩm -->
-                        <img src="{{ asset('storage/' . $orderDetail->first_image) }}" alt="Tên sản phẩm"
-                            class="rounded shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
-
+                        <img src="{{ asset( $orderDetail->first_image) }}" alt="Tên sản phẩm" class="rounded shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
                         <!-- Thông tin sản phẩm -->
                         <div class="ml-3" style="flex: 1;">
                             <h6 class="mb-1" style="font-size: 1.2rem;">{{ $orderDetail->name_product }}</h6>
@@ -129,19 +130,14 @@
                                 <label for="star{{ $i }}_{{ $orderDetail->product_id }}"></label>
                                 @endfor
                             </div>
-                            <!-- Nội dung đánh giá cho sản phẩm -->
+                            @if ($errors->has("rating_{$orderDetail->product_id}")) <div class="text-danger">{{ $errors->first("rating_{$orderDetail->product_id}") }}</div> @endif <!-- Nội dung đánh giá cho sản phẩm -->
                             <div class="form-group">
                                 <label for="review-content-{{ $orderDetail->product_id }}">Nội dung đánh giá</label>
-                                <textarea id="review-content-{{ $orderDetail->product_id }}" name="review_content_{{ $orderDetail->product_id }}" class="form-control shadow-sm" rows="2" placeholder="Viết nhận xét của bạn ở đây..."></textarea>
+                                <textarea id="review-content-{{ $orderDetail->product_id }}" name="review_content_{{ $orderDetail->product_id }}" class="form-control shadow-sm" rows="2" placeholder="Viết nhận xét của bạn ở đây..."></textarea> @if ($errors->has("review_content_{$orderDetail->product_id}")) <div class="text-danger">{{ $errors->first("review_content_{$orderDetail->product_id}") }}</div> @endif
                             </div>
                         </div>
-                    </div>
-                    @endforeach
-                    <!-- Nút gửi đánh giá -->
-                    <div class="form-group text-center mt-4">
-                        <!-- <input type="hidden" name="order_id" value="{{ $order->order_id }}"> -->
-                        <button type="submit" class="btn btn-primary btn-lg">GỬI ĐÁNH GIÁ <i class="fas fa-paper-plane ml-2"></i></button>
-                    </div>
+                    </div> @endforeach <!-- Nút gửi đánh giá -->
+                    <div class="form-group text-center mt-4"> <input type="hidden" name="order_id" value="{{ $order->order_id }}"> <button type="submit" class="btn btn-primary btn-lg">GỬI ĐÁNH GIÁ <i class="fas fa-paper-plane ml-2"></i></button> </div>
                 </form>
             </div>
         </div>
@@ -151,6 +147,23 @@
 @endforeach
 @endsection
 @section('script-link-css')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> @if (session('alert')) <script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    Toast.fire({
+        icon: "{{ session('alert')['type'] }}",
+        title: "{{ session('alert')['message'] }}"
+    });
+</script> @endif
 <style>
     .delivery-success {
         color: #28a745;

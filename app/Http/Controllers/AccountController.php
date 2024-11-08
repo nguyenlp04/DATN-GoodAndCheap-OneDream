@@ -27,7 +27,7 @@ class AccountController extends Controller
         $orders = DB::table('orders')
             ->join('payment_method', 'orders.payment_method_id', '=', 'payment_method.payment_method_id')
             ->join('users', 'orders.user_id', '=', 'users.user_id')
-            ->select('orders.*', 'payment_method.content as payment_method_name', 'users.full_name')
+            ->select('orders.*', 'payment_method.content as payment_method_name', 'users.full_name', 'orders.is_reviewed') // Lấy thêm cột is_reviewed
             ->where('orders.user_id', $userId)
             ->get();
 
