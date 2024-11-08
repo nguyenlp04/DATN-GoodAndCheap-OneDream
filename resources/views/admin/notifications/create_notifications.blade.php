@@ -1,6 +1,43 @@
 @extends('layouts.admin')
 @section('content')
 
+<style>
+    /* Ẩn chữ trong input file */
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.custom-file-upload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-label {
+  padding: 10px 20px;
+  background-color: #6ca0d8;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.custom-label:hover {
+  background-color: #0056b3;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.form-label:hover {
+  background-color: #0056b3;
+}
+
+</style>
     <!-- Content wrapper -->
     <div class="content-wrapper">
         <!-- Content -->
@@ -59,10 +96,16 @@
                                         <textarea name="content" class="form-control" placeholder="Enter notification content"></textarea>
                                     </div>
 
-                                    <div class="mb-3">
+                                    {{-- <div class="mb-3 custom-file-upload">
                                         <label class="form-label">notification Image:</label>
-                                        <input type="file" name="image" class="form-control">
-                                    </div>
+                                        <input type="file" name="image" class="form-control" st>
+                                    </div> --}}
+                                    <div class="mb-3 custom-file-upload">
+                                        <label for="file-upload" class="form-label custom-label">Choose File</label>
+                                        <span class="file-name">No file chosen</span>
+                                        <input id="file-upload" type="file" name="image" class="form-control" onchange="updateFileName(this)">
+                                      </div>
+                                      
 
                                     <button type="submit" class="btn btn-primary">Create notification</button>
                                 </form>
@@ -74,24 +117,14 @@
                 </div>
             </div>
         </div>
-        <!-- / Content -->
-
-        <!-- Footer -->
-        <footer class="content-footer footer bg-footer-theme">
-            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                    ©
-                    <script>
-                        document.write(new Date().getFullYear());
-                    </script>
-                    , made with ❤️ by
-                    <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
-                </div>
-            </div>
-        </footer>
-        <!-- / Footer -->
-
         <div class="content-backdrop fade"></div>
-    <!-- Content wrapper -->
 </div>
+
+<script>
+    function updateFileName(input) {
+  const fileName = input.files.length > 0 ? input.files[0].name : "No file chosen";
+  document.querySelector(".file-name").textContent = fileName;
+}
+
+</script>
 @endsection
