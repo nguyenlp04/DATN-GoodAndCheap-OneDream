@@ -167,9 +167,6 @@ Route::prefix('partners')->name('partners.')->group(function () {
 });
 Route::resource('channels', ChannelController::class);
 
-
-
-// Grouped routes for Trash
 Route::prefix('trash')->group(function () {
     Route::get('/user', function () {
         return view('admin.index');
@@ -186,5 +183,4 @@ Route::prefix('trash')->group(function () {
     Route::get('/blog', function () {
         return view('admin.index');
     });
-    
 });
