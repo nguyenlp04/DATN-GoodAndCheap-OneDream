@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Channel;
+use App\Models\Product;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PartnerProductController extends Controller
 {
@@ -12,8 +15,16 @@ class PartnerProductController extends Controller
      */
     public function index()
     {
-        return view('partner.products.list_products');
+        $user = Auth::user()->user_id;
+        $check = DB::table('channels')->where('user_id', $user)->first();
+        $channel_id = $check->channel_id;
+        $products_channels = Product::with('firstImage')->where('channel_id', $channel_id)->get();
+        // dd($channel_id);
+        return view('partner.products.list_products', compact('products_channels'));
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,10 +45,7 @@ class PartnerProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.

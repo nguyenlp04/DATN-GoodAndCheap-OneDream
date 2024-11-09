@@ -29,7 +29,6 @@
             font-size: 14px;
             color: #888;
         }
-       
     </style>
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
@@ -42,47 +41,51 @@
 
     <div class="row">
         @foreach($channels as $channel)
-            <div class="col-md-12 mb-4">
-                <div class="channel-info d-flex align-items-center p-3 border rounded-2 shadow-sm bg-light">
-                    <!-- Channel Image -->
-                    <img src="{{ asset('storage/' . $channel->image_channel) }}" alt="{{ $channel->name_channel }}" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                <div class="col-md-12 mb-4">
+            <a href="{{ route('channels.show', ['channel' => $channel->channel_id]) }}">
 
-                    <!-- Channel Details -->
-                    <div class="flex-grow-1">
-                        <div class="channel-name fw-bold">{{ $channel->name_channel }}</div>
-                        <div class="text-muted">{{ $channel->username }}</div>
-                        <div class="text-muted">
-                            {{ $channel->followers_count }} 2,3K Người Theo Dõi |
+                    <div class="channel-info d-flex align-items-center p-3 border rounded-2 shadow-sm bg-light">
+                        <!-- Channel Image -->
+                        <img src="{{ asset('storage/' . $channel->image_channel) }}" alt="{{ $channel->name_channel }}" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+    
+                        <!-- Channel Details -->
+                        <div class="flex-grow-1">
+                            <div class="channel-name fw-bold fs-5 text-primary">{{ $channel->name_channel }}</div>
+            </a>
+                            <div class="text-muted">{{ $channel->username }}</div>
+                            <div class="text-muted ">
+                                {{ $channel->followers_count }} 2,3K Người Theo Dõi | 
+                                   <span class="text-danger">
+                                    <i class="bi bi-star-fill text-warning"></i> {{ $channel->rating }}  123 Đánh Giá   </span> 
+                            </div>
+                            <div class="d-flex gap-2 mt-2">
+                                <button class="btn btn-danger mr-2 btn-sm">Follow</button>
+                                <button class="btn btn-primary btn-sm">Message</button>
+                            </div>
+                           
                         </div>
-
-                        <div class="d-flex gap-2 mt-2">
-                            <button class="btn btn-danger mr-2 btn-sm">Follow</button>
-                            <button class="btn btn-secondary btn-sm">Message</button>
+    
+                        <!-- Stats Section -->
+                        <div class="d-flex align-items-end" >
+                            <div class="text-danger mb-1 me-2 mr-4">
+                                <i class="bi bi-box-seam"></i> {{ $channel->product_count }} 123 Sản Phẩm    |
+                            </div>
+                            
+                            <div class="text-danger mb-1 me-2 mr-4">
+                                <i class="bi bi-chat-dots"></i> {{ $channel->response_rate }}123 % Tỉ Lệ Phản Hồi   |
+                            </div>
+                            <div class="text-danger mb-1 me-2 ">
+                                <i class="bi bi-clock"></i> Trong vài giờ
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Stats Section -->
-                    <div class="d-flex align-items-end" >
-                        <div class="text-danger mb-1 me-2 mr-5">
-                            <i class="bi bi-box-seam"></i> {{ $channel->product_count }} 123 Sản Phẩm    |
-                        </div>
-                        <div class="text-danger mb-1 me-2 mr-5">
-                            <i class="bi bi-star-fill"></i> {{ $channel->rating }}  123 Đánh Giá    |
-                        </div>
-                        <div class="text-danger mb-1 me-2 mr-5">
-                            <i class="bi bi-chat-dots"></i> {{ $channel->response_rate }}123 % Tỉ Lệ Phản Hồi   |
-                        </div>
-                        <div class="text-danger mb-1 me-2 mr-5">
-                            <i class="bi bi-clock"></i> Trong vài giờ
-                        </div>
-                    </div>
+            
                 </div>
-            </div>
         @endforeach
             <div class="container for-you">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
-                        <h2 class="title">Recommendation For You</h2><!-- End .title -->
+                        <h2 class="title">My product</h2><!-- End .title -->
                     </div><!-- End .heading-left -->
         
                     <div class="heading-right">
@@ -97,7 +100,7 @@
                                 <figure class="product-media">
                                     <span class="product-label label-circle label-sale">Sale</span>
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-10.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-10.jpg') }}"
                                             alt="Product image" class="product-image">
                                     </a>
         
@@ -150,7 +153,8 @@
                             <div class="product product-2">
                                 <figure class="product-media">
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-11.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-11.jpg') }}"
+
                                             alt="Product image" class="product-image">
                                     </a>
         
@@ -190,9 +194,11 @@
                                 <figure class="product-media">
                                     <span class="product-label label-circle label-new">New</span>
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-12.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-12.jpg') }}"
+                                        
                                             alt="Product image" class="product-image">
-                                        <img src="assets/images/demos/demo-4/products/product-12-2.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-12.2.jpg') }}"
+
                                             alt="Product image" class="product-image-hover">
                                     </a>
         
@@ -240,7 +246,8 @@
                             <div class="product product-2">
                                 <figure class="product-media">
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-13.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-13.jpg') }}"
+
                                             alt="Product image" class="product-image">
                                     </a>
         
@@ -280,7 +287,8 @@
                             <div class="product product-2">
                                 <figure class="product-media">
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-14.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-14.jpg') }}"
+
                                             alt="Product image" class="product-image">
                                     </a>
         
@@ -319,7 +327,8 @@
                             <div class="product product-2">
                                 <figure class="product-media">
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-15.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-15.jpg') }}"
+
                                             alt="Product image" class="product-image">
                                     </a>
         
@@ -368,7 +377,9 @@
                                 <figure class="product-media">
                                     <span class="product-label label-circle label-sale">Sale</span>
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-16.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-16.jpg') }}"
+
+
                                             alt="Product image" class="product-image">
                                     </a>
         
@@ -421,7 +432,9 @@
                             <div class="product product-2">
                                 <figure class="product-media">
                                     <a href="product.html">
-                                        <img src="assets/images/demos/demo-4/products/product-17.jpg"
+                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-17.jpg') }}"
+
+
                                             alt="Product image" class="product-image">
                                     </a>
         

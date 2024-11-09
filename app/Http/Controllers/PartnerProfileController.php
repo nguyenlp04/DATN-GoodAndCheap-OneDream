@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Channel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PartnerProfileController extends Controller
 {
@@ -11,7 +13,13 @@ class PartnerProfileController extends Controller
      */
     public function index()
     {
-        //
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to view your channels.');
+        }
+        $user = Auth::user();
+        $profiles = Channel::where('user_id', $user->user_id)->get();
+
+        return view('partner.profiles.profile_partners', compact('profiles'));
     }
 
     /**
@@ -59,6 +67,8 @@ class PartnerProfileController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $channels = Channel::findOrFail($id);
+        $channels->delete();
+        return redirect()->route('partner.profiles.index')->with('success', 'Channel deleted successfully.');
     }
 }

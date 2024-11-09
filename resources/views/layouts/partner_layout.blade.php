@@ -145,8 +145,8 @@
 
           <ul class="menu-inner py-1">
            <!-- Dashboard -->
-            <li class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">
-                <a href="{{ url('dashboard') }}" class="menu-link">
+            <li class="menu-item {{ Request::is('partners/dashboard') ? 'active' : '' }}">
+                <a href="{{ url('partners/dashboard') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
                     <div data-i18n="Analytics">Dashboard</div>
                 </a>
@@ -182,6 +182,12 @@
                     <div data-i18n="Analytics">Order </div>
                 </a>
             </li>
+            <li class="menu-item {{ Request::is('partners/profile') ? 'active' : '' }}">
+              <a href="{{ url('partners/profile') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-package"></i>
+                  <div data-i18n="Analytics">My Profile </div>
+              </a>
+          </li>
 
             <!-- Payment -->
             <li class="menu-item {{ Request::is('payment/*') ? 'active open' : '' }}">
@@ -213,16 +219,7 @@
                 <div data-i18n="Support">Support</div>
               </a>
             </li>
-            <li class="menu-item">
-              <a
-                href="https://OneDream.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                target="_blank"
-                class="menu-link"
-              >
-                <i class="menu-icon tf-icons bx bx-file"></i>
-                <div data-i18n="Documentation">My Profile</div>
-              </a>
-            </li>
+            
           </ul>
         </aside>
         <!-- / Menu -->

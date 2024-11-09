@@ -154,10 +154,16 @@ Route::prefix('partner')->group(function () {
     Route::resource('profile', PartnerProfileController::class);
 });
 Route::prefix('partners')->name('partners.')->group(function () {
-    Route::resource('/', PartnerController::class);
+    // Route::resource('/', PartnerController::class);
+    Route::get('dashboard', function () {
+        return view('partner.dashboard');
+    });
+    Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
     // Route::resource('/orders/', OrderController::class);
     // Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
 
+
+    // ------ ProductPartnerController ------
     Route::resource('/product/', PartnerProductController::class);
     Route::get('/trashed', [PartnerProductController::class, 'trashed'])->name('trashed');
     Route::delete('/destroy/{id}', [PartnerProductController::class, 'destroy'])->name('destroy');

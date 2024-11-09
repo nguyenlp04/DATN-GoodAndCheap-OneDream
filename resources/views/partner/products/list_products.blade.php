@@ -16,7 +16,7 @@
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
       <!-- Search -->
       <div class="navbar-nav align-items-center">
-        <div class="nav-item d-flex align-items-center">
+        <div class="nav-item d-flex ali gn-items-center">
           <i class="bx bx-search fs-4 lh-0"></i>
           <input
             type="text"
@@ -137,62 +137,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Tiger Nixon</td>
-                      <td>System Architect</td>
-                      <td>Edinburgh</td>
-                      <td>61</td>
-                      <td>2011-04-25</td>
-                      <td>$320,800</td>
-                    </tr>
-                    <tr>
-                      <td>Garrett Winters</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>63</td>
-                      <td>2011-07-25</td>
-                      <td>$170,750</td>
-                    </tr>
-                    <tr>
-                      <td>Ashton Cox</td>
-                      <td>Junior Technical Author</td>
-                      <td>San Francisco</td>
-                      <td>66</td>
-                      <td>2009-01-12</td>
-                      <td>$86,000</td>
-                    </tr>
-                    <tr>
-                      <td>Cedric Kelly</td>
-                      <td>Senior Javascript Developer</td>
-                      <td>Edinburgh</td>
-                      <td>22</td>
-                      <td>2012-03-29</td>
-                      <td>$433,060</td>
-                    </tr>
-                    <tr>
-                      <td>Airi Satou</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>33</td>
-                      <td>2008-11-28</td>
-                      <td>$162,700</td>
-                    </tr>
-                    <tr>
-                      <td>Brielle Williamson</td>
-                      <td>Integration Specialist</td>
-                      <td>New York</td>
-                      <td>61</td>
-                      <td>2012-12-02</td>
-                      <td>$372,000</td>
-                    </tr>
-                    <tr>
-                      <td>Donna Snider</td>
-                      <td>Customer Support</td>
-                      <td>New York</td>
-                      <td>27</td>
-                      <td>2011-01-25</td>
-                      <td>$112,000</td>
-                    </tr>
+                    @foreach($products_channels as $product)
+            <tr>
+                <td>{{ $product->name_product }}</td>
+                {{-- <td>{{ $product->category->name_category }}</td> <!-- Nếu có relationship với category --> --}}
+                <td>${{ $product->price }}</td>
+                <td>{{ $product->stock }}</td>
+                <td>{{ $product->created_at->format('Y-m-d') }}</td>
+                <td>
+                    {{-- <a href="{{ route('product.edit', $product->id) }}" class="btn btn-primary">Edit</a> --}}
+                    {{-- <a href="{{ route('product.show', $product->id) }}" class="btn btn-info">View</a> --}}
+                </td>
+            </tr>
+        @endforeach
                   </tbody>
                   <tfoot>
                     <tr>
@@ -209,9 +166,9 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
                 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
                 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-                <script>
+                {{-- <script>
                   new DataTable('#example');
-                </script>
+                </script> --}}
                 
               </div>
             </div>

@@ -50,4 +50,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
+    }
 }

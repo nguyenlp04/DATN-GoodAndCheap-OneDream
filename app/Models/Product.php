@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $table = 'products';
     protected $primaryKey = 'product_id';
-    protected $fillable = ['name', 'description', 'price', 'category_id', 'subcategory_id', 'image', 'created_at'];
+    protected $fillable = ['name', 'channel_id', 'description', 'price', 'category_id', 'subcategory_id', 'image', 'created_at'];
 
     public function category()
     {
@@ -27,5 +27,4 @@ class Product extends Model
     {
         return $this->hasOne(Imgproduct::class, 'product_id');
     }
-
 }

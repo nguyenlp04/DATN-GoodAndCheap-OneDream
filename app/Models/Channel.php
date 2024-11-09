@@ -9,9 +9,14 @@ class Channel extends Model
 {
     use HasFactory;
     protected $table = 'channels';
+    protected $primaryKey = 'channel_id';
     protected $fillable = ['name_channel', 'image_channel', 'address', 'phone_number', 'status', 'user_id'];
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class);
+    }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'channel_id');
     }
 }
