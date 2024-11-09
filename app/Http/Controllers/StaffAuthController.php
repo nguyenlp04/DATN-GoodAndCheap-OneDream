@@ -21,7 +21,7 @@ class StaffAuthController extends Controller
         ]);
 
         if (Auth::guard('staff')->attempt($request->only('email', 'password'))) {
-            return redirect()->intended('staff/dashboard'); // Điều hướng đến dashboard của nhân viên sau khi đăng nhập thành công
+            return redirect()->intended('staff/dashboard');
         }
 
         return back()->withErrors([
@@ -29,9 +29,18 @@ class StaffAuthController extends Controller
         ])->withInput($request->only('email'));
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        // Đăng xuất nhân viên
         Auth::guard('staff')->logout();
+
+        // Hủy session nhân viên
+        // $request->session()->invalidate();
+
+        // Tạo lại session mới sau khi đăng xuất
+        $request->session()->regenerateToken();
+
+        // Chuyển hướng về trang đăng nhập của nhân viên
         return redirect()->route('staff.login');
     }
 }

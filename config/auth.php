@@ -39,6 +39,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            'session' => 'user_session',
         ],
         'api' => [
             'driver' => 'token',
@@ -48,12 +49,14 @@ return [
         'staff' => [
             'driver' => 'session',
             'provider' => 'staffs',
+            'session' => 'staff_session',
         ],
         'staff-api' => [
             'driver' => 'token',
             'provider' => 'staffs',
         ],
     ],
+
     /*
     |--------------------------------------------------------------------------
     | User Providers
