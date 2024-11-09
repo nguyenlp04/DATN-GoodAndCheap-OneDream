@@ -109,17 +109,10 @@
                             </div>
 
                         </div>
-
-
-
-
                         {{-- end noi dung1 --}}
                         <div>
                         </div>
                         <!-- end First column-->
-
-
-
                     </div>
                 </div>
                 <div class="col-12 col-lg-4" data-select2-id="19">
@@ -272,7 +265,7 @@
             <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
             <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
 
-            
+
 
             <script>
                 document.getElementById('btnBrowse').addEventListener('click', function() {

@@ -13,13 +13,14 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
     return view('home');
 });
-Route::post('/submit-review', [ReviewController::class, 'store'])->name('submit.review');
+
 
 // Route::get('/home', function () {
 //     return view('home');
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
+
+    Route::post('/submit-review', [ReviewController::class, 'store'])->name('submit.review');
+    Route::patch('/orders/{order_id}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
 });
 
 require __DIR__ . '/auth.php';

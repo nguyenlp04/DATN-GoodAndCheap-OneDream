@@ -33,63 +33,55 @@
                                 <!-- Tab Navigation -->
                                 <ul class="nav nav-pills" id="orderStatusTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+                                        <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">Tất cả</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="awaiting-payment-tab" data-toggle="tab" href="#awaiting-payment" role="tab" aria-controls="awaiting-payment" aria-selected="false">Awaiting Confirmation</a>
+                                        <a class="nav-link" id="awaiting-confirmation-tab" data-toggle="tab" href="#awaiting-confirmation" role="tab" aria-controls="awaiting-confirmation" aria-selected="false">Chờ xác nhận</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="shipping-tab" data-toggle="tab" href="#shipping" role="tab" aria-controls="shipping" aria-selected="false">Shipping</a>
+                                        <a class="nav-link" id="processing-tab" data-toggle="tab" href="#processing" role="tab" aria-controls="processing" aria-selected="false">Đang xử lý</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="awaiting-delivery-tab" data-toggle="tab" href="#awaiting-delivery" role="tab" aria-controls="awaiting-delivery" aria-selected="false">Awaiting Delivery</a>
+                                        <a class="nav-link" id="shipping-tab" data-toggle="tab" href="#shipping" role="tab" aria-controls="shipping" aria-selected="false">Đang giao</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed</a>
+                                        <a class="nav-link" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Hoàn thành</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="canceled-tab" data-toggle="tab" href="#canceled" role="tab" aria-controls="canceled" aria-selected="false">Canceled</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="returns-tab" data-toggle="tab" href="#returns" role="tab" aria-controls="returns" aria-selected="false">Returns/Refunds</a>
+                                        <a class="nav-link" id="canceled-tab" data-toggle="tab" href="#canceled" role="tab" aria-controls="canceled" aria-selected="false">Đã hủy</a>
                                     </li>
                                 </ul>
                             </div>
                             <!-- Tab Content -->
                             <div class="tab-content mt-4" id="orderStatusTabContent">
-                                <!-- All Tab -->
+                                <!-- Tất cả Tab -->
                                 <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                                     @include('account.partials.orders_tab_content', ['orders' => $orders])
                                 </div>
 
-                                <!-- Awaiting Confirmation Tab -->
-                                <div class="tab-pane fade" id="awaiting-payment" role="tabpanel" aria-labelledby="awaiting-payment-tab">
+                                <!-- Chờ xác nhận Tab -->
+                                <div class="tab-pane fade" id="awaiting-confirmation" role="tabpanel" aria-labelledby="awaiting-confirmation-tab">
                                     @include('account.partials.orders_tab_content', ['orders' => $orders->where('status', 'pending')])
                                 </div>
 
-                                <!-- Shipping Tab -->
-                                <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+                                <!-- Đang xử lý Tab -->
+                                <div class="tab-pane fade" id="processing" role="tabpanel" aria-labelledby="processing-tab">
                                     @include('account.partials.orders_tab_content', ['orders' => $orders->where('status', 'in_progress')])
                                 </div>
 
-                                <!-- Awaiting Delivery Tab -->
-                                <div class="tab-pane fade" id="awaiting-delivery" role="tabpanel" aria-labelledby="awaiting-delivery-tab">
+                                <!-- Đang giao Tab -->
+                                <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
                                     @include('account.partials.orders_tab_content', ['orders' => $orders->where('status', 'shipped')])
                                 </div>
 
-                                <!-- Completed Tab -->
+                                <!-- Hoàn thành Tab -->
                                 <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
                                     @include('account.partials.orders_tab_content', ['orders' => $orders->where('status', 'completed')])
                                 </div>
 
-                                <!-- Canceled Tab -->
+                                <!-- Đã hủy Tab -->
                                 <div class="tab-pane fade" id="canceled" role="tabpanel" aria-labelledby="canceled-tab">
                                     @include('account.partials.orders_tab_content', ['orders' => $orders->where('status', 'canceled')])
-                                </div>
-
-                                <!-- Returns/Refunds Tab -->
-                                <div class="tab-pane fade" id="returns" role="tabpanel" aria-labelledby="returns-tab">
-                                    @include('account.partials.orders_tab_content', ['orders' => $orders->where('status', 'return')])
                                 </div>
                             </div>
                             <!-- </div> -->
@@ -115,7 +107,9 @@
 
                 <h5 class="text-center mb-4">Đánh giá sản phẩm</h5>
 
-                <form action="{{ route('submit.review') }}" method="POST"> @csrf @foreach ($order->order_details as $orderDetail)
+                <form action="{{ route('submit.review') }}" method="POST">
+                    @csrf
+                    @foreach ($order->order_details as $orderDetail)
                     <div class="d-flex align-items-start mb-4">
                         <!-- Ảnh sản phẩm -->
                         <img src="{{ asset( $orderDetail->first_image) }}" alt="Tên sản phẩm" class="rounded shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
@@ -144,10 +138,48 @@
     </div>
 </div>
 @endif
+@if ($order->status == 'completed' && $order->is_reviewed = 'reviewed')
+<div class="modal fade" id="view-review-modal-{{ $order->order_id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-4">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h5 class="text-center mb-4">Xem lại đánh giá sản phẩm</h5>
+
+                <!-- Lặp qua các sản phẩm trong đơn hàng để hiển thị đánh giá -->
+                @foreach ($order->order_details as $orderDetail)
+                <div class="d-flex align-items-start mb-3">
+                    <!-- Ảnh sản phẩm -->
+                    <img src="{{ asset($orderDetail->first_image) }}" alt="Tên sản phẩm"
+                        class="rounded shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                    <!-- Thông tin sản phẩm và đánh giá -->
+                    <div class="ml-3" style="flex: 1;">
+                        <h6>{{ $orderDetail->name_product }}</h6>
+                        <!-- Hiển thị đánh giá sao -->
+                        <div class="rating">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <span class="{{ $i <= $orderDetail->user_rating ? 'fa fa-star text-warning' : '' }}"></span>
+                                @endfor
+                        </div>
+                        <!-- Nội dung đánh giá -->
+                        <p class="mt-2">{{ $orderDetail->user_review_content }}</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @endforeach
 @endsection
 @section('script-link-css')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> @if (session('alert')) <script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+@if (session('alert'))
+<script>
     const Toast = Swal.mixin({
         toast: true,
         position: "bottom-end",
@@ -164,6 +196,24 @@
         title: "{{ session('alert')['message'] }}"
     });
 </script> @endif
+<script>
+    function confirmCancel(event, orderID) {
+        event.preventDefault();
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn hủy đơn hàng?",
+            text: "Hủy đơn hàng sẽ không thể hoàn tác!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Có, hủy đơn hàng!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`cancel-form-${orderID}`).submit();
+            }
+        });
+    }
+</script>
 <style>
     .delivery-success {
         color: #28a745;

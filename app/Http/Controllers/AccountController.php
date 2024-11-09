@@ -20,42 +20,62 @@ class AccountController extends Controller
     }
     public function showOrders()
     {
-        // Giả sử bạn đang sử dụng Laravel Auth để lấy `user_id` của người dùng đã đăng nhập
         $userId = Auth::id();
 
         // Lấy danh sách đơn hàng của người dùng hiện tại cùng thông tin phương thức thanh toán và tên người dùng
         $orders = DB::table('orders')
             ->join('payment_method', 'orders.payment_method_id', '=', 'payment_method.payment_method_id')
             ->join('users', 'orders.user_id', '=', 'users.user_id')
-            ->select('orders.*', 'payment_method.content as payment_method_name', 'users.full_name', 'orders.is_reviewed') // Lấy thêm cột is_reviewed
+            ->select('orders.*', 'payment_method.content as payment_method_name', 'users.full_name', 'orders.is_reviewed')
             ->where('orders.user_id', $userId)
             ->get();
 
-        // Lấy thông tin chi tiết cho từng đơn hàng
         foreach ($orders as $order) {
             $orderDetails = DB::table('order_details AS od')
                 ->select(
                     'od.*',
                     'p.name_product AS name_product',
                     'p.price',
-                    'pg.image_name AS first_image', // Ảnh đầu tiên
+                    'pg.image_name AS first_image',
                     'c.name_channel',
                     'c.image_channel'
                 )
                 ->join('products AS p', 'od.product_id', '=', 'p.product_id')
                 ->leftJoin('photo_gallery AS pg', 'pg.product_id', '=', 'od.product_id')
                 ->join('channels AS c', 'od.channel_id', '=', 'c.channel_id')
-                ->where('od.order_id', $order->order_id) // Lấy theo `order_id` của từng đơn hàng
-                ->orderBy('pg.photo_gallery_id', 'asc') // Lấy ảnh đầu tiên
+                ->where('od.order_id', $order->order_id)
+                ->orderBy('pg.photo_gallery_id', 'asc')
                 ->get();
 
-            // Gán danh sách chi tiết sản phẩm cho từng đơn hàng
+            foreach ($orderDetails as $detail) {
+                // Lấy danh sách đánh giá cho từng sản phẩm trong đơn hàng từ bảng `comments`
+                $comments = DB::table('comments')
+                    ->select('comment_id', 'content', 'status', 'created_at', 'updated_at', 'Star')
+                    ->where('order_id', $order->order_id)
+                    ->where('product_id', $detail->product_id)
+                    ->where('status', 1)
+                    ->get();
+
+                // Gán danh sách đánh giá và thêm thuộc tính user_rating và user_review_content cho từng chi tiết sản phẩm
+                if ($comments->isNotEmpty()) {
+                    $comment = $comments->first();
+                    $detail->user_rating = $comment->Star;
+                    $detail->user_review_content = $comment->content;
+                } else {
+                    $detail->user_rating = null;
+                    $detail->user_review_content = null;
+                }
+
+                $detail->comments = $comments;
+            }
+
             $order->order_details = $orderDetails;
         }
 
         // Trả về view cùng dữ liệu đơn hàng
         return view('account.orders', compact('orders'));
     }
+
 
     public function showManager()
     {
