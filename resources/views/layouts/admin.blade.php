@@ -237,10 +237,28 @@
 
             <!-- Notification -->
             <li class="menu-item {{ Request::is('notifications') ? 'active' : '' }}">
-                <a href="{{ url('notifications') }}" class="menu-link">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-bell"></i>
                     <div data-i18n="Analytics">Notification</div>
                 </a>
+                <ul class="menu-sub">
+                  <li class="menu-item {{ Request::is('notifications') ? 'active' : '' }}">
+                      <a href="{{ url('notifications') }}" class="menu-link">
+                          <div data-i18n="Notifications">Notifications List</div>
+                      </a>
+                  </li>
+                  <li class="menu-item {{ Request::is('notifications/create ') ? 'active' : '' }}">
+                      <a href="{{ url('notifications/create') }}" class="menu-link">
+                          <div data-i18n="Add notifications">Add notifications</div>
+                      </a>
+                  </li>
+                
+                  <li class="menu-item {{ Request::is ('notifications/trashed') ? 'active' : '' }}">
+                    <a href="{{ url('/notifications/trashed') }}" class="menu-link">
+                        <div data-i18n="Trash notifications">Trash notifications</div>
+                    </a>
+                </li>
+              </ul>
             </li>
 
             <!-- Order Management (Affiliate) -->
