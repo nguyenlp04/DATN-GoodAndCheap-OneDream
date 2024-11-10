@@ -72,6 +72,8 @@
         </div>
     </div>
 </main>
+@endsection
+@section('script-link-css')
 
 <script>
     document.getElementById('togglecvn').addEventListener('click', function() {
@@ -79,16 +81,15 @@
         myDiv.classList.toggle('d-none');
     });
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
-
+<script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
 <script>
      function checkEnter(event) {
         if (event.key === 'Enter') {
             sendMessage(currentChannel);
         }
     }
-
     var ably = new Ably.Realtime.Promise({
         key: '4d5fHg.WXPepQ:AXXlxQ75Vq4OJgEfb_7IwwwzYTKJc_gZ5tSC9TM_Zs4'
      });
