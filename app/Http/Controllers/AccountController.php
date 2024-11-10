@@ -28,6 +28,7 @@ class AccountController extends Controller
             ->join('users', 'orders.user_id', '=', 'users.user_id')
             ->select('orders.*', 'payment_method.content as payment_method_name', 'users.full_name', 'orders.is_reviewed')
             ->where('orders.user_id', $userId)
+            ->orderBy('orders.created_at', 'desc')
             ->get();
 
         foreach ($orders as $order) {

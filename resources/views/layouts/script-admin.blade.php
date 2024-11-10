@@ -23,8 +23,6 @@
     });
 </script>
 @endif
-
-
 <script>
     function confirmDelete(event, staffID) {
         event.preventDefault();

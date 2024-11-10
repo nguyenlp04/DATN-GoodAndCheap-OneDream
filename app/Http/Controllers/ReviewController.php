@@ -8,6 +8,29 @@ use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
+    public function index()
+    {
+        // Lấy tất cả dữ liệu từ bảng reviews
+        $reviews = DB::table('comments')
+            ->select(
+                'comments.*',
+                'users.full_name',
+                'users.email',
+                'users.image_user',
+                'products.name_product',
+                'products.description',
+                DB::raw('(SELECT pg.image_name FROM photo_gallery AS pg WHERE pg.product_id = comments.product_id ORDER BY pg.photo_gallery_id ASC LIMIT 1) AS image_name')
+            )
+            ->leftJoin('users', 'comments.user_id', '=', 'users.user_id')
+            ->leftJoin('products', 'comments.product_id', '=', 'products.product_id')
+            ->orderBy('comments.comment_id', 'desc')
+            ->get();
+
+
+
+        // Trả về view và truyền dữ liệu vào view
+        return view('admin.review.review-management', compact('reviews'));
+    }
     public function store(Request $request)
     {
         try {

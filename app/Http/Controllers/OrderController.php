@@ -18,6 +18,7 @@ class OrderController extends Controller
             ->join('payment_method', 'orders.payment_method_id', '=', 'payment_method.payment_method_id')
             ->join('users', 'orders.user_id', '=', 'users.user_id')
             ->select('orders.*', 'payment_method.content as payment_method_name', 'users.full_name')
+            ->orderBy('orders.order_id', 'desc')
             ->get();
         // Lấy thông tin chi tiết cho từng order
         foreach ($orders as $order) {

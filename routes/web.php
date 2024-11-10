@@ -21,7 +21,7 @@ Route::get('/', function () {
     return view('home');
 });
 
-
+Route::get('/review-management', [ReviewController::class, 'index']);
 // Route::get('/home', function () {
 //     return view('home');
 // })->middleware(['auth', 'verified'])->name('home');
