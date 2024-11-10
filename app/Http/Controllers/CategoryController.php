@@ -103,7 +103,7 @@ class CategoryController extends Controller
             if (!empty($validatedData['variants'])) {
                 foreach ($validatedData['variants'] as $variant) {
                     $dataVariantCategory = [
-                        'sub_category_id' => $categoryId,
+                        'category_id' => $categoryId,
                         'attributes_name' => $variant,
 
                     ];
