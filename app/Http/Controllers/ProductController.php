@@ -61,7 +61,7 @@ class ProductController extends Controller
 
     public function getSubcategories($categoryId)
     {
-        $subcategoryAttributes = SubcategoryAttribute::where('sub_category_id', $categoryId)->get();
+        $subcategoryAttributes = SubcategoryAttribute::where('category_id', $categoryId)->get();
         $subcategories = SubCategory::where('category_id', $categoryId)->get();
         return response()->json([
             'subcategories' => $subcategories,
@@ -76,20 +76,44 @@ class ProductController extends Controller
     {
         try {
 
+            
             $validatedData = $request->validate([
                 'images.*' => 'required|max:2048',
-                'productTitle' => 'required|string|max:255',
-                'price' => 'required|numeric|min:0',
+                'productTitle' => 'required|string',
                 'quantity' => 'required|numeric|min:0',
+                'price' => 'required|numeric|min:0',
                 'weight' => 'required|numeric|min:0',
-                'description' => 'required|string|max:255',
+                'description' => 'required|string',
                 'category_id' => 'required|integer',
                 'subcategory_id' => 'integer',
                 'status' => 'integer',
-                'variant' => 'required|array',
-                'variant.*.name' => 'required|string',
-                'variant.*.option' => 'required|string',
+                'dataVariantDetail' => 'required',  // Đảm bảo là mảng
+                'variant' => 'required',  // Đảm bảo là mảng
             ]);
+            
+            // dd($request->input('variant'), $request->input('dataVariantDetail'));
+            // Tạo mảng con dataVariant với cấu trúc đúng
+            $dataVariant = [
+                'variants' => $validatedData['variant'],  // Lấy giá trị từ 'Variant' trong validatedData
+                'variant_data_details' => $validatedData['dataVariantDetail']  // Lấy giá trị từ 'dataVariantDetail'
+            ];
+            
+            // Tạo mảng $data với các thông tin khác
+            $data = [
+                'productTitle' => $validatedData['productTitle'],
+                'price' => $validatedData['price'],
+                'quantity' => $validatedData['quantity'],
+                'weight' => $validatedData['weight'],
+                'category_id' => $validatedData['category_id'],
+                'subcategory_id' => $validatedData['subcategory_id'],
+                'description' => $validatedData['description'],
+                'dataVariant' => $dataVariant,  // Gán mảng con vào dataVariant
+            ];
+            
+            
+            
+            // Encode the data array to JSON
+            $jsonData = json_encode($data);
 
             $productData = [
                 'staff_id' => Auth::id(),
@@ -99,17 +123,7 @@ class ProductController extends Controller
                 'price' => $validatedData['price'],
                 'quantity' => $validatedData['quantity'],
                 'weight' => $validatedData['weight'],
-                'data' => json_encode([
-                    'productTitle' => $validatedData['productTitle'],
-                    'price' => $validatedData['price'],
-                    'quantity' => $validatedData['quantity'],
-                    'weight' => $validatedData['weight'],
-                    'category_id' => $validatedData['category_id'],
-                    'subcategory_id' => $validatedData['subcategory_id'],
-                    'description' => $validatedData['description'],
-                    'variants' => $validatedData['variant'],
-                    'images' => $validatedData['images'],
-                ]),
+                'data' => $jsonData,
                 'description' => $validatedData['description'],
                 'status' => $validatedData['status'],
                 'created_at' => now(),
@@ -145,7 +159,7 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
-                'message' => 'Lỗi: ' . $e->getMessage()
+                'message' => 'Lỗi: ' . $e->getMessage() . ' in file ' . $e->getFile() . ' on line ' . $e->getLine()
             ]);
         }
     }
@@ -163,7 +177,10 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $dataProductID= DB::table('products')->where('product_id',$id)->first();
+        return view('admin.products.update-product',[
+            'dataProductID'=>$dataProductID,
+        ]);
     }
 
     /**
