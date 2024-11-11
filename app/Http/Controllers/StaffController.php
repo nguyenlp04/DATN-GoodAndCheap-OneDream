@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -14,7 +15,7 @@ class StaffController extends Controller
     public function index()
     {
 
-        $data = DB::table('staffs')->get();
+        $data = DB::table('staffs')->where('role','!=','admin')->get();
     return view('admin.account.employee-management',['data'=>$data]);
     }
 
@@ -55,7 +56,7 @@ class StaffController extends Controller
             'full_name' => $validatedData['full_name'],
             'email' => $validatedData['email'],
             'address' => $validatedData['address'],
-            'password' => $validatedData['password'],
+            'password' => Hash::make($validatedData['password']),
             'avata' => $imageName ? 'storage/avatas/'.$imageName : null,
             'role' => 'staff',
             'status'=> 1,

@@ -251,11 +251,11 @@
       variantDetails.push({
         "name": variantName,
         "options": [{
-          "name": "pricev",
+          "name": "price",
           "value": price
         },
         {
-          "name": "quantityv",
+          "name": "quantity",
           "value": quantity
         }]
       });

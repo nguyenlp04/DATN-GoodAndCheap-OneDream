@@ -214,16 +214,12 @@
                             <div data-i18n="Add Affiliate Account">Add Affiliate Account</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('account/confirm') ? 'active' : '' }}">
-                        <a href="{{ url('account/confirm') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
+                        <a href="{{ url('account/user-account-management') }}" class="menu-link">
                             <div data-i18n="Confirm Partner">Confirm Partner</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
-                        <a href="{{ url('account/lock') }}" class="menu-link">
-                            <div data-i18n="Lock Account">Lock Account (affiliate)</div>
-                        </a>
-                    </li>
+
                 </ul>
             </li>
 
@@ -252,7 +248,7 @@
                           <div data-i18n="Add notifications">Add notifications</div>
                       </a>
                   </li>
-                
+
                   <li class="menu-item {{ Request::is ('notifications/trashed') ? 'active' : '' }}">
                     <a href="{{ url('/notifications/trashed') }}" class="menu-link">
                         <div data-i18n="Trash notifications">Trash notifications</div>
@@ -321,7 +317,7 @@
                             <div data-i18n="Trash Blog">Blog</div>
                         </a>
                     </li>
-                    
+
                 </ul>
             </li>
 

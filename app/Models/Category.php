@@ -9,13 +9,13 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $table = 'categories'; 
-    protected $primaryKey = 'category_id'; 
-    protected $fillable = ['category_id', 'name_category', 'description', 'image_category', 'status', 'created_at']; 
+    protected $table = 'categories';
+     protected $primaryKey = 'category_id';
+    protected $fillable = ['category_id','name_category', 'description', 'image_category', 'status', 'created_at'];
 
     public function subcategories()
     {
-        return $this->hasMany(Subcategory::class);
+        return $this->hasMany(Subcategory::class,'category_id');
     }
 
     public function products()
