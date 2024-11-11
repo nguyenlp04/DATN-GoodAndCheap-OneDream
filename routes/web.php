@@ -15,6 +15,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\PartnerProfileController;
@@ -27,6 +28,13 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
+
+Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
+// routes/web.php
+Route::get('/order-affiliate/details/{id}', [OrderController::class, 'getOrderDetails'])->name('order-affiliate.details');
+Route::put('/order-affiliate/{order_id}/update-status', [OrderController::class, 'updateOrderStatus'])->name('order.updateStatus');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -118,9 +126,7 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
     Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
 });
-Route::get('/order-affiliate', function () {
-    return view('admin.orders.index');
-});
+
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
