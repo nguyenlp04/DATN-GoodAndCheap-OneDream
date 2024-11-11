@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Controllers\PartnerProfileController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,6 +54,11 @@ class User extends Authenticatable
     }
     public function channel()
     {
-        return $this->belongsTo(Channel::class);
+        return $this->hasOne(Channel::class, 'user_id');
+    }
+
+    public function profiles()
+    {
+        return $this->hasMany(PartnerProfileController::class);
     }
 }

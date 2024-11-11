@@ -13,7 +13,7 @@ class Channel extends Model
     protected $fillable = ['name_channel', 'image_channel', 'address', 'phone_number', 'status', 'user_id'];
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function products()
     {

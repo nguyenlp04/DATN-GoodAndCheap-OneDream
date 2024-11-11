@@ -161,10 +161,12 @@ Route::prefix('partner')->group(function () {
 });
 Route::prefix('partners')->name('partners.')->group(function () {
     // Route::resource('/', PartnerController::class);
-    Route::get('dashboard', function () {
+    Route::get('/', function () {
         return view('partner.dashboard');
     });
     Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
+    Route::put('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
+
     // Route::resource('/orders/', OrderController::class);
     // Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
 

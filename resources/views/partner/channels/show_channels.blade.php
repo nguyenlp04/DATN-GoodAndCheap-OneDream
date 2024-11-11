@@ -32,7 +32,7 @@
     </style>
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
-<main class="container pt-5">
+<main class="container pt-5 mb-2">
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -64,11 +64,11 @@
                 <!-- Stats Section -->
                 <div class="d-flex align-items-end" >
                     <div class="text-danger mb-1 me-2 mr-4">
-                        <i class="bi bi-box-seam"></i> {{ $channels->product_count }} 123 Sản Phẩm    |
+                        <i class="bi bi-box-seam"></i> {{ $productsCount }} Sản Phẩm    |
                     </div>
                     
                     <div class="text-danger mb-1 me-2 mr-4">
-                        <i class="bi bi-chat-dots"></i> {{ $channels->response_rate }}123 % Tỉ Lệ Phản Hồi   |
+                        <i class="bi bi-chat-dots"></i>  Tỉ Lệ Phản Hồi cao   |
                     </div>
                     <div class="text-danger mb-1 me-2 ">
                         <i class="bi bi-clock"></i> Trong vài giờ
@@ -90,8 +90,10 @@
         
                 <div class="products">
                     <div class="row justify-content-center">
-                        @if ($products->isEmpty())
-    <p>No products found for this channel.</p>
+                        @if(isset($channels->product_count_message))
+                        <div class="alert alert-warning">
+                            {{ $channels->product_count_message }}
+                        </div>
 @else
                         @foreach ($products as $product)
                         <div class="col-6 col-md-4 col-lg-3 border">
@@ -143,4 +145,5 @@
         </div>
        
 </main>
+
 @endsection

@@ -30,6 +30,12 @@ class ChannelController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        $channelExists = Channel::where('user_id', $user->user_id)->exists();
+        if ($channelExists) {
+            return redirect()->route('channels.show', ['channel' => $user->channel->channel_id])
+                ->with('success', 'You already have a channel.');
+        }
         return view('partner.channels.create_channels');
     }
 
@@ -80,7 +86,8 @@ class ChannelController extends Controller
 
         $channel->save();
 
-        return redirect()->route('channels.show')->with('success', 'Channel created successfully.');
+        return redirect()->route('channels.show', ['channel' => $channel->channel_id])
+            ->with('success', 'Channel created successfully.');
     }
 
 
@@ -93,8 +100,14 @@ class ChannelController extends Controller
     {
         $channels = Channel::findOrFail($id);
         $products = Product::where('channel_id', $channels->channel_id)->get();
+        $productsCount = Product::where('channel_id', $channels->channel_id)->count();
+        $channels->product_count = $productsCount;
 
-        return view('partner.channels.show_channels', compact('channels', 'products'));
+        if ($productsCount === 0) {
+            $channels->product_count_message = 'No products found for this channel.';
+            return view('partner.channels.show_channels', compact('channels', 'products', 'productsCount'));
+        }
+        return view('partner.channels.show_channels', compact('channels', 'products', 'productsCount'));
     }
 
     /**

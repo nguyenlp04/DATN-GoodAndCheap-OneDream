@@ -85,7 +85,7 @@
             <div class="container for-you">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
-                        <h2 class="title">My product</h2><!-- End .title -->
+                        <h2 class="title">Other Products</h2><!-- End .title -->
                     </div><!-- End .heading-left -->
         
                     <div class="heading-right">
