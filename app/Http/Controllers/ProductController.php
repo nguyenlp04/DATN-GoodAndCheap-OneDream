@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Product;
+
+
 use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\Subcategory;
+use App\Models\Like;
 use App\Models\SubcategoryAttribute;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +40,7 @@ class ProductController extends Controller
 
     return view('admin.products.index', ['data' => $data]);
     }
+
     
 
     /**
@@ -191,4 +195,38 @@ class ProductController extends Controller
             ]);
         }
     }
+    public function addToWishlist(Request $request)
+{
+    if (!Auth::check()) {
+        return response()->json([
+            'message' => 'Vui lòng đăng nhập trước',
+        ], 401);
+    }
+
+    $productId = $request->input('product_id');
+    $userId = Auth::id();
+
+    // Kiểm tra nếu sản phẩm đã có trong bảng like
+    $existingLike = Like::where('user_id', $userId)
+                        ->where('product_id', $productId)
+                        ->first();
+
+    if ($existingLike) {
+        return response()->json([
+            'message' => 'Sản phẩm đã có trong danh sách yêu thích.',
+        ], 400); // Trả về lỗi nếu sản phẩm đã có trong danh sách yêu thích
+    }
+
+    // Nếu chưa có, thêm vào bảng like
+    Like::create([
+        'user_id' => $userId,
+        'product_id' => $productId,
+    ]);
+
+    return response()->json([
+        'message' => 'Sản phẩm đã được thêm vào danh sách yêu thích!',
+    ]);
+}
+
+
 }

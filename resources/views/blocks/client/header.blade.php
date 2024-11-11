@@ -1,4 +1,5 @@
 <div class="page-wrapper">
+
     <header class="header header-intro-clearance header-4">
         <div class="header-middle">
             <div class="container">
@@ -41,7 +42,7 @@
                     </div><!-- End .compare-dropdown -->
 
                     <div class="wishlist">
-                        <a href="wishlist.html" title="Wishlist">
+                        <a href="{{route('wishlist')}}" title="Wishlist">
                             <div class="icon">
                                 <i class="icon-heart-o"></i>
                                 <span class="wishlist-count badge">3</span>
@@ -186,7 +187,7 @@
                             </li>
 
                             <li>
-                                <a href="blog.html" class="sf-with-ul">Blog</a>
+                                <a href="{{route('blogs.listting')}}" class="sf-with-ul">Blog</a>
 
                                 <ul>
                                     <li><a href="blog.html">Classic</a></li>
