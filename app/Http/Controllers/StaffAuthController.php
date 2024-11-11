@@ -21,7 +21,7 @@ class StaffAuthController extends Controller
         ]);
 
         if (Auth::guard('staff')->attempt($request->only('email', 'password'))) {
-            return redirect()->intended('staff/dashboard');
+            return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([

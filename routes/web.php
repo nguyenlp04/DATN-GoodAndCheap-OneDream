@@ -19,8 +19,6 @@ use App\Http\Controllers\UsermanagementController;
 Route::get('/', function () {
     return view('home');
 });
-
-
 Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
 Route::post('staff/login', [StaffAuthController::class, 'login']);
 Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
