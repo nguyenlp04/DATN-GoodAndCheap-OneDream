@@ -91,12 +91,12 @@ class ProductController extends Controller
                 'variant' => 'required',  // Đảm bảo là mảng
             ]);
             
-            // dd($request->input('variant'), $request->input('dataVariantDetail'));
-            // Tạo mảng con dataVariant với cấu trúc đúng
-            $dataVariant = [
-                'variants' => $validatedData['variant'],  // Lấy giá trị từ 'Variant' trong validatedData
-                'variant_data_details' => $validatedData['dataVariantDetail']  // Lấy giá trị từ 'dataVariantDetail'
-            ];
+            // // dd($request->input('variant'), $request->input('dataVariantDetail'));
+            // // Tạo mảng con dataVariant với cấu trúc đúng
+            // $dataVariant = [
+            //     'variants' => $validatedData['variant'],  // Lấy giá trị từ 'Variant' trong validatedData
+            //     'variant_data_details' => $validatedData['dataVariantDetail']  // Lấy giá trị từ 'dataVariantDetail'
+            // ];
             
             // Tạo mảng $data với các thông tin khác
             $data = [
@@ -107,7 +107,9 @@ class ProductController extends Controller
                 'category_id' => $validatedData['category_id'],
                 'subcategory_id' => $validatedData['subcategory_id'],
                 'description' => $validatedData['description'],
-                'dataVariant' => $dataVariant,  // Gán mảng con vào dataVariant
+                // 'dataVariant' => $dataVariant,  // Gán mảng con vào dataVariant
+                'variants' => $validatedData['variant'],
+                'variant_data_details' => $validatedData['dataVariantDetail']
             ];
             
             
