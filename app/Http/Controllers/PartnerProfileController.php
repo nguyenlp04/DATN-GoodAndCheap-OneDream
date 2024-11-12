@@ -6,6 +6,7 @@ use App\Models\Channel;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PartnerProfileController extends Controller
 {
@@ -94,6 +95,17 @@ class PartnerProfileController extends Controller
             if ($request->has('email')) {
                 $channel->users->update(['email' => $request->input('email')]);
             }
+            if ($request->hasFile('image_channel')) {
+                // Xóa ảnh cũ nếu có
+                if ($channel->image_channel) {
+                    Storage::delete('public/' . $channel->image_channel);
+                }
+
+                // Lưu ảnh mới
+                $path = $request->file('image_channel')->store('images', 'public');
+                $channel->image_channel = $path;
+            }
+
 
             // Lưu thông tin
             $channel->save();
@@ -102,10 +114,15 @@ class PartnerProfileController extends Controller
             $user = Auth::user();
             $profiles = Channel::where('user_id', $user->user_id)->get();
 
-            return view('partner.profiles.profile_partners', compact('profiles'));
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Update infomation Successfully !'
+            ]);
         } catch (\Exception $e) {
-            return redirect()->route('partners.profile')
-                ->with('error', 'Profile update failed, infomation has already been taken. Please try again.');
+            return redirect()->route('partners.profile')->with('alert', [
+                'type' => 'error',
+                'message' => 'Update infomation channel unsuccessful!'
+            ]);
         }
     }
 

@@ -13,39 +13,27 @@
                             <h5 class="my-3">{{ $profile->name_channel }}</h5>
                             <p class="text-muted mb-1">{{ $profile->status }}</p>
                             <p class="text-muted mb-4">{{ $profile->address }}</p>
-                            <div class="d-flex justify-content-center ">
+                            <div class="d-flex justify-content-center">
                                 <a href="{{ route('channels.show', ['channel' => $profile->channel_id]) }}" class="btn btn-primary text-white ms-1">View Channel</a>
                             </div>
                         </div>
                     </div>
-                    <div class="card mb-4 mb-lg-0">
-                        <div class="card-body p-0">
-                            <ul class="list-group list-group-flush rounded-3">
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-globe fa-lg text-warning"></i>
-                                    <p class="mb-0">{{ $profile->channel_id }}</p>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-phone fa-lg text-body"></i>
-                                    <p class="mb-0">{{ $profile->phone_number }}</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
+                
                 <div class="col-lg-8">
                     <div class="card mb-4">
                         <div class="card-body">
                             <!-- Form sửa thông tin kênh -->
-                            <form id="update-profile-form" action="{{ route('profile.update', $profile->channel_id) }}" method="POST">
+                            <form id="update-profile-form" action="{{ route('profile.update', $profile->channel_id) }}" method="POST" enctype="multipart/form-data">
                               @csrf
                               @method('PUT')
+                              
                               <!-- Name channel -->
                               @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+                                  <div class="alert alert-danger">
+                                      {{ session('error') }}
+                                  </div>
+                              @endif
 
                               <div class="row mb-3">
                                   <div class="col-sm-3">
@@ -59,6 +47,7 @@
                                   </div>
                               </div>
                               <hr>
+
                               <!-- Email -->
                               <div class="row mb-3">
                                   <div class="col-sm-3">
@@ -72,6 +61,7 @@
                                   </div>
                               </div>
                               <hr>
+
                               <!-- Phone -->
                               <div class="row mb-3">
                                   <div class="col-sm-3">
@@ -85,6 +75,7 @@
                                   </div>
                               </div>
                               <hr>
+
                               <!-- Address -->
                               <div class="row mb-3">
                                   <div class="col-sm-3">
@@ -98,6 +89,21 @@
                                   </div>
                               </div>
                               <hr>
+
+                              <!-- Image Channel (Avatar) -->
+                              <div class="row mb-3">
+                                  <div class="col-sm-3">
+                                      <label for="image_channel" class="mb-0">Avatar</label>
+                                  </div>
+                                  <div class="col-sm-9">
+                                      <input type="file" id="image_channel" name="image_channel" class="form-control @error('image_channel') is-invalid @enderror">
+                                      @error('image_channel')
+                                          <div class="invalid-feedback">{{ $message }}</div>
+                                      @enderror
+                                  </div>
+                              </div>
+                              <hr>
+
                               <!-- Save button -->
                               <div class="row mb-3">
                                   <div class="col-sm-3"></div>
@@ -106,7 +112,6 @@
                                   </div>
                               </div>
                           </form>
-                          
                         </div>
                     </div>
                 </div>

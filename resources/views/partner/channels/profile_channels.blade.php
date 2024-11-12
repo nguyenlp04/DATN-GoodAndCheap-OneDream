@@ -68,11 +68,11 @@
                         <!-- Stats Section -->
                         <div class="d-flex align-items-end" >
                             <div class="text-danger mb-1 me-2 mr-4">
-                                <i class="bi bi-box-seam"></i> {{ $channel->product_count }} 123 Sản Phẩm    |
+                                <i class="bi bi-box-seam"></i> {{ $channel->product_count ?? '0'}}  Sản Phẩm    |
                             </div>
                             
                             <div class="text-danger mb-1 me-2 mr-4">
-                                <i class="bi bi-chat-dots"></i> {{ $channel->response_rate }}123 % Tỉ Lệ Phản Hồi   |
+                                <i class="bi bi-chat-dots"></i> {{ $channel->response_rate }} Tỉ Lệ Phản Hồi Cao  |
                             </div>
                             <div class="text-danger mb-1 me-2 ">
                                 <i class="bi bi-clock"></i> Trong vài giờ
