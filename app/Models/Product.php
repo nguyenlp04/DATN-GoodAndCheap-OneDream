@@ -31,5 +31,4 @@ class Product extends Model
     {
         return $this->hasOne(Imgproduct::class, 'product_id');
     }
-
 }

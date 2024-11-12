@@ -125,6 +125,5 @@ input[type="file"] {
   const fileName = input.files.length > 0 ? input.files[0].name : "No file chosen";
   document.querySelector(".file-name").textContent = fileName;
 }
-
 </script>
 @endsection

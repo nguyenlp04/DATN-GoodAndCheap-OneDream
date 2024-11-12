@@ -152,8 +152,7 @@ Route::prefix('message')->group(function () {
 })->middleware(['auth', 'verified']);
 
 Route::prefix('product')->group(function () {
-    Route::get('/details/{id}',[ProductController::class,'renderProductDetails'] )->name('product.detail');
-
+    Route::get('/details/{id}', [ProductController::class, 'renderProductDetails'])->name('product.detail');
 })->middleware(['auth', 'verified']);
 
 Route::prefix('cart')->group(function () {
@@ -161,6 +160,7 @@ Route::prefix('cart')->group(function () {
     Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
     Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 })->middleware(['auth', 'verified']);
+
 
 Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
@@ -170,10 +170,18 @@ Route::prefix('partner')->group(function () {
     Route::resource('profile', PartnerProfileController::class);
 });
 Route::prefix('partners')->name('partners.')->group(function () {
-    Route::resource('/', PartnerController::class);
+    // Route::resource('/', PartnerController::class);
+    Route::get('/', function () {
+        return view('partner.dashboard');
+    });
+    Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
+    Route::put('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
+
     // Route::resource('/orders/', OrderController::class);
     // Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
 
+
+    // ------ ProductPartnerController ------
     Route::resource('/product/', PartnerProductController::class);
     Route::get('/trashed', [PartnerProductController::class, 'trashed'])->name('trashed');
     Route::delete('/destroy/{id}', [PartnerProductController::class, 'destroy'])->name('destroy');
