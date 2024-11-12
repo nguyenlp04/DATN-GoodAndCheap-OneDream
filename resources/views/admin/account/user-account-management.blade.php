@@ -43,6 +43,7 @@
 
                                                     <th>position</th>
                                                     <th></th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -58,11 +59,80 @@
                                                     <td>Active</td>
                                                     @endif
                                                     <td>{{ $item -> role }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ $item->user_id }}">
-                                                            <i class="fa-solid fa-eye"></i>
-                                                        </button>
 
+
+                                                    <td>
+                                                         <div class="container">
+                                                            <div class="btn-group">
+                                                            <button type="button" class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li data-bs-toggle="modal" data-bs-toggle="modal" data-bs-target="#modal{{ $item->user_id }}">
+                                                                <a class="dropdown-item" href="#"><span><i class="fa-solid fa-eye me-1"></i></span>View</a>
+                                                            </li>
+                                                             @if ( $item -> status == 0)
+                                                                        <li onclick="confirmCheckLock(event, {{ $item->user_id }})">
+                                                                            <a class="dropdown-item" href="#"><span style="padding-right: 10px"><i class="fa-solid fa-unlock"></i></span>Unlock</a>
+                                                                    <form id="check-lock-form-{{ $item->user_id }}" action="{{ route('updateUnlock',$item->user_id) }}" method="POST" style="display:inline;">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                    </form>
+                                                                    @else
+                                                                     <li onclick="confirmCheckLock(event, {{ $item->user_id }})">
+                                                                         <a class="dropdown-item" href="#"><span style="padding-right: 10px"><i class="fa-solid fa-lock"></i></span>Locked</a>
+                                                                    <form id="check-lock-form-{{ $item->user_id }}" action="{{ route('updateLock',$item->user_id) }}" method="POST" style="display:inline;">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                    </form>
+
+                                                            </li>
+                                                            @endif
+                                                            </ul>
+                                                                        <div class="modal fade" id="modal{{ $item->user_id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $item->user_id }}" aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="exampleModalLabel{{ $item->user_id }}">Info Staff</h5>
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-5 mx-2">
+                                                                                            @if (is_null($item->image_user) || $item->image_user === '')
+                                                                                            <img src="https://img.lovepik.com/png/20231019/customer-login-avatar-client-gray-head-portrait_269373_wh860.png" alt="" class="" width="100px">
+                                                                                        @else
+                                                                                            <img src="{{ asset($item->image_user) }}" alt=""  width="100px">
+                                                                                        @endif
+                                                                                        </div>
+                                                                                        <div class="col-md-5 mx-2">
+                                                                                            <p><strong>ID:</strong><br>{{ $item -> user_id }}</p>
+                                                                                            <p><strong>Name:</strong><br>{{ $item -> full_name }}</p>
+                                                                                            <p><strong>Email:</strong><br>{{ $item -> email }}</p>
+                                                                                            <p><strong>Address:</strong><br>{{ $item -> address }}</p>
+                                                                                            <p><strong>Phone Number:</strong><br>{{ $item -> phone_number }}</p>
+                                                                                            <p><strong>Role:</strong><br>{{ $item -> role}}</p>
+
+                                                                                            @if ( $item -> status == 0)
+                                                                                            <p><strong>Status:</strong><br>lock</p>
+                                                                                            @else
+                                                                                            <p><strong>Status:</strong><br>Active</p>
+                                                                                            @endif
+
+
+                                                                                            <p><strong>Active since:</strong><br>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y H:i') }}</p>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    {{-- <td>
                                                         @if ( $item -> status == 0)
                                                         <button  class="btn btn-primary" onclick="confirmCheckLock(event, {{ $item->user_id }})">
                                                             <i class="fa-solid fa-lock"></i>
@@ -82,50 +152,12 @@
                                                         @endif
 
 
-                                                        <div class="modal fade" id="modal{{ $item->user_id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $item->user_id }}" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel{{ $item->user_id }}">Info Staff</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col-md-5 mx-2">
-                                                                                @if (is_null($item->image_user) || $item->image_user === '')
-                                                                                <img src="https://img.lovepik.com/png/20231019/customer-login-avatar-client-gray-head-portrait_269373_wh860.png" alt="" class="" width="100px">
-                                                                            @else
-                                                                                <img src="{{ asset($item->image_user) }}" alt=""  width="100px">
-                                                                            @endif
-                                                                            </div>
-                                                                            <div class="col-md-5 mx-2">
-                                                                                <p><strong>ID:</strong><br>{{ $item -> user_id }}</p>
-                                                                                <p><strong>Name:</strong><br>{{ $item -> full_name }}</p>
-                                                                                <p><strong>Email:</strong><br>{{ $item -> email }}</p>
-                                                                                <p><strong>Address:</strong><br>{{ $item -> address }}</p>
-                                                                                <p><strong>Phone Number:</strong><br>{{ $item -> phone_number }}</p>
-                                                                                <p><strong>Role:</strong><br>{{ $item -> role}}</p>
 
-                                                                                @if ( $item -> status == 0)
-                                                                                <p><strong>Status:</strong><br>lock</p>
-                                                                                @else
-                                                                                <p><strong>Status:</strong><br>Active</p>
-                                                                                @endif
-
-
-                                                                                <p><strong>Active since:</strong><br>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y H:i') }}</p>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
+                                                    </td> --}}
 
                                                 </tr>
                                                 @endforeach
-                                                <!-- Thêm các dòng khác nếu cần -->
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -148,65 +180,12 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://kit.fontawesome.com/aa64dc9752.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
+{{-- <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css"> --}}
 
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
 {{-- no ko buton dc  --}}
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-<script>
-    document.getElementById('btnBrowse').addEventListener('click', function() {
-        document.getElementById('fileInput').click();
-    });
-</script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const input = document.getElementById('fileInput');
-        const previewImg = document.getElementById('preview_img');
-
-        input.addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    previewImg.src = e.target.result;
-                    previewImg.classList.remove('hidden');
-                };
-
-                reader.readAsDataURL(file);
-            } else {
-                previewImg.classList.add('hidden');
-            }
-        });
-    });
-</script>
-<script>
-  new DataTable('#example');
-</script>
-
-            @if (session('alert'))
-            <script>
-            const Toast = Swal.mixin({
-            toast: true,
-            position: "bottom-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-            }
-            });
-            Toast.fire({
-            icon: "{{ session('alert')['type'] }}",
-            title: "{{ session('alert')['message'] }}"
-            });
-            </script>
-            @endif
 
 
     <script>
