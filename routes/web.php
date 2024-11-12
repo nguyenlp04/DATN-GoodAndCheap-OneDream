@@ -152,8 +152,7 @@ Route::prefix('message')->group(function () {
 })->middleware(['auth', 'verified']);
 
 Route::prefix('product')->group(function () {
-    Route::get('/details/{id}',[ProductController::class,'renderProductDetails'] )->name('product.detail');
-
+    Route::get('/details/{id}', [ProductController::class, 'renderProductDetails'])->name('product.detail');
 })->middleware(['auth', 'verified']);
 
 Route::prefix('cart')->group(function () {
@@ -161,6 +160,7 @@ Route::prefix('cart')->group(function () {
     Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
     Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 })->middleware(['auth', 'verified']);
+
 
 Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
