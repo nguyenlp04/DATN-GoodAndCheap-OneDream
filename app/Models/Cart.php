@@ -12,10 +12,14 @@ class Cart extends Model
     protected $table = 'carts';
     protected $primaryKey = 'cart_id';
 
+
     protected $fillable = [
         'user_id',
         'product_id',
+        'data',
         'stock',
+        'created_at',
+        'update_at',
 
     ];
     public function user()
