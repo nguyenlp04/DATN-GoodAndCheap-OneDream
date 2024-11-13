@@ -20,6 +20,7 @@
                 <table id="example" class="table table-striped" style="width:100%">
                   <thead>
                     <tr>
+                      <th><input type="checkbox" id="select-all"></th> <!-- Checkbox chọn tất cả -->
                       <th>Title</th>
                       <th>Image</th>
                       <th class="px-1">Start date</th>
@@ -30,39 +31,31 @@
                   <tbody>
                     @foreach($notifications as $notification)
                       <tr>
-                          <td>{{ Str::limit($notification->title, 50) }}</td>
-                          <td><img src="{{ asset('storage/' . $notification->image) }}" alt="Notification Image" style="width: 70px;"></td>
-                          <td>{{ $notification->created_at->format('Y-m-d') }}</td>
-                          <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
-                          <td class="d-flex align-items-center">
-                            <form action="{{ route('notifications.restore', $notification->notification_id) }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-warning me-2" title="Restore">
-                                    <i class="fas fa-trash-restore"></i>
-                                </button>
-                            </form>
-                            <form action="{{ route('notifications.forceDelete', $notification->notification_id) }}" method="POST" onsubmit="return confirmDelete()" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" title="Delete Permanently">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                          </td>
+                        <td><input type="checkbox" class="notification-checkbox" value="{{ $notification->notification_id }}"></td> <!-- Checkbox cho mỗi thông báo -->
+                        <td>{{ Str::limit($notification->title, 50) }}</td>
+                        <td><img src="{{ asset('storage/' . $notification->image) }}" alt="Notification Image" style="width: 70px;"></td>
+                        <td>{{ $notification->created_at->format('Y-m-d') }}</td>
+                        <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
+                        <td class="d-flex align-items-center">
+                          <form action="{{ route('notifications.restore', $notification->notification_id) }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-warning me-2" title="Restore">
+                              <i class="fas fa-trash-restore"></i>
+                            </button>
+                          </form>
+                          <form action="{{ route('notifications.forceDelete', $notification->notification_id) }}" method="POST" onsubmit="return confirmDelete()" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" title="Delete Permanently">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </form>
+                        </td>
                       </tr>
                     @endforeach
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>Title</th>
-                      <th>Image</th>
-                      <th class="px-1">Start date</th>
-                      <th class="px-1">Update date</th>
-                      <th>Actions</th>
-                    </tr>
-                  </tfoot>
                 </table>
-
+                
                 <script>
                   document.addEventListener('DOMContentLoaded', function() {
                       @if(session('success'))

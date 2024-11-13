@@ -1,6 +1,5 @@
-@extends('layouts.admin')
+@extends('layouts.partner_layout')
 @section('content')
-
 <!-- Content wrapper -->
 <div class="content-wrapper">
   <!-- Content -->
@@ -9,10 +8,12 @@
 
 
     <div class="app-ecommerce" data-select2-id="21">
-
-      <form action="{{ route('add.product') }}" method="POST" enctype="multipart/form-data">
+    <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+            {{ json_encode($dataProductID, JSON_PRETTY_PRINT) }}
+        </pre>
+      <form action="{{ route('updateProduct', $dataProductID->product_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <!-- Add Product -->
+        @method('PUT')
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
 
           <div class="d-flex flex-column justify-content-center">
@@ -24,10 +25,8 @@
             </div>
             <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish product</button>
           </div>
-
         </div>
-
-        <div class="row" data-select2-id="20">
+         <div class="row" data-select2-id="20">
           <!-- First column-->
           <div class="col-12 col-lg-8">
             <!-- Product Information -->
@@ -38,14 +37,14 @@
               <div class="card-body">
                 <div class="mb-6">
                   <label class="form-label" for="ecommerce-product-name">Name</label>
-                  <input type="text" class="form-control" id="ecommerce-product-name" placeholder="Product title" name="productTitle" aria-label="Product title">
+                  <input type="text" value="{{ $dataProductID->name_product }}" class="form-control" id="ecommerce-product-name" placeholder="Product title" name="productTitle" aria-label="Product title">
                 </div>
-            <!-- Price -->
-
-            <!-- Description -->
-            <div>
+                <!-- Price -->
+                
+                <!-- Description -->
+                <div>
                   <label for="description" class="form-label">Description</label>
-                  <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                  <textarea class="form-control" name="description" id="description" rows="3">{{ $dataProductID->description }}</textarea>
                 </div>
               </div>
             </div>
@@ -83,7 +82,6 @@
           </div>
           <!-- /Second column -->
 
-
           <!-- Second column -->
           <div class="col-12 col-lg-4" data-select2-id="19">
             <!-- Organize Card -->
@@ -92,27 +90,25 @@
                 <h5 class="card-title mb-0">Organize</h5>
               </div>
               <div class="card-body" data-select2-id="17">
-                <div class="mb-3">
+              <div class="mb-3">
                   <label class="form-label" for="ecommerce-product-price">Price</label>
-                  <input type="number" class="form-control" id="ecommerce-product-price" placeholder="Price" name="price" aria-label="Product price">
+                  <input value="{{ $dataProductID->price }}" type="number" class="form-control" id="ecommerce-product-price" placeholder="Price" name="price" aria-label="Product price">
                 </div>
                 <!-- Quantity -->
                 <div class="mb-3">
                   <label class="form-label" for="ecommerce-product-quantity">Quantity</label>
-                  <input type="number" class="form-control" id="ecommerce-product-quantity" placeholder="Quantity" name="quantity" aria-label="Product quantity">
+                  <input value="{{ $dataProductID->quantity }}" type="number" class="form-control" id="ecommerce-product-quantity" placeholder="Quantity" name="quantity" aria-label="Product quantity">
                 </div>
                 <!-- Weight -->
                 <div class="mb-3">
                   <label class="form-label" for="ecommerce-product-weight">Weight (g)</label>
-                  <input type="number" class="form-control" id="ecommerce-product-weight" placeholder="Weight (g)" name="weight" aria-label="Product weight">
+                  <input value="{{ $dataProductID->weight }}" type="number" class="form-control" id="ecommerce-product-weight" placeholder="Weight (g)" name="weight" aria-label="Product weight">
                 </div>
                 <div class="mb-3">
                   <label for="category" class="form-label">Category Name:</label>
                   <select id="category" name="category_id" class="form-select" required>
                     <option value="">Select Category Name</option>
-                    @foreach ($categories as $category)
-                    <option value="{{ $category->category_id }}">{{ $category->name_category }}</option>
-                    @endforeach
+                    
                   </select>
                 </div>
                 <div class="mb-3" id="subcategory-section" style="display: none;">
@@ -120,200 +116,59 @@
                   <select id="subcategory" name="subcategory_id" class="form-select" required>
                   </select>
                 </div>
-                <input type="hidden" id="dataVariantDetail" name="dataVariantDetail" value="">
-                <input type="hidden" id="variant" name="variant" value="">
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
                   $(document).ready(function() {
-  // Handle change event for category dropdown
-  $('#category').change(function() {
-    var categoryId = $(this).val();
-    $('#add-variant').empty();
+                    $('#category').change(function() {
+                      var categoryId = $(this).val();
+                      console.log("Category ID: ", categoryId);
+                      $('#add-variant').empty();
+                      if (categoryId) {
+                        $.ajax({
+                          url: '/get-subcategories/' + categoryId,
+                          type: 'GET',
+                          success: function(data) {
+                            console.log(data.subcategories);
+                            $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
+                            $.each(data.subcategories, function(index, subcategory) {
+                              $('#subcategory').append('<option value="' + subcategory.sub_category_id + '">' + subcategory.name_sub_category + '</option>');
+                            });
+                            $('#subcategory-section').show();
 
-    if (categoryId) {
-      $.ajax({
-        url: '/get-subcategories/' + categoryId,
-        type: 'GET',
-        success: function(data) {
-          // Empty the subcategory dropdown
-          $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
-
-          // Populate subcategory dropdown
-          $.each(data.subcategories, function(index, subcategory) {
-            $('#subcategory').append('<option value="' + subcategory.sub_category_id + '">' + subcategory.name_sub_category + '</option>');
-          });
-
-          // Show subcategory section
-          $('#subcategory-section').show();
-
-          // Add variants dynamically based on subcategory attributes
-          $.each(data.subcategory_attributes, function(index, category_variant) {
-            $('#add-variant').append(`
-              <div class="col-6">
-                <div class="card mb-6 variant-card">
-                  <div class="card-header">
-                    <input type="text" name="variant[${index}][name]" class="form-control option-input fw-bold" value="${category_variant.attributes_name}" readonly>
-                  </div>
-                  <div class="card-body">
-                    <div>
-                      <input type="text" name="variant[${index}][option]" class="form-control option-value" placeholder="Enter an Option">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `);
-          });
-
-          // Handle option input blur event
-          $(document).on('blur', '.option-value', function() {
-            var variants = [];
-            var variantNames = [];
-
-            // Collect all variant data
-            $('.variant-card').each(function() {
-              var variantName = $(this).find('.option-input').val();
-              var optionValue = $(this).find('.option-value').val();
-
-              if (optionValue) {
-                // Split the options by comma and trim any extra spaces
-                var options = optionValue.split(',').map(function(value) {
-                  return value.trim();
-                });
-
-                // Construct the variant object
-                variants.push({
-                  "name": variantName,
-                  "options": options
-                });
-              }
-            });
-
-            // If there's only one variant but multiple options, combine them into a table
-            if (variants.length > 0) {
-              var optionsForCombining = variants.map(variant => variant.options);
-              var result = combineOptions(optionsForCombining);
-              var variantNames = variants.map(variant => variant.name);
-
-              renderVariantTable(variantNames, result);
-              $('#variant-table-section').show();
-            } else {
-              $('#variant-table-section').hide();
-            }
-
-            // Debugging output
-            console.log("Variants: ", JSON.stringify(variants, null, 2));
-            $('#variant').val(JSON.stringify(variants));
-
-            // If there's more than one option, also proceed with storing the result
-            if (variants.length > 1 || variants[0].options.length > 1) {
-              var result = variants.map(variant => ({
-                "name": variant.name,
-                "options": variant.options
-              }));
-              $('#variant-table-section').show();
-              $('#variant').val(JSON.stringify(result)); // Store the variants in the hidden input
-            }
-          });
-        },
-        error: function(xhr, status, error) {
-          console.error("Error fetching subcategories:", error);
-        }
-      });
-    } else {
-      $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
-      $('#subcategory-section').hide();
-      $('#add-variant').empty();
-    }
-  });
-
-  // Handle price and quantity input blur event
-  $(document).on('blur', 'input[name^="pricev"], input[name^="quantityv"]', function() {
-    var variants = [];
-    var variantDetails = [];
-
-    $('#variant-list-body tr').each(function(index) {
-      var optionValues = [];
-
-      // Collect option values for this variant
-      $(this).find('td').each(function() {
-        var text = $(this).text().trim();
-        if (text) {
-          optionValues.push(text);
-        }
-      });
-
-      // Combine option values to create a unique variant name
-      var variantName = optionValues.join('-');
-
-      var price = $("input[name='pricev[" + index + "]']").val() || 0;
-      var quantity = $("input[name='quantityv[" + index + "]']").val() || 0;
-
-      variantDetails.push({
-        "name": variantName,
-        "options": [{
-          "name": "price",
-          "value": price
-        },
-        {
-          "name": "quantity",
-          "value": quantity
-        }]
-      });
-    });
-
-    var result = variantDetails.length > 0 ? variantDetails : [];
-
-    // Store the result in the hidden input field
-    $('#dataVariantDetail').val(JSON.stringify(result));
-
-    // Debugging output
-    console.log(JSON.stringify(result, null, 2));
-  });
-
-  // Function to combine options into combinations
-  function combineOptions(optionsArr) {
-    var result = [];
-    var combine = function(current, depth) {
-      if (depth === optionsArr.length) {
-        result.push(current.slice());
-        return;
-      }
-      for (var i = 0; i < optionsArr[depth].length; i++) {
-        current[depth] = optionsArr[depth][i];
-        combine(current, depth + 1);
-      }
-    };
-    combine([], 0);
-    return result;
-  }
-
-  // Function to render the variant table
-  function renderVariantTable(variantNames, combinations) {
-    var tableHeader = '<tr>';
-    var tableBody = '';
-
-    $.each(variantNames, function(index, name) {
-      tableHeader += `<th>${name}</th>`;
-    });
-    tableHeader += '<th>Pricev</th><th>Quantityv</th></tr>';
-
-    $.each(combinations, function(index, combination) {
-      tableBody += '<tr>';
-      $.each(combination, function(i, option) {
-        tableBody += `<td>${option}</td>`;
-      });
-      tableBody += `
-        <td><input type="number" class="form-control" placeholder="Enter Pricev" name="pricev[${index}]"></td>
-        <td><input type="number" class="form-control" placeholder="Enter Quantityv" name="quantityv[${index}]"></td>
-      `;
-      tableBody += '</tr>';
-    });
-
-    $('#variant-list-header').html(tableHeader);
-    $('#variant-list-body').html(tableBody);
-  }
-});
-
+                            $.each(data.subcategory_attributes, function(index, category_variant) {
+                              $('#add-variant').append(`
+                              <div class="col-6"> 
+                                  <div class="card mb-6 variant-card">
+                                      <div class="card-header">
+                                          <span class="card-title mb-0">Name Variant</span>
+                                          <div class="col-12">
+                                              <input type="text" name="variant[${index}][name]" class="form-control option-input fw-bold" placeholder="Select Or Enter A Variation" value="${category_variant.attributes_name}" readonly>
+                                          </div>
+                                      </div>
+                                      <div class="card-body">
+                                          <span class="mb-0">Option</span>
+                                          <div class="options-container">
+                                              <div class="d-flex align-items-center mt-2">
+                                                  <input type="text" name="variant[${index}][option]" class="form-control option-value" placeholder="Enter an Option" value="">
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          `);
+                            });
+                          },
+                          error: function(xhr, status, error) {
+                            console.error("Error fetching subcategories:", error);
+                          }
+                        });
+                      } else {
+                        $('#subcategory').empty().append('<option value="">Chọn danh mục con</option>');
+                        $('#subcategory-section').hide();
+                        $('#add-variant').hide();
+                      }
+                    });
+                  });
                 </script>
                 <script>
                   let uploadedImages = [];
@@ -376,6 +231,7 @@
                   });
                 </script>
 
+
                 <!-- Status -->
                 <div class="mb-6 col ecommerce-select2-dropdown" data-select2-id="47">
                   <label class="form-label mb-1" for="status-org">Status
@@ -391,27 +247,6 @@
             <!-- /Organize Card -->
           </div>
           <!-- /Second column -->
-          <!-- List Variant -->
-          <!-- Variants List -->
-          <div class="col-12">
-            <div class="card mb-6">
-              <div class="card-header">
-                <h5 class="card-title mb-0">Variants List</h5>
-              </div>
-              <div class="card-body">
-                <table id="variant-list-table" class="table table-bordered">
-                  <thead id="variant-list-header">
-                    <!-- Header of the table will be dynamically added here -->
-                  </thead>
-                  <tbody id="variant-list-body">
-                    <!-- Variant combinations will be added here -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- End Variants List -->
         </div>
       </form>
     </div>

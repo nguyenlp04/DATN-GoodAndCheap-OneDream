@@ -95,11 +95,15 @@ class NotificationController extends Controller
 
         $notifications->delete();
 
-        return redirect()->route('notifications.index')->with('success', 'Notification deleted successfully');
+        return redirect()->back()->with('alert', [
+            'type' => 'success',
+            'message' => 'Notification deleted in trash successfully!'
+        ]);
     }
     public function trashed()
     {
         $notifications = Notification::onlyTrashed()->get();
+
         return view('admin.notifications.trashed_notifications', compact('notifications'));
     }
 
@@ -107,13 +111,19 @@ class NotificationController extends Controller
     {
         $notifications =  Notification::withTrashed()->findOrFail($id);
         $notifications->restore();
-        return redirect()->route('notifications.index')->with('success', 'notifications restored successfully');
+        return redirect()->route('notifications.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Notification restore successfully!'
+        ]);
     }
     public function forceDelete($id)
     {
         $notifications = Notification::onlyTrashed()->findOrFail($id);
         $notifications->forceDelete();
-        return redirect()->route('notifications.index')->with('success', 'Notification deleted permanently successfully');
+        return redirect()->route('notifications.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Notification deleted permanently successfully'
+        ]);
     }
 
     public function toggleStatus(Request $request, $id)
@@ -123,7 +133,7 @@ class NotificationController extends Controller
         $notification->save();
         return response()->json([
             'status' => $notification->status,
-            'message' => 'Trạng thái thông báo đã được cập nhật thành công.',
+            'message' => 'Status notifications update successfully.',
         ]);
     }
 }

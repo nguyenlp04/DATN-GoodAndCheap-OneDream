@@ -28,18 +28,24 @@
                 </div>
 
                 <div class="header-right">
-                    <div class="dropdown compare-dropdown">
-                        <a href="chat.html" class="dropdown-toggle" role="button" aria-haspopup="true">
+                @if(isset(auth()->user()->user_id))
+                    <div class="wishlist">
+                        <a href="{{ route('add.sale-news') }}" title="Wishlist">
                             <div class="icon">
-                                <i class="fas fa-comments"></i> <!-- Thay đổi icon ở đây -->
+                            <i class="fa-regular fa-newspaper"></i>
+                            </div>
+                            <p>News Sale</p>
+                        </a>
+                    </div><!-- End .compare-dropdown -->
+
+                    <div class="dropdown compare-dropdown">
+                        <a href="{{ route('message.conversations') }} " class="dropdown-toggle" role="button" aria-haspopup="true">
+                            <div class="icon">
+                            <i class="fa-regular fa-comments"></i> <!-- Thay đổi icon ở đây -->
                             </div>
                             <p>Chat</p>
                         </a>
-
-
-
                     </div><!-- End .compare-dropdown -->
-
                     <div class="wishlist">
                         <a href="wishlist.html" title="Wishlist">
                             <div class="icon">
@@ -118,6 +124,23 @@
                             </div><!-- End .dropdown-cart-total -->
                         </div><!-- End .dropdown-menu -->
                     </div><!-- End .cart-dropdown -->
+                    @else
+                    <div class="wishlist">
+                    <a href="{{ route('login') }}">
+                            <div class="icon">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="wishlist">
+                    <a href="{{ route('register') }}">
+                            <div class="icon">
+                            <i class="fa-solid fa-user-plus"></i>
+                            </div>
+                        </a>
+                    </div>
+                @endif
+
                 </div><!-- End .header-right -->
             </div><!-- End .container -->
         </div><!-- End .header-middle -->
@@ -216,7 +239,7 @@
                     <div class="row">
                         @guest
                         <!-- Nếu chưa đăng nhập -->
-                        <div class="col-md-5">
+                        <!-- <div class="col-md-5">
                             <a href="{{ route('login') }}">
                                 <p><span class="highlight">Login</span></p>
                             </a>
@@ -225,7 +248,7 @@
                             <a href="{{ route('register') }}">
                                 <p><span class="highlight">Signin</span></p>
                             </a>
-                        </div>
+                        </div> -->
                         @endguest
 
                         @auth

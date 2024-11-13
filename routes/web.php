@@ -17,7 +17,9 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
+use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\PartnerProfileController;
+use App\Http\Controllers\SaleNewsControllerName;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
@@ -53,6 +55,11 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('verification.show');
 Route::post('/verify', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
+
+Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
+Route::post('staff/login', [StaffAuthController::class, 'login']);
+Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
+
 // Dashboard route
 Route::get('/dashboard', function () {
     return view('admin.index');
@@ -101,9 +108,7 @@ Route::prefix('account')->group(function () {
     Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
 
     // });
-    Route::get('/lock', function () {
-        return view('admin.account.lock-account');
-    });
+
 });
 
 
@@ -147,11 +152,17 @@ Route::prefix('message')->group(function () {
     Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
 })->middleware(['auth', 'verified']);
 
+Route::prefix('product')->group(function () {
+    Route::get('/details/{id}', [ProductController::class, 'renderProductDetails'])->name('product.detail');
+})->middleware(['auth', 'verified']);
+
 Route::prefix('cart')->group(function () {
     Route::get('/cart-detail', [CartController::class, 'show'])->name('cart.detail');
     Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
     Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 })->middleware(['auth', 'verified']);
+
+
 Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
     Route::resource('channels', ChannelController::class);
@@ -160,10 +171,18 @@ Route::prefix('partner')->group(function () {
     Route::resource('profile', PartnerProfileController::class);
 });
 Route::prefix('partners')->name('partners.')->group(function () {
-    Route::resource('/', PartnerController::class);
+    // Route::resource('/', PartnerController::class);
+    Route::get('/', function () {
+        return view('partner.dashboard');
+    });
+    Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
+    Route::put('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
+
     // Route::resource('/orders/', OrderController::class);
     // Route::patch('/toggleStatus/{id}', [OrderController::class, 'toggleStatus'])->name('toggleStatus');
 
+
+    // ------ ProductPartnerController ------
     Route::resource('/product/', PartnerProductController::class);
     Route::get('/trashed', [PartnerProductController::class, 'trashed'])->name('trashed');
     Route::delete('/destroy/{id}', [PartnerProductController::class, 'destroy'])->name('destroy');
@@ -189,4 +208,20 @@ Route::prefix('trash')->group(function () {
     Route::get('/blog', function () {
         return view('admin.index');
     });
+});
+
+
+// Route::prefix('sale-news')->group(function () {
+//     Route::post('/add', [ProductController::class, 'store'])->name('add.product');
+//     Route::get('/add', [ProductController::class, 'create'])->name('products.create');
+//     Route::get('/add', function () {
+//         return view('sale-news.add-sale-news');
+//     });
+//     Route::post('/add', [SaleNewsControllerName::class, 'store'])->name('add.sale-news');
+//     Route::get('/add', [SaleNewsControllerName::class, 'create']);
+// });
+
+Route::prefix('sale-news')->group(function () {
+    Route::get('/add', [SaleNewsControllerName::class, 'create'])->name('products.create');
+    Route::post('/add', [SaleNewsControllerName::class, 'store'])->name('add.sale-news');
 });

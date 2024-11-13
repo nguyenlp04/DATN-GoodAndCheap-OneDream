@@ -126,7 +126,7 @@
 
                     <div class="card mb-6" data-select2-id="18">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Upload avata</h5>
+                            <h5 class="card-title mb-0">Upload avatar</h5>
                         </div>
 
                         <div class="card-body">
@@ -268,6 +268,8 @@
 
             @endsection
             @section('script-link-css')
+            <script src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.js"></script>
+            <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
             <script>
                 document.getElementById('btnBrowse').addEventListener('click', function() {
                     document.getElementById('fileInput').click();
