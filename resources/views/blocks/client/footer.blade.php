@@ -386,3 +386,4 @@
         </div><!-- End .modal-content -->
     </div><!-- End .modal-dialog -->
 </div><!-- End .modal -->
+@include('layouts.script-admin')

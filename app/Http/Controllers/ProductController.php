@@ -231,6 +231,7 @@ class ProductController extends Controller
     }
     public function renderProductDetails(string $id){
 
+
         $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
        $data = $product->data;
     //    die($product);

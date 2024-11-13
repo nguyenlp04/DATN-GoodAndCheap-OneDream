@@ -123,11 +123,13 @@
                             </div><!-- End .details-filter-row -->
 
                             <div class="product-details-action">
+
                                 <p id="cart-add" class="btn-product btn-cart"><span class="btn-text">add to cart</span></p>
 
                                 <div class="details-action-wrapper">
                                     <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to
                                             Wishlist</span></a>
+
                                             @if (isset(auth()->user()->user_id))
                                             <p
                                             @if (isset($product->channel_id))
@@ -194,6 +196,7 @@
                         <div class="product-desc-content">
                          <h3>Information</h3>
                         {!! $product->description !!}
+
                                 @if(isset($variants))
                                 @foreach($variants as $variant)
                                 <h3>{{ $variant->name }}</h3>
@@ -478,6 +481,7 @@
                         </div><!-- End .product-action-vertical -->
 
                         <div class="product-action">
+
                             <p href="#" class="btn-product btn-cart"><span>add to cart</span></p>
                         </div><!-- End .product-action -->
                     </figure><!-- End .product-media -->
@@ -568,6 +572,7 @@
                 </div><!-- End .product-details-quantity -->
 
                 <div class="product-details-action">
+
                  <p id="cart-add" class="btn-product btn-cart"><span class="btn-text">add to cart</span></p>
                     <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
                 </div><!-- End .product-details-action -->
@@ -579,6 +584,7 @@
 @endsection
 
 @section('script-link-css')
+
 <style>
     /* Thêm biểu tượng trước phần tử với class "btn-text" */
 
@@ -616,6 +622,7 @@
                  $(this).addClass('active');
                  selectedVariants[variantType] = selectedItem;
                 console.log('Selected variants:', selectedVariants);
+
                  updatePrice();
                  getActiveData();
                 });
@@ -760,6 +767,7 @@
             $(this).addClass('active');
         });
 
+
         // cart
 
 
@@ -846,6 +854,7 @@
     @endif
     });
 </script>
+
 
 
 
