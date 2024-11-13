@@ -109,6 +109,7 @@ class ProductController extends Controller
                 'dataVariantDetail' => 'required',  // Đảm bảo là mảng
                 'variant' => 'required',  // Đảm bảo là mảng
             ]);
+
             $data = [
                 'productTitle' => $validatedData['productTitle'],
                 'price' => $validatedData['price'],
@@ -230,8 +231,10 @@ class ProductController extends Controller
     }
     public function renderProductDetails(string $id){
 
-        $product = Product::with(['images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
+
+        $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
        $data = $product->data;
+    //    die($product);
            $data_json = json_decode($data);
           $variants = json_decode($data_json->variants);
            $variant_data_details = json_decode($data_json->variant_data_details);
