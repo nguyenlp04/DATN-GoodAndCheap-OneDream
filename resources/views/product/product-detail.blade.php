@@ -123,12 +123,23 @@
                             </div><!-- End .details-filter-row -->
 
                             <div class="product-details-action">
-                                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                <p id="cart-add" class="btn-product btn-cart"><span class="btn-text">add to cart</span></p>
 
                                 <div class="details-action-wrapper">
                                     <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to
                                             Wishlist</span></a>
-                                    <a href="#" class="btn-product " title="Compare"><i class="fa-regular fa-envelope"></i><span style="padding-left: 10px"> Contact the seller</span></a>
+                                            @if (isset(auth()->user()->user_id))
+                                            <p
+                                            @if (isset($product->channel_id))
+                                            data-id="{{ $product->channel->user_id }}"
+                                            data-name="{{$product->full_name}}"
+                                            @else
+                                            data-id="2"
+                                            data-name="Goods and Cheap"
+
+                                            @endif
+                                            id="message-id" class="btn-product " title="Compare"><i class="fa-regular fa-envelope"></i><span style="padding-left: 10px"> Contact the seller</span></p>
+                                            @endif
                                 </div><!-- End .details-action-wrapper -->
                             </div><!-- End .product-details-action -->
 
@@ -183,8 +194,8 @@
                         <div class="product-desc-content">
                          <h3>Information</h3>
                         {!! $product->description !!}
-                                @if(isset($variants->variants))
-                                @foreach($variants->variants as $variant)
+                                @if(isset($variants))
+                                @foreach($variants as $variant)
                                 <h3>{{ $variant->name }}</h3>
                                 <ul>
                                 @foreach($variant->options as $item)
@@ -467,7 +478,7 @@
                         </div><!-- End .product-action-vertical -->
 
                         <div class="product-action">
-                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                            <p href="#" class="btn-product btn-cart"><span>add to cart</span></p>
                         </div><!-- End .product-action -->
                     </figure><!-- End .product-media -->
 
@@ -557,7 +568,7 @@
                 </div><!-- End .product-details-quantity -->
 
                 <div class="product-details-action">
-                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                 <p id="cart-add" class="btn-product btn-cart"><span class="btn-text">add to cart</span></p>
                     <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
                 </div><!-- End .product-details-action -->
             </div><!-- End .col-6 -->
@@ -568,7 +579,21 @@
 @endsection
 
 @section('script-link-css')
+<style>
+    /* Thêm biểu tượng trước phần tử với class "btn-text" */
 
+
+/* Thay đổi màu chữ thành trắng khi rê chuột vào button */
+#cart-add:hover .btn-text {
+    color: white;
+    cursor: pointer;
+}
+
+#cart-add::before .btn-text {
+    color: "\e812";
+}
+
+</style>
 <script>
     $(document).ready(function() {
 
@@ -591,8 +616,6 @@
                  $(this).addClass('active');
                  selectedVariants[variantType] = selectedItem;
                 console.log('Selected variants:', selectedVariants);
-
-
                  updatePrice();
                  getActiveData();
                 });
@@ -736,8 +759,94 @@
             $('.product-gallery-item').removeClass('active');
             $(this).addClass('active');
         });
+
+        // cart
+
+
+    @if (isset(auth()->user()->user_id))
+        $('#cart-add').click(function() {
+        var productData = {
+            productId: {{ $product->product_id }},
+            userID: {{ auth()->user()->user_id }},
+            data: valuesArray,
+            stock: valuesArray['stock']
+        };
+        console.log(productData);
+
+        $.ajaxSetup({
+             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+             });
+        $.ajax({
+            url: '{{ route("cart.add") }}', // Thay thế bằng URL endpoint của server
+            type: 'POST',
+            data: productData,
+            success: function(response) {
+                console.log('Sản phẩm đã được thêm vào giỏ hàng:', response);
+            },
+            error: function(error) {
+                console.log('Có lỗi xảy ra:', error);
+            }
+
+
+          });
+
+        });
+    @endif
+
+    @if (isset(auth()->user()->user_id))
+    // message
+    var recipientId = null;
+    var currentChannel = null;
+    var recipientName = null;
+    var login_userId = {{ auth()->user()->user_id }};
+    $('#message-id').click(function(){
+        recipientId = $(this).attr('data-id');
+        recipientName = $(this).attr('data-name');
+
+        $.ajax({
+              url: "{{ route('message.checkconversations') }}",
+              method: 'GET',
+              data: { recipientId: recipientId },
+              success: function(response) {
+                  if (response.channelExists) {
+                    //   subscribeToChannel(response.channelName);
+                      localStorage.setItem('channelName', response.channelName);
+                      localStorage.setItem('recipientName', recipientName);
+                      window.location.href = '{{ asset('message/conversations') }}';
+
+                  } else {
+                      createNewChannel(recipientId);
+
+                  }
+              },
+              error: function(xhr, status, error) { console.error(error); }
+          });
+    });
+    function createNewChannel(recipientId) {
+
+        $.ajax({
+            url: '{{ route('message.createconversations') }}',
+            method: 'GET',
+            data: { recipientId: recipientId },
+            success: function (response) {
+                if(response.success == true){
+
+                localStorage.setItem('channelName', response.channelName);
+                localStorage.setItem('recipientName', recipientName);
+                window.location.href = '{{ asset('message/conversations') }}';
+                }
+                else{
+
+                console.log(response.error);
+                }
+            },
+
+        });
+        }
+    @endif
     });
 </script>
+
 
 
 <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>

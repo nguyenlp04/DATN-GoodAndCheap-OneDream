@@ -157,6 +157,7 @@ Route::prefix('product')->group(function () {
 
 Route::prefix('cart')->group(function () {
     Route::get('/cart-detail', [CartController::class, 'show'])->name('cart.detail');
+    Route::post('/cart-add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
     Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 })->middleware(['auth', 'verified']);
