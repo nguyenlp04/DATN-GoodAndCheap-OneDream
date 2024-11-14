@@ -231,11 +231,13 @@ class ProductController extends Controller
     public function renderProductDetails(string $id)
     {
 
-        $product = Product::with(['images', 'firstImage', 'category', 'subcategory'])->where('product_id', $id)->first();
-        $data = $product->data;
-        $data_json = json_decode($data);
-        $variants = json_decode($data_json->variants);
-        $variant_data_details = json_decode($data_json->variant_data_details);
+
+        $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
+       $data = $product->data;
+    //    die($product);
+           $data_json = json_decode($data);
+          $variants = json_decode($data_json->variants);
+           $variant_data_details = json_decode($data_json->variant_data_details);
         return view('product.product-detail', [
             'product' => $product,
             'variants' => $variants,
