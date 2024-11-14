@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Notification as RequestsNotification;
+use App\Models\Channel;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
+
 
 
 class NotificationController extends Controller
@@ -25,33 +28,78 @@ class NotificationController extends Controller
      */
     public function create()
     {
-        return view('admin.notifications.create_notifications');
+        $channels = Channel::all();
+        $users = User::all();
+        return view('admin.notifications.create_notifications', compact('users', 'channels'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RequestsNotification $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        // Validate the request
+        $request->validate([
+            'title_notification' => 'required|string',
+            'content_notification' => 'required|string',
+            'status' => 'nullable|in:public,private',
+            'type' => 'required|string',
+            'selected_users.*' => 'required_if:type,user|array|min:1',
+            'selected_users.*' => 'exists:users,user_id',
+            'selected_channels.*' => 'required_if:type,channel|array|min:1',
+            'selected_channels.*' => 'exists:channels,channel_id',
+        ], [
+            'selected_users.required_if' => 'Please select at least one user to send the notification to.',
+            'selected_users.exists' => 'Selected user does not exist in the system.',
+            'selected_channels.required_if' => 'Please select at least one channel to send the notification to.',
+            'selected_channels.exists' => 'Selected channel does not exist in the system.',
+        ]);
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('images', 'public');
-        }
+        // Create a new notification record
+        $notification = new Notification();
+        $notification->title_notification = $request->title_notification;
+        $notification->content_notification = $request->content_notification;
+        $notification->type = $request->type;
+        $notification->status = $request->status ?? 'public'; // Default to 'private'
+        $notification->selected_users = json_encode($request->selected_users); // Store users as JSON
+        $notification->selected_channels = json_encode($request->selected_channels); // Store channels as JSON
+        $notification->save();
 
-        $data['user_id'] = Auth::id();
-
-        Notification::create($data);
-
-        return redirect()->route('notifications.index')->with('success', 'Notification created successfully');
+        // Redirect with a success message
+        return redirect()->route('notifications.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Notification created successfully!',
+        ]);
     }
+    public function showNotifications()
+    {
+        // Get the authenticated user's ID
+        $userId = Auth::id();
+
+        // Retrieve notifications for the specified user
+        $notifications = Notification::where('status', 'public')
+            ->orWhere(function ($query) use ($userId) {
+                $query->where('status', 'private')
+                    ->whereJsonContains('selected_users', $userId);
+            })
+            ->get();
+
+        return view('user.notifications', compact('notifications'));
+    }
+
+
+
+
+
+
+
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $notifications = Notification::findOrFail($id);
         return view('admin.notifications.show', compact('notifications'));
     }
 
@@ -67,21 +115,13 @@ class NotificationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RequestsNotification $request, string $id)
+    public function update(Request $request, string $id)
     {
-        $notifications = Notification::findOrFail($id);
-        $data = $request->validated();
 
-        if ($request->hasFile('image')) {
-            if ($notifications->image_notification) {
-                Storage::disk('public')->delete($notifications->image);
-            }
-            $data['image'] = $request->file('image')->store('images', 'public');
-        }
-
-        $notifications->update($data);
-
-        return redirect()->route('notifications.index')->with('success', 'Notification updated successfully');
+        return redirect()->route('notifications.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Notification update successfully!'
+        ]);
     }
     /**
      * Remove the specified resource from storage.
