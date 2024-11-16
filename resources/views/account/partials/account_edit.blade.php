@@ -6,7 +6,7 @@
     <div style="display: flex; flex-direction: column; align-items: center; ">
         <div style="position: relative;">
             @if (Auth::user()->image_user)
-            <img id="profile-picture" src="{{ asset('storage/' . Auth::user()->image_user) }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+            <img id="profile-picture" src="{{ asset( Auth::user()->image_user) }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
             @else
             <img id="profile-picture" src="{{ asset('storage/image_users/default_avatar.jpg') }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
             @endif

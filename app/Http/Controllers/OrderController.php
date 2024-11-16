@@ -51,18 +51,19 @@ class OrderController extends Controller
                 // Nếu tất cả trạng thái giống nhau, chỉ hiển thị một trạng thái
                 $order->detail_status = $statuses->first();
             } else {
-                // Nếu không giống nhau, gộp các trạng thái lại thành chuỗi
-                $order->detail_status = $statuses->implode(', ');
+                // Nếu có nhiều trạng thái khác nhau, gán trạng thái là 'processing'
+                $order->detail_status = 'processing';
             }
 
             return $order;
         });
 
+
         // dd($orders); // Kiểm tra kết quả
         return view('admin.orders.index', compact('orders'));
     }
 
-    public function getOrderDetails($id)
+    public function getOrderDetails($detail_order_id)
     {
         // Lấy thông tin đơn hàng từ bảng 'orders'
         $order = DB::table('orders')
@@ -72,7 +73,6 @@ class OrderController extends Controller
                 'orders.order_id',
                 'orders.user_id',
                 'orders.created_at',
-                // 'orders.status as order_status', 
                 'orders.name_receiver',
                 'orders.price',
                 'orders.phone_number',
@@ -82,7 +82,7 @@ class OrderController extends Controller
                 'users.email',
                 'payment_method.name_method'
             )
-            ->where('orders.order_id', $id)
+            ->where('orders.order_id', $detail_order_id)
             ->first();
 
         $userId = $order->user_id;
@@ -95,32 +95,42 @@ class OrderController extends Controller
                 $join->on('products.product_id', '=', 'photo_gallery.product_id')
                     ->whereRaw('photo_gallery.photo_gallery_id = (SELECT MIN(photo_gallery_id) FROM photo_gallery WHERE photo_gallery.product_id = products.product_id)');
             })
+            ->leftJoin('reviews', 'order_details.detail_order_id', '=', 'reviews.detail_order_id')
+            ->leftJoin('users as reviewers', 'reviews.user_id', '=', 'reviewers.user_id')
+            ->leftJoin('reviews as replies', 'reviews.review_id', '=', 'replies.parent_id')
             ->select(
+                'order_details.*',
                 'products.name_product',
                 'products.price as product_price',
                 'products.description',
                 'order_details.value',
-                'order_details.status as detail_status', // Trạng thái chi tiết sản phẩm từ bảng order_details
+                'order_details.status as detail_status',
                 'order_details.is_reviewed',
                 'order_details.stock',
                 DB::raw('products.price * order_details.value as total_price'),
-                'photo_gallery.image_name as product_image' // Ảnh đầu tiên của sản phẩm
+                'photo_gallery.image_name as product_image',
+                'reviews.review_id',
+                'reviews.content as review_content',
+                'reviews.status as review_status',
+                'reviews.rating as review_rating',
+                'reviews.created_at as review_created_at',
+                'reviewers.full_name as reviewer_name',
+                'reviewers.email as reviewer_email',
+                'reviewers.image_user as reviewer_avatar',
+                'replies.content as reply_content', // Lấy nội dung phản hồi
+                'replies.created_at as reply_created_at',
+                'replies.staff_id as reply_staff_id'
             )
-            ->where('order_details.order_id', $id)
-            ->whereNotNull('products.staff_id') // Chỉ lấy các sản phẩm có staff_id không null
-            ->whereNull('products.channel_id') // Chỉ lấy các sản phẩm có channel_id = null
+            ->where('order_details.order_id', $detail_order_id)
+            ->whereNotNull('products.staff_id')
+            ->whereNull('products.channel_id')
             ->get();
-
-        // Kiểm tra trạng thái của các sản phẩm
-        $statuses = $orderDetails->pluck('detail_status')->unique();
-        $isSameStatus = $statuses->count() === 1; // Nếu chỉ có 1 trạng thái duy nhất
-        $status = $isSameStatus ? $statuses->first() : null;
         // Tính tổng số tiền và các thông tin khác cho đơn hàng
         $subtotal = $orderDetails->sum('total_price');
         $tax = $subtotal * 0.1; // Giả sử thuế 10%
         $total = $subtotal + $tax;
-
-        return view('admin.orders.order-detail', compact('order', 'orderDetails', 'subtotal', 'tax', 'total', 'status', 'isSameStatus', 'totalOrders'));
+        // dd($orderDetails);
+        return view('admin.orders.order-detail', compact('order', 'orderDetails', 'subtotal', 'tax', 'total', 'totalOrders'));
     }
 
 
@@ -128,25 +138,54 @@ class OrderController extends Controller
 
 
 
-    public function updateOrderStatus(Request $request, $order_id)
+    public function updateStatus(Request $request, $detail_order_id)
     {
         $status = $request->input('status');
-
-        // Cập nhật trạng thái của các sản phẩm trong order_details với điều kiện
+        // Cập nhật trạng thái trong bảng order_details
         DB::table('order_details')
-            ->join('products', 'order_details.product_id', '=', 'products.product_id')
-            ->where('order_details.order_id', $order_id)
-            ->whereNotNull('products.staff_id')
-            ->whereNull('products.channel_id')
-            ->update(['order_details.status' => $status]);
+            ->where('detail_order_id', $detail_order_id)
+            ->update(['status' => $status]);
 
-        // Trả về JSON phản hồi thành công
         return response()->json([
             'success' => true,
             'message' => 'Trạng thái đơn hàng đã được cập nhật.',
             'new_status' => $status
         ]);
     }
+
+    public function updateOrderStatus(Request $request, $detail_order_id)
+    {
+        $status = $request->input('status');
+        // Cập nhật trạng thái trong bảng order_details
+        DB::table('order_details')
+            ->where('detail_order_id', $detail_order_id)
+            ->update(['status' => $status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Trạng thái đơn hàng đã được cập nhật.',
+            'new_status' => $status
+        ]);
+    }
+    // public function updateOrderStatus(Request $request, $detail_order_id)
+    // {
+    //     $status = $request->input('status');
+
+    //     // Cập nhật trạng thái của các sản phẩm trong order_details với điều kiện
+    //     DB::table('order_details')
+    //         ->join('products', 'order_details.product_id', '=', 'products.product_id')
+    //         ->where('order_details.order_id', $detail_order_id)
+    //         ->whereNotNull('products.staff_id')
+    //         ->whereNull('products.channel_id')
+    //         ->update(['order_details.status' => $status]);
+
+    //     // Trả về JSON phản hồi thành công
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Trạng thái đơn hàng đã được cập nhật.',
+    //         'new_status' => $status
+    //     ]);
+    // }
 
 
 

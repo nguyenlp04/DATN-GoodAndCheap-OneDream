@@ -19,6 +19,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\PartnerProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
@@ -32,7 +33,9 @@ Route::get('/home', function () {
 Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
 // routes/web.php
 Route::get('/order-affiliate/details/{id}', [OrderController::class, 'getOrderDetails'])->name('order-affiliate.details');
-Route::put('/order-affiliate/{order_id}/update-status', [OrderController::class, 'updateOrderStatus'])->name('order.updateStatus');
+Route::put('/order-affiliate/{detail_order_id}/update-status', [OrderController::class, 'updateOrderStatus'])->name('order.updateStatus');
+Route::post('/reviews/reply', [ReviewController::class, 'replyToReview'])->name('reviews.reply');
+
 
 
 
@@ -51,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
+    Route::post('/submit-review', [ReviewController::class, 'store'])->name('submit.review');
 });
 
 require __DIR__ . '/auth.php';

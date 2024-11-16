@@ -72,47 +72,21 @@
             bg-label-info
         @elseif($order->detail_status == 'shipped')
             bg-label-primary
-        @endif"
-                          text-capitalized>
+        @elseif($order->detail_status == 'processing')
+            bg-label-secondary
+        @endif
+      text-capitalized">
                           {{ ucfirst($order->detail_status) }}
                         </span>
                       </td>
                       <td>
                         <div class="container">
                           <div class="btn-group">
-                            <button type="button" class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                              <li>
-                                <a class="dropdown-item" href="{{ route('order-affiliate.details', ['id' => $order->order_id]) }}">
-                                  <span><i class="fa-solid fa-eye me-1"></i></span>View
-                                </a>
-                              </li>
-                              <li id="dropdown-{{ $order->order_id }}">
-                                @if($order->detail_status == 'pending')
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="updateOrderStatus('{{ $order->order_id }}', 'in_progress')">
-                                  <span><i class="fa-solid fa-pen-to-square me-1"></i></span> Xác nhận
-                                </a>
-                                @elseif($order->detail_status == 'in_progress')
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="updateOrderStatus('{{ $order->order_id }}', 'shipped')">
-                                  <span><i class="fa-solid fa-truck me-1"></i></span> Đã giao bên vận chuyển
-                                </a>
-                                @elseif($order->detail_status == 'shipped')
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="updateOrderStatus('{{ $order->order_id }}', 'completed')">
-                                  <span><i class="fa-solid fa-check-circle me-1"></i></span> Đơn hàng đã hoàn thành
-                                </a>
-                                @elseif($order->detail_status == 'completed')
-                                <a class="dropdown-item" href="javascript:void(0);">
-                                  <span><i class="fa-solid fa-star me-1"></i></span> Chờ đánh giá
-                                </a>
-                                @else
-                                <a class="dropdown-item" href="javascript:void(0);">
-                                  <span><i class="fa-solid fa-question-circle me-1"></i></span> Trạng thái chưa xác định
-                                </a>
-                                @endif
-                              </li>
-                            </ul>
+                            <a href="{{ route('order-affiliate.details', ['id' => $order->order_id]) }}">
+                              <button type="button" class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow">
+                                <span><i class="fa-solid fa-eye me-1"></i></span>
+                              </button>
+                            </a>
                           </div>
                         </div>
                       </td>
@@ -143,83 +117,4 @@
 <!-- / Content wrapper -->
 
 
-@endsection
-
-@section('script-link-css')
-<script>
-  function updateOrderStatus(orderId, status) {
-    $.ajax({
-      url: "{{ url('/order-affiliate') }}/" + orderId + "/update-status",
-      type: "PUT",
-      data: {
-        _token: "{{ csrf_token() }}",
-        status: status
-      },
-      success: function(response) {
-        if (response.success) {
-          Swal.fire({
-            icon: 'success',
-            title: response.message,
-            toast: true,
-            position: 'bottom-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-          });
-
-          // Cập nhật lại giao diện trạng thái
-          const statusElement = document.getElementById('order-status-' + orderId);
-          statusElement.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-
-          // Cập nhật lại lớp CSS
-          statusElement.className = 'badge px-2 text-capitalized';
-          if (status === 'canceled') {
-            statusElement.classList.add('bg-label-danger');
-          } else if (status === 'completed') {
-            statusElement.classList.add('bg-label-success');
-          } else if (status === 'in_progress') {
-            statusElement.classList.add('bg-label-warning');
-          } else if (status === 'pending') {
-            statusElement.classList.add('bg-label-info');
-          } else if (status === 'shipped') {
-            statusElement.classList.add('bg-label-primary');
-          }
-
-          // Cập nhật lại danh sách trạng thái trong dropdown
-          const dropdownElement = document.getElementById('dropdown-' + orderId);
-          let dropdownHtml = '';
-          if (status === 'pending') {
-            dropdownHtml = `<a class="dropdown-item" href="javascript:void(0);" onclick="updateOrderStatus('${orderId}', 'in_progress')">
-                              <span><i class="fa-solid fa-pen-to-square me-1"></i></span> Xác nhận
-                            </a>`;
-          } else if (status === 'in_progress') {
-            dropdownHtml = `<a class="dropdown-item" href="javascript:void(0);" onclick="updateOrderStatus('${orderId}', 'shipped')">
-                              <span><i class="fa-solid fa-truck me-1"></i></span> Đã giao bên vận chuyển
-                            </a>`;
-          } else if (status === 'shipped') {
-            dropdownHtml = `<a class="dropdown-item" href="javascript:void(0);" onclick="updateOrderStatus('${orderId}', 'completed')">
-                              <span><i class="fa-solid fa-check-circle me-1"></i></span> Đơn hàng đã hoàn thành
-                            </a>`;
-          } else if (status === 'completed') {
-            dropdownHtml = `<a class="dropdown-item" href="javascript:void(0);">
-                              <span><i class="fa-solid fa-star me-1"></i></span> Chờ đánh giá
-                            </a>`;
-          } else {
-            dropdownHtml = `<a class="dropdown-item" href="javascript:void(0);">
-                              <span><i class="fa-solid fa-question-circle me-1"></i></span> Trạng thái chưa xác định
-                            </a>`;
-          }
-          dropdownElement.innerHTML = dropdownHtml;
-        }
-      },
-      error: function(xhr) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Có lỗi xảy ra!',
-          text: 'Không thể cập nhật trạng thái đơn hàng.'
-        });
-      }
-    });
-  }
-</script>
 @endsection
