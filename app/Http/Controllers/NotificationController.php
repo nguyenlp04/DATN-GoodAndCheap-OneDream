@@ -20,8 +20,25 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Notification::all();
+
+        foreach ($notifications as $notification) {
+            if (!empty($notification->selected_users)) {
+                // Lấy tên người dùng từ selected_users
+                $userIds = $notification->selected_users;
+                $notification->names = User::whereIn('user_id', $userIds)->pluck('full_name')->toArray();
+            } elseif (!empty($notification->selected_channels)) {
+                // Lấy tên kênh từ selected_channels
+                $channelIds = $notification->selected_channels;
+                $notification->names = Channel::whereIn('channel_id', $channelIds)->pluck('name_channel')->toArray();
+            } else {
+                $notification->names = ['No users or channels assigned'];
+            }
+        }
+
         return view('admin.notifications.list_notifications', compact('notifications'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -86,15 +103,6 @@ class NotificationController extends Controller
 
         return view('user.notifications', compact('notifications'));
     }
-
-
-
-
-
-
-
-
-
     /**
      * Display the specified resource.
      */
@@ -109,20 +117,51 @@ class NotificationController extends Controller
     public function edit($id)
     {
         $notifications = Notification::findOrFail($id);
-        return view('admin.notifications.edit_notifications', compact('notifications'));
+
+        // Decode JSON fields
+        $notifications->selected_users = is_string($notifications->selected_users)
+            ? json_decode($notifications->selected_users, true)
+            : $notifications->selected_users;
+
+        $notifications->selected_channels = is_string($notifications->selected_channels)
+            ? json_decode($notifications->selected_channels, true)
+            : $notifications->selected_channels;
+
+        // Lấy danh sách user và channel
+        $users = User::all();
+        $channels = Channel::all();
+
+        return view('admin.notifications.edit_notifications', compact('notifications', 'users', 'channels'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'title_notification' => 'required|string',
+            'content_notification' => 'required|string',
+            'type' => 'required|string',
+            'selected_users.*' => 'required_if:type,user|array|min:1|exists:users,user_id',
+            'selected_channels.*' => 'required_if:type,channel|array|min:1|exists:channels,channel_id',
+        ]);
+
+        $notification = Notification::findOrFail($id);
+        $notification->title_notification = $request->title_notification;
+        $notification->content_notification = $request->content_notification;
+        $notification->type = $request->type;
+        $notification->selected_users = json_encode($request->selected_users ?? []);
+        $notification->selected_channels = json_encode($request->selected_channels ?? []);
+        $notification->save();
 
         return redirect()->route('notifications.index')->with('alert', [
             'type' => 'success',
-            'message' => 'Notification update successfully!'
+            'message' => 'Notification updated successfully!',
         ]);
     }
+
     /**
      * Remove the specified resource from storage.
      */

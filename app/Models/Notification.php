@@ -13,6 +13,10 @@ class Notification extends Model
     protected $primaryKey  = 'notification_id';
     protected $table = 'notifications';
     protected $fillable = ['title_notification', 'content_notification', 'user_id', 'channel_id', 'type', 'status'];
+    protected $casts = [
+        'selected_users' => 'array',
+        'selected_channels' => 'array',
+    ];
     const TYPE_WEBSITE = 'website';
     const TYPE_USER = 'user';
     const TYPE_CHANNEL = 'channel';
@@ -27,11 +31,11 @@ class Notification extends Model
     }
     public function users()
     {
-        return $this->belongsToMany(User::class, 'notifications', 'notification_id', 'user_id');
+        return $this->belongsToMany(User::class, 'notifications', 'notification_id', 'selected_users');
     }
 
     public function channels()
     {
-        return $this->belongsToMany(Channel::class, 'notifications', 'notification_id', 'channel_id');
+        return $this->belongsToMany(Channel::class, 'notifications', 'notification_id', 'selected_channels');
     }
 }

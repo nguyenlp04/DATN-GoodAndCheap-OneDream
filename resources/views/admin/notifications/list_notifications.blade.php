@@ -22,21 +22,20 @@
                   <tr>
                     <!-- <th>Id</th> -->
                     <th>Title</th>
-                    <th>Image</th>
+                    <th>Name</th>
                     <th class="px-1">Start date</th>
-                    <th class="px-1">Update date</th>
                     <th>Status</th>
                     <th>Actions</th>
-                   
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($notifications as $notification)
             <tr>
-                <td>{{ Str::limit($notification->title, 50) }}</td>
-                <td><img src="{{ asset('storage/' . $notification->image) }}" alt="Notification Image" style="width: 70px;"></td>
+                <td>{{ Str::limit($notification->title_notification, 50) }}</td>
+                <td>
+                  {{ implode(', ', $notification->names) }}
+              </td>
                 <td>{{ $notification->created_at->format('Y-m-d') }}</td>
-                <td>{{ $notification->updated_at->format('Y-m-d') }}</td>
                 <td>
                   <button type="button" id="bt-tb{{ $notification->notification_id }}" class="btn btn-sm {{ $notification->status == 'public' ? 'btn-primary' : 'btn-secondary' }}" data-id="{{ $notification->notification_id }}" onclick="toggleStatus(this)">
                       <i id="bt-i{{ $notification->notification_id }}" class="fas {{ $notification->status == 'public' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
@@ -65,7 +64,6 @@
                     <th>Title</th>
                     <th>Image</th> <!-- Khớp với thead -->
                     <th class="px-1">Start date</th>
-                    <th class="px-1">Update date</th>
                     <th>Status</th>
                     <th>Actions</th>
                     

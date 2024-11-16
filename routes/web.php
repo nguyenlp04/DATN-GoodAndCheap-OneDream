@@ -89,7 +89,7 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
 
-Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
+Route::get('g', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
 Route::post('staff/login', [StaffAuthController::class, 'login']);
 Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
 

@@ -115,8 +115,10 @@
     </div>
   </div>
 </div>
-
+@section('script-link-css')
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
+<script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
+@endsection
 <script>
   document.getElementById('recipient-type').addEventListener('change', function() {
     const userList = document.getElementById('user-list');
