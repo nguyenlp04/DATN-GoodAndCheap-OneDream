@@ -1,14 +1,15 @@
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     new DataTable('#example');
 </script>
-@if (session('alert'))
+    @if (session('alert'))
 <script>
     const Toast = Swal.mixin({
         toast: true,
-        position: "bottom-end",
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
@@ -25,7 +26,6 @@
 @endif
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     function confirmDelete(event, articleId) {
         event.preventDefault();

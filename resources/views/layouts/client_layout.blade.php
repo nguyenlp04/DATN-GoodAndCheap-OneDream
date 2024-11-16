@@ -9,6 +9,7 @@
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/images/icons/apple-touch-icon.png') }}">
@@ -52,6 +53,7 @@
 
     <!-- Plugins JS File -->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>
@@ -60,6 +62,8 @@
     @yield('script-link-css')
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
+
 
 </body>
 
