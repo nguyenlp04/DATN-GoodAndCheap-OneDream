@@ -19,10 +19,12 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\PartnerProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SaleNewsControllerName;
 use App\Http\Controllers\UsermanagementController;
 
@@ -32,6 +34,15 @@ Route::get('/home', [ProductController::class, 'home'])->name('home');
 // Trong routes/web.php
 // Đảm bảo route này đã được khai báo trong routes/web.php
 Route::post('/wishlist/add', [ProductController::class, 'addToWishlist'])->name('wishlist.add');
+
+Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
+// routes/web.php
+Route::get('/order-affiliate/details/{id}', [OrderController::class, 'getOrderDetails'])->name('order-affiliate.details');
+Route::put('/order-affiliate/{detail_order_id}/update-status', [OrderController::class, 'updateOrderStatus'])->name('order.updateStatus');
+Route::post('/reviews/reply', [ReviewController::class, 'replyToReview'])->name('reviews.reply');
+
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -48,7 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
-
+    Route::post('/submit-review', [ReviewController::class, 'store'])->name('submit.review');
     route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
     route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
     Route::resource('admin/blogs', BlogController::class);
@@ -147,9 +158,7 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
     Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
 });
-Route::get('/order-affiliate', function () {
-    return view('admin.orders.index');
-});
+
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
