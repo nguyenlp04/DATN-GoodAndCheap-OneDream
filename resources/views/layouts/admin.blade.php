@@ -35,7 +35,6 @@
     <link rel="icon" type="image/x-icon" href="{{ asset("/../admin/assets/img/favicon/favicon.ico") }}" />
 
     <!-- Fonts -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -252,14 +251,14 @@
             </li>
 
             <!-- Blogs -->
-            <li class="menu-item {{ Request::is('blogs') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('sale_new') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bxl-blogger"></i>
                     <div data-i18n="Analytics">Sale new </div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('admin/blogs') ? 'active' : '' }}">
-                        <a href="{{ url('admin/blogs') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('admin/sale_new') ? 'active' : '' }}">
+                        <a href="{{ url('admin/sale_new') }}" class="menu-link">
                             <div data-i18n="Blogs">List Sale new </div>
                         </a>
                     </li>
@@ -694,7 +693,7 @@
     <script src="{{ asset("/../admin/assets/vendor/libs/popper/popper.js") }}"></script>
     <script src="{{ asset("/../admin/assets/vendor/js/bootstrap.js") }}"></script>
     <script src="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js") }}"></script>
-    <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
+    <!-- <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script> -->
 
     <script src="{{ asset("/../admin/assets/vendor/js/menu.js") }}"></script>
     <!-- endbuild -->
@@ -702,7 +701,8 @@
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="{{ asset("/../admin/assets/js/main.js") }}"></script>
+   
+    <script src="{{ asset('/../admin/assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
 

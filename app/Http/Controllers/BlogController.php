@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -32,7 +33,8 @@ class BlogController extends Controller
     // Hiển thị form thêm bài viết
     public function create()
     {
-        return view('admin.blogs.create');
+        $categories=Category::all();
+        return view('admin.blogs.create',['categories'=>$categories]);
     }
 
     // Lưu bài viết mới
@@ -40,35 +42,38 @@ class BlogController extends Controller
 
     // Lưu bài viết mới
     public function store(Request $request)
-{
-    // Xác thực dữ liệu
-    $request->validate([
-        'title' => 'required|max:255',
-        'content' => 'required|string',
-        'short_description' => 'min:10|string|max:255', // Kiểm tra mô tả ngắn
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
-    ]);
-
-    // Lấy ID của người dùng đăng nhập hiện tại
-    $staffId = Auth::id();
-
-    // Xử lý ảnh
-    $imagePath = null;
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('images', 'public'); 
+    {
+      
+        $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required|string',
+            'category_id' => 'required|exists:categories,category_id', // Kiểm tra nếu category_id tồn tại trong bảng categories
+            'short_description' => 'min:10|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+       
+        $staffId = Auth::id();
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public'); 
+        }
+        
+        // Chỉ truyền một category_id duy nhất nếu là single select
+        $categoryId = $request->category_id;
+        dd($request->category_id);
+        Blog::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'staff_id' => $staffId,
+            'image' => $imagePath,
+            'category_id' => $categoryId, // Truyền giá trị category_id vào
+            'short_description' => $request->short_description,
+        ]);
+      
+        return redirect()->route('blogs.index')->with('success', 'Bài viết đã được thêm thành công');
+        
     }
-
-
-    Blog::create([
-        'title' => $request->title,
-        'content' => $request->content,
-        'staff_id' => $staffId,
-        'image' => $imagePath, 
-        'short_description' => $request->short_description, 
-    ]);
-
-    return redirect()->route('blogs.index')->with('success', 'Bài viết đã được thêm thành công');
-}
+    
 
 public function update(Request $request, Blog $blog)
 {

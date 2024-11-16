@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
     Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
     Route::get('admin/sale_new', [Sale_newController::class, 'list_salenew'])->name('sale_new.list');
+    route::post('admin/sale_new/reject/{id}',[Sale_newController::class,'reject'])->name('sale_news.reject');
+    Route::delete('/sale_news/{id}', [Sale_newController::class, 'destroy'])->name('sale_news.destroy');
+    route::post('admin/sale_new/approve/{id}',[Sale_newController::class,'approve'])->name('sale_news.approve');
 });
 
 require __DIR__ . '/auth.php';

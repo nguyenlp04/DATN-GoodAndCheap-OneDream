@@ -19,7 +19,7 @@ class Subcategory extends Model
     // Mối quan hệ với Category
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class,'category_id');
     }
 
     // Mối quan hệ với Product

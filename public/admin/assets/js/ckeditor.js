@@ -113,7 +113,7 @@ CKEDITOR.ClassicEditor.create(document.getElementById("content"), {
     ],
   },
   // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-  placeholder: "Enter content",
+  placeholder: "Welcome to CKEditor&nbsp;5!",
   // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
   fontFamily: {
     options: [

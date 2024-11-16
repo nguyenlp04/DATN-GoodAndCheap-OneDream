@@ -22,4 +22,9 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+    public function blogs()
+{
+    return $this->belongsToMany(Blog::class,  'category_id');
+}
+
 }

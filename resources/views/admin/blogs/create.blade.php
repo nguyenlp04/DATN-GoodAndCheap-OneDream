@@ -45,7 +45,15 @@
                                 <!-- Form thêm Blog -->
                                 <form action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Category:</label><br>
+                                        <select name="category_id" class="form-control">
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->category_id }}">{{ $category->name_category }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    </div>
                                     <div class="mb-3">
                                         <label class="form-label">Title:</label>
                                         <input type="text" name="title" class="form-control" placeholder="Enter blog title">
@@ -58,6 +66,7 @@
 
                                     <div class="mb-3">
                                         <label class="form-label">Content:</label>
+                                    
                                         <textarea name="content" id="content"  rows="5" class="form-control"  ></textarea>
                                     </div>
 
@@ -80,4 +89,8 @@
 
        
 
+        @endsection
+        @section('script-link-css')
+        <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
+        <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
 @endsection

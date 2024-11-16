@@ -21,5 +21,10 @@ class Blog extends Model
 {
     return $this->belongsTo(Staff::class, 'staff_id', 'staff_id');
 }
+public function categories()
+{
+    return $this->belongsToMany(Category::class, 'category_id');
+}
+
 
 }
