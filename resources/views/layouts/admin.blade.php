@@ -750,8 +750,10 @@
     <!-- Vendors JS -->
 
     <!-- Main JS -->
+
    
     <script src="{{ asset('/../admin/assets/js/main.js') }}"></script>
+
 
     <!-- Page JS -->
 

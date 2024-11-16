@@ -13,7 +13,6 @@ use App\Models\Like;
 use App\Models\SubcategoryAttribute;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 
 class ProductController extends Controller
@@ -24,43 +23,43 @@ class ProductController extends Controller
     public function index()
     {
         $data = DB::table('products')
-        ->leftJoin('photo_gallery', 'products.product_id', '=', 'photo_gallery.product_id')
-        ->leftJoin('sub_categories', 'products.sub_category_id', '=', 'sub_categories.sub_category_id')
-        ->leftJoin('categories', 'sub_categories.category_id', '=', 'categories.category_id')
-        ->leftJoin('staffs', 'products.staff_id', '=', 'staffs.staff_id')
-        ->select(
-            'products.*',
-            DB::raw('MIN(photo_gallery.image_name) as image_name'),
-            'categories.name_category as category_name',
-            'sub_categories.name_sub_category as sub_category_name',
-            'staffs.full_name as staff_full_name'
-        )
-        ->where('products.is_delete', '=', '0')
-        ->whereNotNull('products.staff_id')
-        ->groupBy(
-        'products.product_id',
-        'products.name_product',
-        'products.channel_id',
-        'products.weight',
-        'products.data',
-        'products.description',
-        'products.price',
-        'products.quantity',
-        'products.status',
-        'products.is_delete',
-        'products.staff_id',
-        'products.sub_category_id',
-        'products.created_at',
-        'products.delete_at',
-        'products.updated_at',
-        'categories.name_category',
-        'sub_categories.name_sub_category',
-        'staffs.full_name'
-        )
-        ->get();
+            ->leftJoin('photo_gallery', 'products.product_id', '=', 'photo_gallery.product_id')
+            ->leftJoin('sub_categories', 'products.sub_category_id', '=', 'sub_categories.sub_category_id')
+            ->leftJoin('categories', 'sub_categories.category_id', '=', 'categories.category_id')
+            ->leftJoin('staffs', 'products.staff_id', '=', 'staffs.staff_id')
+            ->select(
+                'products.*',
+                DB::raw('MIN(photo_gallery.image_name) as image_name'),
+                'categories.name_category as category_name',
+                'sub_categories.name_sub_category as sub_category_name',
+                'staffs.full_name as staff_full_name'
+            )
+            ->where('products.is_delete', '=', '0')
+            ->whereNotNull('products.staff_id')
+            ->groupBy(
+                'products.product_id',
+                'products.name_product',
+                'products.channel_id',
+                'products.weight',
+                'products.data',
+                'products.description',
+                'products.price',
+                'products.quantity',
+                'products.status',
+                'products.is_delete',
+                'products.staff_id',
+                'products.sub_category_id',
+                'products.created_at',
+                'products.delete_at',
+                'products.updated_at',
+                'categories.name_category',
+                'sub_categories.name_sub_category',
+                'staffs.full_name'
+            )
+            ->get();
 
 
-    return view('admin.products.index', ['data' => $data]);
+        return view('admin.products.index', ['data' => $data]);
     }
 
 
@@ -193,9 +192,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $dataProductID= DB::table('products')->where('product_id',$id)->first();
-        return view('admin.products.update-product',[
-            'dataProductID'=>$dataProductID,
+        $dataProductID = DB::table('products')->where('product_id', $id)->first();
+        return view('admin.products.update-product', [
+            'dataProductID' => $dataProductID,
         ]);
     }
 
@@ -233,6 +232,7 @@ class ProductController extends Controller
             ]);
         }
     }
+
     public function addToWishlist(Request $request)
 {
     if (!Auth::check()) {
@@ -271,6 +271,7 @@ class ProductController extends Controller
     public function renderProductDetails(string $id){
 
 
+
         $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
        $data = $product->data;
     //    die($product);
@@ -278,9 +279,9 @@ class ProductController extends Controller
           $variants = json_decode($data_json->variants);
            $variant_data_details = json_decode($data_json->variant_data_details);
         return view('product.product-detail', [
-            'product' =>$product,
-            'variants' =>$variants,
-            'variant_data_details' =>$variant_data_details
+            'product' => $product,
+            'variants' => $variants,
+            'variant_data_details' => $variant_data_details
 
 
         ]);

@@ -29,6 +29,7 @@ use App\Http\Controllers\SaleNewsControllerName;
 use App\Http\Controllers\UsermanagementController;
 
 
+
 Route::get('/', [ProductController::class, 'home']);
 Route::get('/home', [ProductController::class, 'home'])->name('home');
 // Trong routes/web.php
@@ -157,6 +158,7 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
     Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
     Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
+    Route::get('user/noti/', [NotificationController::class, 'showNotifications'])->name('noti');
 });
 
 
@@ -189,7 +191,6 @@ Route::prefix('cart')->group(function () {
     Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
     Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 })->middleware(['auth', 'verified']);
-
 
 Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
