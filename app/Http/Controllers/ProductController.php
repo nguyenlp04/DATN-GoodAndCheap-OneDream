@@ -232,10 +232,7 @@ class ProductController extends Controller
             ]);
         }
     }
-<<<<<<< HEAD
-    public function renderProductDetails(string $id)
-    {
-=======
+
     public function addToWishlist(Request $request)
 {
     if (!Auth::check()) {
@@ -272,7 +269,7 @@ class ProductController extends Controller
 
 
     public function renderProductDetails(string $id){
->>>>>>> 6554b45e8ea59b89b7c3a43386284c2f686e66e3
+
 
 
         $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();

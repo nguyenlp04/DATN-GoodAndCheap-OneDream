@@ -750,14 +750,10 @@
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-<<<<<<< HEAD
-    <script src="{{ asset("/../admin/assets/js/main.js") }}"></script>
-    <script src="{{ asset("/../admin/assets/js/ckeditor.js") }}"></script>
 
-=======
    
     <script src="{{ asset('/../admin/assets/js/main.js') }}"></script>
->>>>>>> 6554b45e8ea59b89b7c3a43386284c2f686e66e3
+
 
     <!-- Page JS -->
 

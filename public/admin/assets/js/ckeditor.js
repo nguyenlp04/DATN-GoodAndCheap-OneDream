@@ -1,19 +1,7 @@
 // This sample still does not showcase all CKEditor&nbsp;5 features (!)
 // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
-<<<<<<< HEAD
+
 CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
-  // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
-  toolbar: {
-    items: [
-      "bold",
-      "italic",
-      "underline",
-      "fontSize",
-      "fontColor",
-      "link",
-      "insertImage",
-=======
-CKEDITOR.ClassicEditor.create(document.getElementById("content"), {
   // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
   toolbar: {
     items: [
@@ -67,7 +55,7 @@ CKEDITOR.ClassicEditor.create(document.getElementById("content"), {
       "textPartLanguage",
       "|",
       "sourceEditing",
->>>>>>> 6554b45e8ea59b89b7c3a43386284c2f686e66e3
+
     ],
     shouldNotGroupWhenFull: true,
   },
