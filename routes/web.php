@@ -4,6 +4,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Sale_newController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -12,6 +15,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
@@ -22,14 +26,19 @@ use App\Http\Controllers\PartnerProfileController;
 use App\Http\Controllers\SaleNewsControllerName;
 use App\Http\Controllers\UsermanagementController;
 
-Route::get('/', function () {
-    return view('home');
-});
 
+<<<<<<< HEAD
 
 Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
+=======
+Route::get('/', [ProductController::class, 'home']);
+Route::get('/home', [ProductController::class, 'home'])->name('home');
+// Trong routes/web.php
+// Đảm bảo route này đã được khai báo trong routes/web.php
+Route::post('/wishlist/add', [ProductController::class, 'addToWishlist'])->name('wishlist.add');
+>>>>>>> 6554b45e8ea59b89b7c3a43386284c2f686e66e3
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -46,15 +55,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
+
+    route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
+    route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
+    Route::resource('admin/blogs', BlogController::class);
+    Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+    Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+    Route::get('admin/sale_new', [Sale_newController::class, 'list_salenew'])->name('sale_new.list');
+    route::post('admin/sale_new/reject/{id}',[Sale_newController::class,'reject'])->name('sale_news.reject');
+    Route::delete('/sale_news/{id}', [Sale_newController::class, 'destroy'])->name('sale_news.destroy');
+    route::post('admin/sale_new/approve/{id}',[Sale_newController::class,'approve'])->name('sale_news.approve');
 });
 
 require __DIR__ . '/auth.php';
 
-
+Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
+route::get('/blogs/detail/{id}',[BlogController::class,'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('verification.show');
 Route::post('/verify', [VerificationController::class, 'verify'])->name('verification.verify');
+
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+
+// Route::get('/test', function () {
+//     return view('test');
+// });
+
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
 
 Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
@@ -113,9 +140,6 @@ Route::prefix('account')->group(function () {
 });
 
 
-Route::get('/blogs', function () {
-    return view('admin.blogs.index');
-});
 Route::get('/notifications', function () {
     return view('admin.notifications.list_notifications');
 });

@@ -1,5 +1,6 @@
 // This sample still does not showcase all CKEditor&nbsp;5 features (!)
 // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
+<<<<<<< HEAD
 CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
   // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
   toolbar: {
@@ -11,6 +12,62 @@ CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
       "fontColor",
       "link",
       "insertImage",
+=======
+CKEDITOR.ClassicEditor.create(document.getElementById("content"), {
+  // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+  toolbar: {
+    items: [
+      "exportPDF",
+      "exportWord",
+      "|",
+      "findAndReplace",
+      "selectAll",
+      "|",
+      "heading",
+      "|",
+      "bold",
+      "italic",
+      "strikethrough",
+      "underline",
+      "code",
+      "subscript",
+      "superscript",
+      "removeFormat",
+      "|",
+      "bulletedList",
+      "numberedList",
+      "todoList",
+      "|",
+      "outdent",
+      "indent",
+      "|",
+      "undo",
+      "redo",
+      "-",
+      "fontSize",
+      "fontFamily",
+      "fontColor",
+      "fontBackgroundColor",
+      "highlight",
+      "|",
+      "alignment",
+      "|",
+      "link",
+      "insertImage",
+      "blockQuote",
+      "insertTable",
+      "mediaEmbed",
+      "codeBlock",
+      "htmlEmbed",
+      "|",
+      "specialCharacters",
+      "horizontalLine",
+      "pageBreak",
+      "|",
+      "textPartLanguage",
+      "|",
+      "sourceEditing",
+>>>>>>> 6554b45e8ea59b89b7c3a43386284c2f686e66e3
     ],
     shouldNotGroupWhenFull: true,
   },
