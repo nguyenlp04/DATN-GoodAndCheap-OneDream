@@ -126,7 +126,7 @@
 
                     <div class="card mb-6" data-select2-id="18">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Upload avata</h5>
+                            <h5 class="card-title mb-0">Upload avatar</h5>
                         </div>
 
                         <div class="card-body">
@@ -204,11 +204,11 @@
                                                                         <div class=" col-md-5 mx-2 ">
 
                                                                             @if (is_null($item->avata) || $item->avata === '')
-                                                                            <img src="https://img.lovepik.com/png/20231019/customer-login-avatar-client-gray-head-portrait_269373_wh860.png" alt="" class="" width="100px">
+                                                                            <img src="{{ asset($item->avata) }}" alt="" width="100px">
+                                                                            <!-- <img src="https://img.lovepik.com/png/20231019/customer-login-avatar-client-gray-head-portrait_269373_wh860.png" alt="" class="" width="100px"> -->
                                                                             @else
-                                                                            <img src="https://goodandcheap.s3.us-east-005.backblazeb2.com/image/staff/1729527519_3005d1b239494b5fba1944ea3847017c~tplv-omjb5zjo8w-origin-jpeg.jpeg" alt="" width="100px">
+                                                                            <img src="{{ asset($item->avata) }}" alt="" width="100px">
                                                                             @endif
-                                                                            {{-- <img src="http://127.0.0.1:8000/storage/avata/avata_staff1729105812.jpg" alt="" srcset=""> --}}
                                                                         </div>
                                                                         <div class="col-md-5 mx-2">
 
@@ -268,12 +268,8 @@
 
             @endsection
             @section('script-link-css')
-
-            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+            <script src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.js"></script>
             <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
-
-            
-
             <script>
                 document.getElementById('btnBrowse').addEventListener('click', function() {
                     document.getElementById('fileInput').click();

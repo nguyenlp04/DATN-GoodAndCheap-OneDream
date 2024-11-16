@@ -36,12 +36,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Đăng xuất người dùng (web guard)
         Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
+        // Hủy session người dùng
+        // $request->session()->invalidate();
 
+        // Tạo lại session mới sau khi đăng xuất
         $request->session()->regenerateToken();
 
+        // Chuyển hướng về trang chủ hoặc trang login
         return redirect('/');
     }
 }

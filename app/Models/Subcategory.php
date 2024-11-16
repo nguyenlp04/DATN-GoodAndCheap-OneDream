@@ -8,18 +8,15 @@ class Subcategory extends Model
 {
     use HasFactory;
 
-    // Đảm bảo tên bảng đúng
     protected $table = 'sub_categories';
-
-    // Nếu khóa chính không phải là 'id', bạn cần chỉ rõ khóa chính
     protected $primaryKey = 'sub_category_id';
 
-    protected $fillable = ['name_sub_category', 'created_at', 'updated_at'];
+    protected $fillable = ['name_sub_category', 'category_id', 'created_at'];
 
     // Mối quan hệ với Category
     public function category()
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->hasOne(Category::class, 'category_id');
     }
 
     // Mối quan hệ với Product

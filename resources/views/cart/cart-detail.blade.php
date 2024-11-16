@@ -46,19 +46,32 @@
                                             </figure>
 
                                             <h3 class="product-title">
-                                                <a href="#">{{ $item->product->name_product }}</a>
+                                                <a href="#">{{ $item->product->name_product }}
+                                                    @php
+                                                       $item_data = json_decode($item->data, true);
+                                                        $item_data_all = json_decode($item->data, true);
+                                                        unset($item_data['stock']);
+                                                        unset($item_data['price']);
+                                                    @endphp
+                                                   @foreach ($item_data as $key => $value)
+                                                    | {{ $value }}
+                                                     @endforeach
+                                                </a>
                                             </h3><!-- End .product-title -->
                                         </div><!-- End .product -->
                                     </td>
-                                    <td class="price-col">${{$item->product->price }}</td>
+                                    <td class="price-col">${{$item_data_all['price']}}</td>
                                     <td class="quantity-col">
                                         <div class="cart-product-quantity">
                                             <input type="number" class="form-control" value="{{  $item->stock }}" min="1" max="10" step="1" data-decimals="0" id="stock-{{ $item->cart_id }}">
                                         </div><!-- End .cart-product-quantity -->
                                     </td>
-                                    <td class="total-col" id="total-col-{{ $item->cart_id }}">${{ number_format($item->stock * $item->product->price, 2) }}</td>
+                                    <td class="total-col" id="total-col-{{ $item->cart_id }}">${{ number_format($item->stock * $item_data_all['price']) }}</td>
                                     <td id="remove-col-{{ $item->cart_id }}" class="remove-col" data-id="{{ $item->cart_id }}"><button class="btn-remove" data-id="{{ $item->cart_id }}"><i class="icon-close"></i></button></td>
                                 </tr>
+
+
+
                                 @endforeach
 
 

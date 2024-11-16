@@ -27,21 +27,43 @@ class ProductController extends Controller
         ->leftJoin('photo_gallery', 'products.product_id', '=', 'photo_gallery.product_id')
         ->leftJoin('sub_categories', 'products.sub_category_id', '=', 'sub_categories.sub_category_id')
         ->leftJoin('categories', 'sub_categories.category_id', '=', 'categories.category_id')
+        ->leftJoin('staffs', 'products.staff_id', '=', 'staffs.staff_id')
         ->select(
-            'products.*', 
-            DB::raw('MIN(photo_gallery.image_name) as image_name'), 
-            'categories.name_category as category_name', 
-            'sub_categories.name_sub_category as sub_category_name'
+            'products.*',
+            DB::raw('MIN(photo_gallery.image_name) as image_name'),
+            'categories.name_category as category_name',
+            'sub_categories.name_sub_category as sub_category_name',
+            'staffs.full_name as staff_full_name'
         )
         ->where('products.is_delete', '=', '0')
-        ->groupBy('products.product_id')
+        ->whereNotNull('products.staff_id')
+        ->groupBy(
+        'products.product_id',
+        'products.name_product',
+        'products.channel_id',
+        'products.weight',
+        'products.data',
+        'products.description',
+        'products.price',
+        'products.quantity',
+        'products.status',
+        'products.is_delete',
+        'products.staff_id',
+        'products.sub_category_id',
+        'products.created_at',
+        'products.delete_at',
+        'products.updated_at',
+        'categories.name_category',
+        'sub_categories.name_sub_category',
+        'staffs.full_name'
+        )
         ->get();
-    
+
 
     return view('admin.products.index', ['data' => $data]);
     }
 
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -49,7 +71,7 @@ class ProductController extends Controller
     // public function create()
     // {
     //     $categories = Category::all();
-    //     $subcategories = Subcategory::all(); 
+    //     $subcategories = Subcategory::all();
 
     //     return view('admin.products.add-product', compact('categories', 'subcategories'));
     // }
@@ -62,7 +84,7 @@ class ProductController extends Controller
 
     public function getSubcategories($categoryId)
     {
-        $subcategoryAttributes = SubcategoryAttribute::where('sub_category_id', $categoryId)->get();
+        $subcategoryAttributes = SubcategoryAttribute::where('category_id', $categoryId)->get();
         $subcategories = SubCategory::where('category_id', $categoryId)->get();
         return response()->json([
             'subcategories' => $subcategories,
@@ -77,34 +99,47 @@ class ProductController extends Controller
     {
         try {
 
+
             $validatedData = $request->validate([
                 'images.*' => 'required|max:2048',
-                'productTitle' => 'required|string|max:255',
+                'productTitle' => 'required|string',
+                'quantity' => 'required|numeric|min:0',
                 'price' => 'required|numeric|min:0',
-                'description' => 'required|string|max:255',
+                'weight' => 'required|numeric|min:0',
+                'description' => 'required|string',
                 'category_id' => 'required|integer',
                 'subcategory_id' => 'integer',
                 'status' => 'integer',
-                'variant' => 'required|array',
-                'variant.*.name' => 'required|string',
-                'variant.*.option' => 'required|string',
+                'dataVariantDetail' => 'required',  // Đảm bảo là mảng
+                'variant' => 'required',  // Đảm bảo là mảng
             ]);
 
+            $data = [
+                'productTitle' => $validatedData['productTitle'],
+                'price' => $validatedData['price'],
+                'quantity' => $validatedData['quantity'],
+                'weight' => $validatedData['weight'],
+                'category_id' => $validatedData['category_id'],
+                'subcategory_id' => $validatedData['subcategory_id'],
+                'description' => $validatedData['description'],
+                'variants' => $validatedData['variant'],
+                'variant_data_details' => $validatedData['dataVariantDetail']
+            ];
+
+
+
+            // Encode the data array to JSON
+            $jsonData = json_encode($data);
+
             $productData = [
-                'staff_id' => Auth::id(),
+                'staff_id' => Auth::guard('staff')->user()->staff_id,
                 'sub_category_id' => $validatedData['subcategory_id'],
-                'channel_id' => 1,
+                'channel_id' => NULL,
                 'name_product' => $validatedData['productTitle'],
                 'price' => $validatedData['price'],
-                'data' => json_encode([
-                    'productTitle' => $validatedData['productTitle'],
-                    'price' => $validatedData['price'],
-                    'category_id' => $validatedData['category_id'],
-                    'subcategory_id' => $validatedData['subcategory_id'],
-                    'description' => $validatedData['description'],
-                    'variants' => $validatedData['variant'],
-                    'images' => $validatedData['images'],
-                ]),
+                'quantity' => $validatedData['quantity'],
+                'weight' => $validatedData['weight'],
+                'data' => $jsonData,
                 'description' => $validatedData['description'],
                 'status' => $validatedData['status'],
                 'created_at' => now(),
@@ -112,13 +147,13 @@ class ProductController extends Controller
 
             $insertProduct = DB::table('products')->insertGetId($productData);
 
-            $imageRecords = []; 
+            $imageRecords = [];
             foreach ($request->file('images') as $image) {
-                $imageName = 'product_' . time() . '_' . uniqid() . '.' . $image->extension(); 
-                $imagePath = 'storage/product/' . $imageName; 
+                $imageName = 'product_' . time() . '_' . uniqid() . '.' . $image->extension();
+                $imagePath = 'storage/product/' . $imageName;
                 Storage::disk('public')->putFileAs('product', $image, $imageName);
                 $imageRecords[] = [
-                    'product_id' => $insertProduct, 
+                    'product_id' => $insertProduct,
                     'image_name' => $imagePath,
                     'created_at' => now(),
                 ];
@@ -140,7 +175,7 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
-                'message' => 'Lỗi: ' . $e->getMessage()
+                'message' => 'Lỗi: ' . $e->getMessage() . ' in file ' . $e->getFile() . ' on line ' . $e->getLine()
             ]);
         }
     }
@@ -158,7 +193,10 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $dataProductID= DB::table('products')->where('product_id',$id)->first();
+        return view('admin.products.update-product',[
+            'dataProductID'=>$dataProductID,
+        ]);
     }
 
     /**
@@ -228,5 +266,24 @@ class ProductController extends Controller
     ]);
 }
 
+
+
+    public function renderProductDetails(string $id){
+
+
+        $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
+       $data = $product->data;
+    //    die($product);
+           $data_json = json_decode($data);
+          $variants = json_decode($data_json->variants);
+           $variant_data_details = json_decode($data_json->variant_data_details);
+        return view('product.product-detail', [
+            'product' =>$product,
+            'variants' =>$variants,
+            'variant_data_details' =>$variant_data_details
+
+
+        ]);
+    }
 
 }

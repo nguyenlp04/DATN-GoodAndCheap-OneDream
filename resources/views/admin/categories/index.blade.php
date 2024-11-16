@@ -26,6 +26,9 @@
           <!-- Product Information -->
           <div class="card mb-6">
             <div class="card-body">
+               <!-- <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+            {{ json_encode($data, JSON_PRETTY_PRINT) }}
+        </pre> -->
               <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                   <tr>
@@ -34,7 +37,7 @@
                     <th>Sub Category Count</th>
                     <th>Attribute Count</th>
                     <th>Status</th>
-                    <th>Salary</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -74,7 +77,7 @@
                             <i class="bx bx-dots-vertical-rounded"></i>
                           </button>
                           <ul class="dropdown-menu">
-                            <li>
+                          <li data-bs-toggle="modal" data-bs-target="#modal{{ $category->category_id }}">
                               <a class="dropdown-item" href="#"><span><i class="fa-solid fa-eye me-1"></i></span>View</a>
                             </li>
                             <li>
@@ -92,6 +95,63 @@
                               </a>
                             </li>
                           </ul>
+                        </div>
+                      </div>
+                      <div class="modal fade" id="modal{{ $category->category_id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $category->category_id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title text-truncate-1">Details of {{ $category->name_category }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <table class="table">
+                                <tbody>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td class="col-3">Category:</td>
+                                    <td class="col-9">
+                                      <div class="d-flex justify-content-start align-items-center product-name">
+                                        <div class="avatar-wrapper">
+                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
+                                            <img src="{{ asset($category->image_category) }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                          </div>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                          <h6 class="mb-0 text-truncate-1">{{ $category->name_category }}</h6>
+                                          <small class="text-truncate-1">{{ $category->description }}</small>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="7">
+                                    <td class="col-3">Sub Category:</td>
+                                    <td class="col-9"><span>{{ implode(', ', explode(',', $category->sub_category_names)) }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="7">
+                                    <td class="col-3">Variant:</td>
+                                    <td class="col-9"><span>{{ implode(', ', explode(',', $category->attribute_names)) }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="8">
+                                    <td class="col-3">Status:</td>
+                                    <td class="col-8 bg-light rounded">
+                                      @if ($category->status == 1)
+                                      <span class="badge bg-label-success">Active</span>
+                                      @else
+                                      <span class="badge bg-label-danger">Deactive</span>
+                                      @endif
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="10">
+                                    <td class="col-3">Create By:</td>
+                                    <td class="col-9"><span>{{ $category->staff_full_name }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="9">
+                                    <td class="col-3">Created At:</td>
+                                    <td class="col-9"><span>{{ date('D, d M Y', strtotime($category->created_at)) }}</span></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </td>

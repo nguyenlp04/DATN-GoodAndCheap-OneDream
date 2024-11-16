@@ -214,16 +214,12 @@
                             <div data-i18n="Add Affiliate Account">Add Affiliate Account</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('account/confirm') ? 'active' : '' }}">
-                        <a href="{{ url('account/confirm') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
+                        <a href="{{ url('account/user-account-management') }}" class="menu-link">
                             <div data-i18n="Confirm Partner">Confirm Partner</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
-                        <a href="{{ url('account/lock') }}" class="menu-link">
-                            <div data-i18n="Lock Account">Lock Account (affiliate)</div>
-                        </a>
-                    </li>
+
                 </ul>
             </li>
 
@@ -271,10 +267,28 @@
 
             <!-- Notification -->
             <li class="menu-item {{ Request::is('notifications') ? 'active' : '' }}">
-                <a href="{{ url('notifications') }}" class="menu-link">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-bell"></i>
                     <div data-i18n="Analytics">Notification</div>
                 </a>
+                <ul class="menu-sub">
+                  <li class="menu-item {{ Request::is('notifications') ? 'active' : '' }}">
+                      <a href="{{ url('notifications') }}" class="menu-link">
+                          <div data-i18n="Notifications">Notifications List</div>
+                      </a>
+                  </li>
+                  <li class="menu-item {{ Request::is('notifications/create ') ? 'active' : '' }}">
+                      <a href="{{ url('notifications/create') }}" class="menu-link">
+                          <div data-i18n="Add notifications">Add notifications</div>
+                      </a>
+                  </li>
+
+                  <li class="menu-item {{ Request::is ('notifications/trashed') ? 'active' : '' }}">
+                    <a href="{{ url('/notifications/trashed') }}" class="menu-link">
+                        <div data-i18n="Trash notifications">Trash notifications</div>
+                    </a>
+                </li>
+              </ul>
             </li>
 
             <!-- Order Management (Affiliate) -->
@@ -305,6 +319,41 @@
                 </ul>
             </li>
 
+            <!-- Trash -->
+            <li class="menu-item {{ Request::is('trash/*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-trash"></i>
+                    <div data-i18n="Trash">Trash</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Request::is('trash/user') ? 'active' : '' }}">
+                        <a href="{{ url('trash/user') }}" class="menu-link">
+                            <div data-i18n="Trash User">User</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/product') ? 'active' : '' }}">
+                        <a href="{{ url('trash/product') }}" class="menu-link">
+                            <div data-i18n="Trash Product">Product</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/channel') ? 'active' : '' }}">
+                        <a href="{{ url('trash/channel') }}" class="menu-link">
+                            <div data-i18n="Trash Channel">Channel</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/category') ? 'active' : '' }}">
+                        <a href="{{ url('trash/category') }}" class="menu-link">
+                            <div data-i18n="Trash Category">Category</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('trash/blog') ? 'active' : '' }}">
+                        <a href="{{ url('trash/blog') }}" class="menu-link">
+                            <div data-i18n="Trash Blog">Blog</div>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
 
             <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
 

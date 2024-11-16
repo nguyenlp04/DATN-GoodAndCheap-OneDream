@@ -63,7 +63,7 @@
                     </div>
                     <div id="showinput" class="flex-grow-0 py-3 px-4 border-top d-none" >
                         <div class="input-group">
-                            <input type="text" class="form-control" style="margin: 8.6px;" id="msg-input" onkeypress="checkEnter(event)" >
+                            <input type="text" class="form-control" inputmode="text" pattern=".*"  style="margin: 8.6px; min-width:16px;font-size: 16px;" id="msg-input"  onkeypress="checkEnter(event)" >
                             <button  onclick="sendMessage(currentChannel)" class="btn btn-primary">Send</button>
                         </div>
                     </div>
@@ -72,6 +72,47 @@
         </div>
     </div>
 </main>
+@endsection
+@section('script-link-css')
+<script>
+
+if (window.innerWidth <= 768) {
+    document.getElementById('msg-input').addEventListener('focus', function() {
+        setTimeout(() => {
+            const rect = this.getBoundingClientRect();
+            window.scrollTo({
+                top: rect.top + window.scrollY - window.innerHeight / 2,
+                behavior: 'smooth'
+            });
+        }, 300);
+    });
+}
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy tên kênh từ localStorage
+        var channelName = localStorage.getItem('channelName');
+
+        var recipientName = localStorage.getItem('recipientName');
+        console.log(recipientName);
+
+
+        if (channelName) {
+            // Gọi hàm subscribeToChannel với tên kênh từ localStorage
+            subscribeToChannel(channelName);
+            $('#recipientimgContainer').removeClass('d-none');
+            $('#recipientNameContainer').removeClass('d-none');
+            $('#showinput').removeClass('d-none');
+            $('#border-bottom').addClass('border-bottom');
+            $('#recipient-name-display').text(recipientName);
+            // Xóa giá trị channelName khỏi localStorage để tránh gọi lại hàm khi tải lại trang
+            localStorage.removeItem('channelName');
+            localStorage.removeItem('recipientName');
+        }
+    });
+
+
+</script>
 
 <script>
     document.getElementById('togglecvn').addEventListener('click', function() {
@@ -79,16 +120,15 @@
         myDiv.classList.toggle('d-none');
     });
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
-
+<script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
 <script>
      function checkEnter(event) {
         if (event.key === 'Enter') {
             sendMessage(currentChannel);
         }
     }
-
     var ably = new Ably.Realtime.Promise({
         key: '4d5fHg.WXPepQ:AXXlxQ75Vq4OJgEfb_7IwwwzYTKJc_gZ5tSC9TM_Zs4'
      });
@@ -240,9 +280,9 @@
             const message1 =` <div class="chat-message-right mb-4">
                                 <div>
                                 </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                <div class="flex-shrink-1 bg-primary text-white  rounded py-2 px-3 mr-3">
 
-                                    ${messageObject.data.text}.
+                                    ${messageObject.data.text}
                                 </div>
                             </div>`
 
@@ -269,7 +309,7 @@
                                 <div>
                                     <div class="text-muted small text-nowrap mt-2">  ${new Date(messageObject.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
                                 </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                <div class="flex-shrink-1 bg-primary text-white rounded py-2 px-3 mr-3">
 
                                     ${messageObject.data}
                                 </div>
@@ -282,7 +322,7 @@
 
                                     <div class="text-muted small text-nowrap mt-2"> ${new Date(messageObject.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
                                 </div>
-                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                                <div class="flex-shrink-1 bg-light  rounded py-2 px-3 ml-3">
 
                                    ${messageObject.data}
                                 </div>

@@ -11,11 +11,18 @@ class Product extends Model
 
     protected $table = 'products';
     protected $primaryKey = 'product_id';
-    protected $fillable = ['name', 'description', 'price', 'category_id', 'sub_category_id', 'image', 'created_at'];
+
+    protected $fillable = ['name', 'description', 'price', 'data','category_id', 'sub_category_id', 'image', 'created_at'];
+
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id');
+    }
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
  
@@ -23,9 +30,14 @@ class Product extends Model
     {
         return $this->belongsTo(Subcategory::class, 'sub_category_id');  // sub_category_id là cột khóa ngoại trong bảng products
     }
+
+    public function images()
+    {
+        return $this->hasMany(Imgproduct::class, 'product_id');
+
+    }
     public function firstImage()
     {
         return $this->hasOne(Imgproduct::class, 'product_id');
     }
-
 }
