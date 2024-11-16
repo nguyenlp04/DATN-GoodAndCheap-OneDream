@@ -1,4 +1,5 @@
 <div class="page-wrapper">
+
     <header class="header header-intro-clearance header-4">
         <div class="header-middle">
             <div class="container">
@@ -47,7 +48,7 @@
                         </a>
                     </div><!-- End .compare-dropdown -->
                     <div class="wishlist">
-                        <a href="wishlist.html" title="Wishlist">
+                        <a href="{{route('wishlist')}}" title="Wishlist">
                             <div class="icon">
                                 <i class="icon-heart-o"></i>
                                 <span class="wishlist-count badge">3</span>
@@ -209,7 +210,7 @@
                             </li>
 
                             <li>
-                                <a href="blog.html" class="sf-with-ul">Blog</a>
+                                <a href="{{route('blogs.listting')}}" class="sf-with-ul">Blog</a>
 
                                 <ul>
                                     <li><a href="blog.html">Classic</a></li>
@@ -257,7 +258,7 @@
                             <div class="header-dropdown" style="display: flex; align-items: center;">
                                 <a href="#" style="display: flex; align-items: center;">
                                     <div style="width: 40px; height: 40px; overflow: hidden; border-radius: 50%; margin-right: 10px;">
-                                        <img src="{{ asset('storage/' . Auth::user()->image_user) }}" alt="User Avatar"
+                                        <img src="{{ asset( Auth::user()->image_user) }}" alt="User Avatar"
                                             style="width: 100%; height: auto;">
                                     </div>
                                     <span class="highlight" style="white-space: nowrap;">{{ Auth::user()->full_name }}</span> <!-- Hiển thị tên người dùng đã đăng nhập -->
