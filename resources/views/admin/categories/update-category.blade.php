@@ -6,8 +6,13 @@
 
     <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
 
-        <form action="{{ route('addCategory')}}" method="POST" enctype="multipart/form-data">
+        {{-- {{dd($dataCategoryID);}} --}}
+        {{-- <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+        {{ json_encode($dataCategoryID, JSON_PRETTY_PRINT) }}
+        </pre> --}}
+        <form action="{{ route('updateCategory', $dataCategoryID->category_id)}}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="app-ecommerce" data-select2-id="21">
 
                 <!-- Add Product -->
@@ -23,7 +28,7 @@
                         <!-- <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
                             <button class="btn btn-label-primary">Save draft</button>
                         </div> -->
-                        <button type="submit" class="btn btn-primary" id="publish-product">Publish product</button>
+                        <button type="submit" class="btn btn-primary" id="publish-product">Update Category</button>
                     </div>
 
                 </div>
@@ -48,18 +53,27 @@
 
                                 <div class="mb-6">
                                     <label for="name_category" class="form-label">Category Name:</label>
-                                    <input type="text" name="name_category" class="form-control" id="name_category" required placeholder="Enter category name">
+                                    <input type="text" name="name_category" class="form-control" id="name_category" value="{{ $dataCategoryID->category_id }}" required placeholder="Enter category name">
                                 </div>
                                 <div class="mb-6">
                                     <label for="description_category" class="form-label">Category Description</label>
-                                    <textarea class="form-control" id="description_category" name="description" rows="3"></textarea>
+                                    <textarea class="form-control" id="description_category" name="description" rows="3">{{ $dataCategoryID->description }}</textarea>
                                 </div>
 
                                 <!-- Thêm Subcategories -->
-                                <div class="mb-6" id="subcategory-section" style="display: none;">
+                                <div class="mb-6" id="subcategory-section">
                                     <label for="subcategories" class="form-label">Subcategories:</label>
                                     <div id="subcategory-wrapper">
-                                        
+                                        @foreach ($dataCategoryID->subcategories as $subcategory)
+                                            <div class="input-group mb-2">
+                                                <input type="text" name="subcategories[]" class="form-control"
+                                                    placeholder="Enter subcategory" value="{{ $subcategory->name_sub_category }}">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-danger remove-subcategory"
+                                                        type="button">Remove</button>
+                                                </div>
+                                            </div>
+                                            @endforeach
                                     </div>
                                 </div>
 
@@ -67,7 +81,7 @@
                                 <!-- Script thêm/xóa Subcategory -->
                                 <script>
                                     // Khi trang tải, ẩn phần subcategory
-                                    document.getElementById('subcategory-section').style.display = 'none';
+                                    document.getElementById('subcategory-section');
 
                                     // Khi nhấn nút Add Subcategory
                                     document.getElementById('add-subcategory').addEventListener('click', function() {
@@ -109,14 +123,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="dropzone p-0 dz-clickable" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 11.5rem;">
-                                    <!-- @isset($dataStaffID)
-                                    @if($dataStaffID->image == null) -->
                                     <img id="preview_img" class=" mt-3 rounded" style="width: 100px; height: auto;">
-                                    <!-- @else -->
-                                    <img id="preview_img" src="{{ asset($dataStaffID->image) }}" class="mt-3 border rounded" style="width: 100px; height: auto;">
-                                    <!-- @endif
-                                    @endisset -->
-                                    <img id="preview_img" class=" mt-3 rounded" style="width: 100px; height: auto;">
+                                    <img id="preview_img" src="{{ asset($dataCategoryID->image_category) }}" class="mt-3 rounded" style="width: 100px; height: auto;">
                                     <div style="font-weight: 500; text-align: center; width: 300px; height: 2.5rem;">
                                         <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse image</button>
                                         <input type="file" id="fileInput" name="image" style="display: none">
@@ -141,7 +149,28 @@
                         </div>
                         <div class="card-body">
                             <div id="add-variant">
-                                <!-- New variants will be inserted here -->
+                                @foreach ($dataCategoryID->subcategory_attributes as $attributes)
+                                <div class="variant-item mb-3">
+                                    <div class="input-group mb-2">
+                                        <input type="text" name="variants[]" class="form-control" placeholder="Enter variant name"  value="{{ $attributes->attributes_name }}" required="">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-danger remove-variant" type="button">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                                {{-- @foreach ($dataCategoryID->subcategories as $subcategory)
+                                            <div class="input-group mb-2">
+                                                <input type="text" name="subcategories[]" class="form-control"
+                                                    placeholder="Enter subcategory" value="{{ $subcategory->name_sub_category }}">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-danger remove-subcategory"
+                                                        type="button">Remove</button>
+                                                </div>
+                                            </div>
+                                            @endforeach --}}
+
+
                             </div>
                         </div>
                     </div>
