@@ -8,17 +8,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
 use App\Models\Subcategory;
 use App\Models\SubcategoryAttribute;
 
 class SaleNewsControllerName extends Controller
+
+use App\Models\SaleNews;
+use App\Models\Subcategory;
+use App\Models\SubcategoryAttribute;
+
+class SaleNewsController extends Controller
+
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
         //
+
+        $data = SaleNews::with(['user', 'subcategory', 'firstImage', 'categoryToSubcategory'])->get();
+        return view('admin.products.index', ['data' => $data]);
+
     }
 
     /**
@@ -116,7 +129,16 @@ class SaleNewsControllerName extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        // $dataProductID= DB::table('products')->where('product_id',$id)->first();ß
+        $dataProductID= Product::with(['subcategory','images',])->where('product_id',$id)->first();
+        $dataCategory= Category::with(['subcategories'])->get();
+        // dd($dataCategory);
+        return view('admin.products.update-product',[
+            'dataProductID'=>$dataProductID,
+            'dataCategory'=>$dataCategory
+        ]);
+
     }
 
     /**
@@ -130,5 +152,46 @@ class SaleNewsControllerName extends Controller
     /**
      * Remove the specified resource from storage.
      */
- 
+
+    public function destroy(string $product_id)
+    {
+        try {
+            $product = Product::find($product_id);
+            if ($product) {
+                $product->is_delete = '1';
+                $product->save();
+                return redirect()->back()->with('alert', [
+                    'type' => 'success',
+                    'message' => 'Product deleted successfully!'
+                ]);
+            }
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Product not found!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => ' Error : ' . $th->getMessage()
+            ]);
+        }
+    }
+    public function renderProductDetails(string $id){
+
+
+        $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
+       $data = $product->data;
+    //    die($product);
+           $data_json = json_decode($data);
+          $variants = json_decode($data_json->variants);
+           $variant_data_details = json_decode($data_json->variant_data_details);
+        return view('product.product-detail', [
+            'product' =>$product,
+            'variants' =>$variants,
+            'variant_data_details' =>$variant_data_details
+
+
+        ]);
+    }
+
 }

@@ -81,7 +81,7 @@
                               <a class="dropdown-item" href="#"><span><i class="fa-solid fa-eye me-1"></i></span>View</a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#"> <span><i class="fa-solid fa-pen-to-square me-1"></i></span>Edit</a>
+                              <a class="dropdown-item" href="{{ url('category/update/' . $category->category_id) }}"> <span><i class="fa-solid fa-pen-to-square me-1"></i></span>Edit</a>
                             </li>
                             <li>
                               <a onclick="confirmDelete(event, {{ $category->category_id }})">

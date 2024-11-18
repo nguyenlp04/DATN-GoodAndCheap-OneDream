@@ -40,10 +40,10 @@
                   <label class="form-label" for="ecommerce-product-name">Name</label>
                   <input type="text" class="form-control" id="ecommerce-product-name" placeholder="Product title" name="productTitle" aria-label="Product title">
                 </div>
-            <!-- Price -->
+                <!-- Price -->
 
-            <!-- Description -->
-            <div>
+                <!-- Description -->
+                <div>
                   <label for="description" class="form-label">Description</label>
                   <textarea class="form-control" name="description" id="description" rows="3"></textarea>
                 </div>
@@ -96,16 +96,6 @@
                   <label class="form-label" for="ecommerce-product-price">Price</label>
                   <input type="number" class="form-control" id="ecommerce-product-price" placeholder="Price" name="price" aria-label="Product price">
                 </div>
-                <!-- Quantity -->
-                <div class="mb-3">
-                  <label class="form-label" for="ecommerce-product-quantity">Quantity</label>
-                  <input type="number" class="form-control" id="ecommerce-product-quantity" placeholder="Quantity" name="quantity" aria-label="Product quantity">
-                </div>
-                <!-- Weight -->
-                <div class="mb-3">
-                  <label class="form-label" for="ecommerce-product-weight">Weight (g)</label>
-                  <input type="number" class="form-control" id="ecommerce-product-weight" placeholder="Weight (g)" name="weight" aria-label="Product weight">
-                </div>
                 <div class="mb-3">
                   <label for="category" class="form-label">Category Name:</label>
                   <select id="category" name="category_id" class="form-select" required>
@@ -125,195 +115,195 @@
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
                   $(document).ready(function() {
-  // Handle change event for category dropdown
-  $('#category').change(function() {
-    var categoryId = $(this).val();
-    $('#add-variant').empty();
+                    // Handle change event for category dropdown
+                    $('#category').change(function() {
+                      var categoryId = $(this).val();
+                      $('#add-variant').empty();
 
-    if (categoryId) {
-      $.ajax({
-        url: '/get-subcategories/' + categoryId,
-        type: 'GET',
-        success: function(data) {
-          // Empty the subcategory dropdown
-          $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
+                      if (categoryId) {
+                        $.ajax({
+                          url: '/get-subcategories/' + categoryId,
+                          type: 'GET',
+                          success: function(data) {
+                            // Empty the subcategory dropdown
+                            $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
 
-          // Populate subcategory dropdown
-          $.each(data.subcategories, function(index, subcategory) {
-            $('#subcategory').append('<option value="' + subcategory.sub_category_id + '">' + subcategory.name_sub_category + '</option>');
-          });
+                            // Populate subcategory dropdown
+                            $.each(data.subcategories, function(index, subcategory) {
+                              $('#subcategory').append('<option value="' + subcategory.sub_category_id + '">' + subcategory.name_sub_category + '</option>');
+                            });
 
-          // Show subcategory section
-          $('#subcategory-section').show();
+                            // Show subcategory section
+                            $('#subcategory-section').show();
 
-          // Add variants dynamically based on subcategory attributes
-          $.each(data.subcategory_attributes, function(index, category_variant) {
-            $('#add-variant').append(`
-              <div class="col-6">
-                <div class="card mb-6 variant-card">
-                  <div class="card-header">
-                    <input type="text" name="variant[${index}][name]" class="form-control option-input fw-bold" value="${category_variant.attributes_name}" readonly>
-                  </div>
-                  <div class="card-body">
-                    <div>
-                      <input type="text" name="variant[${index}][option]" class="form-control option-value" placeholder="Enter an Option">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `);
-          });
+                            // Add variants dynamically based on subcategory attributes
+                            $.each(data.subcategory_attributes, function(index, category_variant) {
+                              $('#add-variant').append(`
+                              <div class="col-6">
+                                <div class="card mb-6 variant-card">
+                                  <div class="card-header">
+                                    <input type="text" name="variant[${index}][name]" class="form-control option-input fw-bold" value="${category_variant.attributes_name}" readonly>
+                                  </div>
+                                  <div class="card-body">
+                                    <div>
+                                      <input type="text" name="variant[${index}][option]" class="form-control option-value" placeholder="Enter an Option">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              `);
+                            });
 
-          // Handle option input blur event
-          $(document).on('blur', '.option-value', function() {
-            var variants = [];
-            var variantNames = [];
+                            // Handle option input blur event
+                            $(document).on('blur', '.option-value', function() {
+                              var variants = [];
+                              var variantNames = [];
 
-            // Collect all variant data
-            $('.variant-card').each(function() {
-              var variantName = $(this).find('.option-input').val();
-              var optionValue = $(this).find('.option-value').val();
+                              // Collect all variant data
+                              $('.variant-card').each(function() {
+                                var variantName = $(this).find('.option-input').val();
+                                var optionValue = $(this).find('.option-value').val();
 
-              if (optionValue) {
-                // Split the options by comma and trim any extra spaces
-                var options = optionValue.split(',').map(function(value) {
-                  return value.trim();
-                });
+                                if (optionValue) {
+                                  // Split the options by comma and trim any extra spaces
+                                  var options = optionValue.split(',').map(function(value) {
+                                    return value.trim();
+                                  });
 
-                // Construct the variant object
-                variants.push({
-                  "name": variantName,
-                  "options": options
-                });
-              }
-            });
+                                  // Construct the variant object
+                                  variants.push({
+                                    "name": variantName,
+                                    "options": options
+                                  });
+                                }
+                              });
 
-            // If there's only one variant but multiple options, combine them into a table
-            if (variants.length > 0) {
-              var optionsForCombining = variants.map(variant => variant.options);
-              var result = combineOptions(optionsForCombining);
-              var variantNames = variants.map(variant => variant.name);
+                              // If there's only one variant but multiple options, combine them into a table
+                              if (variants.length > 0) {
+                                var optionsForCombining = variants.map(variant => variant.options);
+                                var result = combineOptions(optionsForCombining);
+                                var variantNames = variants.map(variant => variant.name);
 
-              renderVariantTable(variantNames, result);
-              $('#variant-table-section').show();
-            } else {
-              $('#variant-table-section').hide();
-            }
+                                renderVariantTable(variantNames, result);
+                                $('#variant-table-section').show();
+                              } else {
+                                $('#variant-table-section').hide();
+                              }
 
-            // Debugging output
-            console.log("Variants: ", JSON.stringify(variants, null, 2));
-            $('#variant').val(JSON.stringify(variants));
+                              // Debugging output
+                              console.log("Variants: ", JSON.stringify(variants, null, 2));
+                              $('#variant').val(JSON.stringify(variants));
 
-            // If there's more than one option, also proceed with storing the result
-            if (variants.length > 1 || variants[0].options.length > 1) {
-              var result = variants.map(variant => ({
-                "name": variant.name,
-                "options": variant.options
-              }));
-              $('#variant-table-section').show();
-              $('#variant').val(JSON.stringify(result)); // Store the variants in the hidden input
-            }
-          });
-        },
-        error: function(xhr, status, error) {
-          console.error("Error fetching subcategories:", error);
-        }
-      });
-    } else {
-      $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
-      $('#subcategory-section').hide();
-      $('#add-variant').empty();
-    }
-  });
+                              // If there's more than one option, also proceed with storing the result
+                              if (variants.length > 1 || variants[0].options.length > 1) {
+                                var result = variants.map(variant => ({
+                                  "name": variant.name,
+                                  "options": variant.options
+                                }));
+                                $('#variant-table-section').show();
+                                $('#variant').val(JSON.stringify(result)); // Store the variants in the hidden input
+                              }
+                            });
+                          },
+                          error: function(xhr, status, error) {
+                            console.error("Error fetching subcategories:", error);
+                          }
+                        });
+                      } else {
+                        $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
+                        $('#subcategory-section').hide();
+                        $('#add-variant').empty();
+                      }
+                    });
 
-  // Handle price and quantity input blur event
-  $(document).on('blur', 'input[name^="pricev"], input[name^="quantityv"]', function() {
-    var variants = [];
-    var variantDetails = [];
+                    // Handle price and quantity input blur event
+                    $(document).on('blur', 'input[name^="pricev"], input[name^="quantityv"]', function() {
+                      var variants = [];
+                      var variantDetails = [];
 
-    $('#variant-list-body tr').each(function(index) {
-      var optionValues = [];
+                      $('#variant-list-body tr').each(function(index) {
+                        var optionValues = [];
 
-      // Collect option values for this variant
-      $(this).find('td').each(function() {
-        var text = $(this).text().trim();
-        if (text) {
-          optionValues.push(text);
-        }
-      });
+                        // Collect option values for this variant
+                        $(this).find('td').each(function() {
+                          var text = $(this).text().trim();
+                          if (text) {
+                            optionValues.push(text);
+                          }
+                        });
 
-      // Combine option values to create a unique variant name
-      var variantName = optionValues.join('-');
+                        // Combine option values to create a unique variant name
+                        var variantName = optionValues.join('-');
 
-      var price = $("input[name='pricev[" + index + "]']").val() || 0;
-      var quantity = $("input[name='quantityv[" + index + "]']").val() || 0;
+                        var price = $("input[name='pricev[" + index + "]']").val() || 0;
+                        var quantity = $("input[name='quantityv[" + index + "]']").val() || 0;
 
-      variantDetails.push({
-        "name": variantName,
-        "options": [{
-          "name": "price",
-          "value": price
-        },
-        {
-          "name": "quantity",
-          "value": quantity
-        }]
-      });
-    });
+                        variantDetails.push({
+                          "name": variantName,
+                          "options": [{
+                              "name": "price",
+                              "value": price
+                            },
+                            {
+                              "name": "quantity",
+                              "value": quantity
+                            }
+                          ]
+                        });
+                      });
 
-    var result = variantDetails.length > 0 ? variantDetails : [];
+                      var result = variantDetails.length > 0 ? variantDetails : [];
 
-    // Store the result in the hidden input field
-    $('#dataVariantDetail').val(JSON.stringify(result));
+                      // Store the result in the hidden input field
+                      $('#dataVariantDetail').val(JSON.stringify(result));
 
-    // Debugging output
-    console.log(JSON.stringify(result, null, 2));
-  });
+                      // Debugging output
+                      console.log(JSON.stringify(result, null, 2));
+                    });
 
-  // Function to combine options into combinations
-  function combineOptions(optionsArr) {
-    var result = [];
-    var combine = function(current, depth) {
-      if (depth === optionsArr.length) {
-        result.push(current.slice());
-        return;
-      }
-      for (var i = 0; i < optionsArr[depth].length; i++) {
-        current[depth] = optionsArr[depth][i];
-        combine(current, depth + 1);
-      }
-    };
-    combine([], 0);
-    return result;
-  }
+                    // Function to combine options into combinations
+                    function combineOptions(optionsArr) {
+                      var result = [];
+                      var combine = function(current, depth) {
+                        if (depth === optionsArr.length) {
+                          result.push(current.slice());
+                          return;
+                        }
+                        for (var i = 0; i < optionsArr[depth].length; i++) {
+                          current[depth] = optionsArr[depth][i];
+                          combine(current, depth + 1);
+                        }
+                      };
+                      combine([], 0);
+                      return result;
+                    }
 
-  // Function to render the variant table
-  function renderVariantTable(variantNames, combinations) {
-    var tableHeader = '<tr>';
-    var tableBody = '';
+                    // Function to render the variant table
+                    function renderVariantTable(variantNames, combinations) {
+                      var tableHeader = '<tr>';
+                      var tableBody = '';
 
-    $.each(variantNames, function(index, name) {
-      tableHeader += `<th>${name}</th>`;
-    });
-    tableHeader += '<th>Pricev</th><th>Quantityv</th></tr>';
+                      $.each(variantNames, function(index, name) {
+                        tableHeader += `<th>${name}</th>`;
+                      });
+                      tableHeader += '<th>Pricev</th><th>Quantityv</th></tr>';
 
-    $.each(combinations, function(index, combination) {
-      tableBody += '<tr>';
-      $.each(combination, function(i, option) {
-        tableBody += `<td>${option}</td>`;
-      });
-      tableBody += `
+                      $.each(combinations, function(index, combination) {
+                        tableBody += '<tr>';
+                        $.each(combination, function(i, option) {
+                          tableBody += `<td>${option}</td>`;
+                        });
+                        tableBody += `
         <td><input type="number" class="form-control" placeholder="Enter Pricev" name="pricev[${index}]"></td>
         <td><input type="number" class="form-control" placeholder="Enter Quantityv" name="quantityv[${index}]"></td>
       `;
-      tableBody += '</tr>';
-    });
+                        tableBody += '</tr>';
+                      });
 
-    $('#variant-list-header').html(tableHeader);
-    $('#variant-list-body').html(tableBody);
-  }
-});
-
+                      $('#variant-list-header').html(tableHeader);
+                      $('#variant-list-body').html(tableBody);
+                    }
+                  });
                 </script>
                 <script>
                   let uploadedImages = [];
