@@ -289,4 +289,62 @@ border-radius: 5px !important;
 .nav-tabs .nav-link {
  /* Tạo hiệu ứng bo tròn cho tab */
   padding: 10px 20px; /* Điều chỉnh kích thước tab */
+}.blog-info {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
+
+.info-item {
+  display: flex;
+  align-items: center;
+}
+
+.info-item strong {
+  font-weight: bold;
+  width: 120px; /* Set a fixed width to align the labels */
+  color: #333;
+}
+
+.blog-info img.blog-image {
+  width: 80px;
+  height: auto;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.blog-info hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+.modal-status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.text-primary {
+  color: #007bff;
+}
+
+.text-secondary {
+  color: #6c757d;
+}
+
+/* Cập nhật cho phần content với thanh cuộn */
+.content-scroll {
+  max-height: 300px; /* Điều chỉnh chiều cao theo yêu cầu */
+  overflow-y: auto;  /* Hiển thị thanh cuộn nếu nội dung dài */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+

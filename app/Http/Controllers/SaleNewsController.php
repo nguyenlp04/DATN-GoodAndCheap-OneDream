@@ -9,19 +9,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
+use App\Models\Subcategory;
+use App\Models\SubcategoryAttribute;
+
+class SaleNewsControllerName extends Controller
+
 use App\Models\SaleNews;
 use App\Models\Subcategory;
 use App\Models\SubcategoryAttribute;
 
 class SaleNewsController extends Controller
+
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
+        //
+
         $data = SaleNews::with(['user', 'subcategory', 'firstImage', 'categoryToSubcategory'])->get();
         return view('admin.products.index', ['data' => $data]);
+
     }
 
     /**
@@ -116,6 +127,7 @@ class SaleNewsController extends Controller
      */
     public function edit(string $id)
     {
+
         // $dataProductID= DB::table('products')->where('product_id',$id)->first();ß
         // $dataProductID = Product::with(['subcategory', 'images',])->where('product_id', $id)->first();
         $dataCategory = Category::with(['subcategories'])->get();
@@ -124,6 +136,7 @@ class SaleNewsController extends Controller
             // 'dataProductID' => $dataProductID,
             'dataCategory' => $dataCategory
         ]);
+
     }
 
     /**
@@ -137,6 +150,7 @@ class SaleNewsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(string $product_id)
     {
         try {
@@ -178,4 +192,5 @@ class SaleNewsController extends Controller
 
         ]);
     }
+
 }
