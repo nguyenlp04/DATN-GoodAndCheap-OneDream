@@ -21,6 +21,14 @@ use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\PartnerProfileController;
 use App\Http\Controllers\SaleNewsControllerName;
 use App\Http\Controllers\UsermanagementController;
+use App\Http\Controllers\VnPayController;
+use App\Http\Controllers\SaleNewsController;
+
+Route::get('vnpay', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
+Route::get('payment', function () {
+    return view('payment');
+});
+Route::get('/IPN', [VnpayController::class, 'handleIPN']);
 
 Route::get('/', function () {
     return view('home');
@@ -67,7 +75,7 @@ Route::get('/dashboard', function () {
 
 // Grouped routes for products
 Route::prefix('product')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
+    Route::get('/', [SaleNewsController::class, 'index'])->name('admin.products.index');
     Route::get('/add', function () {
         return view('admin.products.add-product');
     });
@@ -75,11 +83,11 @@ Route::prefix('product')->group(function () {
     Route::get('/add', [ProductController::class, 'create'])->name('products.create');
 
 
-    Route::put('/update/{id}', [ProductController::class, 'update'])->name('updateProduct');
-    Route::get('/update/{id}', [ProductController::class, 'edit'])->name('editProduct');
+    Route::put('/update/{id}', [SaleNewsController::class, 'update'])->name('updateProduct');
+    Route::get('/update/{id}', [SaleNewsController::class, 'edit'])->name('editProduct');
 
 
-    Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('deleteProduct');
+    Route::delete('/product/delete/{id}', [SaleNewsController::class, 'destroy'])->name('deleteProduct');
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
@@ -92,6 +100,8 @@ Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSub
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
     Route::match(['get', 'post'], '/add', [CategoryController::class, 'store'])->name('addCategory');
+    Route::put('/update/{id}', [CategoryController::class, 'update'])->name('updateCategory');
+    Route::get('/update/{id}', [CategoryController::class, 'edit'])->name('editCategory');
     Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('deleteCategory');
 });
 // Grouped routes for account management   - Nguyễn Quang Cường
@@ -223,6 +233,6 @@ Route::prefix('trash')->group(function () {
 // });
 
 Route::prefix('sale-news')->group(function () {
-    Route::get('/add', [SaleNewsControllerName::class, 'create'])->name('products.create');
-    Route::post('/add', [SaleNewsControllerName::class, 'store'])->name('add.sale-news');
+    Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
+    Route::post('/add', [SaleNewsController::class, 'store'])->name('add.sale-news');
 });

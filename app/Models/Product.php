@@ -37,4 +37,8 @@ class Product extends Model
     {
         return $this->hasOne(Imgproduct::class, 'product_id');
     }
+    public function user()
+    {
+        return $this->hasOne(User::class, 'user_id');
+    }
 }
