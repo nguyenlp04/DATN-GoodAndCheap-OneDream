@@ -3,13 +3,12 @@
 <style>
   /* Đảm bảo bảng có chiều rộng cố định */
   .table td, .table th {
-    word-wrap: break-word;  /* Tự động xuống dòng nếu từ quá dài */
-    max-width: 150px;       /* Giới hạn chiều rộng tối đa */
+   
     white-space: normal;    /* Đảm bảo không có từ nào bị ẩn */
   }
 
   /* Đảm bảo bảng không thay đổi kích thước */
-  .table {
+  .table { 
     table-layout: fixed;
     width: 100%;
   }
@@ -115,9 +114,9 @@
                             <div><span class="p-1 rounded-1 text-white bg-label-primary my-1">${{$item->price}}</span></div>
                         </td>
                         <td class="bg-light rounded">
-                            <span class="badge bg-primary"> {{ $item->sub_category->category->name_category }} </span>
+                            <span class="badge bg-label-secondary"> {{ $item->sub_category->category->name_category }} </span>
                             <span class="text-muted"> &#8594; </span>
-                            <span class="badge bg-secondary"> {{ $item->sub_category->name_sub_category }}</span>
+                            <span class="badge text-secondary"> {{ $item->sub_category->name_sub_category }}</span>
                         </td>
                         <td>
                         @if($item->status == 0)
@@ -558,3 +557,15 @@
 </div>
 
 @endsection
+<script>@if(session('message'))
+    <div class="alert alert-success">
+        <strong>Success!</strong> {{ session('message') }}
+    </div>
+@endif
+
+@if(session('alert'))
+    <div class="alert alert-{{ session('alert')['type'] }}">
+        <strong>{{ ucfirst(session('alert')['type']) }}!</strong> {{ session('alert')['message'] }}
+    </div>
+@endif
+</script>

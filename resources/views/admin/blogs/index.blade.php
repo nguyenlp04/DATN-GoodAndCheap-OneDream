@@ -1,7 +1,12 @@
 @extends('layouts.admin')
 @section('content')
 
-
+<style>
+  .info-item{
+    border-bottom:solid 0.1px #C4C5C9 ;
+   padding-bottom :10px ;
+  }
+</style>
 <!-- Content wrapper -->
 <div class="content-wrapper">
   <div class="container-xxl flex-grow-1 container-p-y">
@@ -80,22 +85,54 @@
                           </div>
                           <div class="modal-body">
                             <div class="row">
-                              <div class="col-md-3 mx-2">
-                                <img src="{{ asset('storage/' . $blog->image) }}" alt="Blog Image" style="width: 100px;">
+                            
+                            <div class="mx-2 blog-info">
+                              <div class="info-item">
+                                  <strong>Image:</strong>
+                                  <img src="{{ asset('storage/' . $blog->image) }}" alt="Blog Image" class="blog-image">
                               </div>
-                              <div class="col-md-7 mx-2">
-                                <p><strong>ID:</strong> {{ $blog->blog_id }}</p>
-                                <p><strong>Title:</strong> {{ $blog->title }}</p>
-                                <p><strong>Description:</strong> {{ $blog->short_description }}</p>
-                                    <p><strong>Content:</strong> <span class="modal-content-text">
-                                  {!! $blog->content !!}
-                                </span></p>
-                                <p><strong>Start date:</strong> {{ $blog->created_at->format('Y-m-d') }}</p>
-                                <p><strong>Status:</strong> <span class="modal-status {{ $blog->status == 1 ? 'text-primary' : 'text-secondary' }}">
-                                      {{ $blog->status == 1 ? 'Show' : 'Hidden' }}
-                                  </span></p>
+                             
+                              <div class="info-item">
+                                  <strong>ID:</strong>
+                                  {{ $blog->blog_id }}
+                              </div>
+                           
+                              <div class="info-item">
+                                  <strong>Tags:</strong>
+                                  {{ $blog->tags}}
+                              </div>
+                              <div class="info-item">
+                                  <strong>Title:</strong>
+                                  {{ $blog->title }}
+                              </div>
+
+                             
+                              <div class="info-item">
+                                  <strong>Description:</strong>
+                                  {{ $blog->short_description }}
+                              </div>
                               
+                              <div class="info-item">
+                                  <strong>Content:</strong> 
+                                  <div class="content-scroll">
+                                      {!! $blog->content !!}
+                                  </div>
                               </div>
+                             
+                              <div class="info-item">
+                                  <strong>Start date:</strong>
+                                  {{ $blog->created_at->format('Y-m-d') }}
+                              </div>
+                             
+                              <div class="info-item">
+                                  <strong>Status:</strong>
+                                  <span class="modal-status {{ $blog->status == 1 ? 'text-primary' : 'text-secondary' }}">
+                                      {{ $blog->status == 1 ? 'Show' : 'Hidden' }}
+                                  </span>
+                              </div>
+                          </div>
+
+
                             </div>
                           </div>
                         </div>
@@ -108,33 +145,18 @@
               
               <!-- JavaScript -->
                
-              <script>
-               
+              <script>@if(session('message'))
+    <div class="alert alert-success">
+        <strong>Success!</strong> {{ session('message') }}
+    </div>
+@endif
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    @if(session('success'))
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: '{{ session('success') }}',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    @endif
-
-                    @if(session('error'))
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: '{{ session('error') }}',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    @endif
-                });
-
-               
-              </script>
+@if(session('alert'))
+    <div class="alert alert-{{ session('alert')['type'] }}">
+        <strong>{{ ucfirst(session('alert')['type']) }}!</strong> {{ session('alert')['message'] }}
+    </div>
+@endif
+</script>
 
               <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
               <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
