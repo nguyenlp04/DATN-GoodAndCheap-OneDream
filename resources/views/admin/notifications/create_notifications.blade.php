@@ -57,7 +57,7 @@
                 <!-- Description -->
                 <div>
                   <label for="content_notification" class="form-label">Content</label>
-                  <textarea class="form-control" name="content_notification" id="editor" rows="5" placeholder="Content notification">{{ old('content_notification') }}</textarea>
+                  <textarea  class="form-control" name="content_notification" id="editor" rows="10" placeholder="Content notification">{{ old('content_notification') }}</textarea>
                 </div>
               </div>
             </div>

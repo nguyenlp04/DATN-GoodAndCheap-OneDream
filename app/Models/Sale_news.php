@@ -37,5 +37,8 @@ class Sale_news extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
-   
+    public function channels()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id');
+    }
 }

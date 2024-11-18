@@ -24,9 +24,9 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <!-- Form sửa thông tin kênh -->
-                            <form id="update-profile-form" action="{{ route('profile.update', $profile->channel_id) }}" method="POST" enctype="multipart/form-data">
+                            <form id="update-profile-form" action="{{ route('partners.profile.update', $profile->channel_id) }}" method="POST" enctype="multipart/form-data">
                               @csrf
-                              @method('PUT')
+                              @method('PATCH')
                               
                               <!-- Name channel -->
                               @if(session('error'))

@@ -1,3 +1,88 @@
+<style>
+    .dropdown-menu{
+        top: 70% !important;
+    }
+    .header-intro-clearance .header-bottom .menu.sf-arrows > li > .sf-with-ul::after {
+    right: 0rem;
+}
+.notification-dropdown {
+    width: 320px;
+    max-height: none; /* Loại bỏ giới hạn chiều cao */
+    overflow-y: visible; /* Cho phép nội dung dài tràn ra ngoài */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 10px;
+}
+
+/* Nội dung thông báo */
+.notification-body {
+    padding: 10px;
+    max-height: none; /* Loại bỏ giới hạn chiều cao */
+}
+
+/* Item notification */
+.notification-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #f2f2f2;
+    transition: background-color 0.3s;
+}
+
+.notification-item:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.notification-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 12px;
+    border-radius: 50%;
+    background-color: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-content strong {
+    font-size: 14px;
+    color: #333;
+}
+
+.notification-content p {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notification-footer {
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.notification-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.notification-footer a:hover {
+    text-decoration: underline;
+}
+</style>
 <div class="page-wrapper">
 
     <header class="header header-intro-clearance header-4">
@@ -30,7 +115,7 @@
 
                 <div class="header-right">
                 @if(isset(auth()->user()->user_id))
-                    <div class="wishlist">
+                    <div class="wishlist" style="white-space: nowrap">
                         <a href="{{ route('add.sale-news') }}" title="Wishlist">
                             <div class="icon">
                             <i class="fa-regular fa-newspaper"></i>
@@ -58,73 +143,47 @@
                     </div><!-- End .compare-dropdown -->
 
                     <div class="dropdown cart-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" data-display="static">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="icon">
-                                <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
+                                <i class="fas fa-bell"></i>
+                                <span class="cart-count badge">{{ $notifications->count() }}</span>
                             </div>
-                            <p>Cart</p>
+                            <p>Notifications</p>
                         </a>
+                        <div class="dropdown-menu dropdown-menu-right notification-dropdown">
+                            <div class="notification-body">
+                                @if($notifications->isNotEmpty())
+    <ul class="notification-list">
+        @foreach($notifications as $notification)
+            @php
+                $selectedUsers = $notification->selected_users;
+            @endphp
+            @if($notification->status == 'public' || in_array(auth()->user()->user_id, $selectedUsers))
+                <li class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="notification-content">
+                        <strong>{{ $notification->title_notification }}</strong>
+                        <p class="text-muted small">{{ Str::limit($notification->content_notification, 40) }}</p>
+                        <small class="text-muted">{{ $notification->created_at->format('d/m/Y H:i') }}</small>
+                    </div>
+                </li>
+            @endif
+        @endforeach
+    </ul>
+@else
+    <p class="text-center">No notifications available.</p>
+@endif
 
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-cart-products">
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="product.html">Beige knitted elastic runner shoes</a>
-                                        </h4>
-
-                                        <span class="cart-product-info">
-                                            <span class="cart-product-qty">1</span>
-                                            x $84.00
-                                        </span>
-                                    </div><!-- End .product-cart-details -->
-
-                                    <figure class="product-image-container">
-                                        <a href="product.html" class="product-image">
-                                            <img src="assets/images/products/cart/product-1.jpg" alt="product">
-                                        </a>
-                                    </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i
-                                            class="icon-close"></i></a>
-                                </div><!-- End .product -->
-
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="product.html">Blue utility pinafore denim dress</a>
-                                        </h4>
-
-                                        <span class="cart-product-info">
-                                            <span class="cart-product-qty">1</span>
-                                            x $76.00
-                                        </span>
-                                    </div><!-- End .product-cart-details -->
-
-                                    <figure class="product-image-container">
-                                        <a href="product.html" class="product-image">
-                                            <img src="assets/images/products/cart/product-2.jpg" alt="product">
-                                        </a>
-                                    </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i
-                                            class="icon-close"></i></a>
-                                </div><!-- End .product -->
-                            </div><!-- End .cart-product -->
-
-                            <div class="dropdown-cart-total">
-                                <span>Total</span>
-
-                                <span class="cart-total-price">$160.00</span>
-                            </div><!-- End .dropdown-cart-total -->
-
-                            <div class="dropdown-cart-action">
-                                <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .dropdown-cart-total -->
-                        </div><!-- End .dropdown-menu -->
-                    </div><!-- End .cart-dropdown -->
+                            </div>
+                            <div class="notification-footer">
+                                <a href="{{ route('notifications.index') }}" class="btn btn-link">View All</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                     @else
                     <div class="wishlist">
                     <a href="{{ route('login') }}">
@@ -270,6 +329,18 @@
                                                 {{ __('Profile') }}
                                             </a>
                                         </li>
+                                        @if(auth()->user()->channel)
+                                        <li>
+                                            <a href="{{ route('channels.index') }}">
+                                                {{ __('My Channel') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('partners/profile') }}">
+                                                {{ __('Channel Manager') }}
+                                            </a>
+                                        </li>
+                                        @endif
                                         <li>
                                             <form method="POST" action="{{ route('logout') }}">
                                                 @csrf

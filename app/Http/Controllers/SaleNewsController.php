@@ -28,8 +28,8 @@ class SaleNewsController extends Controller
      */
     public function create()
     {
-            $categories = Category::all();
-            return view('sale-news.add-sale-news', compact('categories'));
+        $categories = Category::all();
+        return view('sale-news.add-sale-news', compact('categories'));
     }
 
     /**
@@ -44,7 +44,7 @@ class SaleNewsController extends Controller
                 'price' => 'required|numeric|min:0',
                 'description' => 'required|string',
                 'subcategory_id' => 'required|integer',
-                'variant' => 'required',  
+                'variant' => 'required',
                 // 'images.*' => 'required|max:2048',
             ]);
             // dd($errors->all());
@@ -94,9 +94,6 @@ class SaleNewsController extends Controller
                     'message' => 'Không thành công !'
                 ]);
             }
-
-
-
         } catch (\Exception $e) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
@@ -119,12 +116,12 @@ class SaleNewsController extends Controller
     public function edit(string $id)
     {
         // $dataProductID= DB::table('products')->where('product_id',$id)->first();ß
-        $dataProductID= Product::with(['subcategory','images',])->where('product_id',$id)->first();
-        $dataCategory= Category::with(['subcategories'])->get();
+        // $dataProductID = Product::with(['subcategory', 'images',])->where('product_id', $id)->first();
+        $dataCategory = Category::with(['subcategories'])->get();
         // dd($dataCategory);
-        return view('admin.products.update-product',[
-            'dataProductID'=>$dataProductID,
-            'dataCategory'=>$dataCategory
+        return view('admin.products.update-product', [
+            // 'dataProductID' => $dataProductID,
+            'dataCategory' => $dataCategory
         ]);
     }
 
@@ -162,19 +159,20 @@ class SaleNewsController extends Controller
             ]);
         }
     }
-    public function renderProductDetails(string $id){
+    public function renderProductDetails(string $id)
+    {
 
 
-        $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
-       $data = $product->data;
-    //    die($product);
-           $data_json = json_decode($data);
-          $variants = json_decode($data_json->variants);
-           $variant_data_details = json_decode($data_json->variant_data_details);
+        $product = Product::with(['channel', 'images', 'firstImage', 'category', 'subcategory'])->where('product_id', $id)->first();
+        $data = $product->data;
+        //    die($product);
+        $data_json = json_decode($data);
+        $variants = json_decode($data_json->variants);
+        $variant_data_details = json_decode($data_json->variant_data_details);
         return view('product.product-detail', [
-            'product' =>$product,
-            'variants' =>$variants,
-            'variant_data_details' =>$variant_data_details
+            'product' => $product,
+            'variants' => $variants,
+            'variant_data_details' => $variant_data_details
 
 
         ]);

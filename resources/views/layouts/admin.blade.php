@@ -200,6 +200,20 @@
                     </li>
                 </ul>
             </li>
+            <li class="menu-item {{ Request::is('channel/*') || Request::is('channel') ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bx-layout"></i>
+                  <div data-i18n="Product Management">Channel Management</div>
+              </a>
+              <ul class="menu-sub">
+                  <li class="menu-item {{ Request::is('channel') ? 'active' : '' }}">
+                      <a href="{{ url('channel') }}" class="menu-link">
+                          <div data-i18n="Hide Product">List Channel</div>
+                      </a>
+                  </li>
+              </ul>
+          </li>
+
 
 
             <!-- Account Management -->

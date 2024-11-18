@@ -2,148 +2,204 @@
 
 @section('content')
 <style>
-    <style>
-        .channel-info {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fff;
-            max-width: 800px;
-            margin: 20px auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .channel-info img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 20px;
-        }
-        .channel-name {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .channel-username {
-            font-size: 14px;
-            color: #888;
-        }
-    </style>
+    .channel-info {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        background-color: #f9f9f9;
+        margin: 20px auto;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .channel-info:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .channel-info img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .channel-info img:hover {
+        transform: scale(1.1);
+    }
+
+    .channel-name {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .channel-username {
+        font-size: 16px;
+        color: #888;
+        margin-bottom: 10px;
+    }
+
+    .channel-stats {
+        color: #555;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .channel-stats span {
+        margin-right: 15px;
+    }
+
+    .channel-actions a {
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-size: 14px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .channel-actions a:hover {
+        background-color: #0056b3;
+    }
+
+    .channel-actions .btn-danger:hover {
+        background-color: #d9534f;
+    }
+
+    .stats-info {
+        font-size: 14px;
+        color: #e84e40;
+        display: flex;
+        align-items: center;
+    }
+
+    .stats-info i {
+        margin-right: 5px;
+    }
+
+    .heading .title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .heading-right .title-link {
+        font-size: 16px;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .heading-right .title-link:hover {
+        text-decoration: underline;
+    }
+
+    .sale-card {
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        background-color: #f9f9f9;
+        margin: 15px 0;
+        padding: 15px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sale-card .title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .sale-card .price {
+        color: #e84e40;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .sale-card .description {
+        color: #555;
+        font-size: 14px;
+    }
+
+    .sale-card .status {
+        font-size: 14px;
+        color: #888;
+    }
 </style>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
-<main class="container pt-5 mb-2">
+
+<main class="container pt-5 mb-5">
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
-        </div>  
+        </div>
     @endif
 
     <div class="row">
         <div class="col-md-12 mb-4">
-            <div class="channel-info d-flex align-items-center p-3 border rounded-2 shadow-sm bg-light">
+            <div class="channel-info">
                 <!-- Channel Image -->
-                <img src="{{ asset('storage/' . $channels->image_channel) }}" alt="{{ $channels->name_channel }}" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
-
+                <img src="{{ asset('storage/' . ($channels->image_channel ?? 'assets/images/image.png')) }}" alt="{{ $channels->name_channel }}" class="rounded-circle me-3">
                 <!-- Channel Details -->
                 <div class="flex-grow-1">
-                    <div class="channel-name fw-bold fs-5 text-primary">{{ $channels->name_channel }}</div>
-                    <div class="text-muted">{{ $channels->username }}</div>
-                    <div class="text-muted ">
-                        {{ $channels->followers_count }} 2,3K Người Theo Dõi | 
-                           <span class="text-danger">
-                            <i class="bi bi-star-fill text-warning"></i> {{ $channels->rating }}  123 Đánh Giá   </span> 
+                    <div class="channel-name">{{ $channels->name_channel }}</div>
+                    <div class="channel-username">{{ $channels->username }}</div>
+                    <div class="channel-stats">
+                        <span>{{ $channels->followers_count }} 2.3K Followers</span> |
+                        <span><i class="bi bi-star-fill text-warning"></i> {{ $channels->rating }} 123 Reviews</span>
                     </div>
-                    <div class="d-flex gap-2 mt-2">
-                        <button class="btn btn-danger mr-2 btn-sm">Follow</button>
-                        <button class="btn btn-primary btn-sm">Message</button>
+                    <div class="channel-actions d-flex gap-3 mt-3">
+                        <a href="#" class="btn btn-primary btn-sm ">Follow</a>
+                        <a href="#" class="btn btn-danger btn-sm ml-2">Message</a>
                     </div>
-                   
                 </div>
 
                 <!-- Stats Section -->
-                <div class="d-flex align-items-end" >
-                    <div class="text-danger mb-1 me-2 mr-4">
-                        <i class="bi bi-box-seam"></i> {{ $productsCount }} Sản Phẩm    |
-                    </div>
-                    
-                    <div class="text-danger mb-1 me-2 mr-4">
-                        <i class="bi bi-chat-dots"></i>  Tỉ Lệ Phản Hồi cao   |
-                    </div>
-                    <div class="text-danger mb-1 me-2 ">
-                        <i class="bi bi-clock"></i> Trong vài giờ
+                <div class="d-flex align-items-end">
+                    <div class="stats-info">
+                        <i class="bi bi-box-seam"></i> {{ $NewsCount }} New Sales |
                     </div>
                 </div>
             </div>
         </div>
 
-            <div class="container for-you">
-                <div class="heading heading-flex mb-3">
-                    <div class="heading-left">
-                        <h2 class="title">My product</h2><!-- End .title -->
-                    </div><!-- End .heading-left -->
-        
-                    <div class="heading-right">
-                        <a href="#" class="title-link">View All Recommendadion <i class="icon-long-arrow-right"></i></a>
-                    </div><!-- End .heading-right -->
-                </div><!-- End .heading -->
-        
-                <div class="products">
-                    <div class="row justify-content-center">
-                        @if(isset($channels->product_count_message))
-                        <div class="alert alert-warning">
-                            {{ $channels->product_count_message }}
-                        </div>
-@else
-                        @foreach ($products as $product)
-                        <div class="col-6 col-md-4 col-lg-3 border">
-                            <div class="product product-2">
-                                <figure class="product-media">
-                                    <a href="">
-                                        <img src="{{ asset('assets/images/demos/demo-4/products/product-10.jpg') }}"
+        <div class="container for-you">
+            <div class="heading heading-flex mb-4">
+                <div class="heading-left">
+                    <h2 class="title">Sale News</h2>
+                </div>
+                <div class="heading-right">
+                    <a href="#" class="title-link">View All <i class="icon-long-arrow-right"></i></a>
+                </div>
+            </div>
 
-                                    </a>
-                
-                                    <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                    </div><!-- End .product-action -->
-                
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
-                                        <a href="" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
-                                    </div><!-- End .product-action -->
-                                </figure><!-- End .product-media -->
-                
-                                <div class="product-body">
-                                    <div class="product-cat">
-                                        <a href="#">Smart Home</a>
-                                    </div><!-- End .product-cat -->
-                                    <h3 class="product-title">
-                                        <a href="">{{ $product->name_product }}</a>
-                                    </h3><!-- End .product-title -->
-                                    <div class="product-price">
-                                        ${{ number_format($product->price, 2) }}
-                                    </div><!-- End .product-price -->
-                                    <div class="ratings-container">
-                                        <div class="ratings">
-                                            <div class="ratings-val" style="width: {{ $product->ratings * 20 }}%;"></div><!-- End .ratings-val -->
-                                        </div><!-- End .ratings -->
-                                        <span class="ratings-text">({{ $product->reviews_count }} Reviews)</span>
-                                    </div><!-- End .rating-container -->
-                
-                                    <div class="product-nav product-nav-dots">
-                                      
-                                    </div><!-- End .product-nav -->
-                                </div><!-- End .product-body -->
-                            </div><!-- End .product -->
-                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-                    @endforeach
-                @endif
-                    </div><!-- End .row -->
-                </div><!-- End .products -->
-            </div><!-- End .container -->
+            <!-- Sales News -->
+            @foreach ($sale_news as $sale_new)
+            <div class="sale-card">
+                <div class="title">{{ $sale_new->title }}</div>
+                <div class="price">{{ $sale_new->price }} VND</div>
+                <div class="description">{{ Str::limit($sale_new->description, 100) }}</div>
+                <div class="status">
+                    Status: 
+                    @if ($sale_new->status == 1)
+                        <span class="text-success">Active</span>
+                    @else
+                        <span class="text-danger">Inactive</span>
+                    @endif
+                </div>
+                <div class="channel-actions d-flex gap-3 mt-2">
+                </div>
+            </div>
+            @endforeach
         </div>
-       
+    </div>
 </main>
 
 @endsection
