@@ -1,162 +1,181 @@
 @extends('layouts.admin')
 @section('content')
-<!-- Layout container -->
-  <div class="content-wrapper">
-    <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
-      <div class="app-ecommerce" data-select2-id="21">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
-          <div class="d-flex flex-column justify-content-center">
-            <h4 class="mb-1">notifications</h4>
-          </div>
 
+<!-- Content wrapper -->
+<div class="content-wrapper">
+  <!-- Content -->
+
+  <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
+
+
+    <div class="app-ecommerce" data-select2-id="21">
+
+      <!-- Add Product -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
+
+        <div class="d-flex flex-column justify-content-center">
+          <h4 class="mb-1">Notification</h4>
         </div>
-        <div class="row" data-select2-id="20">
 
-          <!-- First column-->
-          <div class="col-12 col-lg-12">
-            <!-- notifications Information -->
-            <div class="card mb-6">
-              <div class="card-body">
+      </div>
+
+      <div class="row" data-select2-id="20">
+
+        <!-- First column-->
+        <div class="col-12 col-lg-12">
+          <!-- Product Information -->
+          <div class="card mb-6">
+            <div class="card-body">
+               <!-- <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+            {{-- {{ json_encode($data, JSON_PRETTY_PRINT) }} --}}
+        </pre> -->
               <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                   <tr>
-                    <!-- <th>Id</th> -->
+                    <th>Id notification</th>
                     <th>Title</th>
                     <th>Name</th>
-                    <th class="px-1">Start date</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($notifications as $notification)
-            <tr>
-                <td>{{ Str::limit($notification->title_notification, 50) }}</td>
-                <td>
-                  {{ implode(', ', $notification->names) }}
-              </td>
-                <td>{{ $notification->created_at->format('Y-m-d') }}</td>
-                <td>
-                  <button type="button" id="bt-tb{{ $notification->notification_id }}" class="btn btn-sm {{ $notification->status == 'public' ? 'btn-primary' : 'btn-secondary' }}" data-id="{{ $notification->notification_id }}" onclick="toggleStatus(this)">
-                      <i id="bt-i{{ $notification->notification_id }}" class="fas {{ $notification->status == 'public' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
-                      <span id="bt-sp{{ $notification->notification_id }}">{{ $notification->status == 'public' ? 'Public' : 'Private' }}</span>
-                  </button>
-              </td>
-                <td class="d-flex align-items-center">
-                  <a href="{{ route('notifications.edit', $notification->notification_id) }}" class="btn btn-warning me-2">
-                      <i class="fas fa-edit"></i>
-                  </a>
-                  <form action="{{ route('notifications.destroy', $notification->notification_id) }}" method="POST" class="d-inline">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-danger">
-                          <i class="fas fa-trash"></i>
-                      </button>
-                  </form>
-              </td>
-              
-            </tr>
-            @endforeach
-                </tbody>
-                <tfoot>
                   <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Title</th>
-                    <th>Image</th> <!-- Khớp với thead -->
-                    <th class="px-1">Start date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                    
+                    <td>
+                      <div>
+                        <span class="badge bg-label-info my-1">ID: {{ $notification->notification_id }}</span>
+                      </div>
+                      <div>
+                        <span class="badge bg-label-info my-1"> {{ date('D, d M Y', strtotime($notification->created_at)) }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="flex-grow-1 d-flex align-items-center">
+                          <p class="mb-0 text-truncate-3 ms-3 w-100">{{ $notification->title_notification }}</p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1 d-flex align-items-center">
+                          @if(!empty($notification->user_names) && count($notification->user_names) > 0)
+                                {{ implode(', ', $notification->user_names) }}
+                            @elseif(!empty($notification->channel_names) && count($notification->channel_names) > 0)
+                                 {{ implode(', ', $notification->channel_names) }}
+                            @else
+                                {{ 'Global Website' }}     
+                            @endif
+                        </div>
+                      </div>
+                      
+                    </td>
+                    <td class="bg-light rounded">
+                      @if ($notification->status == 'public')
+                      <span class="badge bg-label-success">Active</span>
+                      @else
+                      <span class="badge bg-label-danger">Deactive</span>
+                      @endif
+                    </td>
+                    <td>
+
+                      <div class="container">
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                          <li data-bs-toggle="modal" data-bs-target="#modal{{ $notification->notification_id }}">
+                              <a class="dropdown-item" href="#"><span><i class="fa-solid fa-eye me-1"></i></span>View</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="{{ route('notifications.edit', $notification->notification_id) }}"> <span><i class="fa-solid fa-pen-to-square me-1"></i></span>Edit</a>
+                            </li>
+                            <li>
+                              <a onclick="confirmDelete(event, {{ $notification->notification_id }})">
+                                <form id="delete-form-{{ $notification->notification_id }}" action="{{ route('notifications.destroy', $notification->notification_id) }}" method="POST" style="display:inline;">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit" class="dropdown-item">
+                                    <span><i class="fa-solid fa-trash me-1"></i></span>Delete
+                                  </button>
+                                </form>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="modal fade" id="modal{{ $notification->notification_id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $notification->notification_id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title text-truncate-1">Details of {{ $notification->name_notification }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <table class="table">
+                                <tbody>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td class="col-3">notification:</td>
+                                    <td class="col-9">
+                                      <div class="d-flex justify-content-start align-items-center product-name">
+                                        <h5 class="mb-0 text-truncate-1">{{ $notification->title_notification }}</h5>
+                                        
+                                        </div>
+                                       
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="7">
+                                    <td class="col-3">Content notification:</td>
+                                    <td class="col-9"><span>{!! Str::limit($notification->content_notification, 10) !!}</span></td>
+                                  </tr>
+                                  <br>
+                                  <tr data-dt-row="2" data-dt-column="7">
+                                    <td class="col-3">To:</td>
+                                    <td class="col-9"><span>
+                                      @if(!empty($notification->user_names) && count($notification->user_names) > 0)
+                                {{ implode(', ', $notification->user_names) }}
+                            @elseif(!empty($notification->channel_names) && count($notification->channel_names) > 0)
+                                 {{ implode(', ', $notification->channel_names) }}
+                            @else
+                                {{ 'Global Website' }}     
+                            @endif
+                          </span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="8">
+                                    <td class="col-3">Status:</td>
+                                    <td class="col-8 bg-light rounded">
+                                      @if ($notification->status == 'public')
+                                      <span class="badge bg-label-success">Active</span>
+                                      @else
+                                      <span class="badge bg-label-danger">Deactive</span>
+                                      @endif
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="9">
+                                    <td class="col-3">Created At:</td>
+                                    <td class="col-9"><span>{{ date('D, d M Y', strtotime($notification->created_at)) }}</span></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
-                </tfoot>
+                  @endforeach
+                </tbody>
               </table>
-
-                 <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    @if(session('success'))
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: '{{ session('success') }}',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    @endif
-
-                    @if(session('error'))
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: '{{ session('error') }}',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    @endif
-                });
-            </script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-                <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-                <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-               
-              <script>
-                function toggleStatus(button) {
-                    const notificationId = $(button).data('id');
-                    // console.log(notificationId);
-                    
-                    $.ajax({
-                        url: `/notifications/toggleStatus/${notificationId}`,
-                        type: 'PATCH',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            // Swal.fire(response.message, '', response.status === "public" ? 'success' : 'warning');
-                            
-        
-                                // Tạo selector cho id động
-                                var selector = '#bt-tb' + notificationId;
-                                var selector1 = '#bt-i' + notificationId;
-                                var selector2 = '#bt-sp' + notificationId;
-                            $(selector2).html('')
-                            $(selector).removeClass('btn-primary');
-                            $(selector).removeClass('btn-secondary');
-                            $(selector1).removeClass('fa-eye');
-                            $(selector1).removeClass('fa-eye-slash');
-
-                            if(response.status === "public"){
-                            $(selector1).addClass('fa-eye');
-                            $(selector2).html(response.status)
-                            $(selector).addClass('btn-primary');
-
-                            }else{
-                            $(selector2).html(response.status)
-
-                            $(selector1).addClass('fa-eye-slash');
-                            $(selector).addClass('btn-secondary');
-                            }
-
-
-
-                            
-
-                            
-
-                            // location.reload();
-                        },
-                        error: function() {
-                            Swal.fire('Error', 'Unable to toggle status', 'error');
-                        }
-                    });
-                }
-            </script>
-              </div>
             </div>
-          <!-- /Second column -->
+          </div>
         </div>
+        <!-- /Second column -->
       </div>
     </div>
-    <div class="content-backdrop fade"></div>
   </div>
+  <!-- / Content -->
+
+  <div class="content-backdrop fade"></div>
 </div>
+<!-- Content wrapper -->
 @endsection

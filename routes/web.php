@@ -32,6 +32,10 @@ use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', [ProductController::class, 'home']);
 Route::get('/home', [ProductController::class, 'home'])->name('home');
+// Route::get('/', [NotificationController::class, 'showNotifications']);
+// Route::get('/home', [NotificationController::class, 'showNotifications']);
+
+
 // Trong routes/web.php
 // Đảm bảo route này đã được khai báo trong routes/web.php
 Route::post('/wishlist/add', [ProductController::class, 'addToWishlist'])->name('wishlist.add');
@@ -61,21 +65,21 @@ Route::middleware('auth')->group(function () {
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
     Route::post('/submit-review', [ReviewController::class, 'store'])->name('submit.review');
-    route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
-    route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
+    route::get('admin/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
+    route::get('admin/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('admin/blogs', BlogController::class);
     Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
     Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
     Route::get('admin/sale_new', [Sale_newController::class, 'list_salenew'])->name('sale_new.list');
-    route::post('admin/sale_new/reject/{id}',[Sale_newController::class,'reject'])->name('sale_news.reject');
+    route::post('admin/sale_new/reject/{id}', [Sale_newController::class, 'reject'])->name('sale_news.reject');
     Route::delete('/sale_news/{id}', [Sale_newController::class, 'destroy'])->name('sale_news.destroy');
-    route::post('admin/sale_new/approve/{id}',[Sale_newController::class,'approve'])->name('sale_news.approve');
+    route::post('admin/sale_new/approve/{id}', [Sale_newController::class, 'approve'])->name('sale_news.approve');
 });
 
 require __DIR__ . '/auth.php';
 
 Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
-route::get('/blogs/detail/{id}',[BlogController::class,'detail'])->name('blogs.detail');
+route::get('/blogs/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('verification.show');
@@ -89,7 +93,7 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
 
-Route::get('g', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
+Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
 Route::post('staff/login', [StaffAuthController::class, 'login']);
 Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
 
@@ -158,7 +162,7 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
     Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
     Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
-    Route::get('user/noti/', [NotificationController::class, 'showNotifications'])->name('noti');
+    Route::get('/{id}', [NotificationController::class, 'view'])->name('view');
 });
 
 

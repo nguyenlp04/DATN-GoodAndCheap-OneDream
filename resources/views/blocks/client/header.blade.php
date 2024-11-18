@@ -1,3 +1,11 @@
+<style>
+    .dropdown-menu{
+        top: 70% !important;
+    }
+    .header-intro-clearance .header-bottom .menu.sf-arrows > li > .sf-with-ul::after {
+    right: 0rem;
+}
+</style>
 <div class="page-wrapper">
 
     <header class="header header-intro-clearance header-4">
@@ -30,7 +38,7 @@
 
                 <div class="header-right">
                 @if(isset(auth()->user()->user_id))
-                    <div class="wishlist">
+                    <div class="wishlist" style="white-space: nowrap">
                         <a href="{{ route('add.sale-news') }}" title="Wishlist">
                             <div class="icon">
                             <i class="fa-regular fa-newspaper"></i>
@@ -61,69 +69,45 @@
                         <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false" data-display="static">
                             <div class="icon">
-                                <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
+                                <i class="icon fas fa-bell icon"></i>
+                                <span class="cart-count badge">2</span>
                             </div>
-                            <p>Cart</p>
+                            <p>Notification</p>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-cart-products">
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="product.html">Beige knitted elastic runner shoes</a>
-                                        </h4>
+                            <div class="dropdown-menu dropdown-menu-end " style="width: 300px; max-height: 400px; overflow-y: auto; top:50%;">
+                                @if($notifications->isNotEmpty())
+    <ul class="list-group list-group-flush">
+        @foreach($notifications as $notification)
+            @php
+                // Giải mã selected_users để kiểm tra user_id của người dùng hiện tại
+                $selectedUsers = json_decode($notification->selected_users, true); // selected_users là mảng JSON
+                $userId = Auth::id(); // Lấy ID của người dùng hiện tại
+            @endphp
 
-                                        <span class="cart-product-info">
-                                            <span class="cart-product-qty">1</span>
-                                            x $84.00
-                                        </span>
-                                    </div><!-- End .product-cart-details -->
+            @if(in_array($userId, $selectedUsers) || $notification->status == 'public') <!-- Kiểm tra nếu userId có trong selected_users hoặc là thông báo công khai -->
+                <li class="list-group-item d-flex align-items-start">
+                    <div class="me-3">
+                        <i class="fas fa-info-circle text-primary"></i>
+                    </div>
+                    <div>
+                        <strong>{{ $notification->title_notification }}</strong><br>
+                        <span class="text-muted small">{!! Str::limit($notification->content_notification, 40) !!}</span><br>
+                        <small class="text-muted">{{ $notification->created_at->format('d/m/Y H:i') }}</small>
+                    </div>
+                </li>
+            @endif
+        @endforeach
+    </ul>
+@else
+    <p class="text-center text-muted">Không có thông báo nào.</p>
+@endif
 
-                                    <figure class="product-image-container">
-                                        <a href="product.html" class="product-image">
-                                            <img src="assets/images/products/cart/product-1.jpg" alt="product">
-                                        </a>
-                                    </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i
-                                            class="icon-close"></i></a>
-                                </div><!-- End .product -->
-
-                                <div class="product">
-                                    <div class="product-cart-details">
-                                        <h4 class="product-title">
-                                            <a href="product.html">Blue utility pinafore denim dress</a>
-                                        </h4>
-
-                                        <span class="cart-product-info">
-                                            <span class="cart-product-qty">1</span>
-                                            x $76.00
-                                        </span>
-                                    </div><!-- End .product-cart-details -->
-
-                                    <figure class="product-image-container">
-                                        <a href="product.html" class="product-image">
-                                            <img src="assets/images/products/cart/product-2.jpg" alt="product">
-                                        </a>
-                                    </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i
-                                            class="icon-close"></i></a>
-                                </div><!-- End .product -->
-                            </div><!-- End .cart-product -->
-
-                            <div class="dropdown-cart-total">
-                                <span>Total</span>
-
-                                <span class="cart-total-price">$160.00</span>
-                            </div><!-- End .dropdown-cart-total -->
-
-                            <div class="dropdown-cart-action">
-                                <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .dropdown-cart-total -->
-                        </div><!-- End .dropdown-menu -->
+                                <div class="dropdown-footer d-flex justify-content-center">
+                                    <a href="{{ route('notifications.index') }}" class="btn btn-link text-primary">View All</a>
+                                </div>
+                            </div>
                     </div><!-- End .cart-dropdown -->
                     @else
                     <div class="wishlist">
@@ -268,6 +252,11 @@
                                         <li>
                                             <a href="{{ route('account') }}">
                                                 {{ __('Profile') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('channels.index') }}">
+                                                {{ __('My Channel') }}
                                             </a>
                                         </li>
                                         <li>

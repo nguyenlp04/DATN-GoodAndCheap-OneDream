@@ -21,10 +21,23 @@ class ChannelController extends Controller
         }
 
         $user = Auth::user();
-        $channels = Channel::where('user_id', $user->user_id)->get();
+        $channels = Channel::where('user_id', $user->user_id)->first();
 
-        return view('partner.channels.profile_channels', compact('channels'));
+        // Kiểm tra nếu kênh tồn tại
+        if (!$channels) {
+            return redirect()->route('channels.index')->with('error', 'No channels found.');
+        }
+        $products = Product::where('channel_id', $channels->channel_id)->get();
+        $productsCount = Product::where('channel_id', $channels->channel_id)->count();
+        $channels->product_count = $productsCount;
+
+        if ($productsCount === 0) {
+            $channels->product_count_message = 'No products found for this channel.';
+        }
+
+        return view('partner.channels.profile_channels', compact('channels', 'productsCount', 'products'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -107,6 +120,7 @@ class ChannelController extends Controller
             $channels->product_count_message = 'No products found for this channel.';
             return view('partner.channels.show_channels', compact('channels', 'products', 'productsCount'));
         }
+
         return view('partner.channels.show_channels', compact('channels', 'products', 'productsCount'));
     }
 
