@@ -96,11 +96,21 @@ class NotificationController extends Controller
         $selectedUsers = is_array($request->selected_users) ? $request->selected_users : [];
         $selectedChannels = is_array($request->selected_channels) ? $request->selected_channels : [];
 
+        // Ensure selected_users and selected_channels are arrays before encoding them
+        $selectedUsers = is_array($request->selected_users) ? $request->selected_users : [];
+        $selectedChannels = is_array($request->selected_channels) ? $request->selected_channels : [];
+
         // Create a new notification record
         $notification = new Notification();
         $notification->title_notification = $request->title_notification;
         $notification->content_notification = $request->content_notification;
         $notification->type = $request->type;
+        $notification->status = $request->status ?? 'public'; // Default to 'public'
+
+        // Store users and channels as JSON
+        $notification->selected_users = json_encode($selectedUsers);
+        $notification->selected_channels = json_encode($selectedChannels);
+
         $notification->status = $request->status ?? 'public'; // Default to 'public'
 
         // Store users and channels as JSON
@@ -115,6 +125,7 @@ class NotificationController extends Controller
             'message' => 'Notification created successfully!',
         ]);
     }
+
 
     /**
      * Display the specified resource.
@@ -162,6 +173,11 @@ class NotificationController extends Controller
             'selected_users.*' => 'exists:users,user_id',
             'selected_channels' => 'nullable|array',
             'selected_channels.*' => 'exists:channels,channel_id',
+            'status' => 'required|in:public,private', // Thêm rule để đảm bảo chỉ nhận public hoặc private
+            'selected_users' => 'nullable|array',
+            'selected_users.*' => 'exists:users,user_id',
+            'selected_channels' => 'nullable|array',
+            'selected_channels.*' => 'exists:channels,channel_id',
         ]);
 
         $notification = Notification::findOrFail($id);
@@ -171,8 +187,12 @@ class NotificationController extends Controller
         $notification->status = $request->status;
 
         // Xử lý mảng selected_users và selected_channels
+        $notification->status = $request->status;
+
+        // Xử lý mảng selected_users và selected_channels
         $notification->selected_users = json_encode($request->selected_users ?? []);
         $notification->selected_channels = json_encode($request->selected_channels ?? []);
+
 
         $notification->save();
 
@@ -181,6 +201,8 @@ class NotificationController extends Controller
             'message' => 'Notification updated successfully!',
         ]);
     }
+
+
 
 
 

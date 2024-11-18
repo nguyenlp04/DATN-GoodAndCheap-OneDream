@@ -116,6 +116,7 @@
                 <div class="header-right">
                 @if(isset(auth()->user()->user_id))
                     <div class="wishlist" style="white-space: nowrap">
+                    <div class="wishlist" style="white-space: nowrap">
                         <a href="{{ route('add.sale-news') }}" title="Wishlist">
                             <div class="icon">
                             <i class="fa-regular fa-newspaper"></i>
@@ -364,3 +365,4 @@
                 <!-- End .container -->
             </div><!-- End .header-bottom -->
     </header><!-- End .header -->
+
