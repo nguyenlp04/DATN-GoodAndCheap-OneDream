@@ -150,21 +150,21 @@
                 </a>
             </li>
 
-            <!-- Product Management -->
+            <!-- Sale News Management -->
             <li class="menu-item {{ Request::is('product/*') || Request::is('product') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
-                    <div data-i18n="Product Management">Product Management</div>
+                    <div data-i18n="Product Management">Sale News Management</div>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item {{ Request::is('product') ? 'active' : '' }}">
                         <a href="{{ url('product/') }}" class="menu-link">
-                            <div data-i18n="Hide Product">Product</div>
+                            <div data-i18n="Hide Product">Sale News</div>
                         </a>
                     </li>
                     <li class="menu-item {{ Request::is('product/add') ? 'active' : '' }}">
                         <a href="{{ url('product/add') }}" class="menu-link">
-                            <div data-i18n="Add Product">Add Product</div>
+                            <div data-i18n="Add Product">Add Sale News</div>
                         </a>
                     </li>
                     <!-- <li class="menu-item {{ Request::is('category') ? 'active' : '' }}">
@@ -174,7 +174,7 @@
                     </li> -->
                     <li class="menu-item {{ Request::is('product/approve') ? 'active' : '' }}">
                         <a href="{{ url('product/approve') }}" class="menu-link">
-                            <div data-i18n="Approve Product">Approve Product (affiliate)</div>
+                            <div data-i18n="Approve Product">Approve Sale News (affiliate)</div>
                         </a>
                     </li>
                 </ul>

@@ -23,6 +23,10 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+    public function subcategory_attributes () 
+    {
+        return $this->hasMany(SubcategoryAttribute::class, 'category_id');
+    }
     public function blogs()
 {
     return $this->belongsToMany(Blog::class,  'category_id');

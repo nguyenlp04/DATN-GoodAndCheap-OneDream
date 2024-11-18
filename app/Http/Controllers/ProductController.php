@@ -21,46 +21,45 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $data = DB::table('products')
-            ->leftJoin('photo_gallery', 'products.product_id', '=', 'photo_gallery.product_id')
-            ->leftJoin('sub_categories', 'products.sub_category_id', '=', 'sub_categories.sub_category_id')
-            ->leftJoin('categories', 'sub_categories.category_id', '=', 'categories.category_id')
-            ->leftJoin('staffs', 'products.staff_id', '=', 'staffs.staff_id')
-            ->select(
-                'products.*',
-                DB::raw('MIN(photo_gallery.image_name) as image_name'),
-                'categories.name_category as category_name',
-                'sub_categories.name_sub_category as sub_category_name',
-                'staffs.full_name as staff_full_name'
-            )
-            ->where('products.is_delete', '=', '0')
-            ->whereNotNull('products.staff_id')
-            ->groupBy(
-                'products.product_id',
-                'products.name_product',
-                'products.channel_id',
-                'products.weight',
-                'products.data',
-                'products.description',
-                'products.price',
-                'products.quantity',
-                'products.status',
-                'products.is_delete',
-                'products.staff_id',
-                'products.sub_category_id',
-                'products.created_at',
-                'products.delete_at',
-                'products.updated_at',
-                'categories.name_category',
-                'sub_categories.name_sub_category',
-                'staffs.full_name'
-            )
-            ->get();
+{
+    // $data = DB::table('sale_news')
+    //     ->leftJoin('sub_categories', 'sale_news.sub_category_id', '=', 'sub_categories.sub_category_id')
+    //     ->leftJoin('categories', 'sub_categories.category_id', '=', 'categories.category_id')
+    //     ->leftJoin('users', 'sale_news.user_id', '=', 'users.user_id')
+    //     ->leftJoin('photo_gallery', 'sale_news.sale_new_id', '=', 'photo_gallery.sale_new_id') // Join photo_gallery
+    //     ->select(
+    //         'sale_news.*',
+    //         DB::raw('MIN(photo_gallery.image_name) as image_name'), // Get the first image name
+    //         'categories.name_category as category_name',
+    //         'sub_categories.name_sub_category as sub_category_name',
+    //         'users.full_name as staff_full_name'
+    //     )
+    //     ->where('sale_news.is_delete', '=', '0')
+    //     ->whereNotNull('sale_news.user_id')
+    //     ->groupBy(
+    //         'sale_news.sale_new_id',
+    //         'sale_news.title',
+    //         'sale_news.user_id',
+    //         'sale_news.data',
+    //         'sale_news.description',
+    //         'sale_news.price',
+    //         'sale_news.status',
+    //         'sale_news.is_delete',
+    //         'sale_news.sub_category_id',
+    //         'sale_news.created_at',
+    //         'sale_news.updated_at',
+    //         'categories.name_category',
+    //         'sub_categories.name_sub_category',
+    //         'users.full_name'
+    //     )
+    //     ->get();
+
+        // $data = Product::with(['user', 'subcategory', 'firstImage',])->get();
+        // return view('admin.products.index', ['data' => $data]);
+
+}
 
 
-        return view('admin.products.index', ['data' => $data]);
-    }
 
 
 
@@ -102,22 +101,19 @@ class ProductController extends Controller
             $validatedData = $request->validate([
                 'images.*' => 'required|max:2048',
                 'productTitle' => 'required|string',
-                'quantity' => 'required|numeric|min:0',
                 'price' => 'required|numeric|min:0',
-                'weight' => 'required|numeric|min:0',
                 'description' => 'required|string',
                 'category_id' => 'required|integer',
                 'subcategory_id' => 'integer',
                 'status' => 'integer',
-                'dataVariantDetail' => 'required',  // Đảm bảo là mảng
-                'variant' => 'required',  // Đảm bảo là mảng
+                'dataVariantDetail' => 'string',  // Đảm bảo là mảng
+                'variant' => 'string',  // Đảm bảo là mảng
             ]);
 
+            // dd( $validatedData['dataVariantDetail']);
             $data = [
                 'productTitle' => $validatedData['productTitle'],
                 'price' => $validatedData['price'],
-                'quantity' => $validatedData['quantity'],
-                'weight' => $validatedData['weight'],
                 'category_id' => $validatedData['category_id'],
                 'subcategory_id' => $validatedData['subcategory_id'],
                 'description' => $validatedData['description'],
@@ -131,20 +127,18 @@ class ProductController extends Controller
             $jsonData = json_encode($data);
 
             $productData = [
-                'staff_id' => Auth::guard('staff')->user()->staff_id,
+                'user_id' => Auth::user()->user_id,
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'channel_id' => NULL,
-                'name_product' => $validatedData['productTitle'],
+                'title' => $validatedData['productTitle'],
                 'price' => $validatedData['price'],
-                'quantity' => $validatedData['quantity'],
-                'weight' => $validatedData['weight'],
                 'data' => $jsonData,
                 'description' => $validatedData['description'],
                 'status' => $validatedData['status'],
                 'created_at' => now(),
             ];
 
-            $insertProduct = DB::table('products')->insertGetId($productData);
+            $insertProduct = DB::table('sale_news')->insertGetId($productData);
 
             $imageRecords = [];
             foreach ($request->file('images') as $image) {
@@ -152,7 +146,7 @@ class ProductController extends Controller
                 $imagePath = 'storage/product/' . $imageName;
                 Storage::disk('public')->putFileAs('product', $image, $imageName);
                 $imageRecords[] = [
-                    'product_id' => $insertProduct,
+                    'sale_new_id' => $insertProduct,
                     'image_name' => $imagePath,
                     'created_at' => now(),
                 ];
@@ -192,9 +186,14 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $dataProductID = DB::table('products')->where('product_id', $id)->first();
-        return view('admin.products.update-product', [
-            'dataProductID' => $dataProductID,
+        // $dataProductID= DB::table('products')->where('product_id',$id)->first();ß
+        $dataProductID= Product::with(['subcategory','images',])->where('product_id',$id)->first();
+        $dataCategory= Category::with(['subcategories'])->get();
+        // dd($dataCategory);
+        return view('admin.products.update-product',[
+            'dataProductID'=>$dataProductID,
+            'dataCategory'=>$dataCategory
+
         ]);
     }
 
