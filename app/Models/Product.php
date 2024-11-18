@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $table = 'products';
     protected $primaryKey = 'product_id';
+
     protected $fillable = ['name', 'description', 'price', 'data','category_id', 'sub_category_id', 'image', 'created_at'];
 
 
@@ -24,10 +25,12 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+ 
     public function subcategory()
     {
-        return $this->belongsTo(SubCategory::class, 'sub_category_id');
+        return $this->belongsTo(Subcategory::class, 'sub_category_id');  // sub_category_id là cột khóa ngoại trong bảng products
     }
+
     public function images()
     {
         return $this->hasMany(Imgproduct::class, 'product_id');

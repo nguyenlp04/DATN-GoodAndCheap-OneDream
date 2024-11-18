@@ -10,6 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'categories';
+
      protected $primaryKey = 'category_id';
     protected $fillable = ['category_id','name_category', 'description', 'image_category', 'status', 'created_at'];
 
@@ -26,4 +27,9 @@ class Category extends Model
     {
         return $this->hasMany(SubcategoryAttribute::class, 'category_id');
     }
+    public function blogs()
+{
+    return $this->belongsToMany(Blog::class,  'category_id');
+}
+
 }

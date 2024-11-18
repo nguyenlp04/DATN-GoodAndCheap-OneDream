@@ -4,6 +4,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Sale_newController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -12,13 +15,16 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\PartnerProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SaleNewsControllerName;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
@@ -30,13 +36,22 @@ Route::get('payment', function () {
 });
 Route::get('/IPN', [VnpayController::class, 'handleIPN']);
 
-Route::get('/', function () {
-    return view('home');
-});
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware(['auth', 'verified'])->name('home');
+
+Route::get('/', [ProductController::class, 'home']);
+Route::get('/home', [ProductController::class, 'home'])->name('home');
+// Trong routes/web.php
+// Đảm bảo route này đã được khai báo trong routes/web.php
+Route::post('/wishlist/add', [ProductController::class, 'addToWishlist'])->name('wishlist.add');
+
+Route::get('/order-affiliate', [OrderController::class, 'index'])->name('orders.index');
+// routes/web.php
+Route::get('/order-affiliate/details/{id}', [OrderController::class, 'getOrderDetails'])->name('order-affiliate.details');
+Route::put('/order-affiliate/{detail_order_id}/update-status', [OrderController::class, 'updateOrderStatus'])->name('order.updateStatus');
+Route::post('/reviews/reply', [ReviewController::class, 'replyToReview'])->name('reviews.reply');
+
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -53,18 +68,36 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
     // Route hiển thị chi tiết tài khoản của người dùng
     Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
+    Route::post('/submit-review', [ReviewController::class, 'store'])->name('submit.review');
+    route::get('admin/blogs/add',[BlogController::class,'create'])->name('blogs.create');
+    route::get('admin/blogs/edit',[BlogController::class,'update'])->name('blogs.update');
+    Route::resource('admin/blogs', BlogController::class);
+    Route::post('admin/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+    Route::get('admin/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+    Route::get('admin/sale_new', [Sale_newController::class, 'list_salenew'])->name('sale_new.list');
+    route::post('admin/sale_new/reject/{id}',[Sale_newController::class,'reject'])->name('sale_news.reject');
+    Route::delete('/sale_news/{id}', [Sale_newController::class, 'destroy'])->name('sale_news.destroy');
+    route::post('admin/sale_new/approve/{id}',[Sale_newController::class,'approve'])->name('sale_news.approve');
 });
 
 require __DIR__ . '/auth.php';
 
-
+Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
+route::get('/blogs/detail/{id}',[BlogController::class,'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('verification.show');
 Route::post('/verify', [VerificationController::class, 'verify'])->name('verification.verify');
+
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+
+// Route::get('/test', function () {
+//     return view('test');
+// });
+
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
 
-Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
+Route::get('g', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
 Route::post('staff/login', [StaffAuthController::class, 'login']);
 Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
 
@@ -122,9 +155,6 @@ Route::prefix('account')->group(function () {
 });
 
 
-Route::get('/blogs', function () {
-    return view('admin.blogs.index');
-});
 Route::get('/notifications', function () {
     return view('admin.notifications.list_notifications');
 });
@@ -138,10 +168,9 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
     Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
     Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
+    Route::get('user/noti/', [NotificationController::class, 'showNotifications'])->name('noti');
 });
-Route::get('/order-affiliate', function () {
-    return view('admin.orders.index');
-});
+
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
@@ -172,7 +201,6 @@ Route::prefix('cart')->group(function () {
     Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
     Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 })->middleware(['auth', 'verified']);
-
 
 Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
