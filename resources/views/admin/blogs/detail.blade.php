@@ -21,7 +21,7 @@
                                 <div class="mb-6">
                                     <label class="form-label">Title:</label>
                                     <p>{{ $blog->title }}</p>
-
+                                                
                                     <label class="form-label">Content:</label>
                                     <p>{{ $blog->content }}</p>
                                      <textarea name="noidung" id="noidung"  rows="5" class="form-control" ></textarea>

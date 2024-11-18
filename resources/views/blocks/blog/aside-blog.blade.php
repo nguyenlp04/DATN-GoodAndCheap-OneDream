@@ -56,13 +56,12 @@
                                     <h3 class="widget-title">Browse Tags</h3><!-- End .widget-title -->
 
                                     <div class="tagcloud">
-                                        <a href="#">fashion</a>
-                                        <a href="#">style</a>
-                                        <a href="#">women</a>
-                                        <a href="#">photography</a>
-                                        <a href="#">travel</a>
-                                        <a href="#">shopping</a>
-                                        <a href="#">hobbies</a>
+                                        @foreach($alltags as $blog)
+                                        <a href="{{ route('blogs.detail',$topblog->blog_id)}}">{{ strtoupper($blog->tags) }}</a>
+                                  
+                                        @endforeach
+                                       
+                                   
                                     </div><!-- End .tagcloud -->
                                 </div><!-- End .widget -->
 

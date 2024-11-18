@@ -23,7 +23,7 @@
                 <div class="col-lg-9">
                     <article class="entry single-entry">
                         <figure class="entry-media">
-                            <img src="{{ asset('storage/' . $blogs->image) }}" alt="image desc">
+                            <img src="{{ asset('storage/' . $blogs->image) }}" alt="image desc" >
                         </figure><!-- End .entry-media -->
 
                         <div class="entry-body">
@@ -41,7 +41,8 @@
                             </h2><!-- End .entry-title -->
 
                             <div class="entry-cats">
-                                in <a href="#">TAGS</a>
+                            <a href="#">{{ ucwords($blogs->title) }}</a>
+
                             </div><!-- End .entry-cats -->
 
                             <div class="entry-content editor-content">
@@ -51,7 +52,8 @@
                             <div class="entry-footer row no-gutters flex-column flex-md-row">
                                 <div class="col-md">
                                     <div class="entry-tags">
-                                        <span>Tags:</span> <a href="#">photography</a> <a href="#">style</a>
+                                        <span>Tags:</span> <a href="{{ route('blogs.detail',$blogs->blog_id)}}">{{ strtoupper($blogs->tags) }}</a>
+                                      
                                     </div><!-- End .entry-tags -->
                                 </div><!-- End .col -->
 
