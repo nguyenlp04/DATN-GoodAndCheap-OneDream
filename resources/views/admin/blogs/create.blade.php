@@ -1,3 +1,4 @@
+
 @extends('layouts.admin')
 
 @section('content')
@@ -63,10 +64,12 @@
                                     <input type="file" id="fileInput" name="image" style="display: none">
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
+
             <!-- Đóng form tại đây -->
             </form>
         </div>
@@ -118,3 +121,4 @@
         });
     </script>
 @endsection
+

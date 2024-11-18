@@ -59,7 +59,7 @@
                       <div class="d-flex align-items-center">
                         <div style="min-width: 80px; max-width: 80px;">
                           {{-- {{dd($sale_news)}} --}}
-                          <img src="{{ asset( $sale_news->firstImage->image_name) }}" alt="Image Product" class="rounded img-fluid" style="width: 100%; object-fit: cover;">
+                          {{-- <img src="{{ asset( $sale_news->firstImage->image_name) }}" alt="Image Product" class="rounded img-fluid" style="width: 100%; object-fit: cover;"> --}}
                         </div>
                         <div class="flex-grow-1 d-flex align-items-center">
                           <p class="mb-0 text-truncate-3 ms-3 w-100">{{ $sale_news->name_product }}</p>
@@ -120,7 +120,7 @@
                                       <div class="d-flex justify-content-start align-items-center product-name">
                                         <div class="avatar-wrapper">
                                           <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
-                                            <img src="{{ asset($sale_news->firstImage->image_name) }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                            {{-- <img src="{{ asset($sale_news->firstImage->image_name) }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;"> --}}
                                           </div>
                                         </div>
                                         <div class="d-flex flex-column">

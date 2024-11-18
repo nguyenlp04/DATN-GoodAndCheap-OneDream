@@ -16,6 +16,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/icons/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/icons/favicon-16x16.png') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="manifest" href="{{ asset('assets/images/icons/site.html') }}">
     <link rel="mask-icon" href="{{ asset('assets/images/icons/safari-pinned-tab.svg') }}" color="#666666">
@@ -48,6 +49,7 @@
 
     <!-- Main Content -->
     @yield('content')
+    
 
     @include('blocks.client.footer')
 
@@ -64,7 +66,10 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    
+        
 </body>
 
 </html>
