@@ -221,7 +221,7 @@
                             <button class="btn btn-label-secondary d-grid w-100 mb-4">
                                 Download
                             </button>
-                            <div class="d-flex mb-4" onclick="printInvoice()">
+                            <div class="d-flex mb-4">
                                 <a class="btn btn-label-secondary d-grid w-100 me-4" target="_blank"
                                     href="preview">
                                     Print
@@ -246,24 +246,5 @@
         <div class="content-backdrop fade"></div>
     </div>
     <!-- Content wrapper -->
-    <script>
-        function printInvoice() {
-  Mở một cửa sổ mới chứa nội dung bạn muốn in
-  var content = document.querySelector('.invoice-preview-card').outerHTML;
-
-  var printWindow = window.open('', '', 'height=600,width=800');
-  printWindow.document.write('<html><head><title>Invoice</title></head><body>');
-  printWindow.document.write(content);
-  printWindow.document.write('</body></html>');
-  
-  printWindow.document.close();
-
-  // Khi tài liệu đã tải, tự động trigger lệnh in (command + P hoặc Ctrl + P)
-  printWindow.onload = function() {
-    printWindow.print(); // Đây chính là lệnh để trigger print
-    printWindow.close();  // Đóng cửa sổ sau khi in xong
-  };
-}
-
-    </script>
+   
 @endsection
