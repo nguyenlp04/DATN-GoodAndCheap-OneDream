@@ -12,14 +12,12 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\Subcategory;
 use App\Models\SubcategoryAttribute;
-
-class SaleNewsControllerName extends Controller
-
 use App\Models\SaleNews;
-use App\Models\Subcategory;
-use App\Models\SubcategoryAttribute;
 
 class SaleNewsController extends Controller
+
+
+
 
 {
     /**

@@ -151,30 +151,30 @@
             </li>
 
             <!-- Sale News Management -->
-            <li class="menu-item {{ Request::is('product/*') || Request::is('product') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('sale-news/*') || Request::is('sale-news') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
-                    <div data-i18n="Product Management">Sale News Management</div>
+                    <div data-i18n="sale-news Management">Sale News Management</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('product') ? 'active' : '' }}">
-                        <a href="{{ url('product/') }}" class="menu-link">
-                            <div data-i18n="Hide Product">Sale News</div>
+                    <li class="menu-item {{ Request::is('sale-news') ? 'active' : '' }}">
+                        <a href="{{ url('sale-news/') }}" class="menu-link">
+                            <div data-i18n="Hide sale-news">Sale News</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('product/add') ? 'active' : '' }}">
-                        <a href="{{ url('product/add') }}" class="menu-link">
-                            <div data-i18n="Add Product">Add Sale News</div>
+                    {{-- <li class="menu-item {{ Request::is('sale-news/add') ? 'active' : '' }}">
+                        <a href="{{ url('sale-news/add') }}" class="menu-link">
+                            <div data-i18n="Add sale-news">Add Sale News</div>
                         </a>
-                    </li>
+                    </li> --}}
                     <!-- <li class="menu-item {{ Request::is('category') ? 'active' : '' }}">
                         <a href="{{ url('category') }}" class="menu-link">
                             <div data-i18n="Add Category">Add Category</div>
                         </a>
                     </li> -->
-                    <li class="menu-item {{ Request::is('product/approve') ? 'active' : '' }}">
-                        <a href="{{ url('product/approve') }}" class="menu-link">
-                            <div data-i18n="Approve Product">Approve Sale News (affiliate)</div>
+                    <li class="menu-item {{ Request::is('sale-news/approve') ? 'active' : '' }}">
+                        <a href="{{ url('sale-news/approve') }}" class="menu-link">
+                            <div data-i18n="Approve sale-news">Approve Sale News (affiliate)</div>
                         </a>
                     </li>
                 </ul>
@@ -238,19 +238,19 @@
             </li>
 
              <!-- Blogs -->
-             <li class="menu-item {{ Request::is('blogs') ? 'active open' : '' }}">
+             <li class="menu-item {{ Request::is('blogs/*') || Request::is('blogs') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bxl-blogger"></i>
                     <div data-i18n="Analytics">Blog </div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('admin/blogs') ? 'active' : '' }}">
-                        <a href="{{ url('admin/blogs') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('blogs') ? 'active' : '' }}">
+                        <a href="{{ url('/blogs') }}" class="menu-link">
                             <div data-i18n="Blogs">Blogs List</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('admin/blogs/add') ? 'active' : '' }}">
-                        <a href="{{ url('admin/blogs/add') }}" class="menu-link">
+                    <li class="menu-item {{ Request::is('blogs/add') ? 'active' : '' }}">
+                        <a href="{{ url('/blogs/add') }}" class="menu-link">
                             <div data-i18n="Add blogs">Add Blogs</div>
                         </a>
                     </li>
@@ -260,27 +260,8 @@
 
             </li>
 
-            <!-- Blogs -->
-            <li class="menu-item {{ Request::is('sale_new') ? 'active open' : '' }}">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons bx bxl-blogger"></i>
-                    <div data-i18n="Analytics">Sale new </div>
-                </a>
-                <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('admin/sale_new') ? 'active' : '' }}">
-                        <a href="{{ url('admin/sale_new') }}" class="menu-link">
-                            <div data-i18n="Blogs">List Sale new </div>
-                        </a>
-                    </li>
-                    
-                   
-                </ul>
-
-
-            </li>
-
             <!-- Notification -->
-            <li class="menu-item {{ Request::is('notifications') ? 'active' : '' }}">
+            <li class="menu-item {{ Request::is('notifications/*') || Request::is('notifications') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-bell"></i>
                     <div data-i18n="Analytics">Notification</div>
@@ -291,17 +272,17 @@
                           <div data-i18n="Notifications">Notifications List</div>
                       </a>
                   </li>
-                  <li class="menu-item {{ Request::is('notifications/create ') ? 'active' : '' }}">
+                  <li class="menu-item {{ Request::is('notifications/create') ? 'active' : '' }}">
                       <a href="{{ url('notifications/create') }}" class="menu-link">
                           <div data-i18n="Add notifications">Add notifications</div>
                       </a>
                   </li>
 
-                  <li class="menu-item {{ Request::is ('notifications/trashed') ? 'active' : '' }}">
+                  {{-- <li class="menu-item {{ Request::is ('notifications/trashed') ? 'active' : '' }}">
                     <a href="{{ url('/notifications/trashed') }}" class="menu-link">
                         <div data-i18n="Trash notifications">Trash notifications</div>
                     </a>
-                </li>
+                </li> --}}
               </ul>
             </li>
 
@@ -314,24 +295,35 @@
             </li>
 
             <!-- Payment -->
-            <li class="menu-item {{ Request::is('payment/*') ? 'active open' : '' }}">
+
+            <li class="menu-item {{ Request::is('payment/transactions') ? 'active' : '' }}">
+              <a href="{{ url('payment/transactions') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bxl-paypal"></i>
+                  <div data-i18n="Analytics">Transactions</div>
+              </a>
+          </li>
+
+          <li class="menu-item {{ Request::is('payment/transactions') ? 'active' : '' }}">
+            <a href="{{ url('payment/transactions') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bxl-paypal"></i>
+                <div data-i18n="Analytics">Vip Package</div>
+            </a>
+        </li>
+
+
+            {{-- <li class="menu-item {{ Request::is('payment/transactions/*') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bxl-paypal"></i>
                     <div data-i18n="Payment Management">Payment</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
+                    <li class="menu-item {{ Request::is('payment/transactions') ? 'active' : '' }}">
                         <a href="{{ url('payment/transactions') }}" class="menu-link">
                             <div data-i18n="Payment Method">Transactions</div>
                         </a>
                     </li>
-                    {{-- <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
-                        <a href="{{ url('payment/account') }}" class="menu-link">
-                            <div data-i18n="Receiving Account">Receiving Account</div>
-                        </a>
-                    </li> --}}
                 </ul>
-            </li>
+            </li> --}}
 
             <!-- Trash -->
             <li class="menu-item {{ Request::is('trash/*') ? 'active open' : '' }}">
