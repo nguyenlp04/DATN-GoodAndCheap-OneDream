@@ -7,14 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class VipPackage extends Model
 {
-    use HasFactory;
-    protected $table = 'vip_packages';
 
-    protected $fillable = [
-        'vip_package_id',
-        'name',
-        'price',
-        'description',
-        'duration'
-    ];
+    protected $table = 'vip_packages';
+    protected $primaryKey = 'vip_package_id';
+    protected $fillable = ['name', 'description', 'price', 'duration','status','type'];
+
+    public function channels()
+    {
+        return $this->hasMany(Channel::class,'channel_id');
+    }
+    // public function salenews()
+    // {
+    //     return $this->hasMany(salenews::class,'vip_package_id');
+    // }
+
+    public function listings()
+    {
+        return $this->hasMany(SaleNews::class,'vip_package_id');
+    }
 }

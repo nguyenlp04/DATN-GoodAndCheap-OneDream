@@ -17,6 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $table = 'users';
     protected $primaryKey = 'user_id';
     protected $fillable = [
         'full_name',
@@ -60,4 +61,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(PartnerProfileController::class);
     }
+    // public function salenew()
+    // {
+    //     return $this->hasMany(SaleNews::class,'user_id');
+    // }
+
+
+
+    public function listings() {
+         return $this->hasMany(SaleNews::class,'user_id');
+        }
 }
