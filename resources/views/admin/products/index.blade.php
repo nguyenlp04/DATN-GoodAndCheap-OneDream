@@ -25,15 +25,11 @@
           <!-- Product Information -->
           <div class="card mb-6">
             <div class="card-body">
-              {{-- <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;"> --}}
-            {{-- {{ json_encode($data, JSON_PRETTY_PRINT) }} --}}
-        {{-- </pre> --}}
               <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                   <tr>
                     <th>ID Product</th>
                     <th>Product</th>
-                    <!-- <th>Price</th> -->
                     <th>Category</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -62,13 +58,13 @@
                           <img src="{{ asset( $sale_news->firstImage->image_name) }}" alt="Image Product" class="rounded img-fluid" style="width: 100%; object-fit: cover;">
                         </div>
                         <div class="flex-grow-1 d-flex align-items-center">
-                          <p class="mb-0 text-truncate-3 ms-3 w-100">{{ $sale_news->name_product }}</p>
+                          <p class="mb-0 text-truncate-3 ms-3 w-100">{{ $sale_news->title }}</p>
                         </div>
                       </div>
                     </td>
                     <td class="bg-light rounded">
                       <span class="badge bg-primary">{{ $sale_news->categoryToSubcategory->name_category }}</span>
-                      <span class="text-muted"> &#8594; </span>
+                      <span class="text-muted"> &#8212; </span>
                       <span class="badge bg-secondary">{{ $sale_news->subcategory->name_sub_category }}</span>
                     </td>
                     <td class="bg-light rounded">
@@ -109,7 +105,7 @@
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title text-truncate-1">Details of {{ $sale_news->name_product }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              <h4 class="modal-title text-truncate-1">Details of {{ $sale_news->title }}</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                               <table class="table">
@@ -124,7 +120,7 @@
                                           </div>
                                         </div>
                                         <div class="d-flex flex-column">
-                                          <h6 class="mb-0 text-truncate-1">{{ $sale_news->name_product }}</h6>
+                                          <h6 class="mb-0 text-truncate-1">{{ $sale_news->title }}</h6>
                                           <small class="text-truncate-1">{{ $sale_news->description }}</small>
                                         </div>
                                       </div>

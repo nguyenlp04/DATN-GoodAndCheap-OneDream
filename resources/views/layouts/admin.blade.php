@@ -273,15 +273,15 @@
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
-                        <a href="{{ url('payment/method') }}" class="menu-link">
-                            <div data-i18n="Payment Method">Payment Method</div>
+                        <a href="{{ url('payment/transactions') }}" class="menu-link">
+                            <div data-i18n="Payment Method">Transactions</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
+                    {{-- <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
                         <a href="{{ url('payment/account') }}" class="menu-link">
                             <div data-i18n="Receiving Account">Receiving Account</div>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 

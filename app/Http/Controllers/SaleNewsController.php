@@ -59,7 +59,7 @@ class SaleNewsController extends Controller
                 'description' => $validatedData['description'],
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'data' => $jsonData,
-                'status' => 0,
+                'status' => 1,
                 'created_at' => now(),
             ];
 

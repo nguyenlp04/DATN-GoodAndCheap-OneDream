@@ -23,6 +23,7 @@ use App\Http\Controllers\SaleNewsControllerName;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
 use App\Http\Controllers\SaleNewsController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('vnpay', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
 Route::get('payment', function () {
@@ -145,9 +146,13 @@ Route::get('/order-affiliate', function () {
 
 // Grouped routes for payments
 Route::prefix('payment')->group(function () {
-    Route::get('/method', function () {
-        return view('admin.payments.payment-method');
+    Route::get('/preview', function () {
+        return view('admin.payments.preview');
     });
+    Route::get('/transactions', [TransactionController::class, 'index']);
+    // Route::get('/preview', [TransactionController::class, 'index']);
+
+
     Route::get('/account', function () {
         return view('admin.payments.receiving-account');
     });
