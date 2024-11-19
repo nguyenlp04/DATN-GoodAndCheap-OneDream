@@ -36,4 +36,14 @@ class Product extends Model
     {
         return $this->hasOne(Imgproduct::class, 'product_id');
     }
+    public function ratings() {
+         return $this->hasMany(Review::class,'product_id');
+    }
+         // Thêm hàm để tính tổng số review và số rating
+    public function averageRating() {
+
+            return $this->hasMany(Review::class,'product_id')
+            ->selectRaw('product_id, count(*) as total_reviews, avg(rating) * 100 / 5 as avg_rating')
+            ->groupBy('product_id');
+    }
 }

@@ -10,10 +10,16 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
 
-        $productId = $request->input('productId');
-        $data = $request->input('data');
-        $stock = $request->input('stock');
-        $product_data = $request->input('productData');
+        $validatedData = $request->validate([
+            'productId' => 'required|integer|exists:products,product_id',
+            'data' => 'required',
+            // 'productData' => 'required',
+            'stock' => 'required|integer|min:1'
+        ]);
+        $productId = $validatedData['productId'];
+        $data = $validatedData['data'];
+        $stock = $validatedData['stock'];
+        // $product_data = $validatedData['productData'];
         $user_id = auth()->user()->user_id;
 
         $dataJson = json_encode($data);

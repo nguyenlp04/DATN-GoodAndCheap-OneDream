@@ -19,6 +19,8 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\PartnerProfileController;
+use App\Http\Controllers\SaleNewController;
+use App\Http\Controllers\VipPackageController;
 use App\Http\Controllers\UsermanagementController;
 
 Route::get('/', function () {
@@ -209,3 +211,27 @@ Route::prefix('trash')->group(function () {
         return view('admin.index');
     });
 });
+
+
+//vip
+
+
+// Route::middleware('auth')->group(function () {
+    Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
+    Route::get('/vip-packages/create', [VipPackageController::class, 'create'])->name('vip-packages.create');
+    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
+    Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
+    Route::put('/vip-package/lock/{id}', [VipPackageController::class,'updateLock'])->name('upL.Vip');
+
+
+    Route::get('/salenews/{id}/promote', [SaleNewController::class,'promote'])->name('salenew.promote');
+    Route::get('/salenew-detail/{id}', [SaleNewController::class,'renderSaleNewDetail'])->name('salenew.detail');
+
+// });
+
+Route::get('/salenews-status', [SaleNewController::class, 'getAllSaleStatus'])->name('sl.index');
+// Route::get('/promote', [SaleNewController::class, 'tv2'])->name('sl.tv2');
+// Route::get('/salenewdetail',function (){
+// return view('salenews.detail');
+// });
+

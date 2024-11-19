@@ -230,19 +230,37 @@ class ProductController extends Controller
         }
     }
     public function renderProductDetails(string $id){
-
-        $product = Product::with(['channel','images','firstImage', 'category','subcategory'])->where('product_id', $id)->first();
-       $data = $product->data;
-    //    die($product);
-           $data_json = json_decode($data);
-          $variants = json_decode($data_json->variants);
-           $variant_data_details = json_decode($data_json->variant_data_details);
-        return view('product.product-detail', [
-            'product' =>$product,
-            'variants' =>$variants,
-            'variant_data_details' =>$variant_data_details
-
-
-        ]);
+        // dd($get_data_7subcategory);
+        try {
+            $product = Product::with(['channel','images','firstImage', 'category','subcategory','averageRating','ratings'])->where('product_id', $id)->first();
+            $get_data_7subcategory = Product::with(['channel','images','firstImage','subcategory','averageRating','ratings'])
+            ->where('sub_category_id', $product->sub_category_id)
+            ->latest()
+            ->take(7)
+            ->get();
+            // dd($get_data_7subcategory);
+            if($product){
+            $data = $product->data;
+            $data_json = json_decode($data);
+            $variants = json_decode($data_json->variants);
+            $variant_data_details = json_decode($data_json->variant_data_details);
+            return view('product.product-detail', [
+                'product' =>$product,
+                'variants' =>$variants,
+                'variant_data_details' =>$variant_data_details,
+                'get_data_7subcategory'=>$get_data_7subcategory
+            ]);
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Product not found!'
+            ]);
+        }
+     } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => ' Error : ' . $th->getMessage()
+            ]);
+        }
     }
+
 }
