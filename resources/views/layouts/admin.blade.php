@@ -303,8 +303,8 @@
               </a>
           </li>
 
-          <li class="menu-item {{ Request::is('payment/transactions') ? 'active' : '' }}">
-            <a href="{{ url('payment/transactions') }}" class="menu-link">
+          <li class="menu-item {{ Request::is('vip-packages') ? 'active' : '' }}">
+            <a href="{{ url('vip-packages') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bxl-paypal"></i>
                 <div data-i18n="Analytics">Vip Package</div>
             </a>

@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\Sale_newController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -23,8 +22,8 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\PartnerProfileController;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\SaleNewsControllerName;
+use App\Http\Controllers\SaleNewController;
+use App\Http\Controllers\VipPackageController;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
 use App\Http\Controllers\SaleNewsController;
@@ -32,15 +31,16 @@ use App\Http\Controllers\TransactionController;
 
 require __DIR__ . '/auth.php';
 
-// Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist'); Vinh Lam Lai
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist'); 
 Route::GET('/test', [ImageUploadController::class, 'store'])->name('test');
 
 // User
 
-Route::get('vnpay', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
-Route::get('payment', function () {
-    return view('payment');
-});
+// Route::get('vnpay', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
+Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
+// Route::get('payment', function () {
+//     return view('payment');
+// });
 Route::get('/IPN', [VnpayController::class, 'handleIPN']);
 
 
@@ -65,22 +65,17 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
-    Route::get('/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
-    Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('/blogs', BlogController::class);
     Route::post('/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
     Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
-    Route::get('/sale_new', [Sale_newController::class, 'list_salenew'])->name('sale_new.list');
-    Route::post('/sale_new/reject/{id}', [Sale_newController::class, 'reject'])->name('sale_news.reject');
-    Route::post('/sale_new/reject/{id}', [Sale_newController::class, 'reject'])->name('sale_news.reject');
-    Route::delete('/sale_news/{id}', [Sale_newController::class, 'destroy'])->name('sale_news.destroy');
-    Route::post('/sale_new/approve/{id}', [Sale_newController::class, 'approve'])->name('sale_news.approve');
-    Route::post('/sale_new/approve/{id}', [Sale_newController::class, 'approve'])->name('sale_news.approve');
+    // Route::post('/sale_new/reject/{id}', [Sale_newController::class, 'reject'])->name('sale_news.reject');
+    // Route::post('/sale_new/reject/{id}', [Sale_newController::class, 'reject'])->name('sale_news.reject');
+    // Route::delete('/sale_news/{id}', [Sale_newController::class, 'destroy'])->name('sale_news.destroy');
+    // Route::post('/sale_new/approve/{id}', [Sale_newController::class, 'approve'])->name('sale_news.approve');
 });
 
 
-Route::get('/blogs/listting', [BlogController::class, 'listing'])->name('blogs.listting');
-Route::get('/blogs/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
+Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blogs/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -96,15 +91,11 @@ Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff
 // Grouped Routes for products
 Route::prefix('sale-news')->group(function () {
     Route::get('/', [SaleNewsController::class, 'index'])->name('admin.products.index');
-    // Route::put('/update/{id}', [SaleNewsController::class, 'update'])->name('updateProduct');
-    // Route::get('/update/{id}', [SaleNewsController::class, 'edit'])->name('editProduct');
+    Route::get('/add', [SaleNewsController::class, 'create'])->name('add.sale-news');
     Route::get('/approve', function () {
         return view('admin.products.approve-product');
     });
 });
-
-
-
 
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
@@ -123,15 +114,17 @@ Route::prefix('account')->group(function () {
     Route::get('/user-account-management', [UsermanagementController::class, 'index']);
     Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
     Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
-
-    // });
-
 });
-
 
 Route::get('/notifications', function () {
     return view('admin.notifications.list_notifications');
 });
+
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+
+
 Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có Route cho nó
     Route::get('/create', [NotificationController::class, 'create'])->name('create');
@@ -144,22 +137,15 @@ Route::prefix('notifications')->name('notifications.')->group(function () {
     Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
 });
 
-
-
-// Grouped Routes for payments
 Route::prefix('payment')->group(function () {
     Route::get('/preview', function () {
         return view('admin.payments.preview');
     });
     Route::get('/transactions', [TransactionController::class, 'index']);
-    // Route::get('/preview', [TransactionController::class, 'index']);
-
-
     Route::get('/account', function () {
         return view('admin.payments.receiving-account');
     });
 });
-
 
 Route::prefix('message')->group(function () {
     Route::get('/conversations', [ConversationController::class, 'loadConversations'])->name('message.conversations');
@@ -169,18 +155,10 @@ Route::prefix('message')->group(function () {
     Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
 })->middleware(['auth', 'verified']);
 
-// Route::prefix('product')->group(function () {
-//     Route::get('/details/{id}', [ProductController::class, 'renderProductDetails'])->name('product.detail');
-// })->middleware(['auth', 'verified']);
 
-Route::prefix('cart')->group(function () {
-    Route::get('/cart-detail', [CartController::class, 'show'])->name('cart.detail');
-    Route::post('/cart-add', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::post('/update-stock', [CartController::class, 'updateStock'])->name('cart.updateStock');
-    Route::delete('/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
-})->middleware(['auth', 'verified']);
+
+// Partners
 Route::prefix('partners')->name('partners.')->group(function () {
-    Route::resource('/', PartnerController::class);
     Route::get('/', function () {
         return view('partner.dashboard');
     });
@@ -209,36 +187,18 @@ Route::prefix('trash')->group(function () {
 });
 
 
-// Route::prefix('sale-news')->group(function () {
-// Route::post('/add', [SaleNewsController::class, 'store'])->name('add.product');
-// Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
-// Route::get('/add', function () {
-//     return view('sale-news.add-sale-news');
-// });
-//     Route::post('/add', [SaleNewsControllerName::class, 'store'])->name('add.sale-news');
-//     Route::get('/add', [SaleNewsControllerName::class, 'create']);
-// });
-
-// Route::prefix('sale-news')->group(function () {
-//     Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
-//     Route::post('/add', [SaleNewsController::class, 'store'])->name('add.sale-news');
-// });
-
-Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
-Route::get('/vip-packages/create', [VipPackageController::class, 'create'])->name('vip-packages.create');
-Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
-Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
-Route::put('/vip-package/lock/{id}', [VipPackageController::class, 'updateLock'])->name('upL.Vip');
 
 
-Route::get('/salenews/{id}/promote', [SaleNewController::class, 'promote'])->name('salenew.promote');
-Route::get('/salenew-detail/{id}', [SaleNewController::class, 'renderSaleNewDetail'])->name('salenew.detail');
-
+    Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
+    Route::get('/vip-packages/create', [VipPackageController::class, 'create'])->name('vip-packages.create');
+    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
+    Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
+    Route::put('/vip-package/lock/{id}', [VipPackageController::class,'updateLock'])->name('upL.Vip');
+    Route::get('/salenews/{id}/promote', [SaleNewsController::class,'promote'])->name('salenew.promote');
+    Route::get('/salenew-detail/{id}', [SaleNewsController::class,'renderSaleNewDetail'])->name('salenew.detail');
+    Route::get('/salenews-status', [SaleNewsController::class, 'getAllSaleStatus'])->name('sl.index');
+// Route::get('/promote', [SaleNewsController::class, 'tv2'])->name('sl.tv2');
+// Route::get('/salenewdetail',function (){
+// return view('salenews.detail');
 // });
 
-Route::get('/salenews-status', [SaleNewController::class, 'getAllSaleStatus'])->name('sl.index');
-
-
-Route::get('pay', function () {
-    return view('admin.channels.pay');
-});

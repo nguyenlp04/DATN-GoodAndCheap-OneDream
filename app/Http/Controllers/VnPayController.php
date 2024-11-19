@@ -9,6 +9,9 @@ use App\Http\Controllers\Transaction;
 use App\Models\Transactions;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\VipPackage;
+use App\Models\SaleNews;
+use Illuminate\Support\Carbon;
 
 class VnPayController extends Controller
 {
@@ -21,22 +24,35 @@ class VnPayController extends Controller
 
         // $vnp_transactionOwner = isset($request['id_channel']) ? $request['id_channel'] : $request['id_user'];
 
+        // $listing = SaleNews::findOrFail($request->sale_new_id);
+        if(isset($request->sale_new_id)){
+            $idNewsOrChannel = $request->sale_new_id;
+        } else {
+            $idNewsOrChannel = "C";
+        }
 
+        $vipPackage = VipPackage::findOrFail($request->vip_package_id);
+        // dd($vipPackage);
 
+        // dd($vipPackage, $request);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "https://datn.lndo.site/IPN";
         $vnp_TmnCode = "KA9BQ8KD"; // Mã website tại VNPAY
         $vnp_HashSecret = "9Y2K4UHS31CG1PV5ECLNNOIY8Q3385CP"; // Chuỗi bí mật
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
-        $vnp_channel_id = $request['id_channel'] ?? null;
-        $vnp_user_id = $vnp_channel_id ? null : 3;
-        $prefix = $vnp_channel_id ? 'CN_' . $vnp_channel_id : 'US_' . $vnp_user_id;
-        $OrderInfo = $prefix . '_' . substr(str_shuffle(str_repeat($characters, 8)), 0, 8);
+        // $vnp_channel_id = $request['channel_id'] ?? null;
+        // $vnp_user_id = $vnp_channel_id ? null : $request['user_id'];
+
+        $vnp_channel_id = $request['channel_id'];
+        $vnp_user_id = $request['user_id'];
+
+        $prefix = !empty($vnp_channel_id) ? 'CN_' . $vnp_channel_id : 'US_' . $vnp_user_id;
+        $OrderInfo = $prefix . '_' . $vipPackage->vip_package_id . '_' . $idNewsOrChannel .  '_' .substr(str_shuffle(str_repeat($characters, 8)), 0, 8);
         $vnp_TxnRef = $OrderInfo; // Mã đơn hàng
         $vnp_OrderInfo = $OrderInfo;
         $vnp_OrderType = "topup";
-        $vnp_Amount = 10000 * 100; // Số tiền
+        $vnp_Amount = $vipPackage->price * 100;
         $vnp_Locale = "en";
         $vnp_BankCode = ""; // Mã ngân hàng
         $vnp_IpAddr = $request->ip(); // Địa chỉ IP của người dùng
@@ -113,6 +129,7 @@ class VnPayController extends Controller
         );
         if (isset($returnData)) {
             header('Location: ' . $vnp_Url);
+            
             die();
         } else {
             echo json_encode($returnData);
@@ -169,10 +186,14 @@ class VnPayController extends Controller
             $vnp_SecureHash = $_GET['vnp_SecureHash'];
             $user_id = strpos($vnp_OrderInfo, 'US_') === 0 ? intval(explode('_', $vnp_OrderInfo)[1]) : null;
             $channel_id = strpos($vnp_OrderInfo, 'CN_') === 0 ? intval(explode('_', $vnp_OrderInfo)[1]) : null;
+            $id_package = strpos($vnp_OrderInfo, '_') !== false ? intval(explode('_', $vnp_OrderInfo)[2]) : null;
+            $idNewsOrChannel = strpos($vnp_OrderInfo, '_') !== false ? intval(explode('_', $vnp_OrderInfo)[3]) : null;
+
+            // dd($id_package, $idNewsOrChannel );
+
+
             $upgrade = strpos($vnp_OrderInfo, 'US_') === 0 ? 'Upgrade Sale News' : 'Upgrade Channel';
             $status = ($vnp_TransactionStatus === "00") ? "Success" : "Incomplete";
-
-            
 
             // Dữ liệu cần lưu vào bảng Transaction
             $transactionData = [
@@ -195,20 +216,26 @@ class VnPayController extends Controller
             ];
             $query=DB::table('transactions')->insert($transactionData);
 
-
             if ($_GET['vnp_ResponseCode'] == '00') {
-                return redirect('/sale-news/add')->with('alert', [
+                $listing = SaleNews::findOrFail($idNewsOrChannel);
+                $vipPackage = VipPackage::findOrFail($id_package);
+                $listing->vip_package_id = $id_package;
+                $listing->vip_start_at = Carbon::now();
+                $listing->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
+                $listing->save();
+
+                return redirect('/salenews-status')->with('alert', [
                     'type' => 'success',
                     'message' => 'Payment Successful!'
                 ]);
             } else {
-                return redirect('/sale-news/add')->with('alert', [
+                return redirect('/salenews-status')->with('alert', [
                     'type' => 'error',
                     'message' => 'Payment Failed!'
                 ]);
             }
         } else {
-            return redirect('/sale-news/add')->with('alert', [
+            return redirect('/salenews-status')->with('alert', [
                 'type' => 'error',
                 'message' => 'Invalid Signature!'
             ]);

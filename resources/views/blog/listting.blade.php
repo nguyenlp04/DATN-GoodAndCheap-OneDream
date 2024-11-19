@@ -86,8 +86,8 @@
 </main><!-- End .main -->
 
 @endsection
-
+{{-- 
 @section('script-link-css')
 <script src="{{ asset('assets/js/imagesloaded.pkgd.min.js') }}"></script>
 <script src="{{ asset('assets/js/isotope.pkgd.min.js') }}"></script>
-@endsection
+@endsection --}}

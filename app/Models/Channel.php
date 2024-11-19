@@ -36,6 +36,11 @@ class Channel extends Model
     }
     public function saleNews()
     {
-        return $this->hasMany(Sale_news::class, 'channel_id');
+        return $this->hasMany(SaleNews::class, 'channel_id', 'channel_id');
+    }
+    public function isVip()
+    {
+        $currentDate = now();
+        return $this->vip_package_id && $this->vip_start_date <= $currentDate && $this->vip_end_date >= $currentDate;
     }
 }

@@ -16,19 +16,22 @@ class BlogController extends Controller
         $blogs = Blog::paginate(10); // Sử dụng phân trang
         return view('admin.blogs.index', compact('blogs'));
     }
-    public function create(){
+    public function create()
+    {
         return view('admin.blogs.create');
     }
-    
-    public function listing()
-    
-    {  $topBlogs = Blog::orderBy('views', 'desc') // Sắp xếp theo số lượt xem giảm dần
-        ->take(5) // Lấy 5 bài viết có views cao nhất
-        ->get();
-        $alltags=Blog::all();
+
+    public function listting()
+    {
+
+        $topBlogs = Blog::orderBy('views', 'desc') // Sắp xếp theo số lượt xem giảm dần
+            ->take(5) // Lấy 5 bài viết có views cao nhất
+            ->get();
+        $alltags = Blog::all();
         $blogs = Blog::all(); // Lấy tất cả bài viết từ cơ sở dữ liệu
-        $count= Blog::where('status', '1')->count();
-        return view('blocks.blog.listting_blog', compact('blogs','topBlogs','alltags','count')); // Trả về view với danh sách blog
+        $count = Blog::where('status', '1')->count();
+        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count')); // Trả về view với danh sách blog
+
     }
 
     // Lưu bài viết mới
@@ -76,18 +79,18 @@ class BlogController extends Controller
             ]);
         }
     }
-            // Hiển thị form sửa bài viết
-            public function edit(Blog $blog)
-            {
-                return view('admin.blogs.edit', compact('blog'));
-            }       
+    // Hiển thị form sửa bài viết
+    public function edit(Blog $blog)
+    {
+        return view('admin.blogs.edit', compact('blog'));
+    }
     // Cập nhật bài viết
     public function update(Request $request, Blog $blog)
     {
         // Xác thực dữ liệu đầu vào
         $request->validate([
             'title' => 'required|string|max:255',
-            
+
             'content' => 'required|string|min:6',
             'short_description' => 'required|string|min:10|max:255',
             'status' => 'required|in:0,1',
@@ -179,15 +182,16 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
         return view('admin.blogs.detail', compact('blog'));
     }
-    public function detail($id){
+    public function detail($id)
+    {
         $blogs = Blog::findOrFail($id);
-       $alltags=Blog::all();
+        $alltags = Blog::all();
         $topBlogs = Blog::where('status', 1) // Lọc bài viết có status = 1
             ->orderBy('views', 'desc')       // Sắp xếp theo số lượt xem giảm dần
             ->take(5)                         // Lấy 5 bài viết có views cao nhất
             ->get();
-    
-      
-        return view('blocks.blog.detail-blog', compact('blogs','topBlogs','alltags'));
+
+
+        return view('blocks.blog.detail-blog', compact('blogs', 'topBlogs', 'alltags'));
     }
 }
