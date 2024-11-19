@@ -16,7 +16,7 @@ class Order extends Model
     // Định nghĩa các thuộc tính có thể được gán
     protected $fillable = [
         'payment_method_id',
-        'user_id',  
+        'user_id',
         'name_receiver',
         'price',
         'phone_number',

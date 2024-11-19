@@ -9,9 +9,10 @@
 
 
     <div class="app-ecommerce" data-select2-id="21">
-    <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
-            {{ json_encode($dataProductID, JSON_PRETTY_PRINT) }}
-        </pre>
+      <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+
+
+      </pre>
       <form action="{{ route('updateProduct', $dataProductID->product_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -27,12 +28,13 @@
             <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish product</button>
           </div>
         </div>
-         <div class="row" data-select2-id="20">
+        <div class="row" data-select2-id="20">
           <!-- First column-->
           <div class="col-12 col-lg-8">
             <!-- Product Information -->
             <div class="card mb-6">
               <div class="card-header">
+
                 <h5 class="card-tile mb-0">Product information</h5>
               </div>
               <div class="card-body">
@@ -41,7 +43,7 @@
                   <input type="text" value="{{ $dataProductID->name_product }}" class="form-control" id="ecommerce-product-name" placeholder="Product title" name="productTitle" aria-label="Product title">
                 </div>
                 <!-- Price -->
-                
+
                 <!-- Description -->
                 <div>
                   <label for="description" class="form-label">Description</label>
@@ -60,6 +62,14 @@
               <div class="card-body">
                 <div class="dropzone p-0 dz-clickable" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 11.5rem;">
                   <div id="preview_images" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+
+                    @foreach ($dataProductID->images as $image)
+                    <div style="position: relative;">
+                      <img src="{{ asset( $image->image_name) }}" class="mt-3 rounded" style="width: 100px; height: auto;"><span style="position: absolute; top: 0px; right: 0px; color: red; cursor: pointer; font-size: 18px; background-color: white; border-radius: 50%; padding: 2px 5px;"><i class="fas fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    @endforeach
+
+
                     <!-- Các hình ảnh đã tải lên sẽ được thêm vào đây -->
                   </div>
                   <div style="font-weight: 500; text-align: center; width: 300px; height: 2.5rem;">
@@ -91,7 +101,7 @@
                 <h5 class="card-title mb-0">Organize</h5>
               </div>
               <div class="card-body" data-select2-id="17">
-              <div class="mb-3">
+                <div class="mb-3">
                   <label class="form-label" for="ecommerce-product-price">Price</label>
                   <input value="{{ $dataProductID->price }}" type="number" class="form-control" id="ecommerce-product-price" placeholder="Price" name="price" aria-label="Product price">
                 </div>
@@ -109,66 +119,159 @@
                   <label for="category" class="form-label">Category Name:</label>
                   <select id="category" name="category_id" class="form-select" required>
                     <option value="">Select Category Name</option>
-                    
+                    @foreach ($dataCategory as $category)
+                    <option value="{{ $category->category_id }}"
+                      @if((int) $category->category_id === (int) $dataProductID->subcategory->category_id) selected @endif>
+                      {{ $category->name_category }}
+                    </option>
+                    @endforeach
                   </select>
                 </div>
-                <div class="mb-3" id="subcategory-section" style="display: none;">
+                <div class="mb-3" id="subcategory-section">
                   <label for="subcategory" class="form-label">SubCategory Name:</label>
                   <select id="subcategory" name="subcategory_id" class="form-select" required>
+                    <option value="">Select SubCategory Name</option>
+
+                    </option>
                   </select>
                 </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
                   $(document).ready(function() {
+                    var selectedSubcategoryId = '{{ $dataProductID->sub_category_id ?? "null" }}';
+
                     $('#category').change(function() {
                       var categoryId = $(this).val();
-                      console.log("Category ID: ", categoryId);
+                      $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
                       $('#add-variant').empty();
+
                       if (categoryId) {
                         $.ajax({
                           url: '/get-subcategories/' + categoryId,
                           type: 'GET',
                           success: function(data) {
-                            console.log(data.subcategories);
-                            $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
-                            $.each(data.subcategories, function(index, subcategory) {
-                              $('#subcategory').append('<option value="' + subcategory.sub_category_id + '">' + subcategory.name_sub_category + '</option>');
-                            });
+                            console.log("Subcategories:", data.subcategories);
+                            console.log("Attributes:", data.subcategory_attributes);
+
                             $('#subcategory-section').show();
 
+                            // Populate subcategory dropdown
+                            $.each(data.subcategories, function(index, subcategory) {
+                              var isSelected = subcategory.sub_category_id == selectedSubcategoryId ? 'selected' : '';
+                              $('#subcategory').append('<option value="' + subcategory.sub_category_id + '" ' + isSelected + '>' + subcategory.name_sub_category + '</option>');
+                            });
+
+                            // Populate the variant fields
                             $.each(data.subcategory_attributes, function(index, category_variant) {
                               $('#add-variant').append(`
-                              <div class="col-6"> 
-                                  <div class="card mb-6 variant-card">
-                                      <div class="card-header">
-                                          <span class="card-title mb-0">Name Variant</span>
-                                          <div class="col-12">
-                                              <input type="text" name="variant[${index}][name]" class="form-control option-input fw-bold" placeholder="Select Or Enter A Variation" value="${category_variant.attributes_name}" readonly>
-                                          </div>
-                                      </div>
-                                      <div class="card-body">
-                                          <span class="mb-0">Option</span>
-                                          <div class="options-container">
-                                              <div class="d-flex align-items-center mt-2">
-                                                  <input type="text" name="variant[${index}][option]" class="form-control option-value" placeholder="Enter an Option" value="">
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          `);
+                  <div class="col-6"> 
+                    <div class="card mb-6 variant-card">
+                      <div class="card-header">
+                        <span class="card-title mb-0">Name Variant</span>
+                        <div class="col-12">
+                          <input type="text" name="variant[${index}][name]" class="form-control option-input fw-bold" placeholder="Select Or Enter A Variation" value="${category_variant.attributes_name}" readonly>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <span class="mb-0">Option</span>
+                        <div class="options-container">
+                          <div class="d-flex align-items-center mt-2">
+                            <input type="text" name="variant[${index}][option]" class="form-control option-value" placeholder="Enter an Option" value="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `);
                             });
+
+                            // Trigger the blur event to process and render variants
+                            $('.option-value').blur();
                           },
                           error: function(xhr, status, error) {
                             console.error("Error fetching subcategories:", error);
                           }
                         });
                       } else {
-                        $('#subcategory').empty().append('<option value="">Chọn danh mục con</option>');
                         $('#subcategory-section').hide();
-                        $('#add-variant').hide();
+                        $('#add-variant').empty();
                       }
                     });
+
+                    // Initial category change trigger on page load
+                    if ($('#category').val()) {
+                      $('#category').trigger('change');
+                    }
+
+                    $(document).on('blur', '.option-value', function() {
+                      var variants = [];
+                      $('.variant-card').each(function() {
+                        var variantName = $(this).find('.option-input').val();
+                        var optionValue = $(this).find('.option-value').val();
+
+                        if (optionValue) {
+                          var options = optionValue.split(',').map(value => value.trim());
+                          variants.push({
+                            "name": variantName,
+                            "options": options
+                          });
+                        }
+                      });
+
+                      if (variants.length > 0) {
+                        var optionsForCombining = variants.map(variant => variant.options);
+                        var result = combineOptions(optionsForCombining);
+                        var variantNames = variants.map(variant => variant.name);
+
+                        renderVariantTable(variantNames, result);
+                        $('#variant-table-section').show();
+                      } else {
+                        $('#variant-table-section').hide();
+                      }
+
+                      $('#variant').val(JSON.stringify(variants));
+                    });
+
+                    function combineOptions(optionsArr) {
+                      var result = [];
+
+                      function combine(current, depth) {
+                        if (depth === optionsArr.length) {
+                          result.push([...current]);
+                          return;
+                        }
+                        optionsArr[depth].forEach(option => {
+                          current[depth] = option;
+                          combine(current, depth + 1);
+                        });
+                      }
+                      combine([], 0);
+                      return result;
+                    }
+
+                    function renderVariantTable(variantNames, combinations) {
+                      var tableHeader = '<tr>';
+                      variantNames.forEach(name => {
+                        tableHeader += `<th>${name}</th>`;
+                      });
+                      tableHeader += '<th>Pricev</th><th>Quantityv</th></tr>';
+
+                      var tableBody = combinations.map((combination, index) => {
+                        var row = '<tr>';
+                        combination.forEach(option => {
+                          row += `<td>${option}</td>`;
+                        });
+                        row += `
+                        <td><input type="number" class="form-control" placeholder="Enter Pricev" name="pricev[${index}]"></td>
+                        <td><input type="number" class="form-control" placeholder="Enter Quantityv" name="quantityv[${index}]"></td>
+                      `;
+                        row += '</tr>';
+                        return row;
+                      }).join('');
+
+                      $('#variant-list-header').html(tableHeader);
+                      $('#variant-list-body').html(tableBody);
+                    }
                   });
                 </script>
                 <script>
@@ -248,6 +351,26 @@
             <!-- /Organize Card -->
           </div>
           <!-- /Second column -->
+          <!-- Variants List -->
+          <div class="col-12">
+            <div class="card mb-6">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Variants List</h5>
+              </div>
+              <div class="card-body">
+                <table id="variant-list-table" class="table table-bordered">
+                  <thead id="variant-list-header">
+                    <!-- Header of the table will be dynamically added here -->
+                  </thead>
+                  <tbody id="variant-list-body">
+                    <!-- Variant combinations will be added here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- End Variants List -->
         </div>
       </form>
     </div>

@@ -150,21 +150,21 @@
                 </a>
             </li>
 
-            <!-- Product Management -->
+            <!-- Sale News Management -->
             <li class="menu-item {{ Request::is('product/*') || Request::is('product') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
-                    <div data-i18n="Product Management">Product Management</div>
+                    <div data-i18n="Product Management">Sale News Management</div>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item {{ Request::is('product') ? 'active' : '' }}">
                         <a href="{{ url('product/') }}" class="menu-link">
-                            <div data-i18n="Hide Product">Product</div>
+                            <div data-i18n="Hide Product">Sale News</div>
                         </a>
                     </li>
                     <li class="menu-item {{ Request::is('product/add') ? 'active' : '' }}">
                         <a href="{{ url('product/add') }}" class="menu-link">
-                            <div data-i18n="Add Product">Add Product</div>
+                            <div data-i18n="Add Product">Add Sale News</div>
                         </a>
                     </li>
                     <!-- <li class="menu-item {{ Request::is('category') ? 'active' : '' }}">
@@ -174,7 +174,7 @@
                     </li> -->
                     <li class="menu-item {{ Request::is('product/approve') ? 'active' : '' }}">
                         <a href="{{ url('product/approve') }}" class="menu-link">
-                            <div data-i18n="Approve Product">Approve Product (affiliate)</div>
+                            <div data-i18n="Approve Product">Approve Sale News (affiliate)</div>
                         </a>
                     </li>
                 </ul>
@@ -200,6 +200,20 @@
                     </li>
                 </ul>
             </li>
+            <li class="menu-item {{ Request::is('channel/*') || Request::is('channel') ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bx-layout"></i>
+                  <div data-i18n="Product Management">Channel Management</div>
+              </a>
+              <ul class="menu-sub">
+                  <li class="menu-item {{ Request::is('channel') ? 'active' : '' }}">
+                      <a href="{{ url('channel') }}" class="menu-link">
+                          <div data-i18n="Hide Product">List Channel</div>
+                      </a>
+                  </li>
+              </ul>
+          </li>
+
 
 
             <!-- Account Management -->
@@ -223,12 +237,46 @@
                 </ul>
             </li>
 
-            <!-- Blogs -->
-            <li class="menu-item {{ Request::is('blogs') ? 'active' : '' }}">
-                <a href="{{ url('blogs') }}" class="menu-link">
+             <!-- Blogs -->
+             <li class="menu-item {{ Request::is('blogs') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bxl-blogger"></i>
-                    <div data-i18n="Analytics">Blogs</div>
+                    <div data-i18n="Analytics">Blog </div>
                 </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Request::is('admin/blogs') ? 'active' : '' }}">
+                        <a href="{{ url('admin/blogs') }}" class="menu-link">
+                            <div data-i18n="Blogs">Blogs List</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('admin/blogs/add') ? 'active' : '' }}">
+                        <a href="{{ url('admin/blogs/add') }}" class="menu-link">
+                            <div data-i18n="Add blogs">Add Blogs</div>
+                        </a>
+                    </li>
+                   
+                </ul>
+
+
+            </li>
+
+            <!-- Blogs -->
+            <li class="menu-item {{ Request::is('sale_new') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bxl-blogger"></i>
+                    <div data-i18n="Analytics">Sale new </div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Request::is('admin/sale_new') ? 'active' : '' }}">
+                        <a href="{{ url('admin/sale_new') }}" class="menu-link">
+                            <div data-i18n="Blogs">List Sale new </div>
+                        </a>
+                    </li>
+                    
+                   
+                </ul>
+
+
             </li>
 
             <!-- Notification -->
@@ -273,15 +321,15 @@
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
-                        <a href="{{ url('payment/method') }}" class="menu-link">
-                            <div data-i18n="Payment Method">Payment Method</div>
+                        <a href="{{ url('payment/transactions') }}" class="menu-link">
+                            <div data-i18n="Payment Method">Transactions</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
+                    {{-- <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
                         <a href="{{ url('payment/account') }}" class="menu-link">
                             <div data-i18n="Receiving Account">Receiving Account</div>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 
@@ -708,6 +756,7 @@
     <script src="{{ asset("/../admin/assets/vendor/libs/popper/popper.js") }}"></script>
     <script src="{{ asset("/../admin/assets/vendor/js/bootstrap.js") }}"></script>
     <script src="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js") }}"></script>
+    <!-- <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script> -->
 
     <script src="{{ asset("/../admin/assets/vendor/js/menu.js") }}"></script>
     <!-- endbuild -->
@@ -715,7 +764,10 @@
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="{{ asset("/../admin/assets/js/main.js") }}"></script>
+
+   
+    <script src="{{ asset('/../admin/assets/js/main.js') }}"></script>
+
 
     <!-- Page JS -->
 

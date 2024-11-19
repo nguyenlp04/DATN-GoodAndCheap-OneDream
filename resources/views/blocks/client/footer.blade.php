@@ -1,3 +1,4 @@
+
 <footer class="footer">
     <div class="footer-middle">
         <div class="container">
@@ -386,3 +387,4 @@
         </div><!-- End .modal-content -->
     </div><!-- End .modal-dialog -->
 </div><!-- End .modal -->
+@include('layouts.script-admin')

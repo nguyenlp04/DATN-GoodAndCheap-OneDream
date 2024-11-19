@@ -59,9 +59,7 @@
                                 <div class="mb-6" id="subcategory-section" style="display: none;">
                                     <label for="subcategories" class="form-label">Subcategories:</label>
                                     <div id="subcategory-wrapper">
-                                        <div class="input-group mb-2">
-
-                                        </div>
+                                        
                                     </div>
                                 </div>
 

@@ -105,3 +105,246 @@
   text-align: center;
   margin-top: 1rem;
 }
+/*
+* demo.css
+* File include item demo only specific css only
+******************************************************************************/
+
+.menu .app-brand.demo {
+  height: 64px;
+  margin-top: 12px;
+}
+
+.app-brand-logo.demo svg {
+  width: 22px;
+  height: 38px;
+}
+
+.app-brand-text.demo {
+  font-size: 1.75rem;
+  letter-spacing: -0.5px;
+  /* text-transform: lowercase; */
+}
+
+/* ! For .layout-navbar-fixed added fix padding top tpo .layout-page */
+/* Detached navbar */
+.layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
+  padding-top: 76px !important;
+}
+/* Default navbar */
+.layout-navbar-fixed .layout-wrapper:not(.layout-without-menu) .layout-page {
+  padding-top: 64px !important;
+}
+
+/* Navbar page z-index issue solution */
+.content-wrapper .navbar {
+  z-index: auto;
+}
+
+/*
+* Content
+******************************************************************************/
+
+.demo-blocks > * {
+  display: block !important;
+}
+
+.demo-inline-spacing > * {
+  margin: 1rem 0.375rem 0 0 !important;
+}
+
+/* ? .demo-vertical-spacing class is used to have vertical margins between elements. To remove margin-top from the first-child, use .demo-only-element class with .demo-vertical-spacing class. For example, we have used this class in forms-input-groups.html file. */
+.demo-vertical-spacing > * {
+  margin-top: 1rem !important;
+  margin-bottom: 0 !important;
+}
+.demo-vertical-spacing.demo-only-element > :first-child {
+  margin-top: 0 !important;
+}
+
+.demo-vertical-spacing-lg > * {
+  margin-top: 1.875rem !important;
+  margin-bottom: 0 !important;
+}
+.demo-vertical-spacing-lg.demo-only-element > :first-child {
+  margin-top: 0 !important;
+}
+
+.demo-vertical-spacing-xl > * {
+  margin-top: 5rem !important;
+  margin-bottom: 0 !important;
+}
+.demo-vertical-spacing-xl.demo-only-element > :first-child {
+  margin-top: 0 !important;
+}
+
+.rtl-only {
+  display: none !important;
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+[dir='rtl'] .rtl-only {
+  display: block !important;
+}
+
+/*
+* Layout demo
+******************************************************************************/
+
+.layout-demo-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+.layout-demo-placeholder img {
+  width: 900px;
+}
+.layout-demo-info {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* blogs */
+.icon-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 50px;
+  background-color: rgb(255, 255, 255);
+  color: #2f00ff;
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: 0 2px 2px rgba(0, 123, 255, 0.3);
+
+  padding: 2px 0;
+  position: absolute;
+  z-index: 1;
+ 
+  left:4em;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+}
+
+.icon-wrapper:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+.tooltip-text {
+  visibility: hidden; 
+  opacity: 0; 
+  transition: opacity 0.3s ease; 
+  font-size: 12px; 
+}
+
+button:hover .tooltip-text {
+  visibility: visible; 
+  opacity: 1; 
+}
+.fa-eye-slash,.fa-eye{
+  font-size: 1.25rem !important;
+  
+}
+.eye{
+  margin-left: 20px;
+}
+.nav-tabs .nav-link {
+  color: #555; /* Màu chữ mặc định của tab */
+  background-color: #ffffff !important; /* Màu nền mặc định của tab */
+
+  transition: all 0.3s ease;
+
+ 
+border-radius: 5px !important;
+}
+
+
+/* Chỉnh màu tab khi hover */
+.nav-tabs{
+  border-bottom: none;
+}
+
+/* Chỉnh màu của tab đang hoạt động */
+.nav-tabs .nav-link.active {
+  color: #ffffff !important; /* Màu chữ của tab đang hoạt động */
+  background-color: #c9c9c9 !important; /* Màu nền của tab đang hoạt động */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+/* Tùy chỉnh thêm viền tròn cho tab */
+.nav-tabs .nav-link {
+ /* Tạo hiệu ứng bo tròn cho tab */
+  padding: 10px 20px; /* Điều chỉnh kích thước tab */
+}.blog-info {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+}
+
+.info-item strong {
+  font-weight: bold;
+  width: 120px; /* Set a fixed width to align the labels */
+  color: #333;
+}
+
+.blog-info img.blog-image {
+  width: 80px;
+  height: auto;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.blog-info hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+.modal-status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.text-primary {
+  color: #007bff;
+}
+
+.text-secondary {
+  color: #6c757d;
+}
+
+/* Cập nhật cho phần content với thanh cuộn */
+.content-scroll {
+  max-height: 300px; /* Điều chỉnh chiều cao theo yêu cầu */
+  overflow-y: auto;  /* Hiển thị thanh cuộn nếu nội dung dài */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
