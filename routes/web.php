@@ -68,15 +68,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('/blogs', BlogController::class);
     Route::post('/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
     Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
-    // Route::post('/sale_new/reject/{id}', [Sale_newController::class, 'reject'])->name('sale_news.reject');
-    // Route::post('/sale_new/reject/{id}', [Sale_newController::class, 'reject'])->name('sale_news.reject');
-    // Route::delete('/sale_news/{id}', [Sale_newController::class, 'destroy'])->name('sale_news.destroy');
-    // Route::post('/sale_new/approve/{id}', [Sale_newController::class, 'approve'])->name('sale_news.approve');
+    Route::get('/sale_new', [SaleNewsController::class, 'list_salenew'])->name('sale_new.list');
+  
+    route::post('/sale_new/reject/{id}',[SaleNewsController::class,'reject'])->name('sale_news.reject');
+    Route::delete('/sale_news/{id}', [SaleNewsController::class, 'destroy'])->name('sale_news.destroy');
+    route::post('/sale_new/approve/{id}',[SaleNewsController::class,'approve'])->name('sale_news.approve');
 });
 
 
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
-Route::get('/blogs/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
+Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('verification.show');

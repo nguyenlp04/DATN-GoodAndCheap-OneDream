@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Subcategory;
+use App\Models\Category;
 class SaleNews extends Model
 {
     use HasFactory;
@@ -16,12 +17,18 @@ class SaleNews extends Model
 
     ];
 
-
+    public function sub_category()
+    {
+        return $this->belongsTo(Subcategory::class, 'sub_category_id');
+    }
     public function channel()
     {
         return $this->belongsTo(Channel::class, 'channel_id');
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
@@ -29,18 +36,15 @@ class SaleNews extends Model
     public function categoryToSubcategory()
     {
         return $this->hasOneThrough(
-            Category::class,
-            SubCategory::class,
-            'sub_category_id',
-            'category_id',
-            'sub_category_id',
-            'category_id'
+            Category::class,      
+            SubCategory::class,    
+            'sub_category_id',    
+            'category_id',        
+            'sub_category_id',    
+            'category_id'         
         );
     }
-    public function subcategory()
-    {
-        return $this->belongsTo(SubCategory::class, 'sub_category_id');
-    }
+   
     public function images()
     {
         return $this->hasMany(Imgproduct::class, 'sale_new_id');
@@ -49,14 +53,9 @@ class SaleNews extends Model
     {
         return $this->hasOne(Imgproduct::class, 'sale_new_id');
     }
-    public function user()
+    public function vippackage()
     {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function vipPackage()
-    {
-        return $this->belongsTo(VipPackage::class,'vip_package_id');
+        return $this->belongsTo(VipPackage::class, 'vip_package_id');
     }
 
     public function isPromoted()
