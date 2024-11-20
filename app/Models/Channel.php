@@ -43,4 +43,8 @@ class Channel extends Model
         $currentDate = now();
         return $this->vip_package_id && $this->vip_start_date <= $currentDate && $this->vip_end_date >= $currentDate;
     }
+    public function subcategory()
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id');
+    }
 }

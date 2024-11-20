@@ -46,7 +46,6 @@
                                       @enderror
                                   </div>
                               </div>
-                              <hr>
 
                               <!-- Email -->
                               <div class="row mb-3">
@@ -54,13 +53,12 @@
                                       <label for="email" class="mb-0">Email</label>
                                   </div>
                                   <div class="col-sm-9">
-                                      <input type="email" id="email" name="email" value="{{ old('email', $profile->users->email ?? '') }}" class="form-control @error('email') is-invalid @enderror" required>
+                                      <input type="email" id="email" name="email" value="{{ old('email', $profile->user->email ?? '') }}" class="form-control @error('email') is-invalid @enderror" required>
                                       @error('email')
                                           <div class="invalid-feedback">{{ $message }}</div>
                                       @enderror
                                   </div>
                               </div>
-                              <hr>
 
                               <!-- Phone -->
                               <div class="row mb-3">
@@ -74,7 +72,6 @@
                                       @enderror
                                   </div>
                               </div>
-                              <hr>
 
                               <!-- Address -->
                               <div class="row mb-3">
@@ -88,7 +85,6 @@
                                       @enderror
                                   </div>
                               </div>
-                              <hr>
 
                               <!-- Image Channel (Avatar) -->
                               <div class="row mb-3">
@@ -102,8 +98,6 @@
                                       @enderror
                                   </div>
                               </div>
-                              <hr>
-
                               <!-- Save button -->
                               <div class="row mb-3">
                                   <div class="col-sm-3"></div>
