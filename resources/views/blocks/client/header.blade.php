@@ -330,6 +330,11 @@
                                                 {{ __('Profile') }}
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="{{ route('account') }}">
+                                                {{ __('Upgrage Account') }}
+                                            </a>
+                                        </li>
                                         @if(auth()->user()->channel)
                                         <li>
                                             <a href="{{ route('channels.index') }}">

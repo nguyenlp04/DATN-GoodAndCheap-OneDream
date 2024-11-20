@@ -39,6 +39,7 @@ class SaleNews extends Model
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
     }
+    
     public function images()
     {
         return $this->hasMany(Imgproduct::class, 'sale_new_id');

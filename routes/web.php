@@ -204,11 +204,13 @@ Route::prefix('partners')->name('partners.')->group(function () {
     Route::get('/', function () {
         return view('partner.dashboard');
     });
+    Route::get('/sale-news/', [PartnerController::class, 'index'])->name('sale-news');
     Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
     Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
 });
 Route::resource('channels', ChannelController::class)->middleware('auth');
 Route::get('channel', [ChannelController::class, 'list_channel'])->name('channel');
+
 
 Route::prefix('trash')->group(function () {
     Route::get('/user', function () {
@@ -235,9 +237,6 @@ Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create
 Route::get('/add', function () {
     return view('sale-news.add-sale-news');
 });
-//     Route::post('/add', [SaleNewsControllerName::class, 'store'])->name('add.sale-news');
-//     Route::get('/add', [SaleNewsControllerName::class, 'create']);
-// });
 
 Route::prefix('sale-news')->group(function () {
     Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');

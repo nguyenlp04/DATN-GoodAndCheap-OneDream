@@ -11,7 +11,7 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        //
+        // $sale
     }
 
     /**

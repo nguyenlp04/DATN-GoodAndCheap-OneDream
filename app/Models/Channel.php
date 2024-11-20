@@ -39,4 +39,8 @@ class Channel extends Model
     {
         return $this->hasMany(Sale_news::class, 'channel_id', 'channel_id');
     }
+    public function subcategory()
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id');
+    }
 }

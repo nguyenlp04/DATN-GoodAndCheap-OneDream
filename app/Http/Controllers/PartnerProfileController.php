@@ -93,7 +93,7 @@ class PartnerProfileController extends Controller
 
             // Nếu cần, cập nhật thêm các trường khác như email (thông qua user)
             if ($request->has('email')) {
-                $channel->users->update(['email' => $request->input('email')]);
+                $channel->user->update(['email' => $request->input('email')]);
             }
             if ($request->hasFile('image_channel')) {
                 // Xóa ảnh cũ nếu có
