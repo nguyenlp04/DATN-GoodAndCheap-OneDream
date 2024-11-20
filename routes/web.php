@@ -74,10 +74,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
     Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
     Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
-    Route::put('/vip-package/lock/{id}', [VipPackageController::class,'updateLock'])->name('upL.Vip');
-
-
-
+    Route::put('/vip-package/lock/{id}', [VipPackageController::class, 'updateLock'])->name('upL.Vip');
 });
 // endadmin
 
@@ -109,7 +106,7 @@ Route::middleware('auth')->group(function () {
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
     });
-    Route::get('/salenews/{id}/promote', [SaleNewsController::class,'promote'])->name('salenew.promote');
+    Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
     Route::get('/salenews-status', [SaleNewsController::class, 'getAllSaleStatus'])->name('sl.index');
     Route::prefix('sale-news')->group(function () {
         Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
@@ -117,9 +114,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/get-subcategories/{categoryId}', [SaleNewsController::class, 'getSubcategories']);
-
-
-
+    Route::post('/follow-channel/{channel_id}', [ChannelController::class, 'followChannel'])->name('follow.channel');
+    Route::delete('/unfollow-channel/{channel_id}', [ChannelController::class, 'unfollowChannel'])->name('unfollow.channel');
 });
 // enduser
 
@@ -137,7 +133,7 @@ Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('
 Route::post('/verify', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
 Route::post('staff/login', [StaffAuthController::class, 'login']);
-Route::get('/salenew-detail/{id}', [SaleNewsController::class,'renderSaleNewDetail'])->name('salenew.detail');
+Route::get('/salenew-detail/{id}', [SaleNewsController::class, 'renderSaleNewDetail'])->name('salenew.detail');
 // end guest
 
 
@@ -187,4 +183,3 @@ Route::prefix('trash')->group(function () {
 // Route::get('/salenewdetail',function (){
 // return view('salenews.detail');
 // });
-
