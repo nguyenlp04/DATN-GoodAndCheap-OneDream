@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Channel extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     use HasFactory;
 
     protected $table = 'channels';
@@ -22,7 +22,6 @@ class Channel extends Model
         'phone_number',
         'status',
         'user_id',
-        'deleted_at',
         'vip_package_id'  // Cập nhật để sử dụng khóa ngoại đúng
     ];
 
@@ -37,7 +36,12 @@ class Channel extends Model
     }
     public function saleNews()
     {
-        return $this->hasMany(Sale_news::class, 'channel_id', 'channel_id');
+        return $this->hasMany(SaleNews::class, 'channel_id', 'channel_id');
+    }
+    public function isVip()
+    {
+        $currentDate = now();
+        return $this->vip_package_id && $this->vip_start_date <= $currentDate && $this->vip_end_date >= $currentDate;
     }
     public function subcategory()
     {

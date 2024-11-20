@@ -19,6 +19,7 @@ class ChannelController extends Controller
     public function list_channel()
     {
         $channels = Channel::all(); // Lấy danh sách kênh với phân trang
+        // dd($channels);
         return view('admin.channels.list_channel', compact('channels'));
     }
     public function index()

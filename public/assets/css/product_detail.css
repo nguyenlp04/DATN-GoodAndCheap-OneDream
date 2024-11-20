@@ -1,0 +1,18 @@
+#cart-add:hover .btn-text {
+    color: white;
+    cursor: pointer;
+}
+
+#cart-add::before .btn-text {
+    color: "\e812";
+}
+
+ .ellipsis {
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     -webkit-line-clamp: 3; /* Số dòng muốn hiển thị */
+     overflow: hidden;
+     text-overflow: ellipsis;
+ }
+
+

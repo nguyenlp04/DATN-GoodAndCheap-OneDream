@@ -28,7 +28,8 @@
     <meta name="msapplication-config" content="{{ asset('assets/images/icons/browserconfig.xml') }}">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
@@ -49,7 +50,7 @@
 
     <!-- Main Content -->
     @yield('content')
-    
+
 
     @include('blocks.client.footer')
 
@@ -68,8 +69,26 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-    
-        
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    @if (session('alert'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "{{ session('alert')['type'] }}",
+            title: "{{ session('alert')['message'] }}"
+        });
+    </script>
+    @endif
 </body>
 
 </html>

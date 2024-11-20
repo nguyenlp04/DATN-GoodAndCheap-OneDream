@@ -11,7 +11,9 @@ class SaleNews extends Model
 
     protected $table = 'sale_news';
     protected $primaryKey = 'sale_new_id';
+
     protected $fillable = [ 'channel_id', 'user_id', 'sub_category_id', 'title', 'price', 'description', 'data', 'status', 'vip_pakage_id', 'vip_start_at', 'vip_end_at', 'created_at', 'updated_at', 'is_delete',
+
     ];
 
 
@@ -27,12 +29,12 @@ class SaleNews extends Model
     public function categoryToSubcategory()
     {
         return $this->hasOneThrough(
-            Category::class,      
-            SubCategory::class,    
-            'sub_category_id',    
-            'category_id',        
-            'sub_category_id',    
-            'category_id'         
+            Category::class,
+            SubCategory::class,
+            'sub_category_id',
+            'category_id',
+            'sub_category_id',
+            'category_id'
         );
     }
     public function subcategory()
@@ -51,5 +53,17 @@ class SaleNews extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function vipPackage()
+    {
+        return $this->belongsTo(VipPackage::class,'vip_package_id');
+    }
+
+    public function isPromoted()
+    {
+        $currentDate = now();
+        return ($this->vip_package_id && $this->vip_start_date <= $currentDate && $this->vip_end_date >= $currentDate) ||
+               ($this->channel && $this->channel->isVip());
     }
 }

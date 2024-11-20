@@ -155,7 +155,7 @@
                                     }
                                 }
                             }'>
-                     @foreach($data as $item)
+                     {{-- @foreach($data as $item)
                         <div class="product product-2">
                             <figure class="product-media">
                                 <span class="product-label label-circle label-top">Top</span>
@@ -208,7 +208,7 @@
                             </div><!-- End .product-nav -->
                             </div><!-- End .product-body -->
                         </div><!-- End .product -->
-                        @endforeach
+                        @endforeach --}}
 
                     
                 </div><!-- End .owl-carousel -->

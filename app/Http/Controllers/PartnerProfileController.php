@@ -22,7 +22,6 @@ class PartnerProfileController extends Controller
         $user = Auth::user();
         $profiles = Channel::where('user_id', $user->user_id)->get();
 
-        // Kiểm tra nếu không có kênh nào
         if ($profiles->isEmpty()) {
             return redirect()->back()->with('error', 'No channels found for your account.');
         }
