@@ -41,6 +41,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('/blogs', BlogController::class);
     Route::post('/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+
     Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
     Route::prefix('category')->group(function () {
         Route::get('/', [CategoryController::class, 'index']);
@@ -75,6 +76,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
     Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
     Route::put('/vip-package/lock/{id}', [VipPackageController::class,'updateLock'])->name('upL.Vip');
+
 
 
 
