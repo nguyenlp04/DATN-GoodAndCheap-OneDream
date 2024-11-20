@@ -5,6 +5,42 @@
     .header-intro-clearance .header-bottom .menu.sf-arrows > li > .sf-with-ul::after {
     right: 0rem;
     }
+    .notification-dropdown {
+    width: 320px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 10px;
+    }
+   
+    .notification-content {
+    flex: 1;
+    }
+    .notification-content strong {
+    font-size: 14px;
+    color: #333;
+    }
+    .notification-content p {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+    .notification-footer {
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    }
+    .notification-footer a {
+    color: #007bff;
+    text-decoration: none;
+    }
+    .notification-footer a:hover {
+    text-decoration: underline;
+    }
  </style>
  <div class="page-wrapper">
  <header class="header header-intro-clearance header-4">
@@ -84,12 +120,9 @@
                          @endphp
                          @if($notification->status == 'public' || in_array(auth()->user()->user_id, $selectedUsers))
                          <li class="notification-item">
-                            <div class="notification-icon">
-                               <i class="fas fa-info-circle"></i>
-                            </div>
                             <div class="notification-content">
                                <strong>{{ $notification->title_notification }}</strong>
-                               <p class="text-muted small">{{ Str::limit($notification->content_notification, 40) }}</p>
+                               <p class="text-muted small">{!! Str::limit($notification->content_notification, 40) !!}</p>
                                <small class="text-muted">{{ $notification->created_at->format('d/m/Y H:i') }}</small>
                             </div>
                          </li>
@@ -101,7 +134,10 @@
                       @endif
                    </div>
                    <div class="notification-footer">
-                      <a href="{{ route('notifications.index') }}" class="btn btn-link">View All</a>
+                      <a href="{{ route('notifications.index') }}" class="">
+                      <p class="text-center">view all</p>
+
+                      </a>
                    </div>
                 </div>
              </div>
@@ -252,6 +288,7 @@
                             </a>
                          </li>
                          @endif
+
                          @if(auth()->user()->channel)
                          <li>
                             <a href="{{ route('channels.index') }}">
