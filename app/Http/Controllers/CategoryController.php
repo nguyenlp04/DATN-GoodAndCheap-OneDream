@@ -20,35 +20,32 @@ class CategoryController extends Controller
     {
 
         $data = Category::select('categories.*')
-            ->selectRaw('COUNT(DISTINCT sub_categories.sub_category_id) AS sub_category_count')
-            ->selectRaw('COUNT(DISTINCT subcategory_attributes.subcategory_attribute_id) AS attribute_count')
-            ->selectRaw('GROUP_CONCAT(DISTINCT sub_categories.name_sub_category ORDER BY sub_categories.name_sub_category) AS sub_category_names')
-            ->selectRaw('GROUP_CONCAT(DISTINCT sub_categories.status ORDER BY sub_categories.name_sub_category) AS sub_category_statuses')
-            ->selectRaw('GROUP_CONCAT(DISTINCT subcategory_attributes.attributes_name ORDER BY sub_categories.sub_category_id) AS attribute_names')
-            ->selectRaw('staffs.full_name AS staff_full_name')
-            ->leftJoin('sub_categories', 'categories.category_id', '=', 'sub_categories.category_id')
-            ->leftJoin('subcategory_attributes', 'categories.category_id', '=', 'subcategory_attributes.category_id')
-            ->leftJoin('staffs', 'categories.staff_id', '=', 'staffs.staff_id')
-            ->where('categories.is_delete', '=', '0')
-            ->groupBy(
-                'categories.category_id',
-                'categories.name_category',
-                'categories.image_category',
-                'categories.delete_at',
-                'categories.staff_id',
-                'categories.description',
-                'categories.status',
-                'categories.is_delete',
-                'categories.created_at',
-                'categories.updated_at',
-                'staffs.full_name'
-            )
-            ->get();
-
-
-
-
-        // dd($data);/
+        ->selectRaw('COUNT(DISTINCT sub_categories.sub_category_id) AS sub_category_count')
+        ->selectRaw('COUNT(DISTINCT subcategory_attributes.subcategory_attribute_id) AS attribute_count')
+        ->selectRaw('GROUP_CONCAT(DISTINCT sub_categories.name_sub_category ORDER BY sub_categories.name_sub_category) AS sub_category_names')
+        ->selectRaw('GROUP_CONCAT(DISTINCT sub_categories.status ORDER BY sub_categories.name_sub_category) AS sub_category_statuses')
+        ->selectRaw('GROUP_CONCAT(DISTINCT subcategory_attributes.attributes_name ORDER BY sub_categories.sub_category_id) AS attribute_names')
+        ->selectRaw('staffs.full_name AS staff_full_name')
+        ->leftJoin('sub_categories', 'categories.category_id', '=', 'sub_categories.category_id')
+        ->leftJoin('subcategory_attributes', 'categories.category_id', '=', 'subcategory_attributes.category_id')
+        ->leftJoin('staffs', 'categories.staff_id', '=', 'staffs.staff_id')
+        ->leftJoin('blogs', 'categories.category_id', '=', 'blogs.category_id')  // Sửa ở đây, thay `category_id` cho đúng
+        ->where('categories.is_delete', '=', '0')
+        ->groupBy(
+            'categories.category_id',
+            'categories.name_category',
+            'categories.image_category',
+            'categories.delete_at',
+            'categories.staff_id',
+            'categories.description',
+            'categories.status',
+            'categories.is_delete',
+            'categories.created_at',
+            'categories.updated_at',
+            'staffs.full_name'
+        )
+        ->get();
+    
         return view('admin.categories.index', ['data' => $data]);
     }
 
@@ -273,4 +270,10 @@ class CategoryController extends Controller
             ]);
         }
     }
+
+            public function blogs()
+            {
+                return $this->hasMany(Blog::class, 'category_id');
+            }
+
 }

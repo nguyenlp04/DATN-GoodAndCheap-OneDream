@@ -67,6 +67,10 @@
   </head>
 
   <body>
+  <?php
+      use App\Models\SaleNews;
+      $count = SaleNews::where('approved', 0)->count(); // Đếm số lượng bản ghi thay vì lấy Collection
+      ?>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -259,6 +263,33 @@
 
 
             </li>
+            <li class="menu-item {{ Request::is('sale_new') ? 'active open' : '' }}">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bxl-blogger"></i>
+              <div data-i18n="Analytics">Sale new </div>
+              @if($count > 0 ) <!-- Chỉ hiển thị nếu không ở trang con -->
+                  <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle" 
+                      style="width: 17px; height: 17px; margin-left: 50px;">
+                      <span class="text-white d-flex justify-content-center align-items-center" 
+                            style="line-height: 17px; font-size: 10px;">!</span>
+                  </div>
+              @endif
+          </a>
+          <ul class="menu-sub">
+              <li class="menu-item {{ Request::is('/sale_new') ? 'active' : '' }}">
+                  <a href="{{ url('/sale_new') }}" class="menu-link">
+                      <div data-i18n="Blogs">List Sale new </div>
+                      @if($count > 0) <!-- Hiển thị trong trang con nếu có -->
+                          <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle" 
+                              style="width: 17px; height: 17px; margin-left: 50px;">
+                              <span class="text-white d-flex justify-content-center align-items-center" 
+                                    style="line-height: 17px; font-size: 10px;">!</span>
+                          </div>
+                      @endif
+                  </a>
+              </li>
+          </ul>
+      </li>
 
             <!-- Notification -->
             <li class="menu-item {{ Request::is('notifications/*') || Request::is('notifications') ? 'active open' : '' }}">
