@@ -144,16 +144,6 @@ Route::get('/salenew-detail/{id}', [SaleNewsController::class,'renderSaleNewDeta
 
 
 
-
-
-// Grouped Routes for products
-
-
-
-
-
-
-
 // test
 Route::prefix('payment')->group(function () {
     Route::get('/preview', function () {
