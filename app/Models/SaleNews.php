@@ -44,7 +44,7 @@ class SaleNews extends Model
             'category_id'         
         );
     }
-   
+
     public function images()
     {
         return $this->hasMany(Imgproduct::class, 'sale_new_id');

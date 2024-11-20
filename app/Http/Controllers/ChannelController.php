@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Channel;
 use App\Models\Sale_news;
+use App\Models\Subcategory;
 use App\Models\VipPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,20 +24,31 @@ class ChannelController extends Controller
     }
     public function index()
     {
+
         $user = Auth::user();
-        // Lấy kênh của người dùng hiện tại
+
         $channels = Channel::where('user_id', $user->user_id)->first();
 
-        // Kiểm tra nếu người dùng chưa có kênh
         if (!$channels) {
             return redirect()->route('channels.create') // Hoặc trang tạo kênh của bạn
                 ->with('error', 'You have not created a channel yet.');
         }
-        $sale_news = $channels->saleNews()->get();
+
+        $sale_news = $channels->saleNews()->with('sub_category')->get();
+
+        foreach ($sale_news as $news) {
+            // Get name_sub_category from the relation subcategory
+            $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
+        }
+
+        // Count records of sub_category based on name
+        $subcategory_count = $sale_news->filter(function ($news) {
+            return $news->sub_category !== null;
+        })->countBy('name_sub_category');
         $NewsCount = $channels->saleNews()->count();
 
         // Nếu có kênh, tiếp tục xử lý
-        return view('partner.channels.profile_channels', compact('channels', 'NewsCount', 'sale_news'));
+        return view('partner.channels.profile_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count'));
     }
 
 
@@ -46,6 +59,7 @@ class ChannelController extends Controller
     {
         $user = Auth::user();
 
+
         // Kiểm tra nếu người dùng đã tạo kênh
         $channelExists = Channel::where('user_id', $user->user_id)->exists();
         if ($channelExists) {
@@ -53,7 +67,7 @@ class ChannelController extends Controller
                 ->with('success', 'You already have a channel.');
         }
 
-        $vipPackages = VipPackage::all(); // Lấy tất cả các gói VIP
+        $vipPackages = VipPackage::where('type', 'channel')->get();
         return view('partner.channels.create_channels', compact('vipPackages')); // Truyền gói VIP vào view
     }
 
@@ -75,12 +89,11 @@ class ChannelController extends Controller
             'name_channel' => 'required|string|max:255|unique:channels,name_channel',
             'phone_number' => 'required|string|max:15|unique:channels,phone_number|regex:/^(\+?\d{1,4}[\s\-])?(\(?\d{1,3}\)?[\s\-]?)?[\d\s\-]{5,15}$/',
             'address' => 'required|string|max:255|unique:channels,address',
-            'image_channel' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_channel' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'vip_package_id' => 'nullable|exists:vip_packages,id', // Kiểm tra ID gói VIP hợp lệ
             'status' => 'nullable|integer'
         ]);
 
-        // Lưu kênh mới
         $channel = new Channel();
         $channel->user_id = $user->user_id;
         $channel->name_channel = $request->name_channel;
@@ -108,19 +121,27 @@ class ChannelController extends Controller
     {
         $user = Auth::user();
 
-        // Kiểm tra nếu người dùng đã tạo kênh
+        // Check if the user has created a channel
         $channel = Channel::where('user_id', $user->user_id)->first();
 
-        // Nếu người dùng có kênh thì tiếp tục hiển thị kênh
-        $channels = Channel::findOrFail($id); // Lấy kênh theo ID
+        // If the user has a channel, continue to display the channel
+        $channels = Channel::findOrFail($id); // Get channel by ID
+        $sale_news = $channels->saleNews()->with('sub_category')->get();
 
+        foreach ($sale_news as $news) {
+            // Get name_sub_category from the relation subcategory
+            $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
+        }
 
-        $sale_news = $channels->saleNews()->get();
+        // Count records of sub_category based on name
+        $subcategory_count = $sale_news->filter(function ($news) {
+            return $news->sub_category !== null;
+        })->countBy('name_sub_category');
 
-        // Đếm số lượng bản tin mà kênh đã đăng
+        // Count the number of news items that the channel has posted
         $NewsCount = $channels->saleNews()->count();
 
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news'));
+        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count'));
     }
 
 

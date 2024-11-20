@@ -59,6 +59,7 @@ class SaleNewsController extends Controller
                 'description' => 'required|string',
                 'subcategory_id' => 'required|integer',
                 'variant' => 'required',
+                'hiddenAddress' => 'required',
                 // 'images.*' => 'required|max:2048',
             ]);
             // dd($errors->all());
@@ -73,6 +74,8 @@ class SaleNewsController extends Controller
                 'description' => $validatedData['description'],
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'data' => $jsonData,
+                'address' => $validatedData['hiddenAddress'],
+                'approval' => 0,
                 'status' => 1,
                 'created_at' => now(),
             ];
@@ -194,6 +197,16 @@ class SaleNewsController extends Controller
     // public function tv2(){
     //     return view('salenews.promote');
     // }
+
+    public function getSubcategories($categoryId)
+    {
+        $subcategoryAttributes = SubcategoryAttribute::where('category_id', $categoryId)->get();
+        $subcategories = SubCategory::where('category_id', $categoryId)->get();
+        return response()->json([
+            'subcategories' => $subcategories,
+            'subcategory_attributes' => $subcategoryAttributes
+        ]);
+    }
 
 
     public function promote($id)
