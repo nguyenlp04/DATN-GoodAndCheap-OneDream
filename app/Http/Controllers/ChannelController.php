@@ -24,11 +24,11 @@ class ChannelController extends Controller
     }
     public function index()
     {
+
         $user = Auth::user();
-        // Lấy kênh của người dùng hiện tại
+
         $channels = Channel::where('user_id', $user->user_id)->first();
 
-        // Kiểm tra nếu người dùng chưa có kênh
         if (!$channels) {
             return redirect()->route('channels.create') // Hoặc trang tạo kênh của bạn
                 ->with('error', 'You have not created a channel yet.');
@@ -59,6 +59,7 @@ class ChannelController extends Controller
     {
         $user = Auth::user();
 
+
         // Kiểm tra nếu người dùng đã tạo kênh
         $channelExists = Channel::where('user_id', $user->user_id)->exists();
         if ($channelExists) {
@@ -66,7 +67,7 @@ class ChannelController extends Controller
                 ->with('success', 'You already have a channel.');
         }
 
-        $vipPackages = VipPackage::all(); // Lấy tất cả các gói VIP
+        $vipPackages = VipPackage::where('type', 'channel')->get();
         return view('partner.channels.create_channels', compact('vipPackages')); // Truyền gói VIP vào view
     }
 
