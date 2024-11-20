@@ -89,14 +89,20 @@ Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff
 
 
 // Grouped Routes for products
+// Route::prefix('sale-news')->group(function () {
+//     Route::get('/', [SaleNewsController::class, 'index'])->name('admin.products.index');
+//     Route::get('/add', [SaleNewsController::class, 'create'])->name('add.sale-news');
+//     Route::get('/approve', function () {
+//         return view('admin.products.approve-product');
+//     });
+// });
+
 Route::prefix('sale-news')->group(function () {
-    Route::get('/', [SaleNewsController::class, 'index'])->name('admin.products.index');
-    Route::get('/add', [SaleNewsController::class, 'create'])->name('add.sale-news');
-    Route::get('/approve', function () {
-        return view('admin.products.approve-product');
-    });
+    Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
+    Route::post('/add', [SaleNewsController::class, 'store'])->name('add.sale-news');
 });
 
+Route::get('/get-subcategories/{categoryId}', [SaleNewsController::class, 'getSubcategories']);
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
     Route::match(['get', 'post'], '/add', [CategoryController::class, 'store'])->name('addCategory');
