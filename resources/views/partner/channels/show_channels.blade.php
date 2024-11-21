@@ -1,142 +1,6 @@
 @extends('layouts.client_layout')
 
 @section('content')
-<style>
-    .channel-info {
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        background-color: #f9f9f9;
-        margin: 20px auto;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
-
-    .channel-info:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    }
-
-    .channel-info img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 20px;
-        transition: transform 0.3s ease;
-    }
-
-    .channel-info img:hover {
-        transform: scale(1.1);
-    }
-
-    .channel-name {
-        font-size: 22px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 5px;
-    }
-
-    .channel-username {
-        font-size: 16px;
-        color: #888;
-        margin-bottom: 10px;
-    }
-
-    .channel-stats {
-        color: #555;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
-
-    .channel-stats span {
-        margin-right: 15px;
-    }
-
-    .channel-actions {
-        margin-left: auto;
-    }
-
-    .channel-actions a {
-        border-radius: 25px;
-        padding: 8px 20px;
-        font-size: 14px;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-        display: inline-block;
-    }
-
-    .channel-actions a:hover {
-        background-color: #0056b3;
-    }
-
-    .channel-actions .btn-danger:hover {
-        background-color: #d9534f;
-    }
-
-    .stats-info {
-        font-size: 14px;
-        color: #e84e40;
-        display: flex;
-        align-items: center;
-    }
-
-    .stats-info i {
-        margin-right: 5px;
-    }
-
-    .heading .title {
-        font-size: 24px;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .heading-right .title-link {
-        font-size: 16px;
-        color: #007bff;
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    .heading-right .title-link:hover {
-        text-decoration: underline;
-    }
-
-    .sale-card {
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        background-color: #f9f9f9;
-        margin: 15px 0;
-        padding: 15px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .sale-card .title {
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .sale-card .price {
-        color: #e84e40;
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .sale-card .description {
-        color: #555;
-        font-size: 14px;
-    }
-
-    .sale-card .status {
-        font-size: 14px;
-        color: #888;
-    }
-</style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
 
@@ -156,46 +20,74 @@
         {{ session('success') }}
     </div>
     @endif
+    <main class="main">
+        <div class="page-content">
+            <div class="container">
+                <div class="row d-flex justify-content-Start">
+                    <div class="col col-md-9 col-lg-7 col-xl-6">
+                      <div style="width:  fit-content;min-width:460px; ">
+                        <div class="card-body">
+                          <div class="d-flex">
+                            <div class="flex-shrink-0">
+                              @if ($channels->image_channel)
+                                  <img src="{{ asset($channels->image_channel) }}"
+                                alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                              @else
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                                @endif
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                              <h5 class="mb-1">{{ $channels->name_channel }}</h5>
 
-    <div class="row">
-        <div class="col-md-12 mb-4">
-            <div class="channel-info">
-                <!-- Channel Image -->
-                <img src="{{ asset('storage/' . ($channels->image_channel ?? 'assets/images/image.png')) }}" alt="{{ $channels->name_channel }}" class="rounded-circle me-3">
-                <!-- Channel Details -->
-                <div class="flex-grow-1">
-                    <div class="channel-name">{{ $channels->name_channel }}</div>
-                    <div class="channel-username">{{ $channels->username }}</div>
-                    <div class="channel-stats">
-                        <span>Người theo dõi: 20 {{ $channels->followers_count }}</span>
-                        <span>Sales news: {{ $NewsCount }}</span>
-                        <span>Ngày tạo: {{ $channels->created_at->format('d/m/Y') }}</span>
+                              <p  style="color: #ff0000;"><i class="fa-solid fa-handshake" style="color: #FFD43B;"></i>
+                                Trusted partners receive the protection of the floor
+                                 </p>
+                              <div class="d-flex justify-content-start rounded-3 p-2 mb-md-2 bg-body-tertiary  " style="width: fit-content">
+                                <div class="mx-3">
+                                    <p class="small text-muted ">   <i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> {{ $channels->address }} </p>
+                                    <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channels->created_at->format('d-m-Y') }}</p>
+                                    {{-- <p class="small text-muted "><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> 56</p> --}}
+
+                                </div>
+                                <div>
+                                    <p class="small text-muted "><i class="fa-solid fa-users" style="color: #74C0FC;"></i> {{ $channels->followers_count }} </p>
+                                    <p class="small text-muted ">  <i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> {{ $NewsCount }} </p>
+
+                                </div>
+
+
+                              </div>
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    @if(!(auth()->user()->user_id == $channels->user_id))
+                    <div class="col col-md-9 col-lg-7 col-xl-6 d-flex justify-content-end">
+
+                        <a href="#" class="btn btn-primary btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-user-plus"></i> Follow</a>
+
 
                     </div>
-                </div>
-                <div class="channel-actions">
-                    @if ($isFollowed)
-                    <form id="unfollow-form" action="{{ route('unfollow.channel', $channels->channel_id) }}" method="POST">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 25px;">Unfollow</button>
-                    </form>
-                    @else
-                    <form id="follow-form" action="{{ route('follow.channel', $channels->channel_id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 25px;">Follow</button>
-                    </form>
                     @endif
-                </div>
-            </div>
-        </div>
+                  </div>
 
-        <div class="container for-you">
+
+
+
+
+
             <!-- Sales News -->
-            <main class="main">
 
 
-                <div class="page-content">
-                    <div class="container">
+
+
+
+
+
                         <div class="row">
                             <div class="col-lg-9">
                                 <div class="toolbox">
@@ -218,6 +110,7 @@
                                 </div><!-- End .toolbox -->
 
                                 <div class="products mb-3">
+                                    @if($sale_news->total() > 0)
                                     @foreach ($sale_news as $sale_new)
 
                                     <div class="product product-list">
@@ -229,24 +122,24 @@
                                                         On top
                                                     </span>
                                                     @endif
-                                                    <a href="product.html">
-                                                        <img src="/assets/images/products/product-4.jpg" alt="Product image1" class="product-image">
-                                                    </a>
+
+                                                        <img src="{{ asset($sale_new->firstImage->image_name) }}" alt="Product image1" class="product-image">
+
                                                 </figure><!-- End .product-media -->
                                             </div><!-- End .col-sm-6 col-lg-3 -->
 
                                             <div class="col-6 col-lg-3 order-lg-last">
                                                 <div class="product-list-action">
                                                     <div class="product-price">
-                                                        <h4 class="text-primary">{{ $sale_new ->price  }} $</h4>
+                                                        <h4 class="text-primary">${{ $sale_new ->price  }} </h4>
                                                     </div><!-- End .product-price -->
 
                                                     <div class="product-actions">
                                                         <a href="#" class="btn btn-light mb-2" title="Add to Wishlist">
                                                             <i class="fas fa-heart"></i> Wishlist
                                                         </a>
-                                                        <a href="#" class="btn btn-primary">
-                                                            <i class="fas fa-info-circle"></i> Details
+                                                        <a href="{{ route('salenew.detail', $sale_new->sale_new_id) }}" class="btn btn-primary">
+                                                            <i class="fa-solid fa-eye"></i> Details
                                                         </a>
                                                     </div>
                                                 </div><!-- End .product-list-action -->
@@ -257,28 +150,34 @@
                                                     <div class="product-cat">
                                                         <a href="#">{{ $sale_new->name_sub_category }}</a>
                                                     </div><!-- End .product-cat -->
-                                                    <h3 class="product-title"><a href="product.html">{{ $sale_new -> title }}</a></h3><!-- End .product-title -->
+                                                    <h3 class="product-title">{{ $sale_new -> title }}</h3><!-- End .product-title -->
 
                                                     <div class="product-content wrap">
-                                                        <p>{{ $sale_new -> description }}</p>
+                                                        <p class="text-truncate">{{ $sale_new -> description }}</p>
                                                     </div><!-- End .product-content -->
 
                                                     <div class="product-description">
-                                                        <p><i class="fas fa-map-marker-alt"></i> {{ $sale_new->channels->address }}</p>
-                                                        <p><i class="fas fa-calendar-alt"></i> {{ $sale_new->created_at }}</p>
+                                                        <p><i class="fas fa-map-marker-alt" style="color: #74C0FC;"></i></i> {{ $sale_new->address }}</p>
+                                                        <p><i class="fas fa-calendar-alt" style="color: #74C0FC;"></i></i> {{ $sale_new->created_at }}</p>
 
                                                     </div><!-- End .product-nav -->
                                                 </div><!-- End .product-body -->
                                             </div><!-- End .col-lg-6 -->
                                         </div><!-- End .row -->
                                     </div><!-- End .product -->
+
+                                    <div class="d-flex justify-content-center"> {{ $sale_news->links() }} </div>
+
                                     @endforeach
+                                    @else
+                                            <p>Không có sản phẩm nào để hiển thị.</p>
+                                    @endif
 
 
 
                                 </div><!-- End .products -->
 
-                                <nav aria-label="Page navigation">
+                                {{-- <nav aria-label="Page navigation">
                                     <ul class="pagination">
                                         <li class="page-item disabled">
                                             <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
@@ -295,7 +194,7 @@
                                             </a>
                                         </li>
                                     </ul>
-                                </nav>
+                                </nav> --}}
                             </div><!-- End .col-lg-9 -->
                             <aside class="col-lg-3 order-lg-first">
                                 <div class="sidebar sidebar-shop">
@@ -378,6 +277,6 @@
                 </div><!-- End .page-content -->
             </main><!-- End .main -->
         </div>
-    </div>
+
 </main>
 @endsection

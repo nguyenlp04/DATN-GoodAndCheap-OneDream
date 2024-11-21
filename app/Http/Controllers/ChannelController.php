@@ -28,11 +28,11 @@ class ChannelController extends Controller
 
         $user = Auth::user();
 
-        $channels = Channel::where('user_id', $user->user_id)->first();
+        $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Lấy kênh của người dùng
 
-        if (!$channels) {
-            return redirect()->route('channels.create') // Hoặc trang tạo kênh của bạn
-                ->with('error', 'You have not created a channel yet.');
+        if (!$channels || is_null($channels->status)) {
+            return redirect()->route('channels.create') // Chuyển hướng đến trang tạo kênh
+                ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
 
         $sale_news = $channels->saleNews()->with('subcategory')->get();
@@ -62,21 +62,41 @@ class ChannelController extends Controller
 
 
         // Kiểm tra nếu người dùng đã tạo kênh
-        $channelExists = Channel::where('user_id', $user->user_id)->exists();
+        $channelExists = Channel::where('user_id', $user->user_id)->whereNotNull('status')->exists();
         if ($channelExists) {
             return redirect()->route('channels.show', ['channel' => $user->channel->channel_id])
                 ->with('success', 'You already have a channel.');
         }
 
         $vipPackages = VipPackage::where('type', 'channel')->get();
-        return view('partner.channels.create_channels', compact('vipPackages')); // Truyền gói VIP vào view
+        $paymentOrCreat = Channel::where('user_id', $user->user_id)->first();
+
+        return view('partner.channels.create_channels', compact('vipPackages', 'paymentOrCreat')); // Truyền gói VIP vào view
     }
+
+    // public function paymentOrCreat()
+    // {
+    //     $user = Auth::user();
+
+    //     // Kiểm tra nếu người dùng đã tạo kênh
+    //     $paymentOrCreat = Channel::where('user_id', $user->user_id)->first(); // Use first() instead of firstOrFail()
+
+
+
+    //     // return view('partner.channels.create_channels', compact('paymentOrCreat'));
+    //     return view('partner.channels.create_channels', [
+    //         // 'dataProductID' => $dataProductID,
+    //         'paymentOrCreat' => $paymentOrCreat,
+    //     ]);
+    // }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        // dd($request);
         // Kiểm tra xem người dùng đã có kênh chưa
         $user = Auth::user();
 
@@ -91,7 +111,7 @@ class ChannelController extends Controller
             'phone_number' => 'required|string|max:15|unique:channels,phone_number|regex:/^(\+?\d{1,4}[\s\-])?(\(?\d{1,3}\)?[\s\-]?)?[\d\s\-]{5,15}$/',
             'address' => 'required|string|max:255|unique:channels,address',
             'image_channel' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'vip_package_id' => 'nullable|exists:vip_packages,id', // Kiểm tra ID gói VIP hợp lệ
+            'vip_package_id' => 'nullable|exists:vip_packages,vip_package_id', // Kiểm tra ID gói VIP hợp lệ
             'status' => 'nullable|integer'
         ]);
 
@@ -100,19 +120,29 @@ class ChannelController extends Controller
         $channel->name_channel = $request->name_channel;
         $channel->phone_number = $request->phone_number;
         $channel->address = $request->address;
-        $channel->status = $request->status;
+        $channel->status = NULL;
         $channel->vip_package_id = $request->vip_package_id; // Lưu gói VIP nếu có
 
         // Xử lý ảnh kênh
         if ($request->hasFile('image_channel')) {
-            $channel->image_channel = $request->file('image_channel')->store('channels', 'public');
+            $path = $request->file('image_channel')->store('channels', 'public'); // Thêm tiền tố '/storage/' vào đường dẫn
+            $channel->image_channel = 'storage/' . $path;
         }
 
         $channel->save();
-        return redirect()->route('channels.show', ['channel' => $channel->channel_id])->with('alert', [
-            'type' => 'success',
-            'message' => 'Channel created successfully.',
+        // return view('redirect_to_payment', [
+        //     'channel_id' => $channel->channel_id,
+        //     'vip_package_id' => $request->vip_package_id,
+        //     'user_id' => $user->user_id,
+        // ]);
+
+        // dd($channel->channel_id, $request->vip_package_id, $user->user_id);
+        return redirect()->route('redirect_to_payment', [
+            'channel_id' => $channel->channel_id,
+            'vip_package_id' => $request->vip_package_id,
+            'user_id' => $user->user_id,
         ]);
+
     }
 
     /**
@@ -122,10 +152,19 @@ class ChannelController extends Controller
     {
         $user = Auth::user();
         // Check if the user has created a channel
-        $channel = Channel::where('user_id', $user->user_id)->first();
+        $channel = Channel::where('user_id', $user->user_id)->whereNotNull('status')->first();
+
+        if (!$channel || is_null($channel->status)) {
+            return redirect()->route('home') // Chuyển hướng đến trang tạo kênh
+                ->with('error', 'You have not created a channel yet or the channel status is not set.');
+        }
+
+
         // If the user has a channel, continue to display the channel
         $channels = Channel::findOrFail($id); // Get channel by ID
-        $sale_news = $channels->saleNews()->with('sub_category')->get();
+        $sale_news = $channels->saleNews()->with('sub_category','firstImage')
+        ->where('approved',1)
+        ->paginate(5);
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory

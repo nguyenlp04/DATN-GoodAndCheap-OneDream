@@ -104,14 +104,14 @@
 
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="#" class="btn btn-primary mt-3 mt-md-0 ms-2"><i class="fa-solid fa-eye"></i> Visit</a>
+                                        <a href="{{ route('channels.show',$new->channel_id) }}" class="btn btn-primary mt-3 mt-md-0 ms-2"><i class="fa-solid fa-eye"></i> Visit</a>
                                     </div>
                                     </div>
                                     <div class="row pt-2 px-5 ">
-                                        <p> <i class="fa-brands fa-product-hunt" style="color: #74C0FC;"></i> {{ $data_count_news }} Selling news <br>
+                                        <p class="col-6"> <i class="fa-brands fa-product-hunt" style="color: #74C0FC;"></i> {{ $data_count_news }} Selling news <br>
                                             <i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> {{ $data_count_news_sold }} Sold<br>
                                         </p>
-                                        <p class="mx-md-5 mx-2"> <i class="fa-regular fa-face-smile" style="color: #74C0FC;"></i> Positive feedback<br>
+                                        <p class="col-6"> <i class="fa-regular fa-face-smile" style="color: #74C0FC;"></i> Positive feedback<br>
                                             <i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> Deposited  <br>
                                         </p>
 
