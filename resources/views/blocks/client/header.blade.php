@@ -1,49 +1,16 @@
 <style>
-    .dropdown-menu {
-        top: 70% !important;
-    }
-
-    .header-intro-clearance .header-bottom .menu.sf-arrows>li>.sf-with-ul::after {
-        right: 0rem;
-    }
-    .notification-dropdown {
-    width: 320px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    padding: 10px;
-    }
-   
-    .notification-content {
-    flex: 1;
-    }
-    .notification-content strong {
-    font-size: 14px;
-    color: #333;
-    }
-    .notification-content p {
-    font-size: 12px;
-    color: #555;
-    margin-top: 5px;
-    white-space: nowrap;
+    .text-ellipsis {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số lượng hàng hiển thị */
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    }
-    .notification-footer {
-    padding: 10px;
-    text-align: center;
-    background-color: #f8f9fa;
-    }
-    .notification-footer a {
-    color: #007bff;
-    text-decoration: none;
-    }
-    .notification-footer a:hover {
-    text-decoration: underline;
-    }
- </style>
- <div class="page-wrapper">
+
+    line-height: 1.5em; /* Chiều cao dòng */
+}
+
+</style>
+<div class="page-wrapper">
  <header class="header header-intro-clearance header-4">
     <div class="header-middle">
     <div class="container">
@@ -74,7 +41,6 @@
        </div>
        <div class="header-right">
           @if(isset(auth()->user()->user_id))
-          <div class="wishlist" style="white-space: nowrap">
              <div class="wishlist" style="white-space: nowrap">
                 <a href="{{ route('add.sale-news') }}" title="Wishlist">
                    <div class="icon">
@@ -102,46 +68,44 @@
                    <p>Wishlist</p>
                 </a>
              </div>
-             <!-- End .compare-dropdown -->
              <div class="dropdown cart-dropdown">
-                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   <div class="icon">
-                      <i class="fas fa-bell"></i>
-                      <span class="cart-count badge">{{ $notifications->count() }}</span>
-                   </div>
-                   <p>Notifications</p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right notification-dropdown">
-                   <div class="notification-body">
-                      @if($notifications->isNotEmpty())
-                      <ul class="notification-list">
-                         @foreach($notifications as $notification)
-                         @php
-                         $selectedUsers = $notification->selected_users;
-                         @endphp
-                         @if($notification->status == 'public' || in_array(auth()->user()->user_id, $selectedUsers))
-                         <li class="notification-item">
-                            <div class="notification-content">
-                               <strong>{{ $notification->title_notification }}</strong>
-                               <p class="text-muted small">{!! Str::limit($notification->content_notification, 40) !!}</p>
-                               <small class="text-muted">{{ $notification->created_at->format('d/m/Y H:i') }}</small>
-                            </div>
-                         </li>
-                         @endif
-                         @endforeach
-                      </ul>
-                      @else
-                      <p class="text-center">No notifications available.</p>
-                      @endif
-                   </div>
-                   <div class="notification-footer">
-                      <a href="{{ route('notifications.index') }}" class="">
-                      <p class="text-center">view all</p>
+                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <div class="icon">
+                        <i class="fa-regular fa-bell fa-sm"></i>
 
-                      </a>
-                   </div>
-                </div>
-             </div>
+                    </div>
+                    <p>notifications</p>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right ">
+                @if (!empty($notifications))
+                    @for ($i = 0; $i < min(10, count($notifications)); $i++)
+                    <div  class="border-bottom border-secondary">
+                        <div >
+                                <h5 class="product-title">{{ $notifications[$i]['title_notification'] }}</h5>
+                                <span class="cart-product-info text-ellipsis">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</span>
+                                @php
+                                $createdAt = new DateTime($notifications[$i]['created_at']);
+                                @endphp
+                                <span class="cart-product-info">{{ $createdAt->format('d/m/Y H:i') }}</span>
+
+
+
+
+                        </div><!-- End .product -->
+                    </div><!-- End .cart-product -->
+                    @endfor
+                    @else
+                    <p class="text-center">No notifications available.</p>
+                    @endif
+
+
+                    <div class="dropdown-cart-action mt-2 flex justify-content-center">
+                        <a href="checkout.html" class="btn btn-outline-primary-2" ><span>View All</span><i class="icon-long-arrow-center"></i></a>
+                    </div><!-- End .dropdown-cart-total -->
+                </div><!-- End .dropdown-menu -->
+            </div>
+
              @else
              <div class="wishlist">
                 <a href="{{ route('login') }}">

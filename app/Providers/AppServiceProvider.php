@@ -31,18 +31,32 @@ class AppServiceProvider extends ServiceProvider
                 return; // Không chia sẻ biến với view admin
             }
 
-            // Kiểm tra nếu người dùng đã đăng nhập và lấy ID người dùng
-            $userId = Auth::check() ? Auth::user()->id : null;
-            // Lấy các thông báo mà người dùng có thể nhận
-            $notifications = Notification::where('status', 'public')
-                ->orWhere(function ($query) use ($userId) {
-                    $query->where('status', 'private')
-                        ->whereJsonContains('selected_users', (string) $userId); // Kiểm tra ID người dùng trong mảng JSON
-                })
-                ->paginate(10);
 
-            // Chia sẻ biến với các view khác
-            $view->with(['notifications' => $notifications, 'userId' => $userId]);
+
+
+        // Lấy tất cả các thông báo công khai
+        $notifications_userid = Notification::where('status', 'public')->get();
+        $notification_web = Notification::where('type', 'website')->get();
+
+        // ID của người dùng hiện tại
+        $userId = Auth::check() ? Auth::user()->user_id : null;
+
+        // Lọc thông báo theo user_id
+        $filteredNotifications = $notifications_userid->filter(function ($notification) use ($userId) {
+            $selectedUsers = json_decode($notification->selected_users, true);
+            return in_array($userId, $selectedUsers);
+        });
+
+        // Kết hợp và sắp xếp theo ngày
+        $mergedNotifications = $filteredNotifications->merge($notification_web)
+                                                    ->sortByDesc('created_at')
+                                                    ->toArray();
+
+        // Kết quả
+        // dd($mergedNotifications);
+
+
+            $view->with(['notifications' => $mergedNotifications]);
         });
     }
 }
