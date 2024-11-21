@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\VipPackage;
 use Illuminate\Support\Carbon;
+use App\Models\Channel;
 
 
 use App\Models\Subcategory;
@@ -30,11 +31,15 @@ class SaleNewsController extends Controller
     public function index()
     {
 
-        //
-
         $data = SaleNews::with(['user', 'subcategory', 'firstImage', 'categoryToSubcategory'])->get();
         return view('admin.products.index', ['data' => $data]);
+    }
 
+    public function indexSaleNewsPartner()
+    {
+
+        $data = SaleNews::with(['user', 'sub_category', 'firstImage', 'categoryToSubcategory'])->where('user_id', auth()->user()->user_id)->get();
+        return view('partner.sale_news.index', ['data' => $data]);
     }
 
     /**
@@ -43,8 +48,19 @@ class SaleNewsController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('sale-news.add-sale-news', compact('categories'));
+        return view('salenews.add-sale-news', compact('categories'));
     }
+
+    public function createSaleNewsPartner()
+    {
+        $categories = Category::all();
+
+        $channels = Channel::where('user_id', auth()->user()->user_id)->first();
+
+        // Trả về view và truyền các dữ liệu cần thiết
+        return view('partner.sale_news.add', compact('categories', 'channels'));
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -119,6 +135,85 @@ class SaleNewsController extends Controller
         }
     }
 
+
+    public function storeSaleNewsPartner(Request $request)
+    {
+        $address = !empty($request->hiddenAddress) ? $request->hiddenAddress : $request->hiddenAddressChannel;
+        // dd($address);
+
+        try {
+            $validatedData = $request->validate([
+                'productTitle' => 'required|string',
+                'price' => 'required|numeric|min:0',
+                'description' => 'required|string',
+                'subcategory_id' => 'required|integer',
+                'variant' => 'required',
+                // 'hiddenAddress' => 'required',
+                // 'images.*' => 'required|max:2048',
+            ]);
+            // dd($errors->all());
+            // dd($validatedData, auth()->user()->user_id);
+
+            $jsonData = json_encode($validatedData['variant']);
+            $channel = Channel::where('user_id', auth()->user()->user_id)->first(['vip_package_id', 'vip_start_at', 'vip_end_at']);
+
+            // dd($channel);
+
+            $productData = [
+                'user_id' => auth()->user()->user_id,
+                'title' => $validatedData['productTitle'],
+                'price' => $validatedData['price'],
+                'description' => $validatedData['description'],
+                'sub_category_id' => $validatedData['subcategory_id'],
+                'data' => $jsonData,
+                'address' => $address,
+                'approved' => 1,
+                'status' => 1,
+                'vip_package_id' => $channel->vip_package_id,
+                'vip_start_at' => $channel->vip_start_at,
+                'vip_end_at' => $channel->vip_end_at,
+                'created_at' => now(),
+            ];
+
+            // dd($productData);
+            // $query=DB::table('sale_news')->insert($productData);
+
+
+            $insertSaleNews = DB::table('sale_news')->insertGetId($productData);
+
+            $imageRecords = [];
+            foreach ($request->file('images') as $image) {
+                $imageName = 'sale-news_' . time() . '_' . uniqid() . '.' . $image->extension();
+                $imagePath = 'storage/sale-news/' . $imageName;
+                Storage::disk('public')->putFileAs('sale-news', $image, $imageName);
+                $imageRecords[] = [
+                    'sale_new_id' => $insertSaleNews,
+                    'image_name' => $imagePath,
+                    'created_at' => now(),
+                ];
+            }
+            if (!empty($imageRecords)) {
+                DB::table('photo_gallery')->insert($imageRecords);
+            }
+            if ($insertSaleNews) {
+                return redirect()->back()->with('alert', [
+                    'type' => 'success',
+                    'message' => 'Added Successfully !'
+                ]);
+            } else {
+                return redirect()->back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'Không thành công !'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Lỗi: ' . $e->getMessage() . ' in file ' . $e->getFile() . ' on line ' . $e->getLine()
+            ]);
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -141,7 +236,6 @@ class SaleNewsController extends Controller
             // 'dataProductID' => $dataProductID,
             'dataCategory' => $dataCategory
         ]);
-
     }
 
     /**
@@ -158,41 +252,42 @@ class SaleNewsController extends Controller
 
 
 
-    public function getAllSaleStatus(){
-        $data = SaleNews::with('vipPackage','firstImage','sub_category')
-        ->where('status', 1)->where('user_id',auth()->user()->user_id);
+    public function getAllSaleStatus()
+    {
+        $data = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
+            ->where('status', 1)->where('user_id', auth()->user()->user_id);
 
-        $count_now_showing=$data->where('approved',1)->count();
-        $list_now_showing=$data->where('approved',1)->get();
+        $count_now_showing = $data->where('approved', 1)->count();
+        $list_now_showing = $data->where('approved', 1)->get();
 
-        $list_pending_approval=SaleNews::with('vipPackage','firstImage','sub_category')
-        ->where('approved',0)->where('user_id',auth()->user()->user_id)
-        ->get();
-        $count_pending_approval=SaleNews::with('vipPackage')
-        ->where('approved',0)->where('user_id',auth()->user()->user_id)->count();
+        $list_pending_approval = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
+            ->where('approved', 0)->where('user_id', auth()->user()->user_id)
+            ->get();
+        $count_pending_approval = SaleNews::with('vipPackage')
+            ->where('approved', 0)->where('user_id', auth()->user()->user_id)->count();
 
 
-        $count_not_accepted=SaleNews::with('vipPackage')
-        ->where('approved',2)->where('user_id',auth()->user()->user_id)
-        ->count();
-        $list_not_accepted=SaleNews::with('vipPackage','firstImage','sub_category')
-        ->where('approved',2)->where('user_id',auth()->user()->user_id)
-        ->get();
+        $count_not_accepted = SaleNews::with('vipPackage')
+            ->where('approved', 2)->where('user_id', auth()->user()->user_id)
+            ->count();
+        $list_not_accepted = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
+            ->where('approved', 2)->where('user_id', auth()->user()->user_id)
+            ->get();
 
-        $count_hidden=SaleNews::with('vipPackage')
-        ->where('status', 1)
-        ->where('approved',1)->where('user_id',auth()->user()->user_id)
-        ->count();
-        $list_hidden=SaleNews::with('vipPackage','firstImage','sub_category')
-        ->where('status', 1)
-        ->where('approved',1)->where('user_id',auth()->user()->user_id)
-        ->get();
+        $count_hidden = SaleNews::with('vipPackage')
+            ->where('status', 1)
+            ->where('approved', 1)->where('user_id', auth()->user()->user_id)
+            ->count();
+        $list_hidden = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
+            ->where('status', 1)
+            ->where('approved', 1)->where('user_id', auth()->user()->user_id)
+            ->get();
         // dd($list_pending_approval);
 
 
 
 
-        return view('salenews.index',compact('count_now_showing','list_now_showing','list_pending_approval','count_pending_approval','list_not_accepted','count_not_accepted','count_hidden','list_hidden'));
+        return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden'));
     }
     // public function tv2(){
     //     return view('salenews.promote');
@@ -230,63 +325,61 @@ class SaleNewsController extends Controller
         return redirect()->route('listings.index')->with('success', 'Listing promoted successfully.');
     }
 
-    public function renderSaleNewDetail(string $id){
+    public function renderSaleNewDetail(string $id)
+    {
         // dd($get_data_7subcategory);
         try {
-            $news = SaleNews::with(['channel','images','firstImage', 'category','sub_category'])->where('sale_new_id', $id)->first();
+            $news = SaleNews::with(['channel', 'images', 'firstImage', 'category', 'sub_category'])->where('sale_new_id', $id)->first();
 
 
-            if(!is_null($news->channel_id)){
-            $data_count_news = DB::table('sale_news')->where('channel_id',$news->channel_id)->where('approved',1)->where('status',1)->count();
-            $data_count_news_sold = DB::table('sale_news')->where('channel_id',$news->channel_id)->where('approved',1)->where('status',0)->count();
+            if (!is_null($news->channel_id)) {
+                $data_count_news = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 1)->count();
+                $data_count_news_sold = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 0)->count();
             }
 
 
 
-            $get_user_phone= DB::table('users')->where('user_id',$news->user_id)->first();
-            $get_data_7subcategory = SaleNews::with(['channel','images','firstImage','sub_category'])
-            ->where('sub_category_id', $news->sub_category_id)
-            ->whereNotNull('vip_package_id')
-            ->latest()
-            ->take(7)
-            ->get();
+            $get_user_phone = DB::table('users')->where('user_id', $news->user_id)->first();
+            $get_data_7subcategory = SaleNews::with(['channel', 'images', 'firstImage', 'sub_category'])
+                ->where('sub_category_id', $news->sub_category_id)
+                ->whereNotNull('vip_package_id')
+                ->latest()
+                ->take(7)
+                ->get();
             // dd($news);
 
 
 
-            if($news){
-                if(!is_null($news->channel_id)){
-            // $data = $news->data;
-            // $data_json = json_decode($data);
-            // $variants = json_decode($data_json->variants);
-            // $variant_data_details = json_decode($data_json->variant_data_details);
-            return view('salenews.detail', [
-                'new' =>$news,
-                'get_user' =>$get_user_phone,
-                'data_count_news'=>$data_count_news,
-                'data_count_news_sold'=>$data_count_news_sold,
-                // 'variants' =>$variants,
-                // 'variant_data_details' =>$variant_data_details,
-                'get_data_7subcategory'=>$get_data_7subcategory
+            if ($news) {
+                if (!is_null($news->channel_id)) {
+                    // $data = $news->data;
+                    // $data_json = json_decode($data);
+                    // $variants = json_decode($data_json->variants);
+                    // $variant_data_details = json_decode($data_json->variant_data_details);
+                    return view('salenews.detail', [
+                        'new' => $news,
+                        'get_user' => $get_user_phone,
+                        'data_count_news' => $data_count_news,
+                        'data_count_news_sold' => $data_count_news_sold,
+                        // 'variants' =>$variants,
+                        // 'variant_data_details' =>$variant_data_details,
+                        'get_data_7subcategory' => $get_data_7subcategory
+                    ]);
+                }
+
+                return view('salenews.detail', [
+                    'new' => $news,
+                    'get_user' => $get_user_phone,
+                    // 'variants' =>$variants,
+                    // 'variant_data_details' =>$variant_data_details,
+                    'get_data_7subcategory' => $get_data_7subcategory
+                ]);
+            }
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Product not found!'
             ]);
-
-        }
-
-        return view('salenews.detail', [
-            'new' =>$news,
-            'get_user' =>$get_user_phone,
-            // 'variants' =>$variants,
-            // 'variant_data_details' =>$variant_data_details,
-            'get_data_7subcategory'=>$get_data_7subcategory
-        ]);
-
-
-        }
-        return redirect()->back()->with('alert', [
-            'type' => 'error',
-            'message' => 'Product not found!'
-        ]);
-     } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
                 'message' => ' Error : ' . $th->getMessage()
@@ -297,9 +390,9 @@ class SaleNewsController extends Controller
     public function list_salenew()
     {
         $data = SaleNews::with('user', 'sub_category.category', 'images')
-        ->where('is_delete', NULL)
-        ->get();
-    
+            ->where('is_delete', NULL)
+            ->get();
+
 
         // Sử dụng withCount để đếm số lượng tin có trạng thái = 0
         $count = SaleNews::where('approved', 0)->count();
@@ -309,7 +402,7 @@ class SaleNewsController extends Controller
 
     public function reject($id)
     {
-        try{
+        try {
             $item = SaleNews::findOrFail($id);
 
             // Thay đổi trạng thái giữa 0 và 2
@@ -321,75 +414,69 @@ class SaleNewsController extends Controller
                 'message' => ' Reject  successfully!'
             ]);
         } catch (\Throwable $th) {
-                return redirect()->back()->with('alert', [
-                    'type' => 'error',
-                    'message' => 'Error: ' . $th->getMessage()
-                ]);
-
-        }
-
-    }
-
-    public function approve($id)
-    {
-        try{
-         $item = SaleNews::findOrFail($id);
-
-            // Thay đổi trạng thái giữa 0 và 1
-         $item->approved = $item->approved == 1 ? 0 : 1;
-         $item->save();
-
-         return redirect()->back()->with('alert', [
-            'type' => 'success',
-            'message' => ' Approve successfully!'
-        ]);
-    }
-        catch (\Throwable $th) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
                 'message' => 'Error: ' . $th->getMessage()
             ]);
         }
+    }
 
+    public function approve($id)
+    {
+        try {
+            $item = SaleNews::findOrFail($id);
+
+            // Thay đổi trạng thái giữa 0 và 1
+            $item->approved = $item->approved == 1 ? 0 : 1;
+            $item->save();
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => ' Approve successfully!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Error: ' . $th->getMessage()
+            ]);
+        }
     }
     public function destroy($id)
-{
-    try {
-        $item = SaleNews::findOrFail($id);
+    {
+        try {
+            $item = SaleNews::findOrFail($id);
 
-        // Nếu is_delete là NULL, gán giá trị là 1
-        if (is_null($item->is_delete)) {
-            $item->is_delete = 1;
+            // Nếu is_delete là NULL, gán giá trị là 1
+            if (is_null($item->is_delete)) {
+                $item->is_delete = 1;
+            }
+
+            // Chuyển trạng thái approved thành 1
+            $item->approved = 2;
+
+            $item->save();
+
+            // Thông báo
+            $message = 'Delete successfully!';
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => $message
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Lỗi: ' . $th->getMessage()
+            ]);
         }
-
-        // Chuyển trạng thái approved thành 1
-        $item->approved = 2;
-
-        $item->save();
-
-        // Thông báo
-        $message = 'Delete successfully!';
-
-        return redirect()->back()->with('alert', [
-            'type' => 'success',
-            'message' => $message
-        ]);
-    } catch (\Throwable $th) {
-        return redirect()->back()->with('alert', [
-            'type' => 'error',
-            'message' => 'Lỗi: ' . $th->getMessage()
-        ]);
     }
-}
 
-    
 
-    public function navbar_sale(){
+
+    public function navbar_sale()
+    {
         $count = SaleNews::where('approved', 0)->get();
 
-        return view('layouts.admin', compact( 'count'));
+        return view('layouts.admin', compact('count'));
     }
-
-
-
 }

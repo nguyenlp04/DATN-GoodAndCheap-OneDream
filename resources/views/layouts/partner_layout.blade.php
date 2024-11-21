@@ -155,20 +155,20 @@
             </li>
 
             <!-- Product Management -->
-            <li class="menu-item {{ Request::is('news/*') || Request::is('product') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('partners/*') || Request::is('partners') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="Product Management">Sale News Management</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('partners/sale-news/') ? 'active' : '' }}">
-                        <a href="{{ url('partners/sale-news/') }}" class="menu-link">
-                            <div data-i18n="Hide Product">List Sale News</div>
+                    <li class="menu-item {{ Request::is('partners/sale-news') ? 'active' : '' }}">
+                        <a href="{{ url('partners/sale-news') }}" class="menu-link">
+                            <div data-i18n="Hide Product">Sale News</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('product/approve') ? 'active' : '' }}">
-                        <a href="{{ url('product/approve') }}" class="menu-link">
-                            <div data-i18n="Approve Product">Trash Sale News</div>
+                    <li class="menu-item {{ Request::is('partners/sale-news/add') ? 'active' : '' }}">
+                        <a href="{{ url('partners/sale-news/add') }}" class="menu-link">
+                            <div data-i18n="Approve Product">Add Sale News</div>
                         </a>
                     </li>
                 </ul>

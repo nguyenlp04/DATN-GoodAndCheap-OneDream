@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset("/../admin/assets/img/favicon/favicon.ico") }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('/../admin/assets/img/favicon/favicon.ico') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,31 +46,31 @@
 
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/fonts/boxicons.css") }}" />
+    <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/fonts/boxicons.css') }}" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/css/core.css") }}" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/css/theme-default.css") }}" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{ asset("/../admin/assets/css/demo.css") }}" />
+    <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ asset('/../admin/assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css") }}" />
+    <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <!-- Page CSS -->
 
     <!-- Helpers -->
-    <script src="{{ asset("/../admin/assets/vendor/js/helpers.js") }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/js/helpers.js') }}"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset("/../admin/assets/js/config.js") }}"></script>
+    <script src="{{ asset('/../admin/assets/js/config.js') }}"></script>
   </head>
 
   <body>
   <?php
-      use App\Models\SaleNews;
-      $count = SaleNews::where('approved', 0)->count(); // Đếm số lượng bản ghi thay vì lấy Collection
-      ?>
+  use App\Models\SaleNews;
+  $count = SaleNews::where('approved', 0)->count(); // Đếm số lượng bản ghi thay vì lấy Collection
+  ?>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -78,7 +78,7 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-            <a href="{{ url("index.html") }}" class="app-brand-link">
+            <a href="{{ url('index.html') }}" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg
                   width="25"
@@ -138,7 +138,7 @@
 
             </a>
 
-            <a href="{{ url("javascript:void(0);") }}" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <a href="{{ url('javascript:void(0);') }}" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
               <i class="bx bx-chevron-left bx-sm align-middle"></i>
             </a>
           </div>
@@ -155,7 +155,7 @@
             </li>
 
             <!-- Sale News Management -->
-            <li class="menu-item {{ Request::is('sale-news/*') || Request::is('sale-news') ? 'active open' : '' }}">
+            {{-- <li class="menu-item {{ Request::is('sale-news/*') || Request::is('sale-news') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="sale-news Management">Sale News Management</div>
@@ -175,14 +175,14 @@
                         <a href="{{ url('category') }}" class="menu-link">
                             <div data-i18n="Add Category">Add Category</div>
                         </a>
-                    </li> -->
+                    </li> 
                     <li class="menu-item {{ Request::is('sale-news/approve') ? 'active' : '' }}">
                         <a href="{{ url('sale-news/approve') }}" class="menu-link">
                             <div data-i18n="Approve sale-news">Approve Sale News (affiliate)</div>
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
 
             <!-- Category Management -->
@@ -263,33 +263,54 @@
 
 
             </li>
-            <li class="menu-item {{ Request::is('sale_news') ? 'active open' : '' }}">
+            {{-- <li class="menu-item {{ Request::is('sale_news') ? 'active open' : '' }}">
           <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bxl-blogger"></i>
               <div data-i18n="Analytics">Sale new </div>
-              @if($count > 0 ) <!-- Chỉ hiển thị nếu không ở trang con -->
-                  <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle" 
+              @if ($count > 0)
+<!-- Chỉ hiển thị nếu không ở trang con -->
+                  <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle"
                       style="width: 17px; height: 17px; margin-left: 50px;">
-                      <span class="text-white d-flex justify-content-center align-items-center" 
+                      <span class="text-white d-flex justify-content-center align-items-center"
                             style="line-height: 17px; font-size: 10px;">!</span>
                   </div>
-              @endif
+@endif
           </a>
           <ul class="menu-sub">
               <li class="menu-item {{ Request::is('/sale_news') ? 'active' : '' }}">
                   <a href="{{ url('/sale_news') }}" class="menu-link">
-                      <div data-i18n="Blogs">List Sale new </div>
-                      @if($count > 0) <!-- Hiển thị trong trang con nếu có -->
-                          <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle" 
+                      <div data-i18n="Blogs">Sale News </div>
+                      @if ($count > 0)
+<!-- Hiển thị trong trang con nếu có -->
+                          <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle"
                               style="width: 17px; height: 17px; margin-left: 50px;">
-                              <span class="text-white d-flex justify-content-center align-items-center" 
+                              <span class="text-white d-flex justify-content-center align-items-center"
                                     style="line-height: 17px; font-size: 10px;">!</span>
                           </div>
-                      @endif
+@endif
                   </a>
               </li>
           </ul>
-      </li>
+      </li> --}}
+
+
+
+      <li class="menu-item {{ Request::is('sale_news') ? 'active' : '' }}">
+        <a href="{{ url('sale_news') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-package"></i>
+            <div data-i18n="Blogs">Sale News </div>
+                      @if ($count > 0)
+<!-- Hiển thị trong trang con nếu có -->
+                          <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle"
+                              style="width: 17px; height: 17px; margin-left: 50px;">
+                              <span class="text-white d-flex justify-content-center align-items-center"
+                                    style="line-height: 17px; font-size: 10px;">!</span>
+                          </div>
+@endif
+        </a>
+    </li>
+
+
 
             <!-- Notification -->
             <li class="menu-item {{ Request::is('notifications/*') || Request::is('notifications') ? 'active open' : '' }}">
@@ -396,34 +417,34 @@
 
             <!-- Layouts -->
             <li class="menu-item">
-              <a href="{{ url("javascript:void(0);") }}" class="menu-link menu-toggle">
+              <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Layouts</div>
               </a>
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ url("layouts-without-menu.html") }}" class="menu-link">
+                  <a href="{{ url('layouts-without-menu.html') }}" class="menu-link">
                     <div data-i18n="Without menu">Without menu</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("layouts-without-navbar.html") }}" class="menu-link">
+                  <a href="{{ url('layouts-without-navbar.html') }}" class="menu-link">
                     <div data-i18n="Without navbar">Without navbar</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("layouts-container.html") }}" class="menu-link">
+                  <a href="{{ url('layouts-container.html') }}" class="menu-link">
                     <div data-i18n="Container">Container</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("layouts-fluid.html") }}" class="menu-link">
+                  <a href="{{ url('layouts-fluid.html') }}" class="menu-link">
                     <div data-i18n="Fluid">Fluid</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("layouts-blank.html") }}" class="menu-link">
+                  <a href="{{ url('layouts-blank.html') }}" class="menu-link">
                     <div data-i18n="Blank">Blank</div>
                   </a>
                 </li>
@@ -431,13 +452,13 @@
             </li>
 
             <li class="menu-item">
-              <a href="{{ url("javascript:void(0);") }}" class="menu-link menu-toggle">
+              <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">Account Settings</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ url("profile.html") }}" class="menu-link">
+                  <a href="{{ url('profile.html') }}" class="menu-link">
                     <div data-i18n="Account">Account</div>
                   </a>
                 </li>
@@ -445,41 +466,41 @@
               </ul>
             </li>
             <li class="menu-item">
-              <a href="{{ url("javascript:void(0);") }}" class="menu-link menu-toggle">
+              <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
                 <div data-i18n="Authentications">Authentications</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ url("auth-login-basic.html") }}" class="menu-link" target="_blank">
+                  <a href="{{ url('auth-login-basic.html') }}" class="menu-link" target="_blank">
                     <div data-i18n="Basic">Login</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("auth-register-basic.html") }}" class="menu-link" target="_blank">
+                  <a href="{{ url('auth-register-basic.html') }}" class="menu-link" target="_blank">
                     <div data-i18n="Basic">Register</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("auth-forgot-password-basic.html") }}" class="menu-link" target="_blank">
+                  <a href="{{ url('auth-forgot-password-basic.html') }}" class="menu-link" target="_blank">
                     <div data-i18n="Basic">Forgot Password</div>
                   </a>
                 </li>
               </ul>
             </li>
             <li class="menu-item">
-              <a href="{{ url("javascript:void(0);") }}" class="menu-link menu-toggle">
+              <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">Misc</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ url("pages-misc-error.html") }}" class="menu-link">
+                  <a href="{{ url('pages-misc-error.html') }}" class="menu-link">
                     <div data-i18n="Error">Error</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("pages-misc-under-maintenance.html") }}" class="menu-link">
+                  <a href="{{ url('pages-misc-under-maintenance.html') }}" class="menu-link">
                     <div data-i18n="Under Maintenance">Under Maintenance</div>
                   </a>
                 </li>
@@ -489,86 +510,86 @@
 
             <!-- User interface -->
             <li class="menu-item">
-              <a href="{{ url("javascript:void(0)") }}" class="menu-link menu-toggle">
+              <a href="{{ url('javascript:void(0)') }}" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="User interface">User interface</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ url("ui-accordion.html") }}" class="menu-link">
+                  <a href="{{ url('ui-accordion.html') }}" class="menu-link">
                     <div data-i18n="Accordion">Accordion</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-alerts.html") }}" class="menu-link">
+                  <a href="{{ url('ui-alerts.html') }}" class="menu-link">
                     <div data-i18n="Alerts">Alerts</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-badges.html") }}" class="menu-link">
+                  <a href="{{ url('ui-badges.html') }}" class="menu-link">
                     <div data-i18n="Badges">Badges</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-buttons.html") }}" class="menu-link">
+                  <a href="{{ url('ui-buttons.html') }}" class="menu-link">
                     <div data-i18n="Buttons">Buttons</div>
                   </a>
                 </li>
 
                 <li class="menu-item">
-                  <a href="{{ url("ui-collapse.html") }}" class="menu-link">
+                  <a href="{{ url('ui-collapse.html') }}" class="menu-link">
                     <div data-i18n="Collapse">Collapse</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-dropdowns.html") }}" class="menu-link">
+                  <a href="{{ url('ui-dropdowns.html') }}" class="menu-link">
                     <div data-i18n="Dropdowns">Dropdowns</div>
                   </a>
                 </li>
 
                 <li class="menu-item">
-                  <a href="{{ url("ui-list-groups.html") }}" class="menu-link">
+                  <a href="{{ url('ui-list-groups.html') }}" class="menu-link">
                     <div data-i18n="List Groups">List groups</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-modals.html") }}" class="menu-link">
+                  <a href="{{ url('ui-modals.html') }}" class="menu-link">
                     <div data-i18n="Modals">Modals</div>
                   </a>
                 </li>
 
                 <li class="menu-item">
-                  <a href="{{ url("ui-offcanvas.html") }}" class="menu-link">
+                  <a href="{{ url('ui-offcanvas.html') }}" class="menu-link">
                     <div data-i18n="Offcanvas">Offcanvas</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-pagination-breadcrumbs.html") }}" class="menu-link">
+                  <a href="{{ url('ui-pagination-breadcrumbs.html') }}" class="menu-link">
                     <div data-i18n="Pagination &amp; Breadcrumbs">Pagination &amp; Breadcrumbs</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-progress.html") }}" class="menu-link">
+                  <a href="{{ url('ui-progress.html') }}" class="menu-link">
                     <div data-i18n="Progress">Progress</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-spinners.html") }}" class="menu-link">
+                  <a href="{{ url('ui-spinners.html') }}" class="menu-link">
                     <div data-i18n="Spinners">Spinners</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-tabs-pills.html") }}" class="menu-link">
+                  <a href="{{ url('ui-tabs-pills.html') }}" class="menu-link">
                     <div data-i18n="Tabs &amp; Pills">Tabs &amp; Pills</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-toasts.html") }}" class="menu-link">
+                  <a href="{{ url('ui-toasts.html') }}" class="menu-link">
                     <div data-i18n="Toasts">Toasts</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("ui-tooltips-popovers.html") }}" class="menu-link">
+                  <a href="{{ url('ui-tooltips-popovers.html') }}" class="menu-link">
                     <div data-i18n="Tooltips & Popovers">Tooltips &amp; popovers</div>
                   </a>
                 </li>
@@ -581,36 +602,36 @@
             <!-- Forms & Tables -->
             <!-- Forms -->
             <li class="menu-item">
-              <a href="{{ url("javascript:void(0);") }}" class="menu-link menu-toggle">
+              <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Elements">Form Elements</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ url("forms-basic-inputs.html") }}" class="menu-link">
+                  <a href="{{ url('forms-basic-inputs.html') }}" class="menu-link">
                     <div data-i18n="Basic Inputs">Basic Inputs</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("forms-input-groups.html") }}" class="menu-link">
+                  <a href="{{ url('forms-input-groups.html') }}" class="menu-link">
                     <div data-i18n="Input groups">Input groups</div>
                   </a>
                 </li>
               </ul>
             </li>
             <li class="menu-item">
-              <a href="{{ url("javascript:void(0);") }}" class="menu-link menu-toggle">
+              <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Layouts">Form Layouts</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ url("form-layouts-vertical.html") }}" class="menu-link">
+                  <a href="{{ url('form-layouts-vertical.html') }}" class="menu-link">
                     <div data-i18n="Vertical Form">Vertical Form</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ url("form-layouts-horizontal.html") }}" class="menu-link">
+                  <a href="{{ url('form-layouts-horizontal.html') }}" class="menu-link">
                     <div data-i18n="Horizontal Form">Horizontal Form</div>
                   </a>
                 </li>
@@ -618,7 +639,7 @@
             </li>
             <!-- Tables -->
             <li class="menu-item">
-              <a href="{{ url("tables-basic.html") }}" class="menu-link">
+              <a href="{{ url('tables-basic.html') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-table"></i>
                 <div data-i18n="Tables">Tables</div>
               </a>
@@ -657,7 +678,7 @@
               id="layout-navbar"
             >
               <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                <a class="nav-item nav-link px-0 me-xl-4" href="{{ url("javascript:void(0)") }}">
+                <a class="nav-item nav-link px-0 me-xl-4" href="{{ url('javascript:void(0)') }}">
                   <i class="bx bx-menu bx-sm"></i>
                 </a>
               </div>
@@ -683,18 +704,18 @@
 
                   <!-- User -->
                   <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                    <a class="nav-link dropdown-toggle hide-arrow" href="{{ url("javascript:void(0);") }}" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="{{ url('javascript:void(0);') }}" data-bs-toggle="dropdown">
                       <div class="avatar avatar-online">
-                        <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
+                        <img src="{{ asset('/../admin/assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
                       </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                       <li>
-                        <a class="dropdown-item" href="{{ url("#") }}">
+                        <a class="dropdown-item" href="{{ url('#') }}">
                           <div class="d-flex">
                             <div class="flex-shrink-0 me-3">
                               <div class="avatar avatar-online">
-                                <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
+                                <img src="{{ asset('/../admin/assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
                               </div>
                             </div>
                             <div class="flex-grow-1">
@@ -708,19 +729,19 @@
                         <div class="dropdown-divider"></div>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="{{ url("profile.html") }}">
+                        <a class="dropdown-item" href="{{ url('profile.html') }}">
                           <i class="bx bx-user me-2"></i>
                           <span class="align-middle">My Profile</span>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="{{ url("#") }}">
+                        <a class="dropdown-item" href="{{ url('#') }}">
                           <i class="bx bx-cog me-2"></i>
                           <span class="align-middle">Settings</span>
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="{{ url("#") }}">
+                        <a class="dropdown-item" href="{{ url('#') }}">
                           <span class="d-flex align-items-center align-middle">
                             <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                             <span class="flex-grow-1 align-middle">Billing</span>
@@ -732,7 +753,7 @@
                         <div class="dropdown-divider"></div>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="{{ url("auth-login-basic.html") }}">
+                        <a class="dropdown-item" href="{{ url('auth-login-basic.html') }}">
                           <i class="bx bx-power-off me-2"></i>
                           <span class="align-middle">Log Out</span>
                         </a>
@@ -754,8 +775,8 @@
               <div class="mb-2 mb-md-0">
                 ©
                 <script>
-                  document.write(new Date().getFullYear());
-              </script>
+                    document.write(new Date().getFullYear());
+                </script>
                 , made with ❤️ by
                 <a href="https://OneDream.com" target="_blank" class="footer-link fw-bolder">OneDream</a>
               </div>
@@ -775,13 +796,13 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset("/../admin/assets/vendor/libs/jquery/jquery.js") }}"></script>
-    <script src="{{ asset("/../admin/assets/vendor/libs/popper/popper.js") }}"></script>
-    <script src="{{ asset("/../admin/assets/vendor/js/bootstrap.js") }}"></script>
-    <script src="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js") }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <!-- <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script> -->
 
-    <script src="{{ asset("/../admin/assets/vendor/js/menu.js") }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
