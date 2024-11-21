@@ -60,6 +60,17 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
         Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
     });
+
+    Route::get('channel', [ChannelController::class, 'list_channel'])->name('channel');
+    Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
+    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
+    Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
+    Route::put('/vip-package/lock/{id}', [VipPackageController::class, 'updateLock'])->name('upL.Vip');
+});
+// endadmin
+
+// user
+Route::middleware('auth')->group(function () {
     Route::prefix('notifications')->name('notifications.')->group(function () {
         Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có Route cho nó
         Route::get('/create', [NotificationController::class, 'create'])->name('create');
