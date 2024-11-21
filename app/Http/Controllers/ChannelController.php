@@ -34,11 +34,11 @@ class ChannelController extends Controller
                 ->with('error', 'You have not created a channel yet.');
         }
 
-        $sale_news = $channels->saleNews()->with('sub_category')->get();
+        $sale_news = $channels->saleNews()->with('subcategory')->get();
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory
-            $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
+            $news->name_sub_category = $news->subcategory ? $news->subcategory->name_sub_category : null;
         }
 
         // Count records of sub_category based on name

@@ -24,6 +24,7 @@ class Channel extends Model
         'user_id',
         'vip_package_id'  // Cập nhật để sử dụng khóa ngoại đúng
     ];
+    protected $dates = ['created_at'];
 
     // Mối quan hệ với User (mỗi kênh thuộc về một người dùng)
     public function user()
