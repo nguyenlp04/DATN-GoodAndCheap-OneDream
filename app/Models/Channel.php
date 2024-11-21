@@ -24,6 +24,7 @@ class Channel extends Model
         'user_id',
         'vip_package_id'  // Cập nhật để sử dụng khóa ngoại đúng
     ];
+    protected $dates = ['created_at'];
 
     // Mối quan hệ với User (mỗi kênh thuộc về một người dùng)
     public function user()
@@ -46,5 +47,9 @@ class Channel extends Model
     public function subcategory()
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
+    }
+    public function followers()
+    {
+        return $this->hasMany(UserFollowed::class, 'channel_id');
     }
 }

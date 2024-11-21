@@ -41,6 +41,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('/blogs', BlogController::class);
     Route::post('/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+
     Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
     Route::prefix('category')->group(function () {
         Route::get('/', [CategoryController::class, 'index']);
@@ -59,6 +60,12 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
         Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
     });
+
+    Route::get('channel', [ChannelController::class, 'list_channel'])->name('channel');
+    Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
+    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
+    Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
+    Route::put('/vip-package/lock/{id}', [VipPackageController::class, 'updateLock'])->name('upL.Vip');
     Route::prefix('notifications')->name('notifications.')->group(function () {
         Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có Route cho nó
         Route::get('/create', [NotificationController::class, 'create'])->name('create');
@@ -70,16 +77,14 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
         Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
     });
-    Route::get('channel', [ChannelController::class, 'list_channel'])->name('channel');
-    Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
-    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
-    Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
-    Route::put('/vip-package/lock/{id}', [VipPackageController::class,'updateLock'])->name('upL.Vip');
+    Route::get('/sale_news', [SaleNewsController::class, 'list_salenew'])->name('sale_new.list');
 
-
-
+    route::post('/sale_news/reject/{id}',[SaleNewsController::class,'reject'])->name('sale_news.reject');
+    Route::delete('/sale_news/{id}', [SaleNewsController::class, 'destroy'])->name('sale_news.destroy');
+    route::post('/sale_news/approve/{id}',[SaleNewsController::class,'approve'])->name('sale_news.approve');
 });
 // endadmin
+
 
 // user
 Route::middleware('auth')->group(function () {
@@ -109,7 +114,7 @@ Route::middleware('auth')->group(function () {
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
     });
-    Route::get('/salenews/{id}/promote', [SaleNewsController::class,'promote'])->name('salenew.promote');
+    Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
     Route::get('/salenews-status', [SaleNewsController::class, 'getAllSaleStatus'])->name('sl.index');
     Route::prefix('sale-news')->group(function () {
         Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
@@ -117,9 +122,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/get-subcategories/{categoryId}', [SaleNewsController::class, 'getSubcategories']);
-
-
-
+    Route::post('/follow-channel/{channel_id}', [ChannelController::class, 'followChannel'])->name('follow.channel');
+    Route::delete('/unfollow-channel/{channel_id}', [ChannelController::class, 'unfollowChannel'])->name('unfollow.channel');
 });
 
 Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
@@ -140,7 +144,7 @@ Route::get('/verify', [VerificationController::class, 'showVerifyForm'])->name('
 Route::post('/verify', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
 Route::post('staff/login', [StaffAuthController::class, 'login']);
-Route::get('/salenew-detail/{id}', [SaleNewsController::class,'renderSaleNewDetail'])->name('salenew.detail');
+Route::get('/salenew-detail/{id}', [SaleNewsController::class, 'renderSaleNewDetail'])->name('salenew.detail');
 // end guest
 
 
@@ -190,4 +194,3 @@ Route::prefix('trash')->group(function () {
 // Route::get('/salenewdetail',function (){
 // return view('salenews.detail');
 // });
-

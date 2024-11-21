@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Channel;
 use App\Models\Sale_news;
 use App\Models\Subcategory;
+use App\Models\UserFollowed;
 use App\Models\VipPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,11 +35,11 @@ class ChannelController extends Controller
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
 
-        $sale_news = $channels->saleNews()->with('sub_category')->get();
+        $sale_news = $channels->saleNews()->with('subcategory')->get();
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory
-            $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
+            $news->name_sub_category = $news->subcategory ? $news->subcategory->name_sub_category : null;
         }
 
         // Count records of sub_category based on name
@@ -149,7 +150,6 @@ class ChannelController extends Controller
     public function show(string $id)
     {
         $user = Auth::user();
-
         // Check if the user has created a channel
         $channel = Channel::where('user_id', $user->user_id)->whereNotNull('status')->first();
 
@@ -157,6 +157,7 @@ class ChannelController extends Controller
             return redirect()->route('home') // Chuyển hướng đến trang tạo kênh
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
+
 
         // If the user has a channel, continue to display the channel
         $channels = Channel::findOrFail($id); // Get channel by ID
@@ -174,8 +175,11 @@ class ChannelController extends Controller
 
         // Count the number of news items that the channel has posted
         $NewsCount = $channels->saleNews()->count();
-
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count'));
+        //loi viet
+        $isFollowed = UserFollowed::where('user_id', $user->user_id)
+            ->where('channel_id', $channels->channel_id)
+            ->exists();
+        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed'));
     }
 
 
@@ -244,5 +248,64 @@ class ChannelController extends Controller
             'type' => 'success',
             'message' => 'Channel deleted successfully.',
         ]);
+    }
+    public function followChannel($channel_id)
+    {
+        $user = Auth::user(); // Lấy người dùng đang đăng nhập
+        $channel = Channel::find($channel_id); // Tìm kênh theo ID
+
+        if (!$channel) {
+            return response()->json(['message' => 'Channel does not exist.'], 404);
+        }
+
+        // Kiểm tra nếu người dùng đã theo dõi kênh này rồi
+        $existingFollow = UserFollowed::where('user_id', $user->user_id)
+            ->where('channel_id', $channel->channel_id)
+            ->first();
+        if ($existingFollow) {
+            return response()->json(['message' => 'You are already following this channel.'], 400);
+        }
+
+        // Tạo bản ghi mới trong bảng user_followed
+        $userFollowed = new UserFollowed();
+        $userFollowed->user_id = $user->user_id;
+        $userFollowed->channel_id = $channel->channel_id;
+        $userFollowed->save();
+
+        // Lưu thông báo vào session
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => 'You have successfully followed the channel.'
+        ]);
+
+        return redirect()->back();  // Quay lại trang trước
+    }
+
+
+    public function unfollowChannel($channel_id)
+    {
+        $user = Auth::user(); // Lấy người dùng đang đăng nhập
+        $channel = Channel::find($channel_id); // Tìm kênh theo ID
+
+        if (!$channel) {
+            return response()->json(['message' => 'Channel does not exist.'], 404);
+        }
+
+        // Tìm bản ghi theo dõi của người dùng này
+        $existingFollow = UserFollowed::where('user_id', $user->user_id)
+            ->where('channel_id', $channel->channel_id)
+            ->first();
+        if ($existingFollow) {
+            $existingFollow->delete();  // Xóa bản ghi theo dõi
+
+            // Lưu thông báo vào session
+            session()->flash('alert', [
+                'type' => 'success',
+                'message' => 'You have unfollowed the channel.'
+            ]);
+
+            return redirect()->back();  // Quay lại trang trước
+        }
+        return response()->json(['message' => 'You have not followed this channel yet.'], 400);
     }
 }

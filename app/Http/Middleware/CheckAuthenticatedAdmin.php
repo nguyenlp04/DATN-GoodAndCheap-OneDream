@@ -21,6 +21,6 @@ class CheckAuthenticatedAdmin
             return redirect('/');
         }
 
-            return $next($request);
+        return $next($request);
     }
 }

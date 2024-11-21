@@ -17,6 +17,6 @@ class Subcategory extends Model
     // Mối quan hệ với Category
     public function category()
     {
-        return $this->hasOne(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

@@ -27,9 +27,11 @@ class Category extends Model
     {
         return $this->hasMany(SubcategoryAttribute::class, 'category_id');
     }
-    public function blogs()
+  
+public function blogs()
 {
-    return $this->belongsToMany(Blog::class,  'category_id');
+    return $this->hasMany(Blog::class, 'category_id', 'category_id');
 }
+
 
 }

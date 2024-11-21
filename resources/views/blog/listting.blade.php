@@ -10,10 +10,9 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
         <div class="container">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                   
-                   <li class="breadcrumb-item active" aria-current="page">Blog</li>
-            
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Blog</a></li>
+
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -21,54 +20,66 @@
     <div class="page-content">
         <div class="container">
             <nav class="blog-nav">
-                <ul class="menu-cat entry-filter ">
-                    <li class="active"><a href="#" data-filter="*">All Blog Posts<span>{{$count}}</span></a></li>
-                   
+                <ul class="menu-cat entry-filter justify-content-center">
+                    <li class="active"><a href="#" data-filter="*">All Blog Posts<span>{{ $blogs->count() }}</span></a>
+                    </li>
+                    @foreach($category as $cat)
+                    <li><a href="#"
+                            data-filter=".cat{{$cat->category_id}}">{{ $cat->name_category }}<span>{{ $cat->blogs_count }}</span></a>
+                    </li>
+                    @endforeach
                 </ul><!-- End .blog-menu -->
             </nav><!-- End .blog-nav -->
 
             <div class="entry-container max-col-4">
-            @foreach($blogs as $blog)
-                <div class="entry-item lifestyle shopping col-sm-6 col-md-4 col-lg-3">
+                @foreach($blogs as $blog)
+                <div class="entry-item cat{{$blog->category_id}} shopping col-sm-6 col-md-4 col-lg-3">
                     <article class="entry entry-grid text-center">
                         <figure class="entry-media">
-                        <a href="{{ route('blogs.detail', $blog->blog_id) }}">
-                        <img src="{{ asset('storage/' . $blog->image) }}" alt="Blogs Image" >
-                         </a>
+                            <a href="{{ route('blogs.detail', $blog->blog_id) }}">
+                                <img style="height:200px" src="{{ asset('storage/' . $blog->image) }}"
+                                    alt="Blogs Image">
+                            </a>
                         </figure><!-- End .entry-media -->
 
                         <div class="entry-body">
                             <div class="entry-meta ">
-                            <a href="{{ route('blogs.detail', $blog->blog_id) }}">{{$blog->created_at->format('M d, Y')}}</a>
+                                <a
+                                    href="{{ route('blogs.detail', $blog->blog_id) }}">{{ $blog->created_at->format('M d, Y') }}</a>
                                 <span class="meta-separator">|</span>
-                              
-                                                in 
-                                                <a class="ml-2" href="{{ route('blogs.detail', $blog->blog_id) }}">{{ strtoupper($blog->tags) }}</a>
-                                 
+
+
+                                @if($blog->category)
+                                in
+                                <a class="ml-2" href="{{ route('blogs.detail', $blog->blog_id) }}">
+                                    {{ strtoupper($blog->category->name_category) }}
+                                </a>
+                                @else
+                                <span>Không có danh mục</span>
+                                @endif
+
                             </div><!-- End .entry-meta -->
 
                             <h2 class="entry-title">
-                            <a href="{{ route('blogs.detail', $blog->blog_id) }}">{{$blog->title}}.</a>
+                                <a href="{{ route('blogs.detail', $blog->blog_id) }}">{{$blog->title}}</a>
                             </h2><!-- End .entry-title -->
 
                             <div class="entry-content">
-                                           
-                                                <a href="{{ route('blogs.detail', $blog->blog_id) }}" class="read-more">Continue Reading</a>
-                                            </div><!-- End .entry-cats -->
+
+                                <a href="{{ route('blogs.detail', $blog->blog_id) }}" class="read-more">Continue
+                                    Reading</a>
+                            </div><!-- End .entry-cats -->
                         </div><!-- End .entry-body -->
                     </article><!-- End .entry -->
                 </div><!-- End .entry-item -->
                 @endforeach
-
-                
-
-                
             </div><!-- End .entry-container -->
 
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <li class="page-item disabled">
-                        <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                        <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
+                            aria-disabled="true">
                             <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                         </a>
                     </li>
@@ -86,8 +97,8 @@
 </main><!-- End .main -->
 
 @endsection
-{{-- 
+
 @section('script-link-css')
 <script src="{{ asset('assets/js/imagesloaded.pkgd.min.js') }}"></script>
 <script src="{{ asset('assets/js/isotope.pkgd.min.js') }}"></script>
-@endsection --}}
+@endsection
