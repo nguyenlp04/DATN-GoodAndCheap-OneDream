@@ -179,6 +179,8 @@
                                             </div>
                                             <input type="hidden" id="hiddenAddress" name="hiddenAddress">
                                             <input type="hidden" id="hiddenAddressChannel" name="hiddenAddressChannel" value="{{ $channels->address }}">
+                                            <input type="hidden" id="idChannel" name="idChannel" value="{{ $channels->channel_id }}">
+
                                         </div>
                                     </div>
 
