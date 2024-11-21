@@ -66,11 +66,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
     Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
     Route::put('/vip-package/lock/{id}', [VipPackageController::class, 'updateLock'])->name('upL.Vip');
-});
-// endadmin
-
-// user
-Route::middleware('auth')->group(function () {
     Route::prefix('notifications')->name('notifications.')->group(function () {
         Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có Route cho nó
         Route::get('/create', [NotificationController::class, 'create'])->name('create');
@@ -82,14 +77,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('forceDelete/{id}/', [NotificationController::class, 'forceDelete'])->name('forceDelete');
         Route::patch('/toggleStatus/{id}', [NotificationController::class, 'toggleStatus'])->name('toggleStatus');
     });
-    Route::get('channel', [ChannelController::class, 'list_channel'])->name('channel');
-    Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
-    Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
-    Route::put('/vip-package/unlock/{id}', [VipPackageController::class, 'updateUnlock'])->name('upU.Vip');
-    Route::put('/vip-package/lock/{id}', [VipPackageController::class,'updateLock'])->name('upL.Vip');
+    Route::get('/sale_news', [SaleNewsController::class, 'list_salenew'])->name('sale_new.list');
 
+    route::post('/sale_news/reject/{id}',[SaleNewsController::class,'reject'])->name('sale_news.reject');
+    Route::delete('/sale_news/{id}', [SaleNewsController::class, 'destroy'])->name('sale_news.destroy');
+    route::post('/sale_news/approve/{id}',[SaleNewsController::class,'approve'])->name('sale_news.approve');
 });
 // endadmin
+
 
 // user
 Route::middleware('auth')->group(function () {

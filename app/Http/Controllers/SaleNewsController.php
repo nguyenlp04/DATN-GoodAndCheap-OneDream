@@ -75,7 +75,7 @@ class SaleNewsController extends Controller
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'data' => $jsonData,
                 'address' => $validatedData['hiddenAddress'],
-                'approval' => 0,
+                'approved' => 0,
                 'status' => 1,
                 'created_at' => now(),
             ];
@@ -156,7 +156,7 @@ class SaleNewsController extends Controller
      * Remove the specified resource from storage.
      */
 
-    
+
 
     public function getAllSaleStatus(){
         $data = SaleNews::with('vipPackage','firstImage')
@@ -293,12 +293,12 @@ class SaleNewsController extends Controller
             ]);
         }
     }
-    
+
     public function list_salenew()
     {
         // Lấy tất cả các tin bán hàng với các quan hệ (user, sub_category.category)
-        $data = SaleNews::with('user', 'sub_category.category')->get();
-        
+        $data = SaleNews::with('user', 'sub_category.category','images')->get();
+
         // Sử dụng withCount để đếm số lượng tin có trạng thái = 0
         $count = SaleNews::where('approved', 0)->count();
 
@@ -309,11 +309,11 @@ class SaleNewsController extends Controller
     {
         try{
             $item = SaleNews::findOrFail($id);
-        
+
             // Thay đổi trạng thái giữa 0 và 2
             $item->approved = $item->approved == 2 ? 0 : 2;
             $item->save();
-            
+
             return redirect()->back()->with('alert', [
                 'type' => 'success',
                 'message' => ' Reject  successfully!'
@@ -323,9 +323,9 @@ class SaleNewsController extends Controller
                     'type' => 'error',
                     'message' => 'Error: ' . $th->getMessage()
                 ]);
-            
+
         }
-       
+
     }
 
     public function approve($id)
@@ -336,7 +336,7 @@ class SaleNewsController extends Controller
             // Thay đổi trạng thái giữa 0 và 1
          $item->approved = $item->approved == 1 ? 0 : 1;
          $item->save();
-         
+
          return redirect()->back()->with('alert', [
             'type' => 'success',
             'message' => ' Approve successfully!'
@@ -348,7 +348,7 @@ class SaleNewsController extends Controller
                 'message' => 'Error: ' . $th->getMessage()
             ]);
         }
-    
+
     }
     public function destroy($id)
     {
@@ -381,7 +381,7 @@ class SaleNewsController extends Controller
 
         return view('layouts.admin', compact( 'count'));
     }
-   
+
 
 
 }
