@@ -38,7 +38,9 @@ class SaleNewsController extends Controller
     public function indexSaleNewsPartner()
     {
 
-        $data = SaleNews::with(['user', 'sub_category', 'firstImage', 'categoryToSubcategory'])->where('user_id', auth()->user()->user_id)->get();
+        $channelId = Channel::where('user_id', auth()->user()->user_id)->value('channel_id');
+
+        $data = SaleNews::with(['user', 'sub_category', 'firstImage', 'categoryToSubcategory'])->where('channel_id', $channelId)->get();
         return view('partner.sale_news.index', ['data' => $data]);
     }
 
@@ -161,6 +163,7 @@ class SaleNewsController extends Controller
 
             $productData = [
                 'user_id' => auth()->user()->user_id,
+                'channel_id' => $request->idChannel,
                 'title' => $validatedData['productTitle'],
                 'price' => $validatedData['price'],
                 'description' => $validatedData['description'],
