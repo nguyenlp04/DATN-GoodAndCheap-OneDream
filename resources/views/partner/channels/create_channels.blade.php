@@ -1,142 +1,7 @@
 @extends('layouts.client_layout')
 
 @section('content')
-    <style>
-        .channel-info {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            background-color: #f9f9f9;
-            margin: 20px auto;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
 
-        .channel-info:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .channel-info img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .channel-info img:hover {
-            transform: scale(1.1);
-        }
-
-        .channel-name {
-            font-size: 22px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .channel-username {
-            font-size: 16px;
-            color: #888;
-            margin-bottom: 10px;
-        }
-
-        .channel-stats {
-            color: #555;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-        }
-
-        .channel-stats span {
-            margin-right: 15px;
-        }
-
-        .channel-actions {
-            margin-left: auto;
-        }
-
-        .channel-actions a {
-            border-radius: 25px;
-            padding: 8px 20px;
-            font-size: 14px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-        }
-
-        .channel-actions a:hover {
-            background-color: #0056b3;
-        }
-
-        .channel-actions .btn-danger:hover {
-            background-color: #d9534f;
-        }
-
-        .stats-info {
-            font-size: 14px;
-            color: #e84e40;
-            display: flex;
-            align-items: center;
-        }
-
-        .stats-info i {
-            margin-right: 5px;
-        }
-
-        .heading .title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .heading-right .title-link {
-            font-size: 16px;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .heading-right .title-link:hover {
-            text-decoration: underline;
-        }
-
-        .sale-card {
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            background-color: #f9f9f9;
-            margin: 15px 0;
-            padding: 15px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sale-card .title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .sale-card .price {
-            color: #e84e40;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .sale-card .description {
-            color: #555;
-            font-size: 14px;
-        }
-
-        .sale-card .status {
-            font-size: 14px;
-            color: #888;
-        }
-    </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
 
@@ -158,36 +23,60 @@
             @if (auth()->user()->channel && auth()->user()->channel->status === null)
                 <form id="" action="{{ route('vnpay.initiatePayment') }}" method="POST">
                     @csrf
-                    <div class="row">
-                        <div class="col-md-12 mb-4">
-                            <div class="channel-info">
-                                <!-- Channel Image -->
-                                <img src="{{ asset('storage/' . ($paymentOrCreat->image_channel ?? 'assets/images/image.png')) }}"
-                                    alt="{{ $paymentOrCreat->name_channel }}" class="rounded-circle me-3">
-                                <!-- Channel Details -->
-                                <div class="flex-grow-1">
-                                    <div class="channel-name d-flex align-items-center">
-                                        {{ $paymentOrCreat->name_channel }}&nbsp;<span
-                                            class="badge bg-warning">Unpaid</span></div>
-                                    <div class="channel-username">{{ $paymentOrCreat->username }}</div>
-                                    <div class="channel-stats">
-                                        <span>Followers: 20 {{ $paymentOrCreat->followers_count }}</span>
-                                        {{-- <span>Sales news: {{ $NewsCount }}</span> --}}
-                                        <span>Created on: {{ $paymentOrCreat->created_at->format('d/m/Y') }}</span>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="channel_id" value="{{ $paymentOrCreat->channel_id }}">
-                                <input type="hidden" name="vip_package_id" value="{{ $paymentOrCreat->vip_package_id }}">
-                                <input type="hidden" name="user_id" value="{{ $paymentOrCreat->user_id }}">
 
-                                <!-- Payment Status Section -->
-                                <div class="channel-actions">
-                                    {{-- <a href="#" type="submit" class="btn btn-primary btn-sm">Request Payment</a> --}}
-                                    <button type="submit" class="btn btn-primary">Request Payment</button>
+                    <div class="row d-flex justify-content-Start">
+                        <div class="col col-md-9 col-lg-7 col-xl-6">
+                          <div style="width:  fit-content;min-width:460px; ">
+                            <div class="card-body">
+                              <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                  @if ($paymentOrCreat->image_channel)
+                                      <img src="{{ asset($paymentOrCreat->image_channel) }}"
+                                    alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                                  @else
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                    alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                                    @endif
                                 </div>
+                                <div class="flex-grow-1 ms-3">
+                                  <h5 class="mb-1">{{ $paymentOrCreat->name_channel }}</h5>
+
+                                  <p  style="color: #ff0000;"><i class="fa-solid fa-handshake" style="color: #FFD43B;"></i>
+                                    One more step and you will become our partner
+                                     </p>
+                                  <div class="d-flex justify-content-start rounded-3 p-2 mb-md-2 bg-body-tertiary  " style="width: fit-content">
+                                    <div class="mx-3">
+                                        <p class="small text-muted ">   <i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> {{ $paymentOrCreat->address }} </p>
+                                        <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $paymentOrCreat->created_at->format('d-m-Y') }}</p>
+                                        {{-- <p class="small text-muted "><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> 56</p> --}}
+
+                                    </div>
+                                    <div>
+                                        {{-- <p class="small text-muted "><i class="fa-solid fa-users" style="color: #74C0FC;"></i> {{ $paymentOrCreat->followers_count }} </p> --}}
+                                        {{-- <p class="small text-muted ">  <i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> {{ $NewsCount }} </p> --}}
+
+                                    </div>
+                                    <input type="hidden" name="channel_id" value="{{ $paymentOrCreat->channel_id }}">
+                                    <input type="hidden" name="vip_package_id" value="{{ $paymentOrCreat->vip_package_id }}">
+                                    <input type="hidden" name="user_id" value="{{ $paymentOrCreat->user_id }}">
+
+                                  </div>
+
+
+                                </div>
+                              </div>
                             </div>
+                          </div>
                         </div>
-                    </div>
+
+                        <div class="col col-md-9 col-lg-7 col-xl-6 d-flex justify-content-end">
+
+                            <button type="submit" class="btn btn-primary btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-credit-card"></i> Payment</button>
+
+
+                        </div>
+
+                      </div>
                 </form>
             @else
                 <form action="{{ route('channels.store') }}" method="POST" enctype="multipart/form-data">

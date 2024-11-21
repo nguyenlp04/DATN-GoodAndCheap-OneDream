@@ -31,7 +31,7 @@ class VnPayController extends Controller
         }
         $vipPackage = VipPackage::findOrFail($request->vip_package_id);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "https://datn.lndo.site/IPN";
+        $vnp_Returnurl = "https://127.0.0.1:8000/IPN";
         $vnp_TmnCode = "KA9BQ8KD"; // Mã website tại VNPAY
         $vnp_HashSecret = "9Y2K4UHS31CG1PV5ECLNNOIY8Q3385CP"; // Chuỗi bí mật
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -100,7 +100,7 @@ class VnPayController extends Controller
 
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(

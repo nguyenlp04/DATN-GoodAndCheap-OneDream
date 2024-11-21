@@ -70,26 +70,26 @@ class ChannelController extends Controller
 
         $vipPackages = VipPackage::where('type', 'channel')->get();
         $paymentOrCreat = Channel::where('user_id', $user->user_id)->first();
-        
+
         return view('partner.channels.create_channels', compact('vipPackages', 'paymentOrCreat')); // Truyền gói VIP vào view
     }
 
     // public function paymentOrCreat()
     // {
     //     $user = Auth::user();
-    
+
     //     // Kiểm tra nếu người dùng đã tạo kênh
     //     $paymentOrCreat = Channel::where('user_id', $user->user_id)->first(); // Use first() instead of firstOrFail()
-    
-        
-    
-    //     // return view('partner.channels.create_channels', compact('paymentOrCreat')); 
+
+
+
+    //     // return view('partner.channels.create_channels', compact('paymentOrCreat'));
     //     return view('partner.channels.create_channels', [
     //         // 'dataProductID' => $dataProductID,
     //         'paymentOrCreat' => $paymentOrCreat,
     //     ]);
     // }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -125,7 +125,8 @@ class ChannelController extends Controller
 
         // Xử lý ảnh kênh
         if ($request->hasFile('image_channel')) {
-            $channel->image_channel = $request->file('image_channel')->store('channels', 'public');
+            $path = $request->file('image_channel')->store('channels', 'public'); // Thêm tiền tố '/storage/' vào đường dẫn
+            $channel->image_channel = 'storage/' . $path;
         }
 
         $channel->save();
@@ -161,7 +162,9 @@ class ChannelController extends Controller
 
         // If the user has a channel, continue to display the channel
         $channels = Channel::findOrFail($id); // Get channel by ID
-        $sale_news = $channels->saleNews()->with('sub_category')->get();
+        $sale_news = $channels->saleNews()->with('sub_category','firstImage')
+        ->where('approved',1)
+        ->paginate(5);
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory

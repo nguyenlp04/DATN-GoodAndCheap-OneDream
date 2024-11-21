@@ -159,13 +159,13 @@ class SaleNewsController extends Controller
 
 
     public function getAllSaleStatus(){
-        $data = SaleNews::with('vipPackage','firstImage')
+        $data = SaleNews::with('vipPackage','firstImage','sub_category')
         ->where('status', 1)->where('user_id',auth()->user()->user_id);
 
         $count_now_showing=$data->where('approved',1)->count();
         $list_now_showing=$data->where('approved',1)->get();
 
-        $list_pending_approval=SaleNews::with('vipPackage','firstImage')
+        $list_pending_approval=SaleNews::with('vipPackage','firstImage','sub_category')
         ->where('approved',0)->where('user_id',auth()->user()->user_id)
         ->get();
         $count_pending_approval=SaleNews::with('vipPackage')
@@ -175,7 +175,7 @@ class SaleNewsController extends Controller
         $count_not_accepted=SaleNews::with('vipPackage')
         ->where('approved',2)->where('user_id',auth()->user()->user_id)
         ->count();
-        $list_not_accepted=SaleNews::with('vipPackage','firstImage')
+        $list_not_accepted=SaleNews::with('vipPackage','firstImage','sub_category')
         ->where('approved',2)->where('user_id',auth()->user()->user_id)
         ->get();
 
@@ -183,7 +183,7 @@ class SaleNewsController extends Controller
         ->where('status', 1)
         ->where('approved',1)->where('user_id',auth()->user()->user_id)
         ->count();
-        $list_hidden=SaleNews::with('vipPackage','firstImage')
+        $list_hidden=SaleNews::with('vipPackage','firstImage','sub_category')
         ->where('status', 1)
         ->where('approved',1)->where('user_id',auth()->user()->user_id)
         ->get();
@@ -233,10 +233,10 @@ class SaleNewsController extends Controller
     public function renderSaleNewDetail(string $id){
         // dd($get_data_7subcategory);
         try {
-            $news = SaleNews::with(['channel','images','firstImage', 'category','subcategory'])->where('sale_new_id', $id)->first();
+            $news = SaleNews::with(['channel','images','firstImage', 'category','sub_category'])->where('sale_new_id', $id)->first();
 
 
-            if($news->channel){
+            if(!is_null($news->channel_id)){
             $data_count_news = DB::table('sale_news')->where('channel_id',$news->channel_id)->where('approved',1)->where('status',1)->count();
             $data_count_news_sold = DB::table('sale_news')->where('channel_id',$news->channel_id)->where('approved',1)->where('status',0)->count();
             }
@@ -244,7 +244,7 @@ class SaleNewsController extends Controller
 
 
             $get_user_phone= DB::table('users')->where('user_id',$news->user_id)->first();
-            $get_data_7subcategory = SaleNews::with(['channel','images','firstImage','subcategory'])
+            $get_data_7subcategory = SaleNews::with(['channel','images','firstImage','sub_category'])
             ->where('sub_category_id', $news->sub_category_id)
             ->whereNotNull('vip_package_id')
             ->latest()
@@ -255,7 +255,7 @@ class SaleNewsController extends Controller
 
 
             if($news){
-                if($news->channel){
+                if(!is_null($news->channel_id)){
             // $data = $news->data;
             // $data_json = json_decode($data);
             // $variants = json_decode($data_json->variants);

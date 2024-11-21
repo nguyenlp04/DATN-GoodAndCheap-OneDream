@@ -21,14 +21,14 @@
                     <div class="container summary ">
                         <div class="row  pb-2">
                             <div class="col-3 col-md-2 mx-2">
-                                <img class="mx-5" src="{{ $listing->firstImage->image_name }}" width="100px"
+                                <img class="mx-5" src="{{ asset($listing->firstImage->image_name) }}" width="100px"
                                     alt="">
                             </div>
                             <div class="col-7 mx-md-1 mx-5">
                                 <h5>{{ $listing->title }}</h5>
-                                <p><i class="fa-regular fa-eye fa-xs"></i> {{ $listing->views }}
+                                <p><i class="fa-regular fa-eye fa-xs"  style="color: #74C0FC;"></i> {{ $listing->views }}
                                 </p>
-                                <p><i class="fa-solid fa-location-dot fa-xs"></i> {{ $listing->address }} </p>
+                                <p><i class="fa-solid fa-location-dot fa-xs"  style="color: #74C0FC;"></i> {{ $listing->address }} </p>
                                 <p>Date posted: {{ date('D, d M Y', strtotime($listing->created_at)) }}</p>
                             </div>
                         </div>
