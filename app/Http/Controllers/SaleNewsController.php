@@ -75,7 +75,7 @@ class SaleNewsController extends Controller
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'data' => $jsonData,
                 'address' => $validatedData['hiddenAddress'],
-                'approval' => 0,
+                'approved' => 0,
                 'status' => 1,
                 'created_at' => now(),
             ];

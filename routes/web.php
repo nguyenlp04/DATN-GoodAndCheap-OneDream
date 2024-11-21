@@ -121,6 +121,9 @@ Route::middleware('auth')->group(function () {
 
 
 });
+
+Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
+
 // enduser
 
 

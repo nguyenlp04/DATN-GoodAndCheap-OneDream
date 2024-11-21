@@ -96,7 +96,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <h2 id="result"></h2>
                                 <input type="hidden" id="hiddenAddress" name="hiddenAddress">
 
 
