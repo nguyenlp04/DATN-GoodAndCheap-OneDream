@@ -1,9 +1,10 @@
 <style>
-    .dropdown-menu{
-    top: 70% !important;
+    .dropdown-menu {
+        top: 70% !important;
     }
-    .header-intro-clearance .header-bottom .menu.sf-arrows > li > .sf-with-ul::after {
-    right: 0rem;
+
+    .header-intro-clearance .header-bottom .menu.sf-arrows>li>.sf-with-ul::after {
+        right: 0rem;
     }
     .notification-dropdown {
     width: 320px;

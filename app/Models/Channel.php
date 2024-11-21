@@ -48,4 +48,8 @@ class Channel extends Model
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');
     }
+    public function followers()
+    {
+        return $this->hasMany(UserFollowed::class, 'channel_id');
+    }
 }

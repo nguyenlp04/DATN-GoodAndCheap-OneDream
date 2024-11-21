@@ -141,7 +141,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
 
 <main class="container mb-5">
-    
+
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
         <div class="container">
             <ol class="breadcrumb">
@@ -152,9 +152,9 @@
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
     @endif
 
     <div class="row">
@@ -174,7 +174,17 @@
                     </div>
                 </div>
                 <div class="channel-actions">
-                    <a href="#" class="btn btn-primary btn-sm">Follow </a>
+                    @if ($isFollowed)
+                    <form id="unfollow-form" action="{{ route('unfollow.channel', $channels->channel_id) }}" method="POST">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 25px;">Unfollow</button>
+                    </form>
+                    @else
+                    <form id="follow-form" action="{{ route('follow.channel', $channels->channel_id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 25px;">Follow</button>
+                    </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -182,8 +192,8 @@
         <div class="container for-you">
             <!-- Sales News -->
             <main class="main">
-           
-    
+
+
                 <div class="page-content">
                     <div class="container">
                         <div class="row">
@@ -194,7 +204,7 @@
                                             Showing <span>9 of 56</span> Products
                                         </div><!-- End .toolbox-info -->
                                     </div><!-- End .toolbox-left -->
-    
+
                                     <div class="toolbox-right" style=" visibility: hidden;">
                                         <div class="toolbox-sort">
                                             <div class="select-custom">
@@ -203,12 +213,12 @@
                                                 </select>
                                             </div>
                                         </div><!-- End .toolbox-sort -->
-                                        
+
                                     </div><!-- End .toolbox-right -->
                                 </div><!-- End .toolbox -->
-    
+
                                 <div class="products mb-3">
-                                @foreach ($sale_news as $sale_new)
+                                    @foreach ($sale_news as $sale_new)
 
                                     <div class="product product-list">
                                         <div class="row">
@@ -218,19 +228,19 @@
                                                     <span class="product-label label-new">
                                                         On top
                                                     </span>
-                                                @endif
+                                                    @endif
                                                     <a href="product.html">
                                                         <img src="/assets/images/products/product-4.jpg" alt="Product image1" class="product-image">
                                                     </a>
                                                 </figure><!-- End .product-media -->
                                             </div><!-- End .col-sm-6 col-lg-3 -->
-    
+
                                             <div class="col-6 col-lg-3 order-lg-last">
                                                 <div class="product-list-action">
-                                                    <div class="product-price" >
+                                                    <div class="product-price">
                                                         <h4 class="text-primary">{{ $sale_new ->price  }} $</h4>
                                                     </div><!-- End .product-price -->
-                                                   
+
                                                     <div class="product-actions">
                                                         <a href="#" class="btn btn-light mb-2" title="Add to Wishlist">
                                                             <i class="fas fa-heart"></i> Wishlist
@@ -241,33 +251,33 @@
                                                     </div>
                                                 </div><!-- End .product-list-action -->
                                             </div><!-- End .col-sm-6 col-lg-3 -->
-    
+
                                             <div class="col-lg-6">
                                                 <div class="product-body product-action-inner">
                                                     <div class="product-cat">
                                                         <a href="#">{{ $sale_new->name_sub_category }}</a>
                                                     </div><!-- End .product-cat -->
                                                     <h3 class="product-title"><a href="product.html">{{ $sale_new -> title }}</a></h3><!-- End .product-title -->
-    
+
                                                     <div class="product-content wrap">
                                                         <p>{{ $sale_new -> description }}</p>
                                                     </div><!-- End .product-content -->
-                                                    
+
                                                     <div class="product-description">
                                                         <p><i class="fas fa-map-marker-alt"></i> {{ $sale_new->channels->address }}</p>
-                                                        <p><i class="fas fa-calendar-alt"></i>  {{ $sale_new->created_at }}</p>
-                               
+                                                        <p><i class="fas fa-calendar-alt"></i> {{ $sale_new->created_at }}</p>
+
                                                     </div><!-- End .product-nav -->
                                                 </div><!-- End .product-body -->
                                             </div><!-- End .col-lg-6 -->
                                         </div><!-- End .row -->
                                     </div><!-- End .product -->
                                     @endforeach
-    
-                         
-    
+
+
+
                                 </div><!-- End .products -->
-    
+
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
                                         <li class="page-item disabled">
@@ -293,7 +303,7 @@
                                         <label>Filters:</label>
                                         <a href="#" class="sidebar-filter-clear">Clean All</a>
                                     </div><!-- End .widget widget-clean -->
-    
+
                                     <div class="widget widget-collapsible">
                                         <h3 class="widget-title">
                                             <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
@@ -313,8 +323,8 @@
                                                         </div><!-- End .custom-checkbox -->
                                                         <span class="item-count">{{ $count }}</span>
                                                     </div><!-- End .filter-item -->
-                                                @endforeach
-                                                
+                                                    @endforeach
+
                                                 </div><!-- End .filter-items -->
                                             </div><!-- End .widget-body -->
                                         </div><!-- End .collapse -->
@@ -325,7 +335,7 @@
                                                 Brand
                                             </a>
                                         </h3><!-- End .widget-title -->
-    
+
                                         <div class="collapse show" id="widget-4">
                                             <div class="widget-body">
                                                 <div class="filter-items">
@@ -335,19 +345,19 @@
                                                             <label class="custom-control-label" for="brand-7">Nike</label>
                                                         </div><!-- End .custom-checkbox -->
                                                     </div><!-- End .filter-item -->
-    
+
                                                 </div><!-- End .filter-items -->
                                             </div><!-- End .widget-body -->
                                         </div><!-- End .collapse -->
                                     </div><!-- End .widget -->
-    
+
                                     <div class="widget widget-collapsible">
                                         <h3 class="widget-title">
                                             <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
                                                 Price
                                             </a>
                                         </h3><!-- End .widget-title -->
-    
+
                                         <div class="collapse show" id="widget-5">
                                             <div class="widget-body">
                                                 <div class="filter-price">
@@ -355,7 +365,7 @@
                                                         Price Range:
                                                         <span id="filter-price-range"></span>
                                                     </div><!-- End .filter-price-text -->
-    
+
                                                     <div id="price-slider"></div><!-- End #price-slider -->
                                                 </div><!-- End .filter-price -->
                                             </div><!-- End .widget-body -->
@@ -370,5 +380,4 @@
         </div>
     </div>
 </main>
-
 @endsection
