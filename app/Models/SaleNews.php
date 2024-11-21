@@ -36,12 +36,12 @@ class SaleNews extends Model
     public function categoryToSubcategory()
     {
         return $this->hasOneThrough(
-            Category::class,      
-            SubCategory::class,    
-            'sub_category_id',    
-            'category_id',        
-            'sub_category_id',    
-            'category_id'         
+            Category::class,
+            SubCategory::class,
+            'sub_category_id',
+            'category_id',
+            'sub_category_id',
+            'category_id'
         );
     }
 

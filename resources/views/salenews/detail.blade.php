@@ -76,7 +76,9 @@
 
                             <div class="mb-2">
 
+                            @if ($get_user->phone_number)
                             <a href="#" class="btn btn-outline-dark btn-rounded mr-4"><i class="fa-solid fa-phone"></i> {{ $get_user->phone_number }}</a>
+                            @endif
                             @if(isset(auth()->user()->user_id))
                             <a id="message-id" href=""  data-id="{{$new->user_id}}" data-name="{{ $get_user->full_name}}"  class="btn btn-primary btn-rounded"> <i class="fa-regular fa-comments"></i>  Message the seller </a>
                             @endif
@@ -84,7 +86,7 @@
 
 
 
-                                @if($new->channel)
+                            @if(!is_null($new->channel_id))
 
 
                             <div class="product-details-footer">
@@ -240,7 +242,7 @@
                     <figure class="product-media">
                         <span class="product-label label-new">Operation</span>
                         <a href="product.html">
-                            <img src="{{ $item->firstImage->image_name }}" alt="Product image" class="product-image">
+                            <img src="{{ asset($item->firstImage->image_name) }}" alt="Product image" class="product-image">
                         </a>
 
                         <div class="product-action-vertical">
@@ -254,7 +256,7 @@
                         {{-- <div class="product-cat">
                             <a href="#">Women</a>
                         </div><!-- End .product-cat --> --}}
-                        <h3 class="product-title"><a href="product.html">{{ $item->name }}</a></h3><!-- End .product-title -->
+                        <h3 class="product-title"><a href="product.html">{{ $item->title }}</a></h3><!-- End .product-title -->
                         <div class="product-price">
                             ${{ $item->price }}
                         </div><!-- End .product-price -->
@@ -369,7 +371,7 @@
             $(this).addClass('active');
         });
     });
-    
+
 </script>
 
 

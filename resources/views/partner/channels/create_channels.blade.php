@@ -44,7 +44,6 @@
                     <select id="vip_package_id" name="vip_package_id" class="form-select form-control">
                         @foreach ($vipPackages as $item )
                         <option value="{{ $item->vip_package_id }}" >{{  $item->name }}</option>
-
                         @endforeach
                     </select>
                 </div>

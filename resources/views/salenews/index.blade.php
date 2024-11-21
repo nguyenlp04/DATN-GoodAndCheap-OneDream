@@ -78,47 +78,70 @@
                             <div class="tab-pane fade active show" id="tab-5" role="tabpanel"
                                 aria-labelledby="tab-5-tab">
 
-                                <div class="listing-card">
+
                                     @foreach ($list_now_showing as $item)
-                                        {{-- {{ dd($item) }} --}}
-                                        <div class="card-content mb-2">
-                                            <div class="container p-3">
-                                                <div class="row">
-                                                    <div class="col-5">
-                                                        <div style="display: flex">
-                                                            <img src="{{ asset($item->firstImage->image_name) }}"
-                                                                width="50px" alt="" srcset="">
-                                                            <h2>{{ $item->title }}</h2>
-                                                        </div>
-                                                        <p class="price">$ {{ $item->price }}</p>
+                                    <div class="products mb-3">
+                                        <div class="product product-list">
+                                            <div class="row">
+                                                <div class="col-5 col-lg-2">
+                                                    <figure class="product-media">
 
-                                                        <p class="date">Date posted: {{ $item->created_at }}</p>
-                                                        {{-- <p class="expiry">Expiration date: 18:19 16/01/25</p> --}}
-                                                    </div>
-                                                    <div class="col-5">
-                                                        <p class="views">Views: {{ $item->views }}</p>
-                                                        @if ($item->vip_package_id)
-                                                            <b>
-                                                                <p class="services">{{ $item->vipPackage->name }}</p>
-                                                            </b>
-                                                        @else
-                                                            <p class="services">No service yet</p>
+
+                                                            <img src="{{ asset($item->firstImage->image_name) }}"   style="width: 180px;   alt="Product image" class="product-image">
+                                                    </figure><!-- End .product-media -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-6 col-lg-4 order-lg-last">
+                                                    <div class="product-list-action">
+                                                        <div class="product-price">
+                                                            $ {{ $item->price }}
+                                                        </div><!-- End .product-price -->
+
+
+
+                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
+                                                        @if ($item->vip_package_id != null)
+                                                        <a href="{{ route('salenew.promote', $item->sale_new_id) }}" class="btn btn-primary btn-rounded" style="width: 100%"> <i class="fa-solid fa-file-invoice-dollar"></i><span>Push to the top</span></a>
                                                         @endif
+                                                    </div><!-- End .product-list-action -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-lg-6">
+                                                    <div class="product-body product-action-inner">
+
+                                                        <div class="product-cat">
+                                                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                                        </div><!-- End .product-cat -->
+                                                        <h3 class="product-title">{{ $item->title }}
+                                                            @if ($item->vip_package_id)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @endif
+                                                        </h3><!-- End .product-title -->
+
+                                                        <div class="product-content">
+                                                            <p><i class="fa-solid fa-crown " style="color: #FFD43B;"></i>
+                                                                @if ($item->vip_package_id)
+                                                                {{ $item->vipPackage->name }}
+                                                                @else
+                                                                No service yet
+                                                                @endif
+
+                                                            </p>
+
+                                                            <p><i class="fa-solid fa-eye" style="color: #74C0FC;"></i>  {{ $item->views }}</p>
+                                                            <p><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $item->created_at }}</p>
+                                                            <p><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i>  {{ $item->address }}</p>
+                                                        </div><!-- End .product-content -->
 
 
-
-                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}"
-                                                            class="btn btn-primary btn-rounded">Detail</a>
-                                                        <a href="{{ route('salenew.promote', $item->sale_new_id) }}"
-                                                            class="btn btn-primary btn-rounded">Push to the top </a>
-                                                        {{-- <a href="#" class="btn btn-outline-dark btn-rounded">Unhide</a> --}}
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    </div><!-- End .product-body -->
+                                                </div><!-- End .col-lg-6 -->
+                                            </div><!-- End .row -->
                                         </div>
+
+                                    </div>
                                     @endforeach
 
-                                </div>
 
 
 
@@ -126,139 +149,207 @@
                             <div class="tab-pane fade" id="tab-6" role="tabpanel" aria-labelledby="tab-6-tab">
 
 
-                                <div class="listing-card">
+
                                     @foreach ($list_pending_approval as $item)
-                                        <div class="card-content mb-2">
-                                            <div class="container p-3">
-                                                <div class="row">
-                                                    <div class="col-5">
-                                                        <div style="display: flex">
-                                                            <img src="{{ asset($item->firstImage->image_name) }}"
-                                                                width="50px" alt="" srcset="">
-                                                            <h2>{{ $item->title }}</h2>
-                                                        </div>
-                                                        <p class="price">$ {{ $item->price }}</p>
+                                    <div class="products mb-3">
+                                        <div class="product product-list">
+                                            <div class="row">
+                                                <div class="col-5 col-lg-2">
+                                                    <figure class="product-media">
 
-                                                        <p class="date">Date posted: {{ $item->created_at }}</p>
-                                                        {{-- <p class="expiry">Expiration date: 18:19 16/01/25</p> --}}
-                                                    </div>
-                                                    <div class="col-5">
-                                                        <p class="views">Views: {{ $item->views }}</p>
-                                                        @if ($item->vip_package_id)
-                                                            <b>
-                                                                <p class="services">{{ $item->vipPackage->name }}</p>
-                                                            </b>
-                                                        @else
-                                                            <p class="services">No service yet</p>
+
+                                                            <img src="{{ asset($item->firstImage->image_name) }}"   style="width: 180px;   alt="Product image" class="product-image">
+                                                    </figure><!-- End .product-media -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-6 col-lg-4 order-lg-last">
+                                                    <div class="product-list-action">
+                                                        <div class="product-price">
+                                                            $ {{ $item->price }}
+                                                        </div><!-- End .product-price -->
+
+
+
+                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
+                                                        @if ($item->vip_package_id != null)
+                                                        <a href="{{ route('salenew.promote', $item->sale_new_id) }}" class="btn btn-primary btn-rounded" style="width: 100%"> <i class="fa-solid fa-file-invoice-dollar"></i><span>Push to the top</span></a>
                                                         @endif
+                                                    </div><!-- End .product-list-action -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-lg-6">
+                                                    <div class="product-body product-action-inner">
+
+                                                        <div class="product-cat">
+                                                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                                        </div><!-- End .product-cat -->
+                                                        <h3 class="product-title">{{ $item->title }}
+                                                            @if ($item->vip_package_id)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @endif
+                                                        </h3><!-- End .product-title -->
+
+                                                        <div class="product-content">
+                                                            <p><i class="fa-solid fa-crown " style="color: #FFD43B;"></i>
+                                                                @if ($item->vip_package_id)
+                                                                {{ $item->vipPackage->name }}
+                                                                @else
+                                                                No service yet
+                                                                @endif
+
+                                                            </p>
+
+                                                            <p><i class="fa-solid fa-eye" style="color: #74C0FC;"></i>  {{ $item->views }}</p>
+                                                            <p><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $item->created_at }}</p>
+                                                            <p><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i>  {{ $item->address }}</p>
+                                                        </div><!-- End .product-content -->
 
 
-
-                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}"
-                                                            class="btn btn-primary btn-rounded">Detail</a>
-
-                                                        <a href="{{ route('salenew.promote', $item->sale_new_id) }}"
-                                                            class="btn btn-primary btn-rounded">Push to the top </a>
-                                                        {{-- <a href="#" class="btn btn-outline-dark btn-rounded">Unhide</a> --}}
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    </div><!-- End .product-body -->
+                                                </div><!-- End .col-lg-6 -->
+                                            </div><!-- End .row -->
                                         </div>
+
+                                    </div>
                                     @endforeach
 
-                                </div>
+
 
                             </div><!-- .End .tab-pane -->
                             <div class="tab-pane fade" id="tab-7" role="tabpanel" aria-labelledby="tab-7-tab">
 
-                                <div class="listing-card">
                                     @foreach ($list_not_accepted as $item)
-                                        <div class="card-content mb-2">
-                                            <div class="container p-3">
-                                                <div class="row">
-                                                    <div class="col-5">
-                                                        <div style="display: flex">
-                                                            <img src="{{ asset($item->firstImage->image_name) }}"
-                                                                width="50px" alt="" srcset="">
-                                                            <h2>{{ $item->title }}</h2>
-                                                        </div>
-                                                        <p class="price">$ {{ $item->price }}</p>
+                                    <div class="products mb-3">
+                                        <div class="product product-list">
+                                            <div class="row">
+                                                <div class="col-5 col-lg-2">
+                                                    <figure class="product-media">
 
-                                                        <p class="date">Date posted: {{ $item->created_at }}</p>
-                                                        {{-- <p class="expiry">Expiration date: 18:19 16/01/25</p> --}}
-                                                    </div>
-                                                    <div class="col-5">
-                                                        <p class="views">Views: {{ $item->views }}</p>
-                                                        @if ($item->vip_package_id)
-                                                            <b>
-                                                                <p class="services">{{ $item->vipPackage->name }}</p>
-                                                            </b>
-                                                        @else
-                                                            <p class="services">No service yet</p>
-                                                        @endif
+
+                                                            <img src="{{ asset($item->firstImage->image_name) }}"   style="width: 180px;   alt="Product image" class="product-image">
+                                                    </figure><!-- End .product-media -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-6 col-lg-4 order-lg-last">
+                                                    <div class="product-list-action">
+                                                        <div class="product-price">
+                                                            $ {{ $item->price }}
+                                                        </div><!-- End .product-price -->
 
 
 
-                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}"
-                                                            class="btn btn-primary btn-rounded">Detail</a>
-
+                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
                                                         @if ($item->vip_package_id != null)
-                                                            <a href="{{ route('salenew.promote', $item->sale_new_id) }}"
-                                                                class="btn btn-primary btn-rounded">Push to the top </a>
+                                                        <a href="{{ route('salenew.promote', $item->sale_new_id) }}" class="btn btn-primary btn-rounded" style="width: 100%"> <i class="fa-solid fa-file-invoice-dollar"></i><span>Push to the top</span></a>
                                                         @endif
-                                                        {{-- <a href="#" class="btn btn-outline-dark btn-rounded">Unhide</a> --}}
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    </div><!-- End .product-list-action -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-lg-6">
+                                                    <div class="product-body product-action-inner">
+
+                                                        <div class="product-cat">
+                                                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                                        </div><!-- End .product-cat -->
+                                                        <h3 class="product-title">{{ $item->title }}
+                                                            @if ($item->vip_package_id)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @endif
+                                                        </h3><!-- End .product-title -->
+
+                                                        <div class="product-content">
+                                                            <p><i class="fa-solid fa-crown " style="color: #FFD43B;"></i>
+                                                                @if ($item->vip_package_id)
+                                                                {{ $item->vipPackage->name }}
+                                                                @else
+                                                                No service yet
+                                                                @endif
+
+                                                            </p>
+
+                                                            <p><i class="fa-solid fa-eye" style="color: #74C0FC;"></i>  {{ $item->views }}</p>
+                                                            <p><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $item->created_at }}</p>
+                                                            <p><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i>  {{ $item->address }}</p>
+                                                        </div><!-- End .product-content -->
+
+
+                                                    </div><!-- End .product-body -->
+                                                </div><!-- End .col-lg-6 -->
+                                            </div><!-- End .row -->
                                         </div>
+
+                                    </div>
                                     @endforeach
 
-                                </div>
+
 
 
                             </div><!-- .End .tab-pane -->
                             <div class="tab-pane fade" id="tab-8" role="tabpanel" aria-labelledby="tab-8-tab">
 
-                                <div class="listing-card">
+
                                     @foreach ($list_hidden as $item)
-                                        <div class="card-content mb-2">
-                                            <div class="container p-3">
-                                                <div class="row">
-                                                    <div class="col-5">
-                                                        <div style="display: flex">
-                                                            <img src="{{ asset($item->firstImage->image_name) }}"
-                                                                width="50px" alt="" srcset="">
-                                                            <h2>{{ $item->title }}</h2>
-                                                        </div>
-                                                        <p class="price">$ {{ $item->price }}</p>
+                                    <div class="products mb-3">
+                                        <div class="product product-list">
+                                            <div class="row">
+                                                <div class="col-5 col-lg-2">
+                                                    <figure class="product-media">
 
-                                                        <p class="date">Date posted: {{ $item->created_at }}</p>
-                                                        {{-- <p class="expiry">Expiration date: 18:19 16/01/25</p> --}}
-                                                    </div>
-                                                    <div class="col-5">
-                                                        <p class="views">Views: {{ $item->views }}</p>
-                                                        @if ($item->vip_package_id)
-                                                            <b>
-                                                                <p class="services">{{ $item->vipPackage->name }}</p>
-                                                            </b>
-                                                        @else
-                                                            <p class="services">No service yet</p>
-                                                        @endif
+
+                                                            <img src="{{ asset($item->firstImage->image_name) }}"   style="width: 180px;   alt="Product image" class="product-image">
+                                                    </figure><!-- End .product-media -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-6 col-lg-4 order-lg-last">
+                                                    <div class="product-list-action">
+                                                        <div class="product-price">
+                                                            $ {{ $item->price }}
+                                                        </div><!-- End .product-price -->
 
 
 
-                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}"
-                                                            class="btn btn-primary btn-rounded">Detail</a>
+                                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
 
-                                                        {{-- <a href="{{ asset('salenew.promote',{{ $item->sale_new_id }}) }}" class="btn btn-primary btn-rounded">Push to the top </a> --}}
-                                                        {{-- <a href="#" class="btn btn-outline-dark btn-rounded">Unhide</a> --}}
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    </div><!-- End .product-list-action -->
+                                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                                <div class="col-lg-6">
+                                                    <div class="product-body product-action-inner">
+
+                                                        <div class="product-cat">
+                                                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                                        </div><!-- End .product-cat -->
+                                                        <h3 class="product-title">{{ $item->title }}
+                                                            @if ($item->vip_package_id)
+                                                            <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            @endif
+                                                        </h3><!-- End .product-title -->
+
+                                                        <div class="product-content">
+                                                            <p><i class="fa-solid fa-crown " style="color: #FFD43B;"></i>
+                                                                @if ($item->vip_package_id)
+                                                                {{ $item->vipPackage->name }}
+                                                                @else
+                                                                No service yet
+                                                                @endif
+
+                                                            </p>
+
+                                                            <p><i class="fa-solid fa-eye" style="color: #74C0FC;"></i>  {{ $item->views }}</p>
+                                                            <p><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $item->created_at }}</p>
+                                                            <p><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i>  {{ $item->address }}</p>
+                                                        </div><!-- End .product-content -->
+
+
+                                                    </div><!-- End .product-body -->
+                                                </div><!-- End .col-lg-6 -->
+                                            </div><!-- End .row -->
                                         </div>
+
+                                    </div>
                                     @endforeach
 
-                                </div>
+
                             </div><!-- .End .tab-pane -->
                         </div><!-- End .tab-content -->
                     </div>
