@@ -13,10 +13,6 @@ class VipPackageController extends Controller
         return view('admin.vippackages.list-vip', compact('vipPackages'));
     }
 
-    public function create()
-    {
-        return view('vip-packages.create');
-    }
 
     public function store(Request $request)
     {

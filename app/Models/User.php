@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Http\Controllers\PartnerProfileController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use PHPUnit\Framework\TestStatus\Notice;
 
 class User extends Authenticatable
 {

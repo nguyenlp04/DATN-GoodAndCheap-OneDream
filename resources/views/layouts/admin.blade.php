@@ -263,7 +263,7 @@
 
 
             </li>
-            <li class="menu-item {{ Request::is('sale_new') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('sale_news') ? 'active open' : '' }}">
           <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bxl-blogger"></i>
               <div data-i18n="Analytics">Sale new </div>
@@ -276,8 +276,8 @@
               @endif
           </a>
           <ul class="menu-sub">
-              <li class="menu-item {{ Request::is('/sale_new') ? 'active' : '' }}">
-                  <a href="{{ url('/sale_new') }}" class="menu-link">
+              <li class="menu-item {{ Request::is('/sale_news') ? 'active' : '' }}">
+                  <a href="{{ url('/sale_news') }}" class="menu-link">
                       <div data-i18n="Blogs">List Sale new </div>
                       @if($count > 0) <!-- Hiển thị trong trang con nếu có -->
                           <div class="position-absolute top-50 start-50 translate-middle text-center bg-danger d-inline-block rounded-circle" 

@@ -39,8 +39,7 @@ class VerificationController extends Controller
 
             // Xóa dữ liệu người dùng tạm thời trong session
             $request->session()->forget('user_data');
-
-            return redirect()->route('dashboard')->with('success', 'Tài khoản đã được xác minh và tạo thành công!');
+            return redirect()->route('home')->with('success', 'Tài khoản đã được xác minh và tạo thành công!');
         }
 
         return back()->with('error', 'Mã xác nhận không hợp lệ.');

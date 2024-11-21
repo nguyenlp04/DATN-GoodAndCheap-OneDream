@@ -2,12 +2,6 @@
 
 
 @section('content')
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-    <script>
-        new DataTable('#example');
-    </script>
     <main class="main">
 
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
@@ -22,27 +16,43 @@
         <div class="page-content">
             <div class="cart">
                 <div class="container">
-                    <div class="summary ">
-                        <div class="profile">
-                            <div class="container">
-                                <div class="row">
-                                    {{-- <div class="col-10"> --}}
+                        <div class="row d-flex justify-content-Start">
+                          <div class="col col-md-9 col-lg-7 col-xl-6">
+                            <div style="width:  fit-content;min-width:460px; ">
+                              <div class="card-body">
+                                <div class="d-flex">
+                                  <div class="flex-shrink-0">
                                     @if (auth()->user()->image_user)
-                                        <img src="{{ asset(auth()->user()->image_user) }}" alt="Profile Image" />
+                                        <img src="{{ asset(auth()->user()->image_user) }}"
+                                      alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
                                     @else
-                                        <img src="https://kynguyenlamdep.com/wp-content/uploads/2022/06/anh-gai-xinh-cuc-dep.jpg"
-                                            alt="Profile Image" />
-                                    @endif
-                                    <span>
-                                        <h6 class="text-black p-3">{{ auth()->user()->full_name }}</h6>
-                                    </span>
+                                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                      alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                                      @endif
+                                  </div>
+                                  <div class="flex-grow-1 ms-3">
+                                    <h5 class="mb-1">{{ auth()->user()->full_name }}</h5>
 
-                                    <button class="btn btn-primary btn-rounded">+ New Channel</button>
+                                    <p  style="color: #ff0000;"><i class="fa-solid fa-face-smile" style="color: #FFD43B;"></i> Become a partner for easier management </p>
+                                    <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary  " style="width: fit-content">
+                                      <div>
+                                        <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ auth()->user()->created_at }}</p>
+                                        {{-- <p class="small text-muted "><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> 56</p> --}}
+                                        <p class="small text-muted ">  <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i> 30</p>
+
+                                      </div>
+
+
+                                    </div>
+
+
+                                  </div>
                                 </div>
-
+                              </div>
                             </div>
+                          </div>
                         </div>
-                    </div>
+
 
                     <div class="col-md-12">
                         <ul class="nav nav-tabs" id="tabs-2" role="tablist">

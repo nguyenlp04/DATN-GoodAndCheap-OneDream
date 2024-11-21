@@ -8,7 +8,7 @@
             @if (Auth::user()->image_user)
             <img id="profile-picture" src="{{ asset( Auth::user()->image_user) }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
             @else
-            <img id="profile-picture" src="{{ asset('storage/image_users/default_avatar.jpg') }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+            <img id="profile-picture" src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
             @endif
             <label for="image_user" style="position: absolute; bottom: 5px; right: 5px; background-color: #DCA766; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                 <i class="fa-solid fa-pen"></i>
@@ -16,7 +16,9 @@
             </label>
         </div>
     </div>
-
+    @error('image_user')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
     <script>
         document.getElementById('image_user').addEventListener('change', function(event) {
             const file = event.target.files[0]; // Lấy tệp hình ảnh đầu tiên

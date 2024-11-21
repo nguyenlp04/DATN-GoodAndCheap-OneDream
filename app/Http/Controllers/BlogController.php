@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
+use App\Models\Staff;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,7 @@ class BlogController extends Controller
     public function create()
     {  $category = Category::all();
         return view('admin.blogs.create', compact('category'));
+        
     }
 
     public function listting()
@@ -42,7 +44,23 @@ class BlogController extends Controller
     // Lưu bài viết mới
     public function store(Request $request)
 {
+    
+
     try {
+        // Lấy ID của người dùng đăng nhập hiện tại
+        $userId = Auth::guard('staff')->user()->staff_id;
+       
+        // Kiểm tra xem người dùng có phải là staff không
+        $staff = Staff::find($userId);
+
+        if (!$staff) {
+            // Nếu người dùng không phải là staff, trả về thông báo không đủ quyền
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'You do not have sufficient privileges.'
+            ]);
+        }
+
         // Xác thực dữ liệu
         $validatedData = $request->validate([
             'title' => 'required|max:255',
@@ -51,9 +69,6 @@ class BlogController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
             'category_id' => 'required|exists:categories,category_id', // Kiểm tra category_id hợp lệ
         ]);
-
-        // Lấy ID của người dùng đăng nhập hiện tại
-        $staffId = Auth::id();
 
         // Xử lý ảnh
         $imagePath = null;
@@ -69,7 +84,7 @@ class BlogController extends Controller
             'title' => $validatedData['title'],
             'tags' => $tags,
             'content' => $validatedData['content'],
-            'staff_id' => $staffId, // Lưu ID của người dùng đăng nhập
+            'staff_id' => $userId, // Lưu ID của người dùng đăng nhập vào trường staff_id
             'image' => $imagePath, // Lưu đường dẫn ảnh
             'short_description' => $validatedData['short_description'],
             'category_id' => $validatedData['category_id'], // Lưu category_id
@@ -88,6 +103,7 @@ class BlogController extends Controller
         ]);
     }
 }
+
 public function edit(Blog $blog)
 {
     $categories = Category::all(); // Get all categories

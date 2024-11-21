@@ -59,6 +59,7 @@ class SaleNewsController extends Controller
                 'description' => 'required|string',
                 'subcategory_id' => 'required|integer',
                 'variant' => 'required',
+                'hiddenAddress' => 'required',
                 // 'images.*' => 'required|max:2048',
             ]);
             // dd($errors->all());
@@ -73,6 +74,8 @@ class SaleNewsController extends Controller
                 'description' => $validatedData['description'],
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'data' => $jsonData,
+                'address' => $validatedData['hiddenAddress'],
+                'approved' => 0,
                 'status' => 1,
                 'created_at' => now(),
             ];
@@ -153,7 +156,7 @@ class SaleNewsController extends Controller
      * Remove the specified resource from storage.
      */
 
-    
+
 
     public function getAllSaleStatus(){
         $data = SaleNews::with('vipPackage','firstImage')
@@ -194,6 +197,16 @@ class SaleNewsController extends Controller
     // public function tv2(){
     //     return view('salenews.promote');
     // }
+
+    public function getSubcategories($categoryId)
+    {
+        $subcategoryAttributes = SubcategoryAttribute::where('category_id', $categoryId)->get();
+        $subcategories = SubCategory::where('category_id', $categoryId)->get();
+        return response()->json([
+            'subcategories' => $subcategories,
+            'subcategory_attributes' => $subcategoryAttributes
+        ]);
+    }
 
 
     public function promote($id)
@@ -280,12 +293,14 @@ class SaleNewsController extends Controller
             ]);
         }
     }
-    
+
     public function list_salenew()
     {
-        // Lấy tất cả các tin bán hàng với các quan hệ (user, sub_category.category)
-        $data = SaleNews::with('user', 'sub_category.category')->get();
-        
+        $data = SaleNews::with('user', 'sub_category.category', 'images')
+        ->where('is_delete', NULL)
+        ->get();
+    
+
         // Sử dụng withCount để đếm số lượng tin có trạng thái = 0
         $count = SaleNews::where('approved', 0)->count();
 
@@ -296,11 +311,11 @@ class SaleNewsController extends Controller
     {
         try{
             $item = SaleNews::findOrFail($id);
-        
+
             // Thay đổi trạng thái giữa 0 và 2
             $item->approved = $item->approved == 2 ? 0 : 2;
             $item->save();
-            
+
             return redirect()->back()->with('alert', [
                 'type' => 'success',
                 'message' => ' Reject  successfully!'
@@ -310,9 +325,9 @@ class SaleNewsController extends Controller
                     'type' => 'error',
                     'message' => 'Error: ' . $th->getMessage()
                 ]);
-            
+
         }
-       
+
     }
 
     public function approve($id)
@@ -323,7 +338,7 @@ class SaleNewsController extends Controller
             // Thay đổi trạng thái giữa 0 và 1
          $item->approved = $item->approved == 1 ? 0 : 1;
          $item->save();
-         
+
          return redirect()->back()->with('alert', [
             'type' => 'success',
             'message' => ' Approve successfully!'
@@ -335,40 +350,46 @@ class SaleNewsController extends Controller
                 'message' => 'Error: ' . $th->getMessage()
             ]);
         }
-    
+
     }
     public function destroy($id)
-    {
-        try {
-            $item = SaleNews::find($id);
+{
+    try {
+        $item = SaleNews::findOrFail($id);
 
-            if ($item) {
-                $item->delete(); // Xóa bản ghi khỏi cơ sở dữ liệu
-                return redirect()->back()->with('alert', [
-                    'type' => 'success',
-                    'message' => 'Sale news deleted successfully!'
-                ]);
-            }
-
-            return redirect()->back()->with('alert', [
-                'type' => 'error',
-                'message' => 'Sale news not found!'
-            ]);
-         } catch (\Throwable $th) {
-            return redirect()->back()->with('alert', [
-                'type' => 'error',
-                'message' => 'Error: ' . $th->getMessage()
-            ]);
+        // Nếu is_delete là NULL, gán giá trị là 1
+        if (is_null($item->is_delete)) {
+            $item->is_delete = 1;
         }
-    }
 
+        // Chuyển trạng thái approved thành 1
+        $item->approved = 2;
+
+        $item->save();
+
+        // Thông báo
+        $message = 'Delete successfully!';
+
+        return redirect()->back()->with('alert', [
+            'type' => 'success',
+            'message' => $message
+        ]);
+    } catch (\Throwable $th) {
+        return redirect()->back()->with('alert', [
+            'type' => 'error',
+            'message' => 'Lỗi: ' . $th->getMessage()
+        ]);
+    }
+}
+
+    
 
     public function navbar_sale(){
         $count = SaleNews::where('approved', 0)->get();
 
         return view('layouts.admin', compact( 'count'));
     }
-   
+
 
 
 }
