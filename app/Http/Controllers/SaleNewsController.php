@@ -296,8 +296,10 @@ class SaleNewsController extends Controller
 
     public function list_salenew()
     {
-        // Lấy tất cả các tin bán hàng với các quan hệ (user, sub_category.category)
-        $data = SaleNews::with('user', 'sub_category.category','images')->get();
+        $data = SaleNews::with('user', 'sub_category.category', 'images')
+        ->where('is_delete', NULL)
+        ->get();
+    
 
         // Sử dụng withCount để đếm số lượng tin có trạng thái = 0
         $count = SaleNews::where('approved', 0)->count();
@@ -351,30 +353,36 @@ class SaleNewsController extends Controller
 
     }
     public function destroy($id)
-    {
-        try {
-            $item = SaleNews::find($id);
+{
+    try {
+        $item = SaleNews::findOrFail($id);
 
-            if ($item) {
-                $item->delete(); // Xóa bản ghi khỏi cơ sở dữ liệu
-                return redirect()->back()->with('alert', [
-                    'type' => 'success',
-                    'message' => 'Sale news deleted successfully!'
-                ]);
-            }
-
-            return redirect()->back()->with('alert', [
-                'type' => 'error',
-                'message' => 'Sale news not found!'
-            ]);
-         } catch (\Throwable $th) {
-            return redirect()->back()->with('alert', [
-                'type' => 'error',
-                'message' => 'Error: ' . $th->getMessage()
-            ]);
+        // Nếu is_delete là NULL, gán giá trị là 1
+        if (is_null($item->is_delete)) {
+            $item->is_delete = 1;
         }
-    }
 
+        // Chuyển trạng thái approved thành 1
+        $item->approved = 2;
+
+        $item->save();
+
+        // Thông báo
+        $message = 'Delete successfully!';
+
+        return redirect()->back()->with('alert', [
+            'type' => 'success',
+            'message' => $message
+        ]);
+    } catch (\Throwable $th) {
+        return redirect()->back()->with('alert', [
+            'type' => 'error',
+            'message' => 'Lỗi: ' . $th->getMessage()
+        ]);
+    }
+}
+
+    
 
     public function navbar_sale(){
         $count = SaleNews::where('approved', 0)->get();

@@ -42,6 +42,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('/blogs', BlogController::class);
     Route::post('/blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
 
+
     Route::post('staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
     Route::prefix('category')->group(function () {
         Route::get('/', [CategoryController::class, 'index']);
@@ -83,7 +84,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::delete('/sale_news/{id}', [SaleNewsController::class, 'destroy'])->name('sale_news.destroy');
     route::post('/sale_news/approve/{id}',[SaleNewsController::class,'approve'])->name('sale_news.approve');
 });
-// endadmin
 
 
 // user

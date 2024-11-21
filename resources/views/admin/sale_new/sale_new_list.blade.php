@@ -130,7 +130,7 @@
                               <span>{{\Carbon\Carbon::parse($item->created_at)->format('Y-m-d')}}</span>
                           @endif -->
                           <div class="row d-flex justify-content-Start">
-                          <img src="{{ $item->firstImage->image_name }}" alt="Product-3" class="rounded" style="width: 100px; object-fit: cover;">
+                       
                           {{$item->title}}
                         </div>
 
@@ -168,28 +168,38 @@
                                   <tr data-dt-row="2" data-dt-column="2">
                                     <td class="col-3">Product:</td>
                                     <td class="col-9">
-                                      <div class="d-flex justify-content-start align-items-center product-name">
-                                        <div class="avatar-wrapper">
-                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
-                                            @foreach ($item->images as $itemIMG)
-
-                                            <img src="{{ $itemIMG->image_name }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
-                                            @endforeach
-                                          </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                          <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
-                                          <small class="text-truncate-1">{{ $item->description }}</small>
-
-
-
-
-                                        </div>
-                                        <div >
-                                          @if($item->vip_package_id >0)
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                    <div class="avatar-wrapper">
+                                                        <div class="d-flex flex-wrap">
+                                                            @foreach ($item->images as $itemIMG)
+                                                                <div class="avatar avatar me-4 rounded-2 bg-label-secondary" ">
+                                                                    <img src="{{ $itemIMG->image_name }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @if($item->vip_package_id >0)
                                             <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
-                                            @endif</div>
+                                            @endif
+                                               
+                                        </div>
+
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td class="col-3">Title:</td>
+                                    <td class="col-9">
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                   
+                                                    <div class="d-flex flex-column">
+                                                        <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
+                                                        <small class="text-truncate-1">{{ $item->description }}</small>
+                                                    </div>
+                                                </div>
+
+                                       
 
                                       </div>
                                     </td>
@@ -354,7 +364,10 @@
                           @else
                               <span>{{\Carbon\Carbon::parse($item->created_at)->format('Y-m-d')}}</span>
                           @endif -->
-                           {{$item->user->full_name}}
+                          <div class="row d-flex justify-content-Start">
+                       
+                          {{$item->title}}
+                        </div>
 
                         </td>
                         <td class="bg-light rounded">
@@ -373,11 +386,11 @@
                             @endif
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;" data-bs-toggle="modal" data-bs-target="#modal1{{$item->sale_new_id}}">
+                            <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;" data-bs-toggle="modal" data-bs-target="#modal{{$item->sale_new_id}}">
                                 <i class="fas fa-eye"></i>
                                 <span class="tooltip-text eye">View</span>
                             </button>
-                            <div class="modal fade" id="modal1{{$item->sale_new_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal{{$item->sale_new_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog">
                                     <div class="modal-content">
                                       <div class="modal-header">
@@ -390,25 +403,38 @@
                                   <tr data-dt-row="2" data-dt-column="2">
                                     <td class="col-3">Product:</td>
                                     <td class="col-9">
-                                      <div class="d-flex justify-content-start align-items-center product-name">
-                                        <div class="avatar-wrapper">
-                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
-                                            <img src="a" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
-                                          </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                          <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
-                                          <small class="text-truncate-1">{{ $item->description }}</small>
-
-
-
-
-                                        </div>
-                                        <div >
-                                          @if($item->vip_package_id >0)
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                    <div class="avatar-wrapper">
+                                                        <div class="d-flex flex-wrap">
+                                                            @foreach ($item->images as $itemIMG)
+                                                                <div class="avatar avatar me-4 rounded-2 bg-label-secondary" ">
+                                                                    <img src="{{ $itemIMG->image_name }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @if($item->vip_package_id >0)
                                             <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
-                                            @endif</div>
+                                            @endif
+                                               
+                                        </div>
+
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td class="col-3">Title:</td>
+                                    <td class="col-9">
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                   
+                                                    <div class="d-flex flex-column">
+                                                        <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
+                                                        <small class="text-truncate-1">{{ $item->description }}</small>
+                                                    </div>
+                                                </div>
+
+                                       
 
                                       </div>
                                     </td>
@@ -568,7 +594,10 @@
                           @else
                               <span>{{\Carbon\Carbon::parse($item->created_at)->format('Y-m-d')}}</span>
                           @endif -->
-                           {{$item->user->full_name}}
+                          <div class="row d-flex justify-content-Start">
+                       
+                          {{$item->title}}
+                        </div>
 
                         </td>
                         <td class="bg-light rounded">
@@ -587,11 +616,11 @@
                             @endif
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;" data-bs-toggle="modal" data-bs-target="#modal3{{$item->sale_new_id}}">
+                            <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;" data-bs-toggle="modal" data-bs-target="#modal{{$item->sale_new_id}}">
                                 <i class="fas fa-eye"></i>
                                 <span class="tooltip-text eye">View</span>
                             </button>
-                            <div class="modal fade" id="modal3{{$item->sale_new_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal{{$item->sale_new_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog">
                                     <div class="modal-content">
                                       <div class="modal-header">
@@ -604,25 +633,38 @@
                                   <tr data-dt-row="2" data-dt-column="2">
                                     <td class="col-3">Product:</td>
                                     <td class="col-9">
-                                      <div class="d-flex justify-content-start align-items-center product-name">
-                                        <div class="avatar-wrapper">
-                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
-                                            <img src="a" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
-                                          </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                          <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
-                                          <small class="text-truncate-1">{{ $item->description }}</small>
-
-
-
-
-                                        </div>
-                                        <div >
-                                          @if($item->vip_package_id >0)
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                    <div class="avatar-wrapper">
+                                                        <div class="d-flex flex-wrap">
+                                                            @foreach ($item->images as $itemIMG)
+                                                                <div class="avatar avatar me-4 rounded-2 bg-label-secondary" ">
+                                                                    <img src="{{ $itemIMG->image_name }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @if($item->vip_package_id >0)
                                             <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
-                                            @endif</div>
+                                            @endif
+                                               
+                                        </div>
+
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td class="col-3">Title:</td>
+                                    <td class="col-9">
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                   
+                                                    <div class="d-flex flex-column">
+                                                        <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
+                                                        <small class="text-truncate-1">{{ $item->description }}</small>
+                                                    </div>
+                                                </div>
+
+                                       
 
                                       </div>
                                     </td>
@@ -782,7 +824,10 @@
                           @else
                               <span>{{\Carbon\Carbon::parse($item->created_at)->format('Y-m-d')}}</span>
                           @endif -->
-                           {{$item->user->full_name}}
+                          <div class="row d-flex justify-content-Start">
+                       
+                          {{$item->title}}
+                        </div>
 
                         </td>
                         <td class="bg-light rounded">
@@ -801,11 +846,11 @@
                             @endif
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;" data-bs-toggle="modal" data-bs-target="#modal4{{$item->sale_new_id}}">
+                            <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;" data-bs-toggle="modal" data-bs-target="#modal{{$item->sale_new_id}}">
                                 <i class="fas fa-eye"></i>
                                 <span class="tooltip-text eye">View</span>
                             </button>
-                            <div class="modal fade" id="modal4{{$item->sale_new_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal{{$item->sale_new_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog">
                                     <div class="modal-content">
                                       <div class="modal-header">
@@ -818,25 +863,38 @@
                                   <tr data-dt-row="2" data-dt-column="2">
                                     <td class="col-3">Product:</td>
                                     <td class="col-9">
-                                      <div class="d-flex justify-content-start align-items-center product-name">
-                                        <div class="avatar-wrapper">
-                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
-                                            <img src="a" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
-                                          </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                          <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
-                                          <small class="text-truncate-1">{{ $item->description }}</small>
-
-
-
-
-                                        </div>
-                                        <div >
-                                          @if($item->vip_package_id >0)
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                    <div class="avatar-wrapper">
+                                                        <div class="d-flex flex-wrap">
+                                                            @foreach ($item->images as $itemIMG)
+                                                                <div class="avatar avatar me-4 rounded-2 bg-label-secondary" ">
+                                                                    <img src="{{ $itemIMG->image_name }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @if($item->vip_package_id >0)
                                             <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
-                                            @endif</div>
+                                            @endif
+                                               
+                                        </div>
+
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td class="col-3">Title:</td>
+                                    <td class="col-9">
+                                    <div class="d-flex justify-content-start align-items-center product-name">
+                                                   
+                                                    <div class="d-flex flex-column">
+                                                        <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
+                                                        <small class="text-truncate-1">{{ $item->description }}</small>
+                                                    </div>
+                                                </div>
+
+                                       
 
                                       </div>
                                     </td>
