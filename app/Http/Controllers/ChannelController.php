@@ -35,7 +35,7 @@ class ChannelController extends Controller
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
 
-        $sale_news = $channels->saleNews()->with('subcategory')->get();
+        $sale_news = $channels->saleNews()->with('sub_category')->get();
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory
@@ -151,15 +151,11 @@ class ChannelController extends Controller
     public function show(string $id)
     {
         $user = Auth::user();
-        // Check if the user has created a channel
-        $channel = Channel::where('user_id', $user->user_id)->whereNotNull('status')->first();
+        // // Check if the user has created a channel
+      
+        $channel = Channel::where('user_id', $user->user_id)->first();
 
-        if (!$channel || is_null($channel->status)) {
-            return redirect()->route('home') // Chuyển hướng đến trang tạo kênh
-                ->with('error', 'You have not created a channel yet or the channel status is not set.');
-        }
-
-
+        
         // If the user has a channel, continue to display the channel
         $channels = Channel::findOrFail($id); // Get channel by ID
         $sale_news = $channels->saleNews()->with('sub_category','firstImage')
