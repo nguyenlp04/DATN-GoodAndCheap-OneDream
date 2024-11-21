@@ -3,12 +3,12 @@
 <style>
   /* Đảm bảo bảng có chiều rộng cố định */
   .table td, .table th {
-   
+
     white-space: normal;    /* Đảm bảo không có từ nào bị ẩn */
   }
 
   /* Đảm bảo bảng không thay đổi kích thước */
-  .table { 
+  .table {
     table-layout: fixed;
     width: 100%;
   }
@@ -51,7 +51,7 @@
 
       <!-- Nav tabs -->
       <ul class="nav nav-tabs mb-2 " role="tablist">
-  
+
         <li class="nav-item">
           <a class="nav-link active" data-bs-toggle="tab" href="#all"> All news</a>
         </li>
@@ -73,7 +73,7 @@
         @if($count>0)
         <li class="nav-item position-relative">
           <a class="nav-link" data-bs-toggle="tab" href="#waiting">Waiting for approved</a>
-          
+
           <div class="position-absolute top-0 start-100 translate-middle text-center bg-danger d-inline-block rounded-circle" style="width: 20px; height: 20px;">
             <span class="text-white d-flex justify-content-center align-items-center" style="line-height: 20px; font-size:10px;">{{ $count}}</span>
           </div>
@@ -90,7 +90,7 @@
 
               <!-- Tab panes -->
               <div class="tab-content p-0">
-                
+
                 <!-- All news Tab -->
                 <div id="all" class="container-fluid p-0 tab-pane active">
                   <h2>All news</h2>
@@ -98,9 +98,9 @@
                     <thead>
                       <tr>
                         <th>Id news</th>
-                        <th>user</th>
+                        <th>Title</th>
                         <th>Category</th>
-                    
+
                         <th>approved</th>
                         <th>Content</th>
                         <th>Actions</th>
@@ -110,18 +110,18 @@
                     @foreach($data as $item)
                     <tr>
                         <td>
-                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}} 
+                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}}
                                @if($item->vip_package_id >0)
-                              <span><i class="fa-solid text-warning fa-star me-1"></i></span> 
+                              <span><i class="fa-solid text-warning fa-star me-1"></i></span>
                               @else
                               @endif
                               <!-- Biểu tượng ngôi sao -->
                             </span>
                           </div>
-                         
 
-                        
-                           
+
+
+
                         </td>
                         <td >
                         <!-- @if($item->approved == 0)
@@ -129,7 +129,10 @@
                           @else
                               <span>{{\Carbon\Carbon::parse($item->created_at)->format('Y-m-d')}}</span>
                           @endif -->
-                           {{$item->user->full_name}}
+                          <div class="row d-flex justify-content-Start">
+                          <img src="{{ $item->firstImage->image_name }}" alt="Product-3" class="rounded" style="width: 100px; object-fit: cover;">
+                          {{$item->title}}
+                        </div>
 
                         </td>
                         <td class="bg-light rounded">
@@ -137,7 +140,7 @@
                         <span class="text-muted"> &#8594; </span>
                             <span class="badge text-secondary"> {{ $item->sub_category->name_sub_category }}</span>
                         </td>
-                       
+
                         <td class="bg-light rounded">
                             @if($item->approved == 0)
                                 <span class="badge bg-label-warning">Waiting</span>
@@ -168,23 +171,26 @@
                                       <div class="d-flex justify-content-start align-items-center product-name">
                                         <div class="avatar-wrapper">
                                           <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
-                                            <img src="a" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                            @foreach ($item->images as $itemIMG)
+
+                                            <img src="{{ $itemIMG->image_name }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
+                                            @endforeach
                                           </div>
                                         </div>
                                         <div class="d-flex flex-column">
                                           <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
                                           <small class="text-truncate-1">{{ $item->description }}</small>
-                                       
-                            
-                                      
+
+
+
 
                                         </div>
-                                        <div >   
+                                        <div >
                                           @if($item->vip_package_id >0)
-                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span> 
+                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
                                             @endif</div>
-                                     
+
                                       </div>
                                     </td>
                                   </tr>
@@ -200,20 +206,20 @@
                                     <td class="col-3">Price:</td>
                                     <td class="col-9"><span>${{ number_format($item->price, 2) }}</span></td>
                                   </tr>
-                                 
+
                                   <tr data-dt-row="2" data-dt-column="10">
                                     <td class="col-3">Create By:</td>
                                     <td class="col-9"><span>{{ $item->user->full_name }}</span></td>
                                   </tr>
-                                  
-                                    
+
+
                                       @if($item->approved == 0)
                                       <tr data-dt-row="2" data-dt-column="8">
                                       <td class="col-3">Time remaining:</td>
                                     <td class="col-8 bg-light rounded">
                                     <div class="d-flex align-items-center" style="font-size: 15px; font-weight:700">
                                           <i class="fa-regular fa-clock text-danger me-1"></i> <!-- Thêm margin-right cho icon để cách ra với chữ -->
-                                          
+
                                           <p class="text-danger mb-0"> <!-- Sử dụng mb-0 để loại bỏ margin-bottom của đoạn văn -->
                                               @php
                                                   // Tính số ngày và giờ còn lại đến hết 7 ngày
@@ -235,9 +241,9 @@
                                       @else
                                           <!-- Nếu approved không bằng 0, không hiển thị gì -->
                                       @endif
-                                      
+
                                   </div>
-                                    
+
                                   <tr data-dt-row="2" data-dt-column="9">
                                     <td class="col-3">Created At:</td>
                                     <td class="col-9"><span>{{ date('D, d M Y', strtotime($item->created_at)) }}</span></td>
@@ -252,7 +258,7 @@
                                       @endif
                                     </td>
                                   </tr>
-                                  
+
                                 </tbody>
                               </table>
 
@@ -318,7 +324,7 @@
                         <th>Id news</th>
                         <th>Start date</th>
                         <th>Category</th>
-                       
+
                         <th>approved</th>
                         <th>Content</th>
                         <th>Actions</th>
@@ -329,18 +335,18 @@
                     @if($item->approved==1)
                     <tr>
                         <td>
-                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}} 
+                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}}
                                @if($item->vip_package_id >0)
-                              <span><i class="fa-solid text-warning fa-star me-1"></i></span> 
+                              <span><i class="fa-solid text-warning fa-star me-1"></i></span>
                               @else
                               @endif
                               <!-- Biểu tượng ngôi sao -->
                             </span>
                           </div>
-                         
 
-                        
-                           
+
+
+
                         </td>
                         <td >
                         <!-- @if($item->approved == 0)
@@ -356,7 +362,7 @@
                         <span class="text-muted"> &#8594; </span>
                             <span class="badge text-secondary"> {{ $item->sub_category->name_sub_category }}</span>
                         </td>
-                       
+
                         <td class="bg-light rounded">
                             @if($item->approved == 0)
                                 <span class="badge bg-label-warning">Waiting</span>
@@ -393,17 +399,17 @@
                                         <div class="d-flex flex-column">
                                           <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
                                           <small class="text-truncate-1">{{ $item->description }}</small>
-                                       
-                            
-                                      
+
+
+
 
                                         </div>
-                                        <div >   
+                                        <div >
                                           @if($item->vip_package_id >0)
-                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span> 
+                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
                                             @endif</div>
-                                     
+
                                       </div>
                                     </td>
                                   </tr>
@@ -419,20 +425,20 @@
                                     <td class="col-3">Price:</td>
                                     <td class="col-9"><span>${{ number_format($item->price, 2) }}</span></td>
                                   </tr>
-                                 
+
                                   <tr data-dt-row="2" data-dt-column="10">
                                     <td class="col-3">Create By:</td>
                                     <td class="col-9"><span>{{ $item->user->full_name }}</span></td>
                                   </tr>
-                                  
-                                    
+
+
                                       @if($item->approved == 0)
                                       <tr data-dt-row="2" data-dt-column="8">
                                       <td class="col-3">Time remaining:</td>
                                     <td class="col-8 bg-light rounded">
                                     <div class="d-flex align-items-center" style="font-size: 15px; font-weight:700">
                                           <i class="fa-regular fa-clock text-danger me-1"></i> <!-- Thêm margin-right cho icon để cách ra với chữ -->
-                                          
+
                                           <p class="text-danger mb-0"> <!-- Sử dụng mb-0 để loại bỏ margin-bottom của đoạn văn -->
                                               @php
                                                   // Tính số ngày và giờ còn lại đến hết 7 ngày
@@ -454,9 +460,9 @@
                                       @else
                                           <!-- Nếu approved không bằng 0, không hiển thị gì -->
                                       @endif
-                                      
+
                                   </div>
-                                    
+
                                   <tr data-dt-row="2" data-dt-column="9">
                                     <td class="col-3">Created At:</td>
                                     <td class="col-9"><span>{{ date('D, d M Y', strtotime($item->created_at)) }}</span></td>
@@ -471,7 +477,7 @@
                                       @endif
                                     </td>
                                   </tr>
-                                  
+
                                 </tbody>
                               </table>
 
@@ -532,7 +538,7 @@
                         <th>Id news</th>
                         <th>Start date</th>
                         <th>Category</th>
-                        
+
                         <th>approved</th>
                         <th>Content</th>
                         <th>Actions</th>
@@ -543,18 +549,18 @@
                     @if($item->approved==0)
                     <tr>
                         <td>
-                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}} 
+                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}}
                                @if($item->vip_package_id >0)
-                              <span><i class="fa-solid text-warning fa-star me-1"></i></span> 
+                              <span><i class="fa-solid text-warning fa-star me-1"></i></span>
                               @else
                               @endif
                               <!-- Biểu tượng ngôi sao -->
                             </span>
                           </div>
-                         
 
-                        
-                           
+
+
+
                         </td>
                         <td >
                         <!-- @if($item->approved == 0)
@@ -570,7 +576,7 @@
                         <span class="text-muted"> &#8594; </span>
                             <span class="badge text-secondary"> {{ $item->sub_category->name_sub_category }}</span>
                         </td>
-                       
+
                         <td class="bg-light rounded">
                             @if($item->approved == 0)
                                 <span class="badge bg-label-warning">Waiting</span>
@@ -607,17 +613,17 @@
                                         <div class="d-flex flex-column">
                                           <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
                                           <small class="text-truncate-1">{{ $item->description }}</small>
-                                       
-                            
-                                      
+
+
+
 
                                         </div>
-                                        <div >   
+                                        <div >
                                           @if($item->vip_package_id >0)
-                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span> 
+                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
                                             @endif</div>
-                                     
+
                                       </div>
                                     </td>
                                   </tr>
@@ -633,20 +639,20 @@
                                     <td class="col-3">Price:</td>
                                     <td class="col-9"><span>${{ number_format($item->price, 2) }}</span></td>
                                   </tr>
-                                 
+
                                   <tr data-dt-row="2" data-dt-column="10">
                                     <td class="col-3">Create By:</td>
                                     <td class="col-9"><span>{{ $item->user->full_name }}</span></td>
                                   </tr>
-                                  
-                                    
+
+
                                       @if($item->approved == 0)
                                       <tr data-dt-row="2" data-dt-column="8">
                                       <td class="col-3">Time remaining:</td>
                                     <td class="col-8 bg-light rounded">
                                     <div class="d-flex align-items-center" style="font-size: 15px; font-weight:700">
                                           <i class="fa-regular fa-clock text-danger me-1"></i> <!-- Thêm margin-right cho icon để cách ra với chữ -->
-                                          
+
                                           <p class="text-danger mb-0"> <!-- Sử dụng mb-0 để loại bỏ margin-bottom của đoạn văn -->
                                               @php
                                                   // Tính số ngày và giờ còn lại đến hết 7 ngày
@@ -668,9 +674,9 @@
                                       @else
                                           <!-- Nếu approved không bằng 0, không hiển thị gì -->
                                       @endif
-                                      
+
                                   </div>
-                                    
+
                                   <tr data-dt-row="2" data-dt-column="9">
                                     <td class="col-3">Created At:</td>
                                     <td class="col-9"><span>{{ date('D, d M Y', strtotime($item->created_at)) }}</span></td>
@@ -685,7 +691,7 @@
                                       @endif
                                     </td>
                                   </tr>
-                                  
+
                                 </tbody>
                               </table>
 
@@ -746,7 +752,7 @@
                         <th>Id news</th>
                         <th>Start date</th>
                         <th>Category</th>
-                     
+
                         <th>approved</th>
                         <th>Content</th>
                         <th>Actions</th>
@@ -757,18 +763,18 @@
                     @if($item->approved==2)
                     <tr>
                         <td>
-                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}} 
+                            <div><span class="badge bg-label-secondary my-1">#{{$item->sale_new_id}}
                                @if($item->vip_package_id >0)
-                              <span><i class="fa-solid text-warning fa-star me-1"></i></span> 
+                              <span><i class="fa-solid text-warning fa-star me-1"></i></span>
                               @else
                               @endif
                               <!-- Biểu tượng ngôi sao -->
                             </span>
                           </div>
-                         
 
-                        
-                           
+
+
+
                         </td>
                         <td >
                         <!-- @if($item->approved == 0)
@@ -784,7 +790,7 @@
                         <span class="text-muted"> &#8594; </span>
                             <span class="badge text-secondary"> {{ $item->sub_category->name_sub_category }}</span>
                         </td>
-                       
+
                         <td class="bg-light rounded">
                             @if($item->approved == 0)
                                 <span class="badge bg-label-warning">Waiting</span>
@@ -821,17 +827,17 @@
                                         <div class="d-flex flex-column">
                                           <h6 class="mb-0 text-truncate-1">{{ $item->name_product }}</h6>
                                           <small class="text-truncate-1">{{ $item->description }}</small>
-                                       
-                            
-                                      
+
+
+
 
                                         </div>
-                                        <div >   
+                                        <div >
                                           @if($item->vip_package_id >0)
-                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span> 
+                                            <span class="badge text-warning"><i class="fa-solid text-warning fa-star me-1" style="margin-left:50px"></i> {{ $item->vippackage->name }}</span>
                                             @else
                                             @endif</div>
-                                     
+
                                       </div>
                                     </td>
                                   </tr>
@@ -847,20 +853,20 @@
                                     <td class="col-3">Price:</td>
                                     <td class="col-9"><span>${{ number_format($item->price, 2) }}</span></td>
                                   </tr>
-                                 
+
                                   <tr data-dt-row="2" data-dt-column="10">
                                     <td class="col-3">Create By:</td>
                                     <td class="col-9"><span>{{ $item->user->full_name }}</span></td>
                                   </tr>
-                                  
-                                    
+
+
                                       @if($item->approved == 0)
                                       <tr data-dt-row="2" data-dt-column="8">
                                       <td class="col-3">Time remaining:</td>
                                     <td class="col-8 bg-light rounded">
                                     <div class="d-flex align-items-center" style="font-size: 15px; font-weight:700">
                                           <i class="fa-regular fa-clock text-danger me-1"></i> <!-- Thêm margin-right cho icon để cách ra với chữ -->
-                                          
+
                                           <p class="text-danger mb-0"> <!-- Sử dụng mb-0 để loại bỏ margin-bottom của đoạn văn -->
                                               @php
                                                   // Tính số ngày và giờ còn lại đến hết 7 ngày
@@ -882,9 +888,9 @@
                                       @else
                                           <!-- Nếu approved không bằng 0, không hiển thị gì -->
                                       @endif
-                                      
+
                                   </div>
-                                    
+
                                   <tr data-dt-row="2" data-dt-column="9">
                                     <td class="col-3">Created At:</td>
                                     <td class="col-9"><span>{{ date('D, d M Y', strtotime($item->created_at)) }}</span></td>
@@ -899,7 +905,7 @@
                                       @endif
                                     </td>
                                   </tr>
-                                  
+
                                 </tbody>
                               </table>
 
@@ -957,7 +963,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
   <div class="content-backdrop fade"></div>
 </div>
