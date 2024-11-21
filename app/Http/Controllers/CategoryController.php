@@ -29,7 +29,7 @@ class CategoryController extends Controller
         ->leftJoin('sub_categories', 'categories.category_id', '=', 'sub_categories.category_id')
         ->leftJoin('subcategory_attributes', 'categories.category_id', '=', 'subcategory_attributes.category_id')
         ->leftJoin('staffs', 'categories.staff_id', '=', 'staffs.staff_id')
-        ->leftJoin('blogs', 'categories.category_id', '=', 'blogs.category_id')  // Sửa ở đây, thay `category_id` cho đúng
+        // ->leftJoin('blogs', 'categories.category_id', '=', 'blogs.category_id')  // Sửa ở đây, thay `category_id` cho đúng
         ->where('categories.is_delete', '=', '0')
         ->groupBy(
             'categories.category_id',
