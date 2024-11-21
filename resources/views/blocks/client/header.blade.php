@@ -282,15 +282,15 @@
                             {{ __('Profile') }}
                             </a>
                          </li>
-                         @if(!auth()->user()->channel)
+                         @if(!auth()->user()->channel || auth()->user()->channel->status === null)
                          <li>
                             <a href="{{ url('channels/create') }}">
                             {{ __('Upgrage Account') }}
                             </a>
                          </li>
                          @endif
+                         @if(auth()->user()->channel && auth()->user()->channel->status !== null)
 
-                         @if(auth()->user()->channel)
                          <li>
                             <a href="{{ route('channels.index') }}">
                             {{ __('My Channel') }}
