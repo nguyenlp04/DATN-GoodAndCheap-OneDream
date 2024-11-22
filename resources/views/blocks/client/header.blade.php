@@ -101,7 +101,7 @@
 
 
                     <div class="dropdown-cart-action mt-2 flex justify-content-center">
-                        <a href="checkout.html" class="btn btn-outline-primary-2" ><span>View All</span><i class="icon-long-arrow-center"></i></a>
+                        <a href="{{ route('notifications.show') }}" class="btn btn-outline-primary-2" ><span>View All</span><i class="icon-long-arrow-center"></i></a>
                     </div><!-- End .dropdown-cart-total -->
                 </div><!-- End .dropdown-menu -->
             </div>

@@ -50,7 +50,7 @@ class AppServiceProvider extends ServiceProvider
         // Kết hợp và sắp xếp theo ngày
         $mergedNotifications = $filteredNotifications->merge($notification_web)
                                                     ->sortByDesc('created_at')
-                                                    ->toArray();
+                                                    ->toArray();    
 
         // Kết quả
         // dd($mergedNotifications);

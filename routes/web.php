@@ -79,9 +79,9 @@ Route::middleware(['auth.admin'])->group(function () {
     });
     Route::get('/sale_news', [SaleNewsController::class, 'list_salenew'])->name('sale_new.list');
 
-    route::post('/sale_news/reject/{id}',[SaleNewsController::class,'reject'])->name('sale_news.reject');
+    route::post('/sale_news/reject/{id}', [SaleNewsController::class, 'reject'])->name('sale_news.reject');
     Route::delete('/sale_news/{id}', [SaleNewsController::class, 'destroy'])->name('sale_news.destroy');
-    route::post('/sale_news/approve/{id}',[SaleNewsController::class,'approve'])->name('sale_news.approve');
+    route::post('/sale_news/approve/{id}', [SaleNewsController::class, 'approve'])->name('sale_news.approve');
 });
 
 
@@ -123,6 +123,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-subcategories/{categoryId}', [SaleNewsController::class, 'getSubcategories']);
     Route::post('/follow-channel/{channel_id}', [ChannelController::class, 'followChannel'])->name('follow.channel');
     Route::delete('/unfollow-channel/{channel_id}', [ChannelController::class, 'unfollowChannel'])->name('unfollow.channel');
+
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/show}', [NotificationController::class, 'show'])->name('show');
+        Route::get('/{notification}', [NotificationController::class, 'detail'])->name('detail');
+    });
 });
 
 Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
