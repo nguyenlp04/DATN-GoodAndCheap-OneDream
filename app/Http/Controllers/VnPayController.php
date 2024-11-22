@@ -31,7 +31,7 @@ class VnPayController extends Controller
         }
         $vipPackage = VipPackage::findOrFail($request->vip_package_id);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "https://127.0.0.1:8000/IPN";
+        $vnp_Returnurl = "https://datn.lndo.site/IPN";
         $vnp_TmnCode = "KA9BQ8KD"; // Mã website tại VNPAY
         $vnp_HashSecret = "9Y2K4UHS31CG1PV5ECLNNOIY8Q3385CP"; // Chuỗi bí mật
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -201,6 +201,10 @@ class VnPayController extends Controller
                     if ($transaction) {
                         $Channel = Channel::findOrFail($channel_id);
                         $Channel->status = 1;
+                        $vipPackage = VipPackage::findOrFail($id_package);
+                        $Channel->vip_package_id = $id_package;
+                        $Channel->vip_start_at = Carbon::now();
+                        $Channel->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
                         $Channel->save();
 
                         Transactions::where('transaction_id', $transaction->transaction_id)->delete();

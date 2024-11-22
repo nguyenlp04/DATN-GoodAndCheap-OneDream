@@ -112,6 +112,14 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
+
+        Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
+        Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
+        Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
+    Route::post('/sale-news/{id}/toggle-status', [BlogController::class, 'toggleStatus'])->name('saleNews.toggleStatus');
+
+        
+
     });
     Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
     Route::get('/salenews-status', [SaleNewsController::class, 'getAllSaleStatus'])->name('sl.index');
@@ -190,6 +198,7 @@ Route::prefix('trash')->group(function () {
         return view('admin.index');
     });
 });
+
 
 
 
