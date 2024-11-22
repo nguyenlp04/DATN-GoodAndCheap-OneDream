@@ -118,7 +118,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
     Route::post('/sale-news/{id}/toggle-status', [BlogController::class, 'toggleStatus'])->name('saleNews.toggleStatus');
 
-        
+
 
     });
     Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
@@ -131,9 +131,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-subcategories/{categoryId}', [SaleNewsController::class, 'getSubcategories']);
     Route::post('/follow-channel/{channel_id}', [ChannelController::class, 'followChannel'])->name('follow.channel');
     Route::delete('/unfollow-channel/{channel_id}', [ChannelController::class, 'unfollowChannel'])->name('unfollow.channel');
+    Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
 });
 
-Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
 
 // enduser
 
@@ -198,7 +198,10 @@ Route::prefix('trash')->group(function () {
 
 
 
-// Route::get('/promote', [SaleNewsController::class, 'tv2'])->name('sl.tv2');
-// Route::get('/salenewdetail',function (){
-// return view('salenews.detail');
-// });
+
+Route::get('/search',function (){
+return view('salenews.search');
+});
+Route::get('/tb',function (){
+    return view('notifications.list');
+    });
