@@ -155,7 +155,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $dataCategoryID = Category::with(['subcategories', 'subcategory_attributes',])->where('category_id', $id)->first();
+        $dataCategoryID = Category::with(['subcategories', 'subcategory_attributes'])->where('category_id', $id)->first();
         return view('admin.categories.update-category', [
             'dataCategoryID' => $dataCategoryID,
         ]);
@@ -190,8 +190,17 @@ class CategoryController extends Controller
             }
 
             // Store the new image
-            $imagePath = $request->file('image')->store('category_images');
-            $category->image_category = $imagePath;
+            // $imagePath = $request->file('image')->store('category_images');
+            // $category->image_category = $imagePath;
+
+                $imageName = 'category_' . time() . '_' . uniqid() . '.' . $request->image->extension();
+                Storage::disk('public')->putFileAs('category', $request->file('image'), $imageName);
+                $imagePath = 'storage/category/' . $imageName;
+                $data['image_category'] = $imagePath;
+
+                $query = DB::table('categories')->where('category_id',$id)->update($data);
+
+
         }
 
         // Save the category

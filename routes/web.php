@@ -80,9 +80,9 @@ Route::middleware(['auth.admin'])->group(function () {
     });
     Route::get('/sale_news', [SaleNewsController::class, 'list_salenew'])->name('sale_new.list');
 
-    route::post('/sale_news/reject/{id}',[SaleNewsController::class,'reject'])->name('sale_news.reject');
+    route::post('/sale_news/reject/{id}', [SaleNewsController::class, 'reject'])->name('sale_news.reject');
     Route::delete('/sale_news/{id}', [SaleNewsController::class, 'destroy'])->name('sale_news.destroy');
-    route::post('/sale_news/approve/{id}',[SaleNewsController::class,'approve'])->name('sale_news.approve');
+    route::post('/sale_news/approve/{id}', [SaleNewsController::class, 'approve'])->name('sale_news.approve');
 });
 
 
@@ -117,9 +117,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
-         Route::post('/sale-news/{id}/toggle-status', [BlogController::class, 'toggleStatus'])->name('saleNews.toggleStatus');
 
-   
+        Route::post('/sale-news/{id}/toggle-status', [BlogController::class, 'toggleStatus'])->name('saleNews.toggleStatus');
 
     });
     Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
@@ -133,6 +132,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/follow-channel/{channel_id}', [ChannelController::class, 'followChannel'])->name('follow.channel');
     Route::delete('/unfollow-channel/{channel_id}', [ChannelController::class, 'unfollowChannel'])->name('unfollow.channel');
     Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
+
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/view-all/', [NotificationController::class, 'show'])->name('show');
+        Route::get('/{notification}', [NotificationController::class, 'detail'])->name('detail');
+    });
 });
 
 
@@ -200,9 +204,9 @@ Route::prefix('trash')->group(function () {
 
 
 
-Route::get('/search',function (){
-return view('salenews.search');
+Route::get('/search', function () {
+    return view('salenews.search');
 });
-Route::get('/tb',function (){
+Route::get('/tb', function () {
     return view('notifications.list');
-    });
+});
