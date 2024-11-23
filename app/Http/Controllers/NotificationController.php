@@ -142,14 +142,14 @@ class NotificationController extends Controller
         $mergedNotifications = $filteredNotifications->merge($notification_web)
             ->sortByDesc('created_at')
             ->toArray();
-        return view('notification.detail_notification', ['notifications' => $mergedNotifications]);
+        return view('notification.view_notification', ['notifications' => $mergedNotifications]);
     }
     public function detail(string $id)
     {
-        $notifications = Notification::findOrFail($id); // Tìm thông báo theo ID
-
-        return view('notifications.view_notification', compact('notifications'));
+        $notification = Notification::findOrFail($id);
+        return view('notification.detail_notification', compact('notification'));
     }
+
 
 
     /**

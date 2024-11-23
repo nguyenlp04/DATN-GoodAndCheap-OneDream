@@ -81,6 +81,7 @@
                 @if (!empty($notifications))
                     @for ($i = 0; $i < min(10, count($notifications)); $i++)
                     <div  class="border-bottom border-secondary">
+                     <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}">
                         <div >
                                 <h5 class="product-title">{{ $notifications[$i]['title_notification'] }}</h5>
                                 <span class="cart-product-info text-ellipsis">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</span>
@@ -89,11 +90,10 @@
                                 @endphp
                                 <span class="cart-product-info">{{ $createdAt->format('d/m/Y H:i') }}</span>
 
-
-
-
                         </div><!-- End .product -->
-                    </div><!-- End .cart-product -->
+                    </div>
+                    <!-- End .cart-product -->
+                  </a>
                     @endfor
                     @else
                     <p class="text-center">No notifications available.</p>
