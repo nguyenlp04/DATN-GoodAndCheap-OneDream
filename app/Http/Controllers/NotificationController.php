@@ -51,12 +51,6 @@ class NotificationController extends Controller
 
 
 
-    public function view(string $id)
-    {
-        $notifications = Notification::findOrFail($id); // Tìm thông báo theo ID
-
-        return view('user.details-notification', compact('notifications'));
-    }
 
 
 
@@ -130,10 +124,33 @@ class NotificationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        return view('admin.notifications.show', compact('notifications'));
+        $notifications_userid = Notification::where('status', 'public')->get();
+        $notification_web = Notification::where('type', 'website')->get();
+
+        // ID của người dùng hiện tại
+        $userId = Auth::check() ? Auth::user()->user_id : null;
+
+        // Lọc thông báo theo user_id
+        $filteredNotifications = $notifications_userid->filter(function ($notification) use ($userId) {
+            $selectedUsers = json_decode($notification->selected_users, true);
+            return in_array($userId, $selectedUsers);
+        });
+
+        // Kết hợp và sắp xếp theo ngày
+        $mergedNotifications = $filteredNotifications->merge($notification_web)
+            ->sortByDesc('created_at')
+            ->toArray();
+        return view('notification.view_notification', ['notifications' => $mergedNotifications]);
     }
+    public function detail(string $id)
+    {
+        $notification = Notification::findOrFail($id);
+        return view('notification.detail_notification', compact('notification'));
+    }
+
+
 
     /**
      * Show the form for editing the specified resource.

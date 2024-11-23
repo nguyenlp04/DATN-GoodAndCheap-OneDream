@@ -34,26 +34,26 @@ class AppServiceProvider extends ServiceProvider
 
 
 
-        // Lấy tất cả các thông báo công khai
-        $notifications_userid = Notification::where('status', 'public')->get();
-        $notification_web = Notification::where('type', 'website')->get();
+            // Lấy tất cả các thông báo công khai
+            $notifications_userid = Notification::where('status', 'public')->get();
+            $notification_web = Notification::where('type', 'website')->get();
 
-        // ID của người dùng hiện tại
-        $userId = Auth::check() ? Auth::user()->user_id : null;
+            // ID của người dùng hiện tại
+            $userId = Auth::check() ? Auth::user()->user_id : null;
 
-        // Lọc thông báo theo user_id
-        $filteredNotifications = $notifications_userid->filter(function ($notification) use ($userId) {
-            $selectedUsers = json_decode($notification->selected_users, true);
-            return in_array($userId, $selectedUsers);
-        });
+            // Lọc thông báo theo user_id
+            $filteredNotifications = $notifications_userid->filter(function ($notification) use ($userId) {
+                $selectedUsers = json_decode($notification->selected_users, true);
+                return in_array($userId, $selectedUsers);
+            });
 
-        // Kết hợp và sắp xếp theo ngày
-        $mergedNotifications = $filteredNotifications->merge($notification_web)
-                                                    ->sortByDesc('created_at')
-                                                    ->toArray();
+            // Kết hợp và sắp xếp theo ngày
+            $mergedNotifications = $filteredNotifications->merge($notification_web)
+                ->sortByDesc('created_at')
+                ->toArray();
 
-        // Kết quả
-        // dd($mergedNotifications);
+            // Kết quả
+            // dd($mergedNotifications);
 
 
             $view->with(['notifications' => $mergedNotifications]);
