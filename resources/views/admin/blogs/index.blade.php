@@ -57,7 +57,7 @@
                                                     <i
                                                         class="fas {{ $blog->status == 1 ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                                                     <span
-                                                        class="tooltip-text eye">{{ $blog->status == 1 ? 'Show' : 'Hide' }}</span>
+                                                        class="tooltip-text eye">{{ $blog->status == 1 ? 'Active' : 'Inactive' }}</span>
                                                 </button>
                                             </form>
                                         </td>
@@ -146,7 +146,7 @@
                                                                     <strong>Status:</strong>
                                                                     <span
                                                                         class="modal-status {{ $blog->status == 1 ? 'text-primary' : 'text-secondary' }}">
-                                                                        {{ $blog->status == 1 ? 'Show' : 'Hidden' }}
+                                                                        {{ $blog->status == 1 ? 'Active' : 'Inactive' }}
                                                                     </span>
                                                                 </div>
                                                             </div>

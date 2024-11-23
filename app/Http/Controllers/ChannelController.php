@@ -248,6 +248,29 @@ class ChannelController extends Controller
             'message' => 'Channel deleted successfully.',
         ]);
     }
+    public function toggleStatus($id)
+    {
+        try {
+            $channel = Channel::findOrFail($id);
+    
+         
+            $channel->status = $channel->status == 1 ? 0 : 1;
+            $channel->save();
+    
+            
+            return response()->json([
+                'status' => $channel->status,
+                'alert' => $channel->status == 1 ? 'Active' : 'Inactive',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'alert' => 'Error: ' . $e->getMessage(),
+            ]);
+        }
+    }
+    
+
     public function followChannel($channel_id)
     {
         $user = Auth::user(); // Lấy người dùng đang đăng nhập

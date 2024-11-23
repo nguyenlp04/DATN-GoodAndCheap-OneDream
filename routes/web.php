@@ -20,6 +20,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PartnerProfileController;
 use App\Http\Controllers\SaleNewController;
 use App\Http\Controllers\VipPackageController;
@@ -60,7 +61,7 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
         Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
     });
-
+    Route::post('/channel/{id}/toggleStatus', [ChannelController::class, 'toggleStatus'])->name('channel.toggleStatus');
     Route::get('channel', [ChannelController::class, 'list_channel'])->name('channel');
     Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
     Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
@@ -112,13 +113,13 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
-
+        Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
-    Route::post('/sale-news/{id}/toggle-status', [BlogController::class, 'toggleStatus'])->name('saleNews.toggleStatus');
+         Route::post('/sale-news/{id}/toggle-status', [BlogController::class, 'toggleStatus'])->name('saleNews.toggleStatus');
 
-
+   
 
     });
     Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
