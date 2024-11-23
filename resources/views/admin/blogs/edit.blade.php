@@ -58,8 +58,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status:</label>
                                 <select name="status" id="status" class="form-select">
-                                    <option value="1" {{ $blog->status == 1 ? 'selected' : '' }}>Show</option>
-                                    <option value="0" {{ $blog->status == 0 ? 'selected' : '' }}>Hidden</option>
+                                    <option value="1" {{ $blog->status == 1 ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ $blog->status == 0 ? 'selected' : '' }}>Inactive</option>
                                 </select>
                             </div>
                     </div>

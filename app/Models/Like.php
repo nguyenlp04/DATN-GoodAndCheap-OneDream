@@ -15,7 +15,7 @@ class Like extends Model
     // Định nghĩa các trường có thể gán giá trị
     protected $fillable = [
         'user_id',
-        'product_id',
+        'sale_new_id',
     ];
 
     // Quan hệ với bảng User
@@ -25,8 +25,8 @@ class Like extends Model
     }
 
     // Quan hệ với bảng Product
-    public function product()
+    public function saleNews()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(SaleNews::class);
     }
 }

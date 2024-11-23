@@ -67,12 +67,16 @@
                         </div>
                       </div>
                     </td>
+                 
                     <td class="bg-light rounded">
-                      @if ($channel->status == 1)
-                      <span class="badge bg-label-success">Active</span>
-                      @else
-                      <span class="badge bg-label-danger">Inactive</span>
-                      @endif
+                    <form action="{{route('channel.toggleStatus',$channel->channel_id)}}" method="POST" class="toggle-status-form"   data-blog-id="{{ $channel->channel_id }}" >
+                    @csrf
+                    <button type="button" class="btn btn-sm {{ $channel->status == 1 ? 'text-primary' : 'text-secondary' }}"  style="position: relative;">
+                     
+                        <i class="fas {{ $channel->status == 1 ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                          <span class="tooltip-text eye">{{ $channel->status == 1 ? 'Active' : 'Inactive' }}</span>
+                            </button>
+                            </form>
                     </td>
                     <td>
 
@@ -160,4 +164,6 @@
   <div class="content-backdrop fade"></div>
 </div>
 <!-- Content wrapper -->
+ 
+
 @endsection

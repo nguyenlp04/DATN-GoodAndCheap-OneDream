@@ -192,12 +192,12 @@ public function update(Request $request, Blog $blog)
 
             return response()->json([
                 'status' => $blog->status,
-                'message' => "Blog status updated to {$statusMessage}"
+                'alert' => "Blog status updated to {$statusMessage}"
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Error: ' . $e->getMessage()
+                'alert' => 'Error: ' . $e->getMessage()
             ]);
         }
     }
