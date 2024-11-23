@@ -68,8 +68,17 @@
                     @if(!(auth()->user()->user_id == $channels->user_id))
                     <div class="col col-md-9 col-lg-7 col-xl-6 d-flex justify-content-end">
 
-                        <a href="#" class="btn btn-primary btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-user-plus"></i> Follow</a>
-
+                        @if ($isFollowed)
+                        <form id="unfollow-form" action="{{ route('unfollow.channel', $channels->channel_id) }}" method="POST">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-user-plus"></i>Unfollow</button>
+                        </form>
+                        @else
+                        <form id="follow-form" action="{{ route('follow.channel', $channels->channel_id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-user-plus"></i> Follow</button>
+                        </form>
+                        @endif
 
                     </div>
                     @endif
