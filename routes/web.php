@@ -128,6 +128,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-subcategories/{categoryId}', [SaleNewsController::class, 'getSubcategories']);
     Route::post('/follow-channel/{channel_id}', [ChannelController::class, 'followChannel'])->name('follow.channel');
     Route::delete('/unfollow-channel/{channel_id}', [ChannelController::class, 'unfollowChannel'])->name('unfollow.channel');
+    Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
 
     Route::prefix('notifications')->name('notifications.')->group(function () {
         Route::get('/view-all/', [NotificationController::class, 'show'])->name('show');
@@ -200,9 +201,9 @@ Route::prefix('trash')->group(function () {
 
 
 
-Route::get('/search',function (){
-return view('salenews.search');
+Route::get('/search', function () {
+    return view('salenews.search');
 });
-Route::get('/tb',function (){
+Route::get('/tb', function () {
     return view('notifications.list');
-    });
+});
