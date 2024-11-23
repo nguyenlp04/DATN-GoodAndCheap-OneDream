@@ -135,7 +135,6 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::get('/redirect-to-payment', [VnPayController::class, 'initiatePayment'])->name('redirect_to_payment');
 
 // enduser
 
@@ -200,7 +199,10 @@ Route::prefix('trash')->group(function () {
 
 
 
-// Route::get('/promote', [SaleNewsController::class, 'tv2'])->name('sl.tv2');
-// Route::get('/salenewdetail',function (){
-// return view('salenews.detail');
-// });
+
+Route::get('/search',function (){
+return view('salenews.search');
+});
+Route::get('/tb',function (){
+    return view('notifications.list');
+    });
