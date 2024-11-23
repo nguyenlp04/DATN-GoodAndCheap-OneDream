@@ -6,7 +6,7 @@
 
     <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
 
-        {{-- {{dd($dataCategoryID);}} --}}
+        {{dd($dataCategoryID);}}
         {{-- <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
         {{ json_encode($dataCategoryID, JSON_PRETTY_PRINT) }}
         </pre> --}}
@@ -59,6 +59,10 @@
                                     <label for="description_category" class="form-label">Category Description</label>
                                     <textarea class="form-control" id="description_category" name="description" rows="3">{{ $dataCategoryID->description }}</textarea>
                                 </div>
+
+                                <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Can't Delete">
+                                    Primary
+                                  </button>
 
                                 <!-- Thêm Subcategories -->
                                 <div class="mb-6" id="subcategory-section">
@@ -123,8 +127,16 @@
                             </div>
                             <div class="card-body">
                                 <div class="dropzone p-0 dz-clickable" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 11.5rem;">
+                                {{-- {{ dd($dataCategoryID->image_category) }} --}}
+                                    @isset($dataCategoryID)
+                                    @if($dataCategoryID->image_category == null)
                                     <img id="preview_img" class=" mt-3 rounded" style="width: 100px; height: auto;">
-                                    <img id="preview_img" src="{{ asset($dataCategoryID->image_category) }}" class="mt-3 rounded" style="width: 100px; height: auto;">
+                                    @else
+                                    <img id="preview_img" src="{{ asset($dataCategoryID->image_category) }}" class="mt-3 border rounded" style="width: 100px; height: auto;">
+                                    @endif
+                                    @endisset
+                                    {{-- <img id="preview_img" src="{{ asset($dataCategoryID->image_category) }}" class="mt-3 rounded" style="width: 100px; height: auto;"> --}}
+                                    <img id="preview_img" class=" mt-3 rounded" style="width: 100px; height: auto;">
                                     <div style="font-weight: 500; text-align: center; width: 300px; height: 2.5rem;">
                                         <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse image</button>
                                         <input type="file" id="fileInput" name="image" style="display: none">
@@ -134,7 +146,6 @@
                             <div>
                             </div>
                         </div>
-
                     </div>
 
 
