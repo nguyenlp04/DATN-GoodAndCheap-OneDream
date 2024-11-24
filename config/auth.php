@@ -35,7 +35,7 @@ return [
     |
     */
 
-     'guards' => [
+    'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -55,7 +55,7 @@ return [
             'driver' => 'token',
             'provider' => 'staffs',
         ]
-        
+
     ],
 
     /*
@@ -75,7 +75,7 @@ return [
     |
     */
 
-   'providers' => [
+    'providers' => [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
@@ -110,6 +110,12 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'staffs' => [
+            'provider' => 'staffs',
+            'table' =>  env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'staff_password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
         ],
