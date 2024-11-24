@@ -21,6 +21,7 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\ManageProfileController;
 use App\Http\Controllers\PartnerProfileController;
 use App\Http\Controllers\SaleNewController;
 use App\Http\Controllers\VipPackageController;
@@ -28,6 +29,8 @@ use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
 use App\Http\Controllers\SaleNewsController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\StaffForgotPasswordController;
+use App\Http\Controllers\StaffResetPasswordController;
 
 require __DIR__ . '/auth.php';
 
@@ -83,6 +86,10 @@ Route::middleware(['auth.admin'])->group(function () {
     route::post('/sale_news/reject/{id}', [SaleNewsController::class, 'reject'])->name('sale_news.reject');
     Route::delete('/sale_news/{id}', [SaleNewsController::class, 'destroy'])->name('sale_news.destroy');
     route::post('/sale_news/approve/{id}', [SaleNewsController::class, 'approve'])->name('sale_news.approve');
+    Route::get('/manage-profile', [ManageProfileController::class, 'index'])->name('manage-profile.index');
+    Route::patch('/manage-profile', [ManageProfileController::class, 'update'])->name('manage-profile.update');
+    Route::get('/change-password', [ManageProfileController::class, 'showChangePasswordForm'])->name('change-password.index');
+    Route::post('/change-password', [ManageProfileController::class, 'updatePassword'])->name('change-password.update');
 });
 
 
@@ -119,7 +126,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
 
         Route::post('/sale-news/{id}/toggle-status', [BlogController::class, 'toggleStatus'])->name('saleNews.toggleStatus');
-
     });
     Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
     Route::get('/salenews-status', [SaleNewsController::class, 'getAllSaleStatus'])->name('sl.index');
@@ -157,6 +163,12 @@ Route::post('/verify', [VerificationController::class, 'verify'])->name('verific
 Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
 Route::post('staff/login', [StaffAuthController::class, 'login']);
 Route::get('/salenew-detail/{id}', [SaleNewsController::class, 'renderSaleNewDetail'])->name('salenew.detail');
+Route::prefix('staff')->group(function () {
+    Route::get('/forgot-password', [StaffForgotPasswordController::class, 'showLinkRequestForm'])->name('staff.password.request');
+    Route::post('/forgot-password', [StaffForgotPasswordController::class, 'sendResetLinkEmail'])->name('staff.password.email');
+    Route::get('/reset-password/{token}', [StaffResetPasswordController::class, 'showResetForm'])->name('staff.password.reset');
+    Route::post('/reset-password', [StaffResetPasswordController::class, 'reset'])->name('staff.password.update');
+});
 // end guest
 
 
