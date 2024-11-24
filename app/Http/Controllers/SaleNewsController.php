@@ -310,7 +310,7 @@ class SaleNewsController extends Controller
     public function promote($id)
     {
         $listing = SaleNews::with(['vipPackage', 'firstImage'])->findOrFail($id);
-        $vipPackages = VipPackage::all();
+        $vipPackages = VipPackage::where('type','user')->get();
         // dd($listing);
         return view('salenews.promote', compact('listing', 'vipPackages'));
     }
