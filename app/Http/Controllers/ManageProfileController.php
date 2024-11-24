@@ -64,9 +64,10 @@ class ManageProfileController extends Controller
     public function updatePassword(Request $request)
     {
         $validatedData = $request->validate([
-            'current_password' => 'required|current_password',
+            'current_password' => 'required|min:8',
             'new_password' => 'required|string|min:8|confirmed',
         ]);
+
         if (!Hash::check($request->input('current_password'), Auth::guard('staff')->user()->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
