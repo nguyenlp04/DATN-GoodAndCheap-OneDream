@@ -155,7 +155,7 @@
             </li>
 
             <!-- Product Management -->
-            <li class="menu-item {{ Request::is('partners/*') || Request::is('partners') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('partners/sale-news/*') || Request::is('partners/sale-news') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="Product Management">Sale News Management</div>

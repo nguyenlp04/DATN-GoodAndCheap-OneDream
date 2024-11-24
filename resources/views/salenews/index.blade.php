@@ -100,7 +100,7 @@
 
 
                                                         <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
-                                                        @if ($item->vip_package_id != null)
+                                                        @if ($item->vip_package_id == null)
                                                         <a href="{{ route('salenew.promote', $item->sale_new_id) }}" class="btn btn-primary btn-rounded" style="width: 100%"> <i class="fa-solid fa-file-invoice-dollar"></i><span>Push to the top</span></a>
                                                         @endif
                                                     </div><!-- End .product-list-action -->
@@ -171,7 +171,7 @@
 
 
                                                         <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
-                                                        @if ($item->vip_package_id != null)
+                                                        @if ($item->vip_package_id == null)
                                                         <a href="{{ route('salenew.promote', $item->sale_new_id) }}" class="btn btn-primary btn-rounded" style="width: 100%"> <i class="fa-solid fa-file-invoice-dollar"></i><span>Push to the top</span></a>
                                                         @endif
                                                     </div><!-- End .product-list-action -->
@@ -239,7 +239,7 @@
 
 
                                                         <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
-                                                        @if ($item->vip_package_id != null)
+                                                        @if ($item->vip_package_id == null)
                                                         <a href="{{ route('salenew.promote', $item->sale_new_id) }}" class="btn btn-primary btn-rounded" style="width: 100%"> <i class="fa-solid fa-file-invoice-dollar"></i><span>Push to the top</span></a>
                                                         @endif
                                                     </div><!-- End .product-list-action -->
