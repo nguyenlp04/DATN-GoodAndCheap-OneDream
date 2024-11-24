@@ -190,11 +190,7 @@
                    </ul>
                 </li>
                 <li>
-                   <a href="{{route('blogs.listting')}}" class="sf-with-ul">Blog</a>
-                   <ul>
-                      <li><a href="blog.html">Classic</a></li>
-                      </li>
-                   </ul>
+                   <a href="{{route('blogs.listting')}}" class="">Blog</a>
                 </li>
                 <li>
                    <a href="#" class="sf-with-ul">Contact</a>
@@ -266,6 +262,13 @@
                             </a>
                          </li>
                          @endif
+
+                         <li>
+                           <a href="{{ url('salenews-status') }}">
+                           {{ __('Sale News Status') }}
+                           </a>
+                        </li>
+
                          <li>
                             <form method="POST" action="{{ route('logout') }}">
                                @csrf

@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="owl-nav">
-                            <button type="button" role="presentation" class="owl-prev"><i class="icon-angle-left"></i></button><button type="button" role="presentation" class="owl-next disabled"><i class="icon-angle-right"></i></button>
+                            <button type="button" role="presentation" class="owl-prev" style="left: -20px"><i class="icon-angle-left"></i></button><button type="button" role="presentation" class="owl-next disabled"><i class="icon-angle-right"></i></button>
                         </div>
                         <div class="owl-dots disabled"></div>
                     </div>
