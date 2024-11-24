@@ -213,6 +213,8 @@ class VnPayController extends Controller
                     }
                 }
 
+
+                
                 return redirect('/' . $route)->with('alert', [
                     'type' => 'success',
                     'message' => 'Payment Successful!'
