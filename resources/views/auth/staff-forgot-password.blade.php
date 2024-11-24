@@ -26,7 +26,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Staff Login Basic - Pages | OneDream Dashboard</title>
+    <title>Register Basic - Pages | OneDream Dashboard</title>
 
     <meta name="description" content="" />
 
@@ -67,8 +67,8 @@
 
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class="authentication-inner">
-                <!-- Register -->
+            <div class="authentication-inner py-4">
+                <!-- Forgot Password -->
                 <div class="card">
                     <div class="card-body">
                         <!-- Logo -->
@@ -80,78 +80,39 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">Welcome to GoodAndCheap! 👋</h4>
-                        <p class="mb-4">Please sign-in to your account and start the adventure</p>
-                        <form method="POST" action="{{ url('staff/login') }}">
+                        <h4 class="mb-2">Staff Forgot Password? 🔒</h4>
+                        <p class="mb-2">Enter your email and we'll send you instructions to reset your password</p>
+                        <x-auth-session-status class="mb-2 d-block fw-bold text-heading text-dark" :status="session('status')" />
+                        <form method="POST" action="{{ route('staff.password.email') }}">
                             @csrf
-                            <!-- Email Address -->
                             <div class="mb-3">
                                 <x-input-label for="email" :value="__('Email')" />
-                                <x-text-input
+                                <input
                                     type="email"
-                                    :value="old('email')"
-                                    class="form-control block mt-1 w-full"
+                                    class="form-control"
                                     id="email"
                                     name="email"
-                                    placeholder="Enter your email or username"
-                                    autofocus
-                                    autocomplete="username"
-                                    required />
+                                    :value="old('email')" required autofocus
+                                    autofocus />
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                            </div>
-
-                            <!-- Password -->
-                            <div class="mb-3 form-password-toggle">
-                                <div class="d-flex justify-content-between">
-                                    <x-input-label for="password" :value="__('Password')" />
-                                </div>
-                                <div class="input-group input-group-merge">
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        class="form-control block w-full"
-                                        name="password"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password"
-                                        autocomplete="current-password"
-                                        required />
-                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="d-flex justify-content-between mt-4">
-
-                                <!-- Remember Me -->
-                                <div class="block mb-3">
-                                    <label for="remember_me" class="inline-flex items-center">
-                                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                                        <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                                    </label>
-                                </div>
-                                @if (Route::has('staff.password.request'))
-                                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('staff.password.request') }}">
-                                    {{ __('Forgot your password?') }}
-                                </a>
-                                @endif
 
                             </div>
-                            <x-primary-button class="mb-3 btn btn-primary d-grid w-100">
-                                {{ __('Log in') }}
+                            <!-- <button class="btn btn-primary d-grid w-100">Send Reset Link</button> -->
+
+                            <x-primary-button class="btn btn-primary d-grid w-100 mb-3">
+                                {{ __('Email Password Reset Link') }}
                             </x-primary-button>
 
                         </form>
-
-                        <p class="text-center">
-                            <span>New on our platform?</span>
-                            <a href="{{ url("register") }}">
-                                <span>Create an account</span>
+                        <div class="text-center">
+                            <a href="{{ url("staff/login") }}" class="d-flex align-items-center justify-content-center">
+                                <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+                                Back to login
                             </a>
-                        </p>
+                        </div>
                     </div>
                 </div>
-                <!-- /Register -->
+                <!-- /Forgot Password -->
             </div>
         </div>
     </div>

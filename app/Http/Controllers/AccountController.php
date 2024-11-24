@@ -99,24 +99,6 @@ class AccountController extends Controller
         });
         return view('account.orders', compact('orders', 'allOrders', 'pendingOrders', 'processingOrders', 'shippingOrders', 'completedOrders', 'canceledOrders', 'canceledOrders'));
     }
-
-
-
-
-    // public function showOrders()
-    // {
-    //     // Lấy đơn hàng của user_id
-    //     $userId = Auth::id();
-    //     $orders = DB::table('orders')
-    //         ->join('order_details', 'orders.order_id', '=', 'order_details.order_id')
-    //         ->join('products', 'order_details.product_id', '=', 'products.product_id')
-    //         ->where('orders.user_id', $userId)
-    //         ->select('orders.*', 'products.*', 'order_details.*')
-    //         ->get()
-    //         ->groupBy('order_id'); // Nhóm các sản phẩm theo order_id
-    //     return view('account.orders', compact('orders'));
-    // }
-
     public function showManager()
     {
         return view('account.manager');
@@ -132,22 +114,8 @@ class AccountController extends Controller
 
     public function updateProfile(Request $request)
     {
-        // Lấy người dùng hiện tại
         $user = Auth::user();
 
-        // Xác thực các trường form
-        // $request->validate([
-        //     'full_name' => 'required|string|max:255',
-        //     'email' => [
-        //         'required',
-        //         'email',
-        //         'max:255',
-        //         Rule::unique('users')->ignore($user->id), // Sử dụng Rule::unique
-        //     ],
-        //     'address' => 'required|string|max:255',
-        //     'phone_number' => 'required|string|max:15',
-        //     'image_user' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        // ]);
         $emailRules = ['required', 'email', 'max:255'];
 
         if ($request->input('email') !== $user->email) {
@@ -161,16 +129,13 @@ class AccountController extends Controller
             'phone_number' => 'required|string|max:15',
             'image_user' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        // Dữ liệu cần cập nhật
         $updateData = [
             'full_name' => $request->input('full_name'),
             'email' => $request->input('email'),
             'address' => $request->input('address'),
             'phone_number' => $request->input('phone_number'),
         ];
-        // Nếu có ảnh được upload
         if ($request->hasFile('image_user')) {
-            // Xóa ảnh cũ nếu có
             if ($user->image_user) {
                 if ($user->image_user) {
                     $oldImagePath = public_path($user->image_user);
@@ -181,17 +146,11 @@ class AccountController extends Controller
                     }
                 }
             }
-            // Tạo tên file với định dạng 'user' + thời gian + phần mở rộng
             $imageName = 'user' . time() . '.' . $request->file('image_user')->extension();
-            // Lưu file vào thư mục 'image_users' với tên tùy chỉnh
             $image_userPath = $request->file('image_user')->storeAs('image_users', $imageName, 'public');
-            // Thêm đường dẫn ảnh vào dữ liệu cập nhật
             $updateData['image_user'] = 'storage/' . $image_userPath;
         }
-        // Cập nhật thông tin người dùng
         DB::table('users')->where('user_id', $user->user_id)->update($updateData);
-
-        // Chuyển hướng với thông báo thành công
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 }
