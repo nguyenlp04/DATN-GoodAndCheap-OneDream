@@ -75,6 +75,8 @@
 
 
                             <div class="mb-2">
+                        @if (auth()->user()->user_id !== $get_user->user_id)
+
 
                             @if ($get_user->phone_number)
                             <a href="#" class="btn btn-outline-dark btn-rounded mr-4"><i class="fa-solid fa-phone"></i> {{ $get_user->phone_number }}</a>
@@ -82,6 +84,7 @@
                             @if(isset(auth()->user()->user_id))
                             <a id="message-id" href=""  data-id="{{$new->user_id}}" data-name="{{ $get_user->full_name}}"  class="btn btn-primary btn-rounded"> <i class="fa-regular fa-comments"></i>  Message the seller </a>
                             @endif
+                        @endif
                                 </div>
 
 
@@ -179,24 +182,39 @@
                         <div class="product-desc-content">
                             <h3>Information</h3>
 
-                            {{-- <h3>Fabric & care</h3> --}}
+                            <div class="row">
+                                <div class="col-7">
+                                    @if(isset($data_json))
+                                    <table class="table table-bordered ">
+                                        <thead>
+                                            <tr>
+                                        @foreach($data_json as $variant)
+                                              <th style="text-align: center" scope="col">{{ $variant->name }}</th>
+                                        @endforeach
+                                            </tr>
+                                          </thead>
+                                  <tbody>
+                                      <tr>
+                                    @foreach($data_json as $variant)
 
+                                      <td style="text-align: center">{{ $variant->option}}</td>
 
+                                      @endforeach
+                                    </tr>
+                                    @endif
+                                </table>
 
-                                {{-- @if(isset($variants))
+                            </div>
+                            <div class="col-5">
                                 <ul>
-                                @foreach($variants as $variant)
-
-                                @foreach($variant->options as $item)
-                                <li>{{ $variant->name }}-{{ $item }}</li>
-                                @endforeach
-                                @endforeach
-                            </ul>
-                                @endif --}}
-
-
-                            <h3>Size</h3>
-                            <p>one size</p>
+                                    <li>{{ $get_user->phone_number }}</li>
+                                    <li>{{ $get_user->full_name }}</li>
+                                    @if($get_user->address)
+                                    <li>{{ $get_user->address }}</li>
+                                    @endif
+                                </ul>
+                            </div>
+                            </div>
                         </div><!-- End .product-desc-content -->
                     </div><!-- .End .tab-pane -->
 
@@ -273,6 +291,14 @@
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+
+
+
+
+
+
+@endsection
+@section('script-link-css')
 <script>
 
     const postTime = new Date('{{ $new->created_at }}');
@@ -303,9 +329,25 @@
     document.getElementById("time-ago").textContent = timeSince(postTime);
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+{{-- <script src="{{  asset('assets/js/jquery.min.js')}}"></script> --}}
+<script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.elevateZoom.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
+<script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
 <script>
     $(document).ready(function() {
+
+        $('.product-gallery-item').on('click', function(e) {
+            e.preventDefault();
+            // Lấy URL của ảnh từ thuộc tính data của ảnh nhỏ
+            let newImage = $(this).data('image');
+            let newZoomImage = $(this).data('zoom-image');
+            // Thay đổi hình ảnh và ảnh phóng to của ảnh chính
+            $('#product-zoom').attr('src', newImage).data('zoom-image', newZoomImage);
+            // Xóa lớp active khỏi tất cả các ảnh nhỏ và thêm vào ảnh được bấm
+            $('.product-gallery-item').removeClass('active');
+            $(this).addClass('active');
+        });
 
         @if (isset(auth()->user()->user_id))
     // message
@@ -359,20 +401,11 @@
         }
     @endif
     // Thay đổi hình ảnh chính khi bấm vào ảnh nhỏ
-    $('.product-gallery-item').on('click', function(e) {
-            e.preventDefault();
-            // Lấy URL của ảnh từ thuộc tính data của ảnh nhỏ
-            let newImage = $(this).data('image');
-            let newZoomImage = $(this).data('zoom-image');
-            // Thay đổi hình ảnh và ảnh phóng to của ảnh chính
-            $('#product-zoom').attr('src', newImage).data('zoom-image', newZoomImage);
-            // Xóa lớp active khỏi tất cả các ảnh nhỏ và thêm vào ảnh được bấm
-            $('.product-gallery-item').removeClass('active');
-            $(this).addClass('active');
-        });
+
     });
 
 </script>
+
 
 
 @endsection
