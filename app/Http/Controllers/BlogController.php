@@ -31,9 +31,11 @@ class BlogController extends Controller
             ->take(5) // Lấy 5 bài viết có views cao nhất
             ->get();
         $alltags = Blog::all();
-        $category = Category::withCount('blogs')
+        $category = Category::withCount(['blogs as blogs_count' => function ($query) {
+            $query->where('status', '1');
+        }])
         ->where('status', '1')
-        ->get(); 
+        ->get();
         $blogs = Blog::where('status', '1')->with('category')->get();  
         $count = Blog::where('status', '1')->count();
       
@@ -221,10 +223,12 @@ public function update(Request $request, Blog $blog)
             ->where('blog_id', '!=', $blogs->blog_id)  // Loại trừ bài viết hiện tại
            
             ->get();
-            $category = Category::withCount('blogs')
+            $category = Category::withCount(['blogs as blogs_count' => function ($query) {
+                $query->where('status', '1');
+            }])
             ->where('status', '1')
-            ->get(); 
-           
+            ->get();
+            
         return view('blog.detail-blog', compact('blogs', 'topBlogs', 'alltags','category','relatedBlogs'));
     }
 }

@@ -65,19 +65,7 @@
                                     </div><!-- End .entry-tags -->
                                 </div><!-- End .col -->
 
-                                <div class="col-md-auto mt-2 mt-md-0">
-                                    <div class="social-icons social-icons-color">
-                                        <span class="social-label">Share this post:</span>
-                                        <a href="#" class="social-icon social-facebook" title="Facebook"
-                                            target="_blank"><i class="icon-facebook-f"></i></a>
-                                        <a href="#" class="social-icon social-twitter" title="Twitter"
-                                            target="_blank"><i class="icon-twitter"></i></a>
-                                        <a href="#" class="social-icon social-pinterest" title="Pinterest"
-                                            target="_blank"><i class="icon-pinterest"></i></a>
-                                        <a href="#" class="social-icon social-linkedin" title="Linkedin"
-                                            target="_blank"><i class="icon-linkedin"></i></a>
-                                    </div><!-- End .soial-icons -->
-                                </div><!-- End .col-auto -->
+                               
                             </div><!-- End .entry-footer row no-gutters -->
                         </div><!-- End .entry-body -->
 
@@ -110,21 +98,21 @@
                             @foreach($relatedBlogs as $blog)
                             <article class="entry entry-grid">
                                 <figure class="entry-media">
-                                    <a href="#">
-                                        <img src="{{ asset('assets/images/blog/grid/3cols/post-1.jpg') }}"
-                                            alt="image desc">
+                                    <a href="{{ route('blogs.detail', $blog->blog_id) }}">
+                                    <img  src="{{ asset('storage/' . $blog->image) }}"
+                                    alt="Blogs Image">
                                     </a>
                                 </figure><!-- End .entry-media -->
 
                                 <div class="entry-body">
                                     <div class="entry-meta">
-                                        <a href="#">{{$blog->created_at ->format('M d, Y')}}</a>
+                                        <a href="{{ route('blogs.detail', $blog->blog_id) }}">{{$blog->created_at ->format('M d, Y')}}</a>
 
 
                                     </div><!-- End .entry-meta -->
 
                                     <h2 class="entry-title">
-                                        <a href="single.html">{{$blog->title}}</a>
+                                        <a href="{{ route('blogs.detail', $blog->blog_id) }}">{{$blog->title}}</a>
                                     </h2><!-- End .entry-title -->
 
                                     <div class="entry-cats">
