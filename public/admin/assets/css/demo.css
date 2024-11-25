@@ -347,4 +347,13 @@ border-radius: 5px !important;
   border-radius: 4px;
   background-color: #fff;
 }
+.btn-product-icon{
+  background-color: #555 !important;
+  color: #000 !important;
+}
+.btn-wishlist::defaut{
+  background-color: #555 !important;
+  color: #000 !important;
+}
+ 
 

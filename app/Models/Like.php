@@ -11,7 +11,10 @@ class Like extends Model
 
     // Đặt tên bảng nếu không sử dụng bảng mặc định
     protected $table = 'likes';
-
+    
+        protected $primaryKey = 'like_id';  // Chỉ định khóa chính là like_id
+   
+    
     // Định nghĩa các trường có thể gán giá trị
     protected $fillable = [
         'user_id',
@@ -27,6 +30,7 @@ class Like extends Model
     // Quan hệ với bảng Product
     public function saleNews()
     {
-        return $this->belongsTo(SaleNews::class);
+        return $this->belongsTo(SaleNews::class, 'sale_new_id', 'sale_new_id');
     }
+    
 }
