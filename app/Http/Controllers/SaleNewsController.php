@@ -288,8 +288,6 @@ class SaleNewsController extends Controller
         // dd($list_pending_approval);
 
 
-
-
         return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden'));
     }
     // public function tv2(){
@@ -310,7 +308,7 @@ class SaleNewsController extends Controller
     public function promote($id)
     {
         $listing = SaleNews::with(['vipPackage', 'firstImage'])->findOrFail($id);
-        $vipPackages = VipPackage::where('type','user')->get();
+        $vipPackages = VipPackage::where('type', 'user')->get();
         // dd($listing);
         return view('salenews.promote', compact('listing', 'vipPackages'));
     }
@@ -332,11 +330,11 @@ class SaleNewsController extends Controller
     {
         // dd($get_data_7subcategory);
         try {
-            $update_views = DB::table('sale_news') ->where('sale_new_id', $id) ->increment('views', 1);
+            $update_views = DB::table('sale_news')->where('sale_new_id', $id)->increment('views', 1);
 
             $news = SaleNews::with(['channel', 'images', 'firstImage', 'category', 'sub_category'])
-            ->where('sale_new_id', $id)
-            ->where('approved',1)->first();
+                ->where('sale_new_id', $id)
+                ->where('approved', 1)->first();
 
 
             if (!is_null($news->channel_id)) {
@@ -367,7 +365,7 @@ class SaleNewsController extends Controller
                         'get_user' => $get_user_phone,
                         'data_count_news' => $data_count_news,
                         'data_count_news_sold' => $data_count_news_sold,
-                        'data_json' =>$data_json,
+                        'data_json' => $data_json,
                         // 'variant_data_details' =>$variant_data_details,
                         'get_data_7subcategory' => $get_data_7subcategory
                     ]);
@@ -376,7 +374,7 @@ class SaleNewsController extends Controller
                 return view('salenews.detail', [
                     'new' => $news,
                     'get_user' => $get_user_phone,
-                    'data_json' =>$data_json,
+                    'data_json' => $data_json,
                     // 'variant_data_details' =>$variant_data_details,
                     'get_data_7subcategory' => $get_data_7subcategory
                 ]);
@@ -485,20 +483,20 @@ class SaleNewsController extends Controller
 
         return view('layouts.admin', compact('count'));
     }
-    public function confirmedSale($id){
+    public function confirmedSale($id)
+    {
 
 
         $sale = SaleNews::find($id);
-         if ($sale) {
+        if ($sale) {
             // $sale->status = 'sold';
             // $sale->save();
-            $confirmed=DB::table('sale_news')->where('sale_new_id',$id)->update(['status'=>0]);
+            $confirmed = DB::table('sale_news')->where('sale_new_id', $id)->update(['status' => 0]);
         }
 
         return redirect()->back()->with('alert', [
             'type' => 'success',
             'message' => 'Operation successful'
         ]);
-
     }
 }
