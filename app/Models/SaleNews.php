@@ -17,6 +17,11 @@ class SaleNews extends Model
 
     ];
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'sale_new_id', 'sale_new_id');
+    }
+
     public function sub_category()
     {
         return $this->belongsTo(Subcategory::class, 'sub_category_id');
@@ -45,10 +50,10 @@ class SaleNews extends Model
         );
     }
 
-    public function images()
-    {
-        return $this->hasMany(Imgproduct::class, 'sale_new_id');
-    }
+        public function images()
+        {
+            return $this->hasMany(Imgproduct::class, 'sale_new_id');
+        }
     public function firstImage()
     {
         return $this->hasOne(Imgproduct::class, 'sale_new_id');

@@ -28,6 +28,7 @@ use App\Http\Controllers\VipPackageController;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
 use App\Http\Controllers\SaleNewsController;
+use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
@@ -95,19 +96,18 @@ Route::middleware(['auth.admin'])->group(function () {
 
 
 // user
+
+
 Route::middleware('auth')->group(function () {
+   
+    Route::delete('wishlist/{like}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+    Route::post('/add-to-wishlist', [LikeController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/account', [AccountController::class, 'index'])->name('account');
-    Route::post('/account/update', [AccountController::class, 'updateProfile'])->name('account.update');
-    Route::get('/account/orders', [AccountController::class, 'showOrders'])->name('account.orders');
-    Route::get('/account/manager', [AccountController::class, 'showManager'])->name('account.manager');
-    Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
-    Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
     Route::prefix('message')->group(function () {
         Route::get('/conversations', [ConversationController::class, 'loadConversations'])->name('message.conversations');
         Route::get('/check-conversations', [ConversationController::class, 'CheckConversation'])->name('message.checkconversations');
@@ -151,6 +151,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{notification}', [NotificationController::class, 'detail'])->name('detail');
     });
     Route::get('/user/manage', [UserManageController::class, 'index'])->name('user.manage');
+    Route::post('/user/manage/update', [UserManageController::class, 'updateProfile'])->name('user.manage.update');
+
     Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
 });
 
@@ -160,9 +162,12 @@ Route::middleware('auth')->group(function () {
 
 
 // guest
+
 Route::get('/', function () {
-    return view('home');
+    $data = \App\Models\SaleNews::where('status','1')->with('images')->where('is_delete',null)->where('approved','1')->get();  // Truyền dữ liệu trực tiếp ở đây
+    return view('home', ['data' => $data]);
 })->name('home');
+
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
@@ -231,3 +236,4 @@ Route::get('/search', function () {
 Route::get('/tb', function () {
     return view('notifications.list');
 });
+Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);
