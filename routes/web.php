@@ -102,12 +102,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/account', [AccountController::class, 'index'])->name('account');
-    Route::post('/account/update', [AccountController::class, 'updateProfile'])->name('account.update');
-    Route::get('/account/orders', [AccountController::class, 'showOrders'])->name('account.orders');
-    Route::get('/account/manager', [AccountController::class, 'showManager'])->name('account.manager');
-    Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
-    Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
     Route::prefix('message')->group(function () {
         Route::get('/conversations', [ConversationController::class, 'loadConversations'])->name('message.conversations');
         Route::get('/check-conversations', [ConversationController::class, 'CheckConversation'])->name('message.checkconversations');
@@ -145,6 +139,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{notification}', [NotificationController::class, 'detail'])->name('detail');
     });
     Route::get('/user/manage', [UserManageController::class, 'index'])->name('user.manage');
+    Route::post('/user/manage/update', [UserManageController::class, 'updateProfile'])->name('user.manage.update');
+
     Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
 });
 

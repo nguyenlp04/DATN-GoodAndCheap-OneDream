@@ -1,5 +1,30 @@
 @extends('layouts.client_layout')
 @section('content')
+<style>
+    @media (max-width: 768px) {
+        #profile-picture {
+            width: 100px;
+            height: 100px;
+        }
+
+        label[for="image_user"] {
+            width: 25px;
+            height: 25px;
+        }
+
+        form label,
+        form input,
+        form small,
+        form button {
+            font-size: 14px;
+        }
+
+        form .form-control {
+            padding: 8px;
+        }
+    }
+</style>
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <main class="main">
@@ -21,10 +46,8 @@
                             <div class="card-body" style="padding: 0.4rem 1.5rem 1.8rem 1.2rem;">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
-
-                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                        <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' }}"
                                             alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
-
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h5 class="mb-1">{{ Auth::user()->full_name }}</h5>
@@ -32,9 +55,9 @@
                                         <p style="color: #ff0000;"><i class="fa-solid fa-face-smile" style="color: #FFD43B;"></i> Become a partner for easier management </p>
                                         <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary  " style="width: fit-content">
                                             <div>
-                                                <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i>1282</p>
+                                                <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> 1282</p>
                                                 {{-- <p class="small text-muted "><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> 56</p> --}}
-                                                <p class="small text-muted "> <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i> 30</p>
+                                                <p class="small text-muted "> <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i> {{ $transactionCount}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -46,20 +69,108 @@
                         <div class="tabs-vertical">
                             <ul class="nav nav-tabs flex-column" id="tabs-8" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="tab-29-tab" data-toggle="tab" href="#tab-29" role="tab" aria-controls="tab-29" aria-selected="true">Follow List</a>
+                                    <a class="nav-link {{ !$errors->updatePassword->any() ? 'active' : '' }}"
+                                        id="tab-Edit_Profile-tab" data-toggle="tab" href="#tab-Edit_Profile" role="tab"
+                                        aria-controls="tab-Edit_Profile" aria-selected="{{ !$errors->updatePassword->any() ? 'true' : 'false' }}">
+                                        Edit Profile
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab-30-tab" data-toggle="tab" href="#tab-30" role="tab" aria-controls="tab-30" aria-selected="false">Tab 2</a>
+                                    <a class="nav-link" id="tab-Follow_List-tab" data-toggle="tab" href="#tab-Follow_List" role="tab" aria-controls="tab-Follow_List" aria-selected="true">Follow List</a>
                                 </li>
+
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab-31-tab" data-toggle="tab" href="#tab-31" role="tab" aria-controls="tab-31" aria-selected="false">Tab 3</a>
+                                    <a class="nav-link {{ $errors->updatePassword->any() ? 'active' : '' }}"
+                                        id="tab-Edit_Password-tab" data-toggle="tab" href="#tab-Edit_Password" role="tab"
+                                        aria-controls="tab-Edit_Password" aria-selected="{{ $errors->updatePassword->any() ? 'true' : 'false' }}">
+                                        Edit Password
+                                    </a>
                                 </li>
+
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab-32-tab" data-toggle="tab" href="#tab-32" role="tab" aria-controls="tab-32" aria-selected="false">Tab 4</a>
+                                    <a class="nav-link" id="tab-Details-tab" data-toggle="tab" href="#tab-Details" role="tab" aria-controls="tab-Details" aria-selected="false">Details</a>
                                 </li>
                             </ul>
                             <div class="tab-content tab-content-border" id="tab-content-8">
-                                <div class="tab-pane fade show active" id="tab-29" role="tabpanel" aria-labelledby="tab-29-tab">
+                                <div class="tab-pane fade {{ !$errors->updatePassword->any() ? 'show active' : '' }}" id="tab-Edit_Profile" role="tabpanel" aria-labelledby="tab-Edit_Profile-tab">
+                                    <!-- <p>Nobis perspiciatis natus cum, sint dolore earum rerum tempora aspernatur numquam velit tempore omnis, delectus repellat facere voluptatibus nemo non fugiat consequatur repellendus! Enim, commodi, veniam ipsa voluptates quis amet.</p> -->
+                                    <form action="{{ route('user.manage.update') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf <!-- Đừng quên thêm CSRF token -->
+                                        <!-- Current Profile Picture -->
+                                        <!-- <h6>Edit Personal Information</h6><br> -->
+                                        <div class="mb-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                                            <h6 class="mb-3 mb-md-0">Edit Personal Information</h6>
+                                            <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " style="border-radius: 25px;" id="btn-publish-profile">Save Changes</button>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <div class="position-relative d-inline-block">
+                                                @if (Auth::user()->image_user)
+                                                <img id="profile-picture" src="{{ asset(Auth::user()->image_user) }}" alt="Profile Picture"
+                                                    class="rounded-circle img-fluid" style="width: 125px; height: 125px; object-fit: cover;">
+                                                @else
+                                                <img id="profile-picture" src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" alt="Profile Picture"
+                                                    class="rounded-circle img-fluid" style="width: 125px; height: 125px; object-fit: cover;">
+                                                @endif
+                                                <label for="image_user"
+                                                    class="position-absolute bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                                    style="bottom: 0px; right: 5px; width: 25px; height: 25px; cursor: pointer;">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                    <input type="file" id="image_user" name="image_user" class="d-none" accept="image/*">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @error('image_user')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <script>
+                                            document.getElementById('image_user').addEventListener('change', function(event) {
+                                                const file = event.target.files[0]; // Lấy tệp hình ảnh đầu tiên
+                                                if (file) {
+                                                    const reader = new FileReader(); // Tạo đối tượng FileReader
+
+                                                    reader.onload = function(e) {
+                                                        // Cập nhật thuộc tính src của thẻ img với hình ảnh mới
+                                                        document.getElementById('profile-picture').src = e.target.result;
+                                                    }
+
+                                                    reader.readAsDataURL(file); // Đọc tệp hình ảnh
+                                                }
+                                            });
+                                        </script>
+                                        <!-- Display Name -->
+                                        <!-- <label>Display Name *</label> -->
+                                        <label class="font-weight-bold form-label" for="ecommerce-name">Display Name *</label>
+                                        <input type="text" name="full_name" class="form-control" value="{{ Auth::user()->full_name }}" placeholder="Display Name *" aria-label="Display Name *">
+                                        @error('full_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small>
+                                        <!-- Email Address -->
+                                        <!-- <label>Email address *</label> -->
+                                        <label class="font-weight-bold form-label" for="ecommerce-name">Email address *</label>
+                                        <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" placeholder="Email address *" aria-label="Email address *">
+                                        @error('email')
+                                        <div class=" text-danger">{{ $message }}
+                                        </div>
+                                        @enderror
+                                        <!-- Address -->
+                                        <!-- <label>Your address *</label> -->
+                                        <label class="font-weight-bold form-label" for="ecommerce-name">Your address *</label>
+                                        <input type="text" name="address" class="form-control" value="{{ Auth::user()->address }}" placeholder="Your address *" aria-label="Your address *">
+                                        @error('address')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <!-- Phone -->
+                                        <!-- <label>Your phone number *</label> -->
+                                        <label class="font-weight-bold form-label" for="ecommerce-name">Your phone number *</label>
+                                        <input type="text" name="phone_number" class="form-control" value="{{ Auth::user()->phone_number }}" placeholder="Your phone number *" aria-label="Your phone number *">
+                                        @error('phone_number')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </form>
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="tab-Follow_List" role="tabpanel" aria-labelledby="tab-Follow_List-tab">
                                     <div class="row">
                                         <div class="m-0 d-flex justify-content-between align-items-center">
                                             <h6>Watchlist ...</h6>
@@ -85,14 +196,57 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="tab-30" role="tabpanel" aria-labelledby="tab-30-tab">
-                                    <p>Nobis perspiciatis natus cum, sint dolore earum rerum tempora aspernatur numquam velit tempore omnis, delectus repellat facere voluptatibus nemo non fugiat consequatur repellendus! Enim, commodi, veniam ipsa voluptates quis amet.</p>
+                                <div class="tab-pane fade {{ $errors->updatePassword->any() ? 'show active' : '' }}" id="tab-Edit_Password" role="tabpanel" aria-labelledby="tab-Edit_Password-tab">
+                                    <section>
+                                        <form action="{{ route('password.update') }}" method="POST" class="mt-2">
+                                            @csrf
+                                            @method('PUT')
+                                            <header class="mt-2">
+                                                <div class="mb-2 d-flex justify-content-between">
+                                                    <h6 class="">Update Password</h6><!-- End .checkout-title -->
+                                                    <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " style="border-radius: 25px;" id="btn-publish-password">{{ __('Change Password') }}</button>
+                                                </div>
+                                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                                    {{ __('Ensure your account is using a long, random password to stay secure.') }}
+                                                </p>
+                                            </header>
+                                            <!-- Current Password -->
+                                            <label class="font-weight-bold form-label" for="ecommerce-name">{{ __('Current Password') }} *</label>
+                                            <input type="password" class="form-control" name="current_password" required>
+                                            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" class="mt-2 text-danger" />
+
+                                            <!-- New Password -->
+                                            <label class="font-weight-bold form-label" for="ecommerce-name">{{ __('New Password') }} *</label>
+                                            <input type="password" class="form-control" name="password" required>
+                                            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" class="mt-2 text-danger" />
+                                            <!-- Confirm Password -->
+                                            <label class="font-weight-bold form-label" for="ecommerce-name">{{ __('Confirm New Password') }} *</label>
+                                            <input type="password" class="form-control mb-2" name="password_confirmation" required>
+                                            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2 text-danger" />
+                                            <!-- Success Message -->
+                                            @if (session('status') === 'password-updated')
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-3">
+                                                {{ __('Saved.') }}
+                                            </p>
+                                            @endif
+                                        </form>
+                                    </section>
                                 </div><!-- .End .tab-pane -->
-                                <div class="tab-pane fade" id="tab-31" role="tabpanel" aria-labelledby="tab-31-tab">
-                                    <p>Perspiciatis quis nobis, adipisci quae aspernatur, nulla suscipit eum. Dolorum, earum. Consectetur pariatur repellat distinctio atque alias excepturi aspernatur nisi accusamus sed molestias ipsa numquam eius, iusto, aliquid, quis aut.</p>
-                                </div><!-- .End .tab-pane -->
-                                <div class="tab-pane fade" id="tab-32" role="tabpanel" aria-labelledby="tab-32-tab">
-                                    <p>Quis nobis, adipisci quae aspernatur, nulla suscipit eum. Dolorum, earum. Consectetur pariatur repellat distinctio atque alias excepturi aspernatur nisi accusamus sed molestias ipsa numquam eius, iusto, aliquid, quis aut.</p>
+                                <div class="tab-pane fade" id="tab-Details" role="tabpanel" aria-labelledby="tab-Details-tab">
+                                    <h6 style="margin-left: 20px; padding-right: 100px;">Your Details Information</h6>
+                                    <div class="card card-dashboard">
+                                        <div class="card-body">
+                                            <h3 class="card-title">Details</h3>
+                                            <!-- End .card-title -->
+                                            <p>Full name: {{ Auth::user()->full_name }}<br>
+                                                Address: {{ Auth::user()->address }}<br>
+                                                Phone: {{Auth::user()->phone_number}}<br>
+                                                Email: {{Auth::user()->email}}<br>
+                                                <a id="tab-Edit_Profile-tab" data-toggle="tab" href="#tab-Edit_Profile" role="tab"
+                                                    aria-controls="tab-Edit_Profile">Edit <i class="icon-edit"></i></a>
+                                            </p>
+                                        </div><!-- End .card-body -->
+                                    </div><!-- End .card-dashboard -->
                                 </div><!-- .End .tab-pane -->
                             </div><!-- End .tab-content -->
                         </div>
