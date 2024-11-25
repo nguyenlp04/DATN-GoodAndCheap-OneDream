@@ -28,6 +28,7 @@ use App\Http\Controllers\VipPackageController;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
 use App\Http\Controllers\SaleNewsController;
+use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
@@ -226,3 +227,4 @@ Route::get('/search', function () {
 Route::get('/tb', function () {
     return view('notifications.list');
 });
+Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);
