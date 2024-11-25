@@ -31,7 +31,6 @@
                     action="{{ route('addStaff')}}"
                     @endisset
 
-
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     @isset($dataStaffID)
@@ -56,7 +55,6 @@
                         <div class="card-header">
                             <h5 class="card-tile mb-0">Staff information</h5>
                         </div>
-
 
                         {{-- noi dung1  --}}
 

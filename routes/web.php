@@ -28,9 +28,11 @@ use App\Http\Controllers\VipPackageController;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
 use App\Http\Controllers\SaleNewsController;
+use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
+use App\Http\Controllers\UserManageController;
 
 require __DIR__ . '/auth.php';
 
@@ -106,12 +108,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/account', [AccountController::class, 'index'])->name('account');
-    Route::post('/account/update', [AccountController::class, 'updateProfile'])->name('account.update');
-    Route::get('/account/orders', [AccountController::class, 'showOrders'])->name('account.orders');
-    Route::get('/account/manager', [AccountController::class, 'showManager'])->name('account.manager');
-    Route::get('/account/address', [AccountController::class, 'showAddress'])->name('account.address');
-    Route::get('/account/edit', [AccountController::class, 'showDetails'])->name('account.edit');
     Route::prefix('message')->group(function () {
         Route::get('/conversations', [ConversationController::class, 'loadConversations'])->name('message.conversations');
         Route::get('/check-conversations', [ConversationController::class, 'CheckConversation'])->name('message.checkconversations');
@@ -134,6 +130,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
     Route::get('/salenews-status', [SaleNewsController::class, 'getAllSaleStatus'])->name('sl.index');
+    Route::get('/confirmedSale/{id}', [SaleNewsController::class, 'confirmedSale'])->name('sl.confirmedSale');
     Route::prefix('sale-news')->group(function () {
         Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
         Route::post('/add', [SaleNewsController::class, 'store'])->name('add.sale-news');
@@ -148,6 +145,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/view-all/', [NotificationController::class, 'show'])->name('show');
         Route::get('/{notification}', [NotificationController::class, 'detail'])->name('detail');
     });
+    Route::get('/user/manage', [UserManageController::class, 'index'])->name('user.manage');
+    Route::post('/user/manage/update', [UserManageController::class, 'updateProfile'])->name('user.manage.update');
+
+    Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
 });
 
 
@@ -230,3 +231,4 @@ Route::get('/search', function () {
 Route::get('/tb', function () {
     return view('notifications.list');
 });
+Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);

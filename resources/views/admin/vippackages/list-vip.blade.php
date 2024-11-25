@@ -1,8 +1,6 @@
 @extends('layouts.admin')
 @section('content')
     <div class="content-wrapper">
-
-
         <div class="container-xxl flex-grow-1 container-p-y" data-select2-id="22">
 
 
@@ -48,26 +46,19 @@
                                     <div class="mb-6 col-md-4">
                                         <label class="form-label" for="package_name">Package name</label>
                                         <input type="text" class="form-control" id="package_name"
-                                            placeholder="Package name" name="name" aria-label="Package name"
-                                            {{-- @isset($dataStaffID)
-                                        value="{{ $dataStaffID->package_name }}"
-                                        @endisset --}}>
+                                            placeholder="Package name" name="name" aria-label="Package name">
                                         <x-input-error :messages="$errors->get('package_name')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="mb-6 col-md-4">
                                         <label class="form-label" for="price">Price ($)</label>
                                         <input type="number" class="form-control" id="price" placeholder="price"
-                                            name="price" aria-label="price" {{-- @isset($dataStaffID)
-                                        value="{{ $dataStaffID->price }}" disabled
-                                        @endisset --}}>
+                                            name="price" aria-label="price">
                                         <x-input-error :messages="$errors->get('price')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="mb-6 col-md-4">
                                         <label class="form-label" for="duration">duration (Day)</label>
                                         <input type="number" class="form-control" id="duration" placeholder="duration"
-                                            name="duration" aria-label="duration" {{-- @isset($dataStaffID)
-                                        value="{{ $dataStaffID->duration }}" disabled
-                                        @endisset --}}>
+                                            name="duration" aria-label="duration" >
                                         <x-input-error :messages="$errors->get('duration')" class="mt-2 text-danger" />
                                     </div>
                                 </div>
@@ -75,15 +66,10 @@
                                     <div class="mb-6 col-md-4">
                                         <label class=" form-label" for="description">Description</label>
                                         <textarea type="text" class="form-control" id="description" placeholder="description" name="description"
-                                            aria-label="description" {{-- @isset($dataStaffID)
-                                        value="{{ $dataStaffID->description }}"
-                                        @endisset --}}></textarea>
+                                            aria-label="description" ></textarea>
                                         <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="mb-6 mt-1 col-md-4">
-
-
-
                                         <label for="type" class="text-black font-semibold pb-1 capitalize">Type:</label>
                                         <select id="type" name="type" class="form-control" required>
                                             <option value="user">User</option>
@@ -95,32 +81,19 @@
 
                                     </div>
                                     <div class="mb-6 mt-1 col-md-4">
-
-
-
                                         <label for="status"
                                             class="text-black font-semibold pb-1 capitalize">Status:</label>
                                         <select id="status" name="status" class="form-control" required>
                                             <option value="1">Active</option>
                                             <option value="0">Deactive</option>
                                         </select>
-
                                         <x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
-
-
                                     </div>
                                 </div>
-
+                            </form>
                             </div>
-
-
-                            {{-- end noi dung1 --}}
                             <div>
                             </div>
-                            <!-- end First column-->
-
-
-
                         </div>
                     </div>
 
@@ -144,7 +117,6 @@
                                                     <th>type</th>
                                                     <th>status</th>
                                                     <th></th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>

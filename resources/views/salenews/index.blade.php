@@ -94,12 +94,13 @@
                                                 <div class="col-6 col-lg-4 order-lg-last">
                                                     <div class="product-list-action">
                                                         <div class="product-price">
-                                                            $ {{ $item->price }}
+                                                            ${{ $item->price }}
                                                         </div><!-- End .product-price -->
 
 
 
                                                         <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" ><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
+                                                        <a href="{{ route('sl.confirmedSale', $item->sale_new_id) }}" men class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%" > <i class="fa-solid fa-check" style="color: #74C0FC;"></i><span>Sold</span></a>
                                                         @if ($item->vip_package_id == null)
                                                         <a href="{{ route('salenew.promote', $item->sale_new_id) }}" class="btn btn-primary btn-rounded" style="width: 100%"> <i class="fa-solid fa-file-invoice-dollar"></i><span>Push to the top</span></a>
                                                         @endif
