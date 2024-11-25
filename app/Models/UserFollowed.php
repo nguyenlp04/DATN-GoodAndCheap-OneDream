@@ -12,4 +12,8 @@ class UserFollowed extends Model
     protected $table = 'user_followed';  // Đặt tên bảng
     protected $primaryKey = 'user_followed_id';  // Khóa chính
     protected $fillable = ['user_id', 'channel_id'];
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id');
+    }
 }

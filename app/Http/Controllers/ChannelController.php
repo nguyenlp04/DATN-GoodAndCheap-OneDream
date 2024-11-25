@@ -134,7 +134,6 @@ class ChannelController extends Controller
             'vip_package_id' => $request->vip_package_id,
             'user_id' => $user->user_id,
         ]);
-
     }
 
     /**
@@ -150,9 +149,9 @@ class ChannelController extends Controller
 
         // If the user has a channel, continue to display the channel
         $channels = Channel::findOrFail($id); // Get channel by ID
-        $sale_news = $channels->saleNews()->with('sub_category','firstImage')
-        ->where('approved',1)
-        ->paginate(5);
+        $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
+            ->where('approved', 1)
+            ->paginate(5);
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory
@@ -298,28 +297,30 @@ class ChannelController extends Controller
 
     public function unfollowChannel($channel_id)
     {
-        $user = Auth::user(); // Lấy người dùng đang đăng nhập
-        $channel = Channel::find($channel_id); // Tìm kênh theo ID
+        $user = Auth::user();
+        $channel = Channel::find($channel_id);
 
         if (!$channel) {
             return response()->json(['message' => 'Channel does not exist.'], 404);
         }
 
-        // Tìm bản ghi theo dõi của người dùng này
         $existingFollow = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channel->channel_id)
             ->first();
         if ($existingFollow) {
-            $existingFollow->delete();  // Xóa bản ghi theo dõi
+            $existingFollow->delete();
 
-            // Lưu thông báo vào session
             session()->flash('alert', [
                 'type' => 'success',
                 'message' => 'You have unfollowed the channel.'
             ]);
 
-            return redirect()->back();  // Quay lại trang trước
+            return redirect()->back();
         }
-        return response()->json(['message' => 'You have not followed this channel yet.'], 400);
+        session()->flash('alert', [
+            'type' => 'error',
+            'message' => 'You have not followed this channel yet.'
+        ]);
+        return redirect()->back();
     }
 }

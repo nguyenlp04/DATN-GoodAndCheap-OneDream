@@ -31,6 +31,7 @@ use App\Http\Controllers\SaleNewsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
+use App\Http\Controllers\UserManageController;
 
 require __DIR__ . '/auth.php';
 
@@ -144,6 +145,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/view-all/', [NotificationController::class, 'show'])->name('show');
         Route::get('/{notification}', [NotificationController::class, 'detail'])->name('detail');
     });
+    Route::get('/user/manage', [UserManageController::class, 'index'])->name('user.manage');
+    Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
 });
 
 
