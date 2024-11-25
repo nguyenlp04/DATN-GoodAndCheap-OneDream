@@ -130,6 +130,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/salenews/{id}/promote', [SaleNewsController::class, 'promote'])->name('salenew.promote');
     Route::get('/salenews-status', [SaleNewsController::class, 'getAllSaleStatus'])->name('sl.index');
+    Route::get('/confirmedSale/{id}', [SaleNewsController::class, 'confirmedSale'])->name('sl.confirmedSale');
     Route::prefix('sale-news')->group(function () {
         Route::get('/add', [SaleNewsController::class, 'create'])->name('products.create');
         Route::post('/add', [SaleNewsController::class, 'store'])->name('add.sale-news');

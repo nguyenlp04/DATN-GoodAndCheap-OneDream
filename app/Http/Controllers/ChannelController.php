@@ -34,22 +34,29 @@ class ChannelController extends Controller
             return redirect()->route('channels.create') // Chuyển hướng đến trang tạo kênh
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
-
-        $sale_news = $channels->saleNews()->with('sub_category')->get();
+        $sale_news = $channels->saleNews()->with('sub_category','firstImage')
+        ->where('approved',1)
+        ->paginate(5);
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory
-            $news->name_sub_category = $news->subcategory ? $news->subcategory->name_sub_category : null;
+            $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
         }
 
         // Count records of sub_category based on name
         $subcategory_count = $sale_news->filter(function ($news) {
             return $news->sub_category !== null;
         })->countBy('name_sub_category');
-        $NewsCount = $channels->saleNews()->count();
 
-        // Nếu có kênh, tiếp tục xử lý
-        return view('partner.channels.profile_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count'));
+        // Count the number of news items that the channel has posted
+        $NewsCount = $channels->saleNews()->count();
+        //loi viet
+        $isFollowed = UserFollowed::where('user_id', $user->user_id)
+            ->where('channel_id', $channels->channel_id)
+            ->exists();
+        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed'));
+
+
     }
 
 
@@ -74,21 +81,6 @@ class ChannelController extends Controller
         return view('partner.channels.create_channels', compact('vipPackages', 'paymentOrCreat')); // Truyền gói VIP vào view
     }
 
-    // public function paymentOrCreat()
-    // {
-    //     $user = Auth::user();
-
-    //     // Kiểm tra nếu người dùng đã tạo kênh
-    //     $paymentOrCreat = Channel::where('user_id', $user->user_id)->first(); // Use first() instead of firstOrFail()
-
-
-
-    //     // return view('partner.channels.create_channels', compact('paymentOrCreat'));
-    //     return view('partner.channels.create_channels', [
-    //         // 'dataProductID' => $dataProductID,
-    //         'paymentOrCreat' => $paymentOrCreat,
-    //     ]);
-    // }
 
 
     /**
