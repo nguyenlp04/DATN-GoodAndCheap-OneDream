@@ -185,26 +185,59 @@
                   <div data-i18n="Analytics">My Profile </div>
               </a>
           </li>
+            <!-- Infomation -->
 
-            <!-- Payment -->
-            <li class="menu-item {{ Request::is('payment/*') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('Partners/*') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons bx bxl-paypal"></i>
-                    <div data-i18n="Payment Management">Payment</div>
+                    <i class="menu-icon tf-icons bx-user bx"></i>
+                    <div data-i18n="Payment Management">Infomation</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
-                        <a href="{{ url('payment/method') }}" class="menu-link">
-                            <div data-i18n="Payment Method">Payment Method</div>
+                    <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
+                        <a href="{{ url('partners/infomation/') }}" class="menu-link">
+                            <div data-i18n="Payment Method">Channel Infomation</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
-                        <a href="{{ url('payment/account') }}" class="menu-link">
-                            <div data-i18n="Receiving Account">Receiving Account</div>
-                        </a>
-                    </li>
+                    <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
+                      <a href="{{ url('partners/infomation/create') }}" class="menu-link">
+                          <div data-i18n="Payment Method">Add Infomation</div>
+                      </a>
+                  </li>
                 </ul>
             </li>
+            <!-- Payment -->
+
+            <li class="menu-item {{ Request::is('payment/*') ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bxl-paypal"></i>
+                  <div data-i18n="Payment Management">Payment</div>
+              </a>
+              <ul class="menu-sub">
+                  <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
+                      <a href="{{ url('payment/method') }}" class="menu-link">
+                          <div data-i18n="Payment Method">Payment Method</div>
+                      </a>
+                  </li>
+                  <li class="menu-item {{ Request::is('payment/account') ? 'active' : '' }}">
+                      <a href="{{ url('payment/account') }}" class="menu-link">
+                          <div data-i18n="Receiving Account">Receiving Account</div>
+                      </a>
+                  </li>
+              </ul>
+          </li>
+          <li class="menu-item {{ Request::is('Trash/*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-trash"></i>
+                <div data-i18n="Payment Management">Trash</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
+                    <a href="{{ url('payment/method') }}" class="menu-link">
+                        <div data-i18n="Payment Method">Trash</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Support</span></li>
             <li class="menu-item">
               <a

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Channel;
+use App\Models\ChannelInfo;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,8 @@ class PartnerProfileController extends Controller
         }
 
         $user = Auth::user();
+        dd($user->channel_id);
+
         $profiles = Channel::where('user_id', $user->user_id)->get();
 
         if ($profiles->isEmpty()) {
@@ -32,10 +35,58 @@ class PartnerProfileController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function createInfomation()
     {
-        //
+        return view('partner.infomation.create_infomation');
     }
+    public function infomation()
+    {
+        $infomations = ChannelInfo::all();
+        return view('partner.infomation.list_infomation', compact('infomations'));
+    }
+    public function storeInfomation(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            if (!$user->channel_id) {
+                return redirect()->route('partners.infomation')->with('alert', [
+                    'type' => 'error',
+                    'message' => 'User does not have a valid channel.'
+                ]);
+            }
+
+            $channelId = $user->channel_id;
+
+            $request->validate([
+                'about' => 'required|string',
+                'banner_url' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            ]);
+
+            $information = new ChannelInfo();
+            $information->channel_id = $channelId;
+            $information->about = $request->input('about');
+            $information->banner_url = $request->input('banner_url');
+
+            if ($request->hasFile('banner_url')) {
+                $imagePath = $request->file('banner_url')->store('channels/banners', 'public');
+                $information->banner_url = $imagePath;
+            }
+
+            $information->save();
+
+            return redirect()->route('partners.infomation')->with('alert', [
+                'type' => 'success',
+                'message' => 'Information added successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('partners.infomation')->with('alert', [
+                'type' => 'error',
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -130,12 +181,4 @@ class PartnerProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        Product::where('channel_id', $id)->delete();
-        Channel::findOrFail($id)->delete();
-
-        // Quay lại trang danh sách với thông báo thành công
-        return redirect()->route('partner.profiles')->with('success', 'Channel deleted successfully.');
-    }
 }
