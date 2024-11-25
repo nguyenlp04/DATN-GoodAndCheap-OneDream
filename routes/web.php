@@ -94,7 +94,12 @@ Route::middleware(['auth.admin'])->group(function () {
 
 
 // user
+
+
 Route::middleware('auth')->group(function () {
+   
+    Route::delete('wishlist/{like}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+    Route::post('/add-to-wishlist', [LikeController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
@@ -151,9 +156,12 @@ Route::middleware('auth')->group(function () {
 
 
 // guest
+
 Route::get('/', function () {
-    return view('home');
+    $data = \App\Models\SaleNews::where('status','1')->with('images')->where('is_delete',null)->where('approved','1')->get();  // Truyền dữ liệu trực tiếp ở đây
+    return view('home', ['data' => $data]);
 })->name('home');
+
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');

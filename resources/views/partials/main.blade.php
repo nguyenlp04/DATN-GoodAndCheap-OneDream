@@ -1,9 +1,21 @@
 <main class="main">
   
-
+<style>.image-container {
+  width: 100%;
+  height: 200px; /* Đặt chiều cao cố định cho khung chứa */
+  overflow: hidden; /* Đảm bảo không có phần thừa nào bị hiển thị */
+}
+.equal-height-image {
+    height: 200px; /* Đặt chiều cao cố định cho tất cả các ảnh */
+    width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của khung chứa */
+    object-fit: cover; /* Đảm bảo ảnh phủ kín khung mà không bị méo */
+}
+</style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
   
+
 
     <div class="container">
         <h2 class="title text-center mb-4"></h2><!-- End .title text-center -->
@@ -155,24 +167,28 @@
                                     }
                                 }
                             }'>
-                     {{-- @foreach($data as $item)
+                     @foreach($data as $item)
                         <div class="product product-2">
                             <figure class="product-media">
                                 <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html">
-                                    <img src="assets/images/demos/demo-4/products/product-1.jpg" alt="Product image"
+                                <a href="product.html" class="image-container">
+                                @if ($item->images->isNotEmpty())
+												<img src="{{ $item->images->first()->image_name }}" alt="Image"  class="equal-height-image" >
+											@endif
+                                            </a>
                                      
-                                    class="product-image">
-                                     
-                                </a>
+                             
                                
                                 <div class="product-action-vertical">
                                     
                                     <!-- Thêm data-product-id để lưu id sản phẩm -->
-                                    <a href="#" class="btn-product-icon btn-wishlist 
-                           @if(in_array($item->product_id, $likedProducts)) liked @endif"
-                           title="Add to wishlist" data-product-id="{{ $item->product_id }}"></a>
-                           
+                                    <form action="{{ route('addToWishlist') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
+                                    <button type="submit" class=" btn-product-icon btn-wishlist color-danger add-to-wishlist-btn" title="Add to WishList  "></button>
+                                    
+                                </form>
+
                                 </div>
                                 <div class="product-action">
                                 <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
@@ -185,9 +201,9 @@
 
                             <div class="product-body">
                             <div class="product-cat">
-                                <a href="#">{{$item ->subcategory->name_sub_category}}</a>
+                                <a href="#">{{$item ->sub_category->name_sub_category}}</a>
                             </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">{{ Str::limit($item->name_product, 35, '...') }}  </a></h3>
+                                <h3 class="product-title"><a href="product.html">{{ Str::limit($item->title, 35, '...') }}  </a></h3>
                                 <div class="product-price">
                                     $1,199.99
                                 </div><!-- End .product-price -->
@@ -208,7 +224,7 @@
                             </div><!-- End .product-nav -->
                             </div><!-- End .product-body -->
                         </div><!-- End .product -->
-                        @endforeach --}}
+                        @endforeach
 
                     
                 </div><!-- End .owl-carousel -->
@@ -2725,66 +2741,82 @@
             </div><!-- End .row -->
         </div><!-- End .container -->
     </div><!-- End .icon-boxes-container -->
-    <script>
-       document.addEventListener('DOMContentLoaded', function () {
-    // Lắng nghe sự kiện click trên các nút Add to Wishlist
-    document.querySelectorAll('.btn-wishlist').forEach(function(button) {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();  // Ngừng hành động mặc định
+    
+</main><!-- End .main -->
+<!-- Trong Blade view -->
 
-            // Lấy product_id từ thuộc tính data-product-id
-            const productId = button.getAttribute('data-product-id');
+<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+<script>
+    var userId = @json(Auth::user() ? Auth::user()->user_id : null); // Lấy user_id nếu người dùng đã đăng nhập
 
-            // Kiểm tra nếu chưa có product_id
-            if (!productId) {
-                alert('Sản phẩm không hợp lệ.');
-                return;
-            }
+    $(document).on('click', '.add-to-wishlist-btn', function (e) {
+        e.preventDefault(); // Ngừng gửi form mặc định
 
-            // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
-            fetch('/wishlist/add', {
-                method: 'POST',
-                body: JSON.stringify({ product_id: productId }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  // CSRF token
+        var form = $(this).closest('form'); // Lấy form chứa nút bấm
+        var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy sale_new_id từ input hidden
+
+        // Kiểm tra nếu userId không có giá trị
+        if (!userId) {
+            alert('You need login ');
+            return;
+        }
+
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}', // CSRF token
+                user_id: userId, // User ID từ JavaScript
+                sale_new_id: saleNewId // Sale New ID
+            },
+            success: function (response) {
+                // Kiểm tra phản hồi thành công từ server
+                if (response.type === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.message,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: response.message,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);  // Hiển thị thông báo
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra, vui lòng thử lại!');
-            });
+            },
+            error: function (xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: response.message || 'Có lỗi xảy ra!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
         });
     });
-});
-$(document).on('click', '.btn-wishlist', function(e) {
-    e.preventDefault();
 
-    var productId = $(this).data('product-id');
-    var heartIcon = $(this); // Nút yêu thích
-
-    $.ajax({
-        url: '/wishlist/add',
-        type: 'POST',
-        data: {
-            product_id: productId,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-            // Nếu sản phẩm đã có trong bảng Like, thì cập nhật trạng thái là "liked"
-            heartIcon.addClass('liked');
-            alert(response.message);  // Hiển thị thông báo thành công
-        },
-        error: function(error) {
-            // Nếu sản phẩm đã có trong danh sách yêu thích, hiển thị thông báo lỗi
-            alert(error.responseJSON.message);
-        }
-    });
-});
-
-    </script>
-</main><!-- End .main -->
+    @if (session('alert'))
+        Swal.fire({
+            icon: "{{ session('alert')['type'] }}",
+            title: "{{ session('alert')['message'] }}",
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    @endif
+</script>

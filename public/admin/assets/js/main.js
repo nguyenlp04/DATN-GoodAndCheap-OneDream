@@ -178,38 +178,14 @@ document.querySelectorAll('.delete-btn').forEach(button => {
       });
   });
 });
-$(document).ready(function () {
-  $('.add-to-wishlist-btn').on('click', function () {
-      var saleNewsId = $(this).data('sale-news-id'); // Lấy ID của sale_news
-      var button = $(this);
 
-      $.ajax({
-          url: '/like', // Route đã khai báo ở bước 1
-          method: 'POST',
-          data: {
-              sale_news_id: saleNewsId,
-              _token: $('meta[name="csrf-token"]').attr('content'), // Lấy CSRF token
-          },
-          success: function (response) {
-              alert(response.message); // Hiển thị thông báo thành công
-              button.text('Đã yêu thích'); // Cập nhật trạng thái nút
-              button.prop('disabled', true); // Vô hiệu hóa nút
-          },
-          error: function (xhr) {
-              if (xhr.status === 401) {
-                  alert('Vui lòng đăng nhập để sử dụng tính năng này.');
-              } else {
-                  alert('Có lỗi xảy ra. Vui lòng thử lại.');
-              }
-          },
-      });
-  });
-});
-{/* <div class="sale-news-item">
-    <h3></h3>
-    <button 
-        class="add-to-wishlist-btn" 
-        data-sale-news-id="">
-        Thêm vào yêu thích
-    </button>
-</div> */}
+
+
+
+
+
+
+
+
+
+

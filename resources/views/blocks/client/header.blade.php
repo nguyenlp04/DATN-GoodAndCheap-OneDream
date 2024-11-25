@@ -9,7 +9,20 @@
     line-height: 1.5em; /* Chiều cao dòng */
 }
 
+
 </style>
+        
+<?php
+                 use App\Models\Like;
+                 use App\Models\SaleNews;
+                 use Illuminate\Support\Facades\Auth;
+                 use Illuminate\Http\Request;
+                  $userId = Auth::id();
+        
+                  // Lấy các sản phẩm từ bảng wishlist của người dùng
+                  $wishlist = Like::where('user_id', $userId)->with('saleNews.images')->get();
+              
+                 ?>
 <div class="page-wrapper">
  <header class="header header-intro-clearance header-4">
     <div class="header-middle">
@@ -59,15 +72,56 @@
                 </a>
              </div>
              <!-- End .compare-dropdown -->
-             <div class="wishlist">
-                <a href="{{route('wishlist')}}" title="Wishlist">
-                   <div class="icon">
-                      <i class="icon-heart-o"></i>
-                      <span class="wishlist-count badge">3</span>
-                   </div>
-                   <p>Wishlist</p>
-                </a>
-             </div>
+            
+             <div class="dropdown cart-dropdown">
+               <a href="{{route('wishlist')}}" class="dropdown-toggle"
+                   data-display="static">
+                  <div class="icon">
+                        <i class="icon-heart-o"></i> <!-- Đổi từ icon-shopping-cart thành icon-heart-o -->
+                        <span class="cart-count">{{ $wishlist->count() }}</span>
+                  </div>
+                  <p>Wishlist</p> <!-- Thay "Cart" thành "Wishlist" nếu bạn muốn gọi là Wishlist -->
+               </a>
+              
+               <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-cart-products">
+              @if($wishlist->count() >0 )
+        @foreach($wishlist as $item)
+            <div class="product">
+                <div class="product-cart-details">
+                    <h4 class="product-title">
+                        <a href="{{route('wishlist')}}">{{ $item->saleNews->title }}</a>
+                    </h4>
+
+                    <span class="cart-product-info">
+                        ${{ $item->saleNews->price }}.00
+                    </span>
+                </div><!-- End .product-cart-details -->
+
+                <figure class="product-image-container">
+                    <a href="{{route('wishlist')}}" class="product-image">
+                        @if ($item->saleNews->images->isNotEmpty())
+                            <img src="{{ $item->saleNews->images->first()->image_name }}" alt="Image">
+                        @endif
+                    </a>
+                </figure>
+               
+								
+            </div><!-- End .product -->
+        @endforeach
+        @else
+        <p class="text-center">No notifications available.</p>
+        @endif      
+                  </div><!-- End .cart-product -->
+
+                
+
+                  <div class="dropdown-cart-action mt-2 flex justify-content-center">
+                        <a href="{{ route('wishlist') }}" class="btn btn-outline-primary-2" ><span>View All</span><i class="icon-long-arrow-center"></i></a>
+                    </div><!-- End .dropdown-cart-total --><!-- End .dropdown-cart-total -->
+               </div><!-- End .dropdown-menu -->
+            </div><!-- End .cart-dropdown -->
+
              <div class="dropdown cart-dropdown">
                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                     <div class="icon">
