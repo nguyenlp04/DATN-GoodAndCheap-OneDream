@@ -106,114 +106,114 @@
                   </div><!-- End .dropdown-cart-total -->
                </div><!-- End .dropdown-menu -->
             </div>
-             @else
-             <div class="wishlist">
-                <a href="{{ route('login') }}">
-                   <div class="icon">
-                      <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                   </div>
-                </a>
-             </div>
-             <div class="wishlist">
-                <a href="{{ route('register') }}">
-                   <div class="icon">
-                      <i class="fa-solid fa-user-plus"></i>
-                   </div>
-                </a>
-             </div>
-             @endif
-          </div>
-          <!-- End .header-right -->
-       </div>
-       <!-- End .container -->
-    </div>
-    <!-- End .header-middle -->
-    <div class="header-bottom sticky-header">
-    <div class="container">
-       <div class="header-left">
-          <div class="dropdown category-dropdown">
-             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" data-display="static"
-                title="Browse Categories">
-             Browse Categories <i class="icon-angle-down"></i>
-             </a>
-             <div class="dropdown-menu">
-                <nav class="side-nav">
-                   <ul class="menu-vertical sf-arrows">
-                      <li class="item-lead"><a href="#">Daily offers</a></li>
-                      <li class="item-lead"><a href="#">Gift Ideas</a></li>
-                      <li><a href="#">Beds</a></li>
-                      <li><a href="#">Lighting</a></li>
-                      <li><a href="#">Sofas & Sleeper sofas</a></li>
-                      <li><a href="#">Storage</a></li>
-                      <li><a href="#">Armchairs & Chaises</a></li>
-                      <li><a href="#">Decoration </a></li>
-                      <li><a href="#">Kitchen Cabinets</a></li>
-                      <li><a href="#">Coffee & Tables</a></li>
-                      <li><a href="#">Outdoor Furniture </a></li>
-                   </ul>
-                   <!-- End .menu-vertical -->
-                </nav>
-                <!-- End .side-nav -->
-             </div>
-             <!-- End .dropdown-menu -->
-          </div>
-          <!-- End .category-dropdown -->
-       </div>
-       <!-- End .header-left -->
-       <div class="header-center">
-          <nav class="main-nav">
-             <ul class="menu sf-arrows">
-                <li class="megamenu-container active">
-                   <a href="index.html" class="sf-with-ul">Home</a>
-                </li>
-                <li>
-                   <a href="#" class="sf-with-ul">Shop</a>
-                   <ul>
-                      <li>
-                         <a href="about.html" class="sf-with-ul">Sale new</a>
-                         <ul>
-                            <li><a href="about.html">s1</a></li>
-                            <li><a href="about-2.html">s2</a></li>
-                         </ul>
-                      </li>
-                      <li><a href="product.html">Product</a></li>
-                   </ul>
-                </li>
-                <li>
-                   <a href="#" class="sf-with-ul">Product</a>
-                   <ul>
-                      <li>
-                         <a href="about.html" class="sf-with-ul">New Product </a>
-                         <a href="about.html" class="sf-with-ul">Products </a>
-                      </li>
-                   </ul>
-                </li>
-                <li>
-                   <a href="{{route('blogs.listting')}}" class="">Blog</a>
-                </li>
-                <li>
-                   <a href="#" class="sf-with-ul">Contact</a>
-                   <ul>
-                      <li><a href="404.html">Error 404</a></li>
-                   </ul>
-                </li>
-                <li>
-                   <a href="#" class="sf-with-ul">About us</a>
-                   <ul>
-                      <li><a href="404.html">Error 404</a></li>
-                   </ul>
-                </li>
-             </ul>
-             <!-- End .menu -->
-          </nav>
-          <!-- End .main-nav -->
-       </div>
-       <div class="header-right">
-          <div class="row">
-             @guest
-             <!-- Nếu chưa đăng nhập -->
-             <!-- <div class="col-md-5">
+            @else
+            <div class="wishlist">
+               <a href="{{ route('login') }}">
+                  <div class="icon">
+                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                  </div>
+               </a>
+            </div>
+            <div class="wishlist">
+               <a href="{{ route('register') }}">
+                  <div class="icon">
+                     <i class="fa-solid fa-user-plus"></i>
+                  </div>
+               </a>
+            </div>
+            @endif
+         </div>
+         <!-- End .header-right -->
+      </div>
+      <!-- End .container -->
+</div>
+<!-- End .header-middle -->
+<div class="header-bottom sticky-header">
+   <div class="container">
+      <div class="header-left">
+         <div class="dropdown category-dropdown">
+            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" data-display="static"
+               title="Browse Categories">
+               Browse Categories <i class="icon-angle-down"></i>
+            </a>
+            <div class="dropdown-menu">
+               <nav class="side-nav">
+                  <ul class="menu-vertical sf-arrows">
+                     <li class="item-lead"><a href="#">Daily offers</a></li>
+                     <li class="item-lead"><a href="#">Gift Ideas</a></li>
+                     <li><a href="#">Beds</a></li>
+                     <li><a href="#">Lighting</a></li>
+                     <li><a href="#">Sofas & Sleeper sofas</a></li>
+                     <li><a href="#">Storage</a></li>
+                     <li><a href="#">Armchairs & Chaises</a></li>
+                     <li><a href="#">Decoration </a></li>
+                     <li><a href="#">Kitchen Cabinets</a></li>
+                     <li><a href="#">Coffee & Tables</a></li>
+                     <li><a href="#">Outdoor Furniture </a></li>
+                  </ul>
+                  <!-- End .menu-vertical -->
+               </nav>
+               <!-- End .side-nav -->
+            </div>
+            <!-- End .dropdown-menu -->
+         </div>
+         <!-- End .category-dropdown -->
+      </div>
+      <!-- End .header-left -->
+      <div class="header-center">
+         <nav class="main-nav">
+            <ul class="menu sf-arrows">
+               <li class="megamenu-container active">
+                  <a href="index.html" class="sf-with-ul">Home</a>
+               </li>
+               <li>
+                  <a href="#" class="sf-with-ul">Shop</a>
+                  <ul>
+                     <li>
+                        <a href="about.html" class="sf-with-ul">Sale new</a>
+                        <ul>
+                           <li><a href="about.html">s1</a></li>
+                           <li><a href="about-2.html">s2</a></li>
+                        </ul>
+                     </li>
+                     <li><a href="product.html">Product</a></li>
+                  </ul>
+               </li>
+               <li>
+                  <a href="#" class="sf-with-ul">Product</a>
+                  <ul>
+                     <li>
+                        <a href="about.html" class="sf-with-ul">New Product </a>
+                        <a href="about.html" class="sf-with-ul">Products </a>
+                     </li>
+                  </ul>
+               </li>
+               <li>
+                  <a href="{{route('blogs.listting')}}" class="">Blog</a>
+               </li>
+               <li>
+                  <a href="#" class="sf-with-ul">Contact</a>
+                  <ul>
+                     <li><a href="404.html">Error 404</a></li>
+                  </ul>
+               </li>
+               <li>
+                  <a href="#" class="sf-with-ul">About us</a>
+                  <ul>
+                     <li><a href="404.html">Error 404</a></li>
+                  </ul>
+               </li>
+            </ul>
+            <!-- End .menu -->
+         </nav>
+         <!-- End .main-nav -->
+      </div>
+      <div class="header-right">
+         <div class="row">
+            @guest
+            <!-- Nếu chưa đăng nhập -->
+            <!-- <div class="col-md-5">
                 <a href="{{ route('login') }}">
                     <p><span class="highlight">Login</span></p>
                 </a>
@@ -239,7 +239,7 @@
                      <div class="header-menu" style="margin-left: 10px;">
                         <ul>
                            <li>
-                              <a href="{{ route('account') }}">
+                              <a href="{{ route('user.manage') }}">
                                  {{ __('Profile') }}
                               </a>
                            </li>
