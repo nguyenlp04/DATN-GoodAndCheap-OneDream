@@ -27,6 +27,7 @@
                  ?>
 <div class="page-wrapper">
 
+
  <header class="header header-intro-clearance header-4">
     <div class="header-middle">
     <div class="container">
@@ -35,9 +36,10 @@
           <span class="sr-only">Toggle mobile menu</span>
           <i class="icon-bars"></i>
           </button>
-          <a href="#" class="logo">
-          <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="150" height="3">
-          </a>
+            <a href="#" class="logo">
+                  <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
+                  <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
+              </a>
        </div>
        <!-- End .header-left -->
        <div class="header-center">
