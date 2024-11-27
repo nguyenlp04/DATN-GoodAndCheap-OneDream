@@ -10,9 +10,10 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        $setting = Setting::first();
+        $setting = Setting::first() ?? new Setting();
         return view("admin.setting.setting", compact('setting'));
     }
+
     public function updateSettings(Request $request)
     {
 
@@ -59,11 +60,9 @@ class SettingsController extends Controller
             $settings->twitter_link = $request->input('twitter_link');
             $settings->youtube_link = $request->input('youtube_link');
 
-            // Upload ảnh
             $uploadFields = ['logo', 'logo_mobile', 'favicon', 'banner1', 'banner2', 'banner3'];
             foreach ($uploadFields as $field) {
                 if ($request->hasFile($field)) {
-                    // Xóa ảnh cũ nếu có
                     if (!empty($settings->$field)) {
                         $oldImagePath = public_path($settings->$field);
                         if (file_exists($oldImagePath)) {
@@ -76,8 +75,6 @@ class SettingsController extends Controller
                     $settings->$field = 'storage/' . $imagePath;
                 }
             }
-
-            // Lưu lại
             $settings->save();
 
             return redirect()->back()->with('alert', [

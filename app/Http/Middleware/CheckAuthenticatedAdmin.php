@@ -18,7 +18,7 @@ class CheckAuthenticatedAdmin
     {
 
         if (!Auth::guard('staff')->check() || !isset(Auth::guard('staff')->user()->staff_id)) {
-            return redirect('/');
+            return redirect('/staff/login');
         }
 
         return $next($request);

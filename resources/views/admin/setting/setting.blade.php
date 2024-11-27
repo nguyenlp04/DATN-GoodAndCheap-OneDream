@@ -195,15 +195,6 @@
                                     </div>
                                     @enderror
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="created_at" class="form-label"><strong>Creation Date</strong></label>
-                                    <input type="text" class="form-control" id="created_at" name="created_at" readonly />
-                                </div>
-
-                                <div class="mb-3 col-md-6">
-                                    <label for="updated_at" class="form-label"><strong>Updated Date</strong></label>
-                                    <input type="text" class="form-control" id="updated_at" name="updated_at" readonly />
-                                </div>
                             </div>
                             <div class="mt-2">
                                 <button type="submit" class="btn btn-primary me-2">Save changes</button>
