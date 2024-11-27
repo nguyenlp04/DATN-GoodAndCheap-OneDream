@@ -93,7 +93,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::patch('/manage-profile', [ManageProfileController::class, 'update'])->name('manage-profile.update');
     Route::get('/change-password', [ManageProfileController::class, 'showChangePasswordForm'])->name('change-password.index');
     Route::post('/change-password', [ManageProfileController::class, 'updatePassword'])->name('change-password.update');
-    Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index'); // Trang danh sách banner
+    Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index');
 
     Route::post('/update-settings', [SettingsController::class, 'updateSettings'])->name('settings.update');
 });
@@ -103,7 +103,7 @@ Route::middleware(['auth.admin'])->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-   
+
     Route::delete('wishlist/{like}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
     Route::post('/add-to-wishlist', [LikeController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
@@ -163,7 +163,7 @@ Route::middleware('auth')->group(function () {
 // guest
 
 Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status','1')->with('images')->where('is_delete',null)->where('approved','1')->get();  // Truyền dữ liệu trực tiếp ở đây
+    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get();  // Truyền dữ liệu trực tiếp ở đây
     return view('home', ['data' => $data]);
 })->name('home');
 
