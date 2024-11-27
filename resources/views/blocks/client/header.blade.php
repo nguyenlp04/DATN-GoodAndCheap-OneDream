@@ -108,16 +108,18 @@
             </div>
              @else
              <div class="wishlist">
-                <a href="{{ route('login') }}">
-                   <div class="icon">
-                      <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <a href="{{ route('login') }}" style="font-size: 1.8rem">
+                   <div class="icon d-flex align-items-center">
+                      <i class="icon-user"></i>
+                      Login
                    </div>
                 </a>
              </div>
              <div class="wishlist">
-                <a href="{{ route('register') }}">
-                   <div class="icon">
-                      <i class="fa-solid fa-user-plus"></i>
+                <a href="{{ route('register') }}" style="font-size: 1.8rem">
+                   <div class="icon d-flex align-items-center">
+                      {{-- <i class="icon-user"></i> --}}
+                      Sign Up
                    </div>
                 </a>
              </div>
