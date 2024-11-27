@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UserFollowed;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Transactions;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class UserManageController extends Controller
 {
@@ -14,7 +17,8 @@ class UserManageController extends Controller
         $followedChannels = UserFollowed::where('user_id', $userId)
             ->with('channel')
             ->get();
-        return view('user.manage', compact('followedChannels'));
+        $transactionCount = Transactions::where('user_id', $userId)->count();
+        return view('user.manage', compact('followedChannels', 'transactionCount'));
     }
     public function unfollow($id)
     {
@@ -27,5 +31,57 @@ class UserManageController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Channel not found or not followed'], 404);
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $emailRules = ['required', 'email', 'max:255'];
+
+        if ($request->input('email') !== $user->email) {
+            $emailRules[] = Rule::unique('users')->ignore($user->id);
+        }
+
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => $emailRules,
+            'address' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:15',
+            'image_user' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            $updateData = [
+                'full_name' => $request->input('full_name'),
+                'email' => $request->input('email'),
+                'address' => $request->input('address'),
+                'phone_number' => $request->input('phone_number'),
+            ];
+
+            if ($request->hasFile('image_user')) {
+                if ($user->image_user) {
+                    $oldImagePath = public_path($user->image_user);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+                $imageName = 'user' . time() . '.' . $request->file('image_user')->extension();
+                $image_userPath = $request->file('image_user')->storeAs('image_users', $imageName, 'public');
+                $updateData['image_user'] = 'storage/' . $image_userPath;
+            }
+
+            DB::table('users')->where('user_id', $user->user_id)->update($updateData);
+
+            // Thông báo thành công
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Profile updated successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'An error occurred while updating your profile. Please try again later.'
+            ]);
+        }
     }
 }

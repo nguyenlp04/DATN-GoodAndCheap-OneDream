@@ -7,71 +7,130 @@
       overflow: hidden;
       text-overflow: ellipsis;
 
+
       line-height: 1.5em;
       /* Chiều cao dòng */
    }
+
 </style>
+        
+<?php
+                 use App\Models\Like;
+                 use App\Models\SaleNews;
+                 use Illuminate\Support\Facades\Auth;
+                 use Illuminate\Http\Request;
+                  $userId = Auth::id();
+        
+                  // Lấy các sản phẩm từ bảng wishlist của người dùng
+                  $wishlist = Like::where('user_id', $userId)->with('saleNews.images')->get();
+              
+                 ?>
 <div class="page-wrapper">
-   <header class="header header-intro-clearance header-4">
-      <div class="header-middle">
-         <div class="container">
-            <div class="header-left">
-               <button class="mobile-menu-toggler">
-                  <span class="sr-only">Toggle mobile menu</span>
-                  <i class="icon-bars"></i>
-               </button>
-               <a href="#" class="logo">
-                  <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="150" height="3">
+
+
+ <header class="header header-intro-clearance header-4">
+    <div class="header-middle">
+    <div class="container">
+       <div class="header-left">
+          <button class="mobile-menu-toggler">
+          <span class="sr-only">Toggle mobile menu</span>
+          <i class="icon-bars"></i>
+          </button>
+            <a href="#" class="logo">
+                  <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
+                  <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
+              </a>
+       </div>
+       <!-- End .header-left -->
+       <div class="header-center">
+          <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+             <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+             <form action="#" method="get">
+                <div class="header-search-wrapper search-wrapper-wide">
+                   <label for="q" class="sr-only">Search</label>
+                   <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                   <input type="search" class="form-control" name="q" id="q"
+                      placeholder="Search product ..." required>
+                </div>
+                <!-- End .header-search-wrapper -->
+             </form>
+          </div>
+          <!-- End .header-search -->
+       </div>
+       <div class="header-right">
+          @if(isset(auth()->user()->user_id))
+             <div class="wishlist" style="white-space: nowrap">
+                <a href="{{ route('add.sale-news') }}" title="Wishlist">
+                   <div class="icon">
+                      <i class="fa-regular fa-newspaper"></i>
+                   </div>
+                   <p>News Sale</p>
+                </a>
+             </div>
+             <!-- End .compare-dropdown -->
+             <div class="dropdown compare-dropdown">
+                <a href="{{ route('message.conversations') }} " class="dropdown-toggle" role="button" aria-haspopup="true">
+                   <div class="icon">
+                      <i class="fa-regular fa-comments"></i> <!-- Thay đổi icon ở đây -->
+                   </div>
+                   <p>Chat</p>
+                </a>
+             </div>
+             <!-- End .compare-dropdown -->
+            
+             <div class="dropdown cart-dropdown">
+               <a href="{{route('wishlist')}}" class="dropdown-toggle"
+                   data-display="static">
+                  <div class="icon">
+                        <i class="icon-heart-o"></i> <!-- Đổi từ icon-shopping-cart thành icon-heart-o -->
+                        <span class="cart-count">{{ $wishlist->count() }}</span>
+                  </div>
+                  <p>Wishlist</p> <!-- Thay "Cart" thành "Wishlist" nếu bạn muốn gọi là Wishlist -->
                </a>
-            </div>
-            <!-- End .header-left -->
-            <div class="header-center">
-               <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
-                  <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                  <form action="#" method="get">
-                     <div class="header-search-wrapper search-wrapper-wide">
-                        <label for="q" class="sr-only">Search</label>
-                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                        <input type="search" class="form-control" name="q" id="q"
-                           placeholder="Search product ..." required>
-                     </div>
-                     <!-- End .header-search-wrapper -->
-                  </form>
-               </div>
-               <!-- End .header-search -->
-            </div>
-            <div class="header-right">
-               @if(isset(auth()->user()->user_id))
-               <div class="wishlist" style="white-space: nowrap">
-                  <a href="{{ route('add.sale-news') }}" title="Wishlist">
-                     <div class="icon">
-                        <i class="fa-regular fa-newspaper"></i>
-                     </div>
-                     <p>News Sale</p>
-                  </a>
-               </div>
-               <!-- End .compare-dropdown -->
-               <div class="dropdown compare-dropdown">
-                  <a href="{{ route('message.conversations') }} " class="dropdown-toggle" role="button" aria-haspopup="true">
-                     <div class="icon">
-                        <i class="fa-regular fa-comments"></i> <!-- Thay đổi icon ở đây -->
-                     </div>
-                     <p>Chat</p>
-                  </a>
-               </div>
-               <!-- End .compare-dropdown -->
-               <div class="wishlist">
-                  <a href="{{route('wishlist')}}" title="Wishlist">
-                     <div class="icon">
-                        <i class="icon-heart-o"></i>
-                        <span class="wishlist-count badge">3</span>
-                     </div>
-                     <p>Wishlist</p>
-                  </a>
-               </div>
-               <div class="dropdown cart-dropdown">
-                  <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                     <div class="icon">
+              
+               <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-cart-products">
+              @if($wishlist->count() >0 )
+        @foreach($wishlist as $item)
+            <div class="product">
+                <div class="product-cart-details">
+                    <h4 class="product-title">
+                        <a href="{{route('wishlist')}}">{{ $item->saleNews->title }}</a>
+                    </h4>
+
+                    <span class="cart-product-info">
+                        ${{ $item->saleNews->price }}.00
+                    </span>
+                </div><!-- End .product-cart-details -->
+
+                <figure class="product-image-container">
+                    <a href="{{route('wishlist')}}" class="product-image">
+                        @if ($item->saleNews->images->isNotEmpty())
+                            <img src="{{ $item->saleNews->images->first()->image_name }}" alt="Image">
+                        @endif
+                    </a>
+                </figure>
+               
+								
+            </div><!-- End .product -->
+        @endforeach
+        @else
+        <p class="text-center">No notifications available.</p>
+        @endif      
+                  </div><!-- End .cart-product -->
+
+                
+
+                  <div class="dropdown-cart-action mt-2 flex justify-content-center">
+                        <a href="{{ route('wishlist') }}" class="btn btn-outline-primary-2" ><span>View All</span><i class="icon-long-arrow-center"></i></a>
+                    </div><!-- End .dropdown-cart-total --><!-- End .dropdown-cart-total -->
+               </div><!-- End .dropdown-menu -->
+            </div><!-- End .cart-dropdown -->
+
+             <div class="dropdown cart-dropdown">
+                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <div class="icon">
+
                         <i class="fa-regular fa-bell fa-sm"></i>
 
                      </div>
@@ -106,6 +165,7 @@
                   </div><!-- End .dropdown-cart-total -->
                </div><!-- End .dropdown-menu -->
             </div>
+
              @else
              <div class="wishlist">
                 <a href="{{ route('login') }}" style="font-size: 1.8rem">
@@ -216,6 +276,7 @@
              @guest
              <!-- Nếu chưa đăng nhập -->
              <!-- <div class="col-md-5">
+
                 <a href="{{ route('login') }}">
                     <p><span class="highlight">Login</span></p>
                 </a>
@@ -241,7 +302,7 @@
                      <div class="header-menu" style="margin-left: 10px;">
                         <ul>
                            <li>
-                              <a href="{{ route('account') }}">
+                              <a href="{{ route('user.manage') }}">
                                  {{ __('Profile') }}
                               </a>
                            </li>
