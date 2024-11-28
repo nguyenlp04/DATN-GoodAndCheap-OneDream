@@ -22,6 +22,7 @@
             <div class="page-content">
             	<div class="container">
 					<table class="table table-wishlist table-mobile">
+                        @if($wishlist ->count()>0)
 						<thead>
 							<tr>
 								<th>Product</th>
@@ -94,6 +95,9 @@
 							
 							
 						</tbody>
+                        @else
+                        <H4>No sale news here</H4>
+                        @endif
 					</table><!-- End .table table-wishlist -->
 	            	<div class="wishlist-share">
 	            		<div class="social-icons social-icons-sm mb-2">
