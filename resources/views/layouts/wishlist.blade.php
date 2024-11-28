@@ -13,7 +13,7 @@
                 <div class="container">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        
                         <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
                     </ol>
                 </div><!-- End .container -->
@@ -99,16 +99,7 @@
                         <H4>No sale news here</H4>
                         @endif
 					</table><!-- End .table table-wishlist -->
-	            	<div class="wishlist-share">
-	            		<div class="social-icons social-icons-sm mb-2">
-	            			<label class="social-label">Share on:</label>
-	    					<a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-	    					<a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-	    					<a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-	    					<a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-	    					<a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-	    				</div><!-- End .soial-icons -->
-	            	</div><!-- End .wishlist-share -->
+	            	
             	</div><!-- End .container -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
@@ -121,52 +112,48 @@
 
 
 <script>
-    // Lắng nghe sự kiện click vào nút xóa trong danh sách yêu thích
-    $(document).on('click', '.btn-remove', function (e) {
-        e.preventDefault();  // Ngừng hành động mặc định của nút
+   // Lắng nghe sự kiện click vào nút xóa trong danh sách yêu thích
+$(document).on('click', '.btn-remove', function (e) {
+    e.preventDefault();  // Ngừng hành động mặc định của nút
 
-        // Lấy like_id từ input hidden trong form chứa nút
-        var likeId = $(this).closest('form').find('input[name="like_id"]').val(); 
-        var row = $(this).closest('tr');  // Lấy dòng (row) chứa mục cần xóa
+    // Lấy like_id từ input hidden trong form chứa nút
+    var likeId = $(this).closest('form').find('input[name="like_id"]').val(); 
+    var row = $(this).closest('tr');  // Lấy dòng (row) chứa mục cần xóa
 
-        $.ajax({
-            url: '/wishlist/' + likeId,  // URL của route destroy
-            type: 'DELETE',  // Phương thức gửi yêu cầu là DELETE
-            data: {
-                _token: '{{ csrf_token() }}',  // CSRF token
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Hiển thị thông báo thành công với SweetAlert
-                    Swal.fire({
-                        icon: 'success',
-                        title: response.message,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
-                    // Xóa dòng khỏi bảng
-                    row.remove();  
-                } else {
-                    // Thông báo lỗi khi không thể xóa
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'This item cannot be deleted.',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
+    $.ajax({
+        url: '/wishlist/' + likeId,  // URL của route destroy
+        type: 'DELETE',  // Phương thức gửi yêu cầu là DELETE
+        data: {
+            _token: '{{ csrf_token() }}',  // CSRF token
+        },
+        success: function(response) {
+            if (response.success) {
+                // Hiển thị thông báo thành công với SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: response.message,
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                // Xóa dòng khỏi bảng ngay lập tức
+                row.remove();
+
+                // Kiểm tra nếu danh sách không còn sản phẩm nào
+                if ($('tbody tr').length === 0) {
+                    // Nếu không còn sản phẩm, hiển thị thông báo "No sale news here"
+                    $('tbody').html('<h4>No sale news here</h4>'); // Thay đổi nội dung tbody
+                    $('thead').remove(); // Xóa header nếu còn
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);  // In ra lỗi trên console nếu có
+
+                  
+            } else {
+                // Thông báo lỗi khi không thể xóa
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error has occurred.',
+                    title: 'This item cannot be deleted.',
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
@@ -174,8 +161,22 @@
                     timerProgressBar: true
                 });
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);  // In ra lỗi trên console nếu có
+            Swal.fire({
+                icon: 'error',
+                title: 'Error has occurred.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        }
     });
+});
+
 </script>
 
 @endsection

@@ -19,6 +19,7 @@ class Like extends Model
     protected $fillable = [
         'user_id',
         'sale_new_id',
+        'status'
     ];
 
     // Quan hệ với bảng User
