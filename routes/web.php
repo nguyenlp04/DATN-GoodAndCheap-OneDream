@@ -20,7 +20,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ManageProfileController;
 use App\Http\Controllers\PartnerProfileController;
 use App\Http\Controllers\SaleNewController;
@@ -101,8 +100,10 @@ Route::middleware(['auth.admin'])->group(function () {
 Route::middleware('auth')->group(function () {
    
     Route::delete('wishlist/{like}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
-    Route::post('/add-to-wishlist', [LikeController::class, 'addToWishlist'])->name('addToWishlist');
+    Route::post('/add-to-wishlist', [WishlistController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::get('/wishlist-count', [WishlistController::class, 'count'])->name('wishlist.count');
+    //end wishlisst 
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
