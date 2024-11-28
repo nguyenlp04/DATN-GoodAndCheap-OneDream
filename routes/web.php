@@ -125,6 +125,10 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
+        Route::get('/infomation/create', [PartnerProfileController::class, 'createInfomation'])->name('create.infomation');
+        Route::post('/infomation/store', [PartnerProfileController::class, 'storeInfomation'])->name('store.infomation');
+        Route::get('/infomation/edit/{channel_id}', [PartnerProfileController::class, 'editInfomation'])->name('edit.infomation');
+        Route::put('/infomation/update/{channel_id}', [PartnerProfileController::class, 'updateInfomation'])->name('update.infomation');
         Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');

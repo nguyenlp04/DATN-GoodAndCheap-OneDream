@@ -52,4 +52,8 @@ class Channel extends Model
     {
         return $this->hasMany(UserFollowed::class, 'channel_id');
     }
+    public function info()
+    {
+        return $this->hasOne(ChannelInfo::class, 'channel_id', 'channel_id');
+    }
 }

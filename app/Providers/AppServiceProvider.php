@@ -30,10 +30,7 @@ class AppServiceProvider extends ServiceProvider
             if (str_starts_with($view->getName(), 'admin')) {
                 return; // Không chia sẻ biến với view admin
             }
-
-
-
-
+            
             // Lấy tất cả các thông báo công khai
             $notifications_userid = Notification::where('status', 'public')->get();
             $notification_web = Notification::where('type', 'website')->get();
