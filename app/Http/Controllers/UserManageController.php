@@ -18,7 +18,8 @@ class UserManageController extends Controller
             ->with('channel')
             ->get();
         $transactionCount = Transactions::where('user_id', $userId)->count();
-        return view('user.manage', compact('followedChannels', 'transactionCount'));
+        $title = 'Profile - Good & Cheep';
+        return view('user.manage', compact('followedChannels', 'transactionCount', 'title'));
     }
     public function unfollow($id)
     {
