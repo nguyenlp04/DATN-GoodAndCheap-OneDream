@@ -39,11 +39,11 @@
                                     </div>
                                     @enderror
                                 </div>
-
                                 <div class="mb-3 col-md-6">
                                     <label for="favicon" class="form-label w-25"><strong>Favicon</strong></label>
                                     <input type="file" class="form-control d-none" id="faviconInput" name="favicon" accept="image/*" onchange="previewImage(event, 'faviconPreview')" />
                                     <img id="faviconPreview" src="{{ $setting->favicon ? asset($setting->favicon) : '' }}" alt="Image favicon" style="margin-top: 10px; max-width: 100px; max-height: 100px; cursor: pointer;" onclick="document.getElementById('faviconInput').click();" />
+                                    <small class="text-muted d-block mt-2">Kích thước đề xuất: 25x25, ảnh .png</small>
                                     @error('favicon')
                                     <div class="text-danger">
                                         <i class="bx bx-error-circle me-2"></i>
