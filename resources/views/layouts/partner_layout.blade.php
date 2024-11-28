@@ -198,6 +198,11 @@
                           <div data-i18n="Payment Method">Add Infomation</div>
                       </a>
                   </li>
+                  <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
+                    <a href="{{ route('partners.edit.infomation',  ['channel_id' => $channel->channel_id]) }}" class="menu-link">
+                        <div data-i18n="Payment Method">Edit Infomation</div>
+                    </a>
+                </li>
                 </ul>
             </li>
             <!-- Payment -->
