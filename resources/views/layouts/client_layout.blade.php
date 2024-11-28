@@ -83,6 +83,7 @@
             icon: "{{ session('alert')['type'] }}",
             title: "{{ session('alert')['message'] }}"
         });
+        
     </script>
     @endif
 </body>
