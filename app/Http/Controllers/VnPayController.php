@@ -13,6 +13,9 @@ use App\Models\VipPackage;
 use App\Models\SaleNews;
 use Illuminate\Support\Carbon;
 use App\Models\Channel;
+use App\Services\PhpMailerService;
+use App\Models\User;
+
 
 class VnPayController extends Controller
 {
@@ -181,40 +184,121 @@ class VnPayController extends Controller
                 'upgrade' => $upgrade,
                 'created_at' => now(),
             ];
-            $query = DB::table('transactions')->insert($transactionData);
+            // $query = DB::table('transactions')->insert($transactionData);
+            $transactionsID = DB::table('transactions')->insertGetId($transactionData);
+
             if (isset($sale_news_id)) {
                 $route = 'salenews-status';
             } else {
                 $route = 'channels';
             }
+
+
+
+            $user = User::where('user_id', Auth()->user()->user_id)->first();
+            // dd($user);
+
+            $to = $user->email;
+            // dd($to);
+            $subject = 'Payment Confirmation';
+
+
+
+            // Gửi email
+
+
+
             if ($_GET['vnp_ResponseCode'] == '00') {
                 if (strpos($vnp_TxnRef, 'US_') === 0) {
                     $listing = SaleNews::findOrFail($sale_news_id);
                     $vipPackage = VipPackage::findOrFail($id_package);
+                    $namePackage = $vipPackage->name;
                     $listing->vip_package_id = $id_package;
                     $listing->vip_start_at = Carbon::now();
                     $listing->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
                     $listing->save();
                     // $query = DB::table('transactions')->insert($transactionData);
+
+                    $body = '<div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif;">
+                        <div style="text-align: center; background-color: #007BFF; color: #ffffff; padding: 10px 0; border-radius: 8px 8px 0 0;">
+                            <h1 style="margin: 0;">Payment Confirmation</h1>
+                        </div>
+
+                        <div style="padding: 20px; color: #333333; line-height: 1.6;">
+                            <p>Hello <strong>' . htmlspecialchars($user->full_name) . '</strong>,</p>
+                            <p>Thank you for upgrading your sale news. We have successfully received your payment.</p>
+                            <p><strong>Transaction Details:</strong></p>
+                            <ul>
+                                <li>Upgrade: <strong>' . htmlspecialchars($upgrade) . '</strong></li>
+                                <li>Name Package: <strong>' . htmlspecialchars($namePackage) . '</strong></li>
+                                <li>Sale News ID: <strong>' . htmlspecialchars($sale_news_id) . '</strong></li>
+                                <li>Period: <strong>' . $listing->vip_start_at->format('d-m-Y') . '</strong> to <strong>' . $listing->vip_end_at->format('d-m-Y') . '</strong></li>
+                                <li>Transaction ID: <strong>#' . htmlspecialchars($vnp_TransactionNo) . '</strong></li>
+                                <li>Amount Paid: <strong>$' . number_format($vnp_Amount / 100, 2) . '</strong></li>
+                                <li>Payment Date: <strong>' . Carbon::now()->format('d-m-Y') . '</strong></li>
+                            </ul>
+                            <p>Your post has been successfully upgraded and will enjoy the benefits of the VIP package until <strong>' . $listing->vip_end_at->format('d-m-Y') . '</strong>.</p>
+
+                            <p>If you have any questions, feel free to <a href="mailto:nhungbae2004@gmail.com" style="color: #007BFF;">contact us</a>.</p>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #888888;">
+                            <p>Thank you for choosing our service!</p>
+                            <p>&copy; 2024 OneDream. All rights reserved.</p>
+                        </div>
+                    </div>';
+                    $result = PhpMailerService::sendEmail($to, $subject, $body);
+                    // dd('ok news');
                 } else {
                     $transaction = Transactions::where('channel_id', $channel_id)->first();
                     if ($transaction) {
                         $Channel = Channel::findOrFail($channel_id);
                         $Channel->status = 1;
                         $vipPackage = VipPackage::findOrFail($id_package);
+                        $namePackage = $vipPackage->name;
                         $Channel->vip_package_id = $id_package;
                         $Channel->vip_start_at = Carbon::now();
                         $Channel->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
                         $Channel->save();
-
                         Transactions::where('transaction_id', $transaction->transaction_id)->delete();
                         // dd($transaction->transaction_id);
                         // $query = DB::table('transactions')->insert($transactionData);
+
+                        $body = '<div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif;">
+                        <div style="text-align: center; background-color: #007BFF; color: #ffffff; padding: 10px 0; border-radius: 8px 8px 0 0;">
+                            <h1 style="margin: 0;">Payment Confirmation</h1>
+                        </div>
+
+                        <div style="padding: 20px; color: #333333; line-height: 1.6;">
+                            <p>Hello <strong>' . htmlspecialchars($user->full_name) . '</strong>,</p>
+                            <p>Thank you for upgrading your channel. We have successfully received your payment.</p>
+                            <p><strong>Transaction Details:</strong></p>
+                            <ul>
+                                <li>Upgrade: <strong>' . htmlspecialchars($upgrade) . '</strong></li>
+                                <li>Name Package: <strong>' . htmlspecialchars($namePackage) . '</strong></li>
+                                <li>Channel ID: <strong>' . htmlspecialchars($channel_id) . '</strong></li>
+                                <li>Period: <strong>' . $Channel->vip_start_at->format('d-m-Y') . '</strong> to <strong>' . $Channel->vip_end_at->format('d-m-Y') . '</strong></li>
+                                <li>Transaction ID: <strong>#' . htmlspecialchars($vnp_TransactionNo) . '</strong></li>
+                                <li>Amount Paid: <strong>$' . number_format($vnp_Amount / 100, 2) . '</strong></li>
+                                <li>Payment Date: <strong>' . Carbon::now()->format('d-m-Y') . '</strong></li>
+                            </ul>
+                            <p>Your post has been successfully upgraded and will enjoy the benefits of the VIP package until <strong>' . $Channel->vip_end_at->format('d-m-Y') . '</strong>.</p>
+
+                            <p>If you have any questions, feel free to <a href="mailto:nhungbae2004@gmail.com" style="color: #007BFF;">contact us</a>.</p>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #888888;">
+                            <p>Thank you for choosing our service!</p>
+                            <p>&copy; 2024 OneDream. All rights reserved.</p>
+                        </div>
+                    </div>';
+                        $result = PhpMailerService::sendEmail($to, $subject, $body);
+                        // dd('ok channel');
                     }
                 }
 
 
-                
+
                 return redirect('/' . $route)->with('alert', [
                     'type' => 'success',
                     'message' => 'Payment Successful!'

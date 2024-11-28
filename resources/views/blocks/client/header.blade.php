@@ -27,6 +27,7 @@
                  ?>
 <div class="page-wrapper">
 
+
  <header class="header header-intro-clearance header-4">
     <div class="header-middle">
     <div class="container">
@@ -35,9 +36,10 @@
           <span class="sr-only">Toggle mobile menu</span>
           <i class="icon-bars"></i>
           </button>
-          <a href="#" class="logo">
-          <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="150" height="3">
-          </a>
+            <a href="#" class="logo">
+                  <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
+                  <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
+              </a>
        </div>
        <!-- End .header-left -->
        <div class="header-center">
@@ -86,7 +88,6 @@
                   <p>Wishlist</p> <!-- Thay "Cart" thành "Wishlist" nếu bạn muốn gọi là Wishlist -->
                </a>
               
-              
             </div><!-- End .cart-dropdown -->
 
              <div class="dropdown cart-dropdown">
@@ -127,114 +128,118 @@
                   </div><!-- End .dropdown-cart-total -->
                </div><!-- End .dropdown-menu -->
             </div>
-            @else
-            <div class="wishlist">
-               <a href="{{ route('login') }}">
-                  <div class="icon">
-                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                  </div>
-               </a>
-            </div>
-            <div class="wishlist">
-               <a href="{{ route('register') }}">
-                  <div class="icon">
-                     <i class="fa-solid fa-user-plus"></i>
-                  </div>
-               </a>
-            </div>
-            @endif
-         </div>
-         <!-- End .header-right -->
-      </div>
-      <!-- End .container -->
-</div>
-<!-- End .header-middle -->
-<div class="header-bottom sticky-header">
-   <div class="container">
-      <div class="header-left">
-         <div class="dropdown category-dropdown">
-            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false" data-display="static"
-               title="Browse Categories">
-               Browse Categories <i class="icon-angle-down"></i>
-            </a>
-            <div class="dropdown-menu">
-               <nav class="side-nav">
-                  <ul class="menu-vertical sf-arrows">
-                     <li class="item-lead"><a href="#">Daily offers</a></li>
-                     <li class="item-lead"><a href="#">Gift Ideas</a></li>
-                     <li><a href="#">Beds</a></li>
-                     <li><a href="#">Lighting</a></li>
-                     <li><a href="#">Sofas & Sleeper sofas</a></li>
-                     <li><a href="#">Storage</a></li>
-                     <li><a href="#">Armchairs & Chaises</a></li>
-                     <li><a href="#">Decoration </a></li>
-                     <li><a href="#">Kitchen Cabinets</a></li>
-                     <li><a href="#">Coffee & Tables</a></li>
-                     <li><a href="#">Outdoor Furniture </a></li>
-                  </ul>
-                  <!-- End .menu-vertical -->
-               </nav>
-               <!-- End .side-nav -->
-            </div>
-            <!-- End .dropdown-menu -->
-         </div>
-         <!-- End .category-dropdown -->
-      </div>
-      <!-- End .header-left -->
-      <div class="header-center">
-         <nav class="main-nav">
-            <ul class="menu sf-arrows">
-               <li class="megamenu-container active">
-                  <a href="index.html" class="sf-with-ul">Home</a>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">Shop</a>
-                  <ul>
-                     <li>
-                        <a href="about.html" class="sf-with-ul">Sale new</a>
-                        <ul>
-                           <li><a href="about.html">s1</a></li>
-                           <li><a href="about-2.html">s2</a></li>
-                        </ul>
-                     </li>
-                     <li><a href="product.html">Product</a></li>
-                  </ul>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">Product</a>
-                  <ul>
-                     <li>
-                        <a href="about.html" class="sf-with-ul">New Product </a>
-                        <a href="about.html" class="sf-with-ul">Products </a>
-                     </li>
-                  </ul>
-               </li>
-               <li>
-                  <a href="{{route('blogs.listting')}}" class="">Blog</a>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">Contact</a>
-                  <ul>
-                     <li><a href="404.html">Error 404</a></li>
-                  </ul>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">About us</a>
-                  <ul>
-                     <li><a href="404.html">Error 404</a></li>
-                  </ul>
-               </li>
-            </ul>
-            <!-- End .menu -->
-         </nav>
-         <!-- End .main-nav -->
-      </div>
-      <div class="header-right">
-         <div class="row">
-            @guest
-            <!-- Nếu chưa đăng nhập -->
-            <!-- <div class="col-md-5">
+
+             @else
+             <div class="wishlist">
+                <a href="{{ route('login') }}" style="font-size: 1.8rem">
+                   <div class="icon d-flex align-items-center">
+                      <i class="icon-user"></i>
+                      Login
+                   </div>
+                </a>
+             </div>
+             <div class="wishlist">
+                <a href="{{ route('register') }}" style="font-size: 1.8rem">
+                   <div class="icon d-flex align-items-center">
+                      {{-- <i class="icon-user"></i> --}}
+                      Sign Up
+                   </div>
+                </a>
+             </div>
+             @endif
+          </div>
+          <!-- End .header-right -->
+       </div>
+       <!-- End .container -->
+    </div>
+    <!-- End .header-middle -->
+    <div class="header-bottom sticky-header">
+    <div class="container">
+       <div class="header-left">
+          <div class="dropdown category-dropdown">
+             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" data-display="static"
+                title="Browse Categories">
+             Browse Categories <i class="icon-angle-down"></i>
+             </a>
+             <div class="dropdown-menu">
+                <nav class="side-nav">
+                   <ul class="menu-vertical sf-arrows">
+                      <li class="item-lead"><a href="#">Daily offers</a></li>
+                      <li class="item-lead"><a href="#">Gift Ideas</a></li>
+                      <li><a href="#">Beds</a></li>
+                      <li><a href="#">Lighting</a></li>
+                      <li><a href="#">Sofas & Sleeper sofas</a></li>
+                      <li><a href="#">Storage</a></li>
+                      <li><a href="#">Armchairs & Chaises</a></li>
+                      <li><a href="#">Decoration </a></li>
+                      <li><a href="#">Kitchen Cabinets</a></li>
+                      <li><a href="#">Coffee & Tables</a></li>
+                      <li><a href="#">Outdoor Furniture </a></li>
+                   </ul>
+                   <!-- End .menu-vertical -->
+                </nav>
+                <!-- End .side-nav -->
+             </div>
+             <!-- End .dropdown-menu -->
+          </div>
+          <!-- End .category-dropdown -->
+       </div>
+       <!-- End .header-left -->
+       <div class="header-center">
+          <nav class="main-nav">
+             <ul class="menu sf-arrows">
+                <li class="megamenu-container active">
+                   <a href="index.html" class="sf-with-ul">Home</a>
+                </li>
+                <li>
+                   <a href="#" class="sf-with-ul">Shop</a>
+                   <ul>
+                      <li>
+                         <a href="about.html" class="sf-with-ul">Sale new</a>
+                         <ul>
+                            <li><a href="about.html">s1</a></li>
+                            <li><a href="about-2.html">s2</a></li>
+                         </ul>
+                      </li>
+                      <li><a href="product.html">Product</a></li>
+                   </ul>
+                </li>
+                <li>
+                   <a href="#" class="sf-with-ul">Product</a>
+                   <ul>
+                      <li>
+                         <a href="about.html" class="sf-with-ul">New Product </a>
+                         <a href="about.html" class="sf-with-ul">Products </a>
+                      </li>
+                   </ul>
+                </li>
+                <li>
+                   <a href="{{route('blogs.listting')}}" class="">Blog</a>
+                </li>
+                <li>
+                   <a href="#" class="sf-with-ul">Contact</a>
+                   <ul>
+                      <li><a href="404.html">Error 404</a></li>
+                   </ul>
+                </li>
+                <li>
+                   <a href="#" class="sf-with-ul">About us</a>
+                   <ul>
+                      <li><a href="404.html">Error 404</a></li>
+                   </ul>
+                </li>
+             </ul>
+             <!-- End .menu -->
+          </nav>
+          <!-- End .main-nav -->
+       </div>
+       <div class="header-right">
+          <div class="row">
+             @guest
+             <!-- Nếu chưa đăng nhập -->
+             <!-- <div class="col-md-5">
+
                 <a href="{{ route('login') }}">
                     <p><span class="highlight">Login</span></p>
                 </a>

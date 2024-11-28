@@ -97,7 +97,7 @@ class CheckVipStatus extends Command
                                                                     <span>
                                                                         Sincerely,<br />
                                                                         <br />
-                                                                        Rayobyte Support
+                                                                        OneDream Support
                                                                     </span>
                                                                 </p>
                                                                 <div><span>&nbsp;</span></div>
