@@ -65,11 +65,11 @@
                                         <textarea class="form-control" id="description_category" name="description" rows="3">{{ $dataCategoryID->description }}</textarea>
                                     </div>
 
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip"
+                                    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="tooltip"
                                         data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-primary"
                                         data-bs-original-title="Can't Delete" disabled>
                                         Can't Delete
-                                    </button>
+                                    </button> --}}
 
                                     <!-- Thêm Subcategories -->
                                     <div class="mb-6" id="subcategory-section">
