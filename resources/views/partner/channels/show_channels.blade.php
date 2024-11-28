@@ -1,8 +1,32 @@
 @extends('layouts.client_layout')
 @section('content')
+<style>
+    .channel-info {
+    font-family: 'Arial', sans-serif;
+}
+.channel-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.trusted-partner {
+    font-size: 1rem;
+    font-weight: 500;
+}
+.channel-details {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+}
+.detail-item {
+    flex: 1;
+    min-width: 150px;
+}
+.detail-item i {
+    font-size: 1rem;
+    vertical-align: middle;
+}
 
 </style>
-
 <main class="container mb-5">
 
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -14,13 +38,6 @@
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
-
-    {{-- @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif --}}
-
     <div class="row d-flex justify-content-start">
         <div class="col col-md-9 col-lg-7 col-xl-6">
             <div style="width: fit-content; min-width: 460px;">
@@ -28,29 +45,40 @@
                     <div class="d-flex">
                         <div class="flex-shrink-0">
                             @if ($channels->image_channel)
-                            <img src="{{ asset($channels->image_channel) }}"
-                                alt="Generic placeholder image" class="img-fluid" style="width: 120px; border-radius: 10px;">
+                            <img src="{{ asset('storage/' . $channels->image_channel) }}"
+                            {{-- class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;"> --}}
+                                alt="Generic placeholder image" class="img-fluid" style="width: 140px; height:100px; border-radius: 10px;">
                             @else
                             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
                                 alt="Generic placeholder image" class="img-fluid" style="width: 120px; border-radius: 10px;">
                             @endif
                         </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h3 class="mb-1">{{ $channels->name_channel }}</h3>
-                            <p style="color: #ff0000;"><i class="fa-solid fa-handshake" style="color: #FFD43B;"></i>
+                        <div class="channel-info ms-3">
+                            <h3 class="channel-name text-primary mb-2">{{ $channels->name_channel }}</h3>
+                            <p class="trusted-partner text-danger mb-3">
+                                <i class="fa-solid fa-handshake me-2 text-warning"></i> 
                                 Trusted partners receive the protection of the floor
                             </p>
-                            <div class="d-flex justify-content-start rounded-3 p-2 mb-md-2 bg-body-tertiary" style="width: fit-content">
-                                <div class="mx-3">
-                                    <p class="small text-muted"><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> {{ $channels->address }}</p>
-                                    <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channels->created_at }}</p>
+                            <div class="channel-details d-flex flex-wrap rounded shadow-sm p-3 bg-light">
+                                <div class="detail-item me-4 mb-2">
+                                    <p class="small text-muted mb-1">
+                                        <i class="fa-solid fa-location-dot me-2 text-info"></i>{{ $channels->address }}
+                                    </p>
+                                    <p class="small text-muted mb-0">
+                                        <i class="fa-solid fa-clock me-2 text-info"></i>{{ $channels->created_at->format('d-m-y') }}
+                                    </p>
                                 </div>
-                                <div>
-                                    <p class="small text-muted"><i class="fa-solid fa-users" style="color: #74C0FC;"></i> {{ $channels->followers_count }}</p>
-                                    <p class="small text-muted"><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> {{ $NewsCount }}</p>
+                                <div class="detail-item">
+                                    <p class="small text-muted mb-1">
+                                        <i class="fa-solid fa-users me-2 text-info"></i>{{ $channels->followers_count }}
+                                    </p>
+                                    <p class="small text-muted mb-0">
+                                        <i class="fa-solid fa-clipboard-check me-2 text-info"></i>{{ $NewsCount }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
