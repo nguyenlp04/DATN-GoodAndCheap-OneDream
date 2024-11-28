@@ -87,9 +87,9 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link" id="tab-Details-tab" data-toggle="tab" href="#tab-Details" role="tab" aria-controls="tab-Details" aria-selected="false">Details</a>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="tab-content tab-content-border" id="tab-content-8">
                                 <div class="tab-pane fade {{ !$errors->updatePassword->any() ? 'show active' : '' }}" id="tab-Edit_Profile" role="tabpanel" aria-labelledby="tab-Edit_Profile-tab">
@@ -232,12 +232,11 @@
                                         </form>
                                     </section>
                                 </div><!-- .End .tab-pane -->
-                                <div class="tab-pane fade" id="tab-Details" role="tabpanel" aria-labelledby="tab-Details-tab">
+                                <!-- <div class="tab-pane fade" id="tab-Details" role="tabpanel" aria-labelledby="tab-Details-tab">
                                     <h6 style="margin-left: 20px; padding-right: 100px;">Your Details Information</h6>
                                     <div class="card card-dashboard">
                                         <div class="card-body">
                                             <h3 class="card-title">Details</h3>
-                                            <!-- End .card-title -->
                                             <p>Full name: {{ Auth::user()->full_name }}<br>
                                                 Address: {{ Auth::user()->address }}<br>
                                                 Phone: {{Auth::user()->phone_number}}<br>
@@ -245,9 +244,9 @@
                                                 <a id="tab-Edit_Profile-tab" data-toggle="tab" href="#tab-Edit_Profile" role="tab"
                                                     aria-controls="tab-Edit_Profile">Edit <i class="icon-edit"></i></a>
                                             </p>
-                                        </div><!-- End .card-body -->
-                                    </div><!-- End .card-dashboard -->
-                                </div><!-- .End .tab-pane -->
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div><!-- End .tab-content -->
                         </div>
                     </div>

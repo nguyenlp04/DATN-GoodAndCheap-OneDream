@@ -154,7 +154,7 @@
 
                         <p class="text-center">
                             <span>Already have an account?</span>
-                            <a href="{{ url("auth-login-basic.html") }}">
+                            <a href="{{ url("login") }}">
                                 <span>Sign in instead</span>
                             </a>
                         </p>

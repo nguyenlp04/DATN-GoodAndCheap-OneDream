@@ -93,7 +93,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::patch('/manage-profile', [ManageProfileController::class, 'update'])->name('manage-profile.update');
     Route::get('/change-password', [ManageProfileController::class, 'showChangePasswordForm'])->name('change-password.index');
     Route::post('/change-password', [ManageProfileController::class, 'updatePassword'])->name('change-password.update');
-    Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index'); // Trang danh sách banner
+    Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index');
 
     Route::post('/update-settings', [SettingsController::class, 'updateSettings'])->name('settings.update');
 });
