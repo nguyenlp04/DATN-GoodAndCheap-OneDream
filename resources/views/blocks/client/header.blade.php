@@ -90,7 +90,7 @@
               
                <div class="dropdown-menu dropdown-menu-right">
                   <div class="dropdown-cart-products">
-              @if($wishlist->count() >0 )
+              {{-- @if($wishlist->count() >0 )
         @foreach($wishlist as $item)
             <div class="product">
                 <div class="product-cart-details">
@@ -117,7 +117,7 @@
         @else
         <p class="text-center">No notifications available.</p>
         @endif      
-                  </div><!-- End .cart-product -->
+                  </div><!-- End .cart-product --> --}}
 
                 
 

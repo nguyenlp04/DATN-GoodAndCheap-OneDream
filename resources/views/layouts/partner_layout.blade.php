@@ -194,11 +194,6 @@
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
-                        <a href="{{ url('partners/infomation/') }}" class="menu-link">
-                            <div data-i18n="Payment Method">Channel Infomation</div>
-                        </a>
-                    </li>
-                    <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
                       <a href="{{ url('partners/infomation/create') }}" class="menu-link">
                           <div data-i18n="Payment Method">Add Infomation</div>
                       </a>

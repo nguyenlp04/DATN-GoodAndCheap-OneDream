@@ -15,11 +15,11 @@
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
 
-    @if(session('success'))
+    {{-- @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-    @endif
+    @endif --}}
 
     <div class="row d-flex justify-content-start">
         <div class="col col-md-9 col-lg-7 col-xl-6">
@@ -43,7 +43,7 @@
                             <div class="d-flex justify-content-start rounded-3 p-2 mb-md-2 bg-body-tertiary" style="width: fit-content">
                                 <div class="mx-3">
                                     <p class="small text-muted"><i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> {{ $channels->address }}</p>
-                                    <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channels->created_at->format('d-m-Y') }}</p>
+                                    <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channels->created_at }}</p>
                                 </div>
                                 <div>
                                     <p class="small text-muted"><i class="fa-solid fa-users" style="color: #74C0FC;"></i> {{ $channels->followers_count }}</p>
@@ -71,15 +71,13 @@
         </div>
         @endif
     </div>
-    <div class="banner-store mb-1 ">
-            <img src="https://intphcm.com/data/upload/banner-dep.jpg" alt="First Banner" class="img-fluid rounded shadow-sm" style="object-fit: cover; width: 100%; height: 300px;">
-    </div>
-    <ul class="nav nav-tabs mb-4 justify-content-center">
-        <li class="nav-item ">
+    <br>    
+    <ul class="nav nav-tabs justify-content-center mb-4">
+        <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#sale-new">Sale-New</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#channel-info">Infomation</a>
+            <a class="nav-link" data-toggle="tab" href="#channel-info">Information</a>
         </li>
     </ul>
 
@@ -234,54 +232,23 @@
             </div><!-- End .row -->
         </div><!-- End .tab-pane -->
 
-        <div class="tab-pane fade" id="channel-info" role="tabpanel">
-            <div class="page-content">
-                <div class="container">
-                    <div class="row">
-                        <!-- Left Column: Content and Images -->
-                        <div class="col-lg-8">
-                            <div class="info-box shadow-sm p-4 bg-white rounded mb-3">
-                                <!-- About Us -->
-                                <div>
-                                    <h4 class="text-primary mb-4">About Us</h4>
-                                    <p class="text-muted">
-                                        We provide high-quality products with professional customer service. Our goal is to offer customers an excellent online shopping experience, helping you easily find your favorite items and receive timely support from our customer service team.
-                                    </p>
-                                </div>
-                                <!-- Banners -->
-                                <div class="row mt-4">
-                                    <div class="col-md-6">
-                                        <img src="https://intphcm.com/data/upload/banner-dep.jpg" alt="First Banner" class="img-fluid rounded shadow-sm" style="object-fit: cover; width: 100%; height: 200px;">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <img src="https://intphcm.com/data/upload/banner-dep.jpg" alt="Second Banner" class="img-fluid rounded shadow-sm" style="object-fit: cover; width: 100%; height: 200px;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <!-- Right Column: Store Policies -->
-                        <div class="col-lg-4">
-                            <div class="policy-box shadow-sm p-4 bg-white rounded">
-                                <h4 class="text-primary mb-4">Store Policies</h4>
-                                <ul class="policy-list list-unstyled">
-                                    <li class="mb-3">
-                                        <strong>Shipping:</strong> Free shipping on orders over 500,000 VND.
-                                    </li>
-                                    <li class="mb-3">
-                                        <strong>Returns:</strong> Return policy within 7 days if the product is in original condition.
-                                    </li>
-                                    <li class="mb-3">
-                                        <strong>Payment:</strong> We accept payment via credit card, debit card, and bank transfer.
-                                    </li>
-                                    <li>
-                                        <strong>Customer Support:</strong> Our customer service team is available 24/7 to address any inquiries.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="tab-pane fade" id="channel-info">
+            <div class="content-section bg-white p-4 shadow-sm rounded">
+                <h4 class="text-primary">About Us</h4>
+                <p class="text-muted">
+                    @if ($channels->info && $channels->info->about)
+                    {!! $channels->info->about !!}
+                    @else
+                    <span>No information available.</span>
+                    @endif
+                </p>
+
+                <h4 class="text-primary mt-4">Gallery</h4>
+                @if ($channels->info && $channels->info->banner_url)
+                <img src="{{ asset('storage/' . $channels->info->banner_url) }}" class="img-fluid rounded" alt="Store Banner">
+                @else
+                <p>No banner available for this channel.</p>
+                @endif
             </div>
         </div>
         

@@ -21,7 +21,7 @@ class PartnerProfileController extends Controller
         }
 
         $user = Auth::user();
-        dd($user->channel_id);
+        // dd($user->channel_id);
 
         $profiles = Channel::where('user_id', $user->user_id)->get();
 
@@ -39,33 +39,30 @@ class PartnerProfileController extends Controller
     {
         return view('partner.infomation.create_infomation');
     }
-    public function infomation()
-    {
-        $infomations = ChannelInfo::all();
-        return view('partner.infomation.list_infomation', compact('infomations'));
-    }
+
     public function storeInfomation(Request $request)
     {
         try {
             $user = Auth::user();
-            if (!$user->channel_id) {
-                return redirect()->route('partners.infomation')->with('alert', [
+
+            $channel = Channel::where('user_id', $user->user_id)->first(); // Lấy channel của user
+            $existingInfo = ChannelInfo::where('channel_id', $channel->channel_id)->first();
+
+            if ($existingInfo) {
+                return redirect()->back()->with('alert', [
                     'type' => 'error',
-                    'message' => 'User does not have a valid channel.'
+                    'message' => 'This channel already has information.'
                 ]);
             }
 
-            $channelId = $user->channel_id;
-
             $request->validate([
                 'about' => 'required|string',
-                'banner_url' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+                'banner_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             $information = new ChannelInfo();
-            $information->channel_id = $channelId;
+            $information->channel_id = $channel->channel_id; // Chỉ lấy giá trị cột channel_id
             $information->about = $request->input('about');
-            $information->banner_url = $request->input('banner_url');
 
             if ($request->hasFile('banner_url')) {
                 $imagePath = $request->file('banner_url')->store('channels/banners', 'public');
@@ -74,17 +71,77 @@ class PartnerProfileController extends Controller
 
             $information->save();
 
-            return redirect()->route('partners.infomation')->with('alert', [
+            return redirect()->route('channels.show', ['channel' => $channel->channel_id])->with('alert', [
                 'type' => 'success',
-                'message' => 'Information added successfully!'
+                'message' => 'Channel information create successfully!'
             ]);
         } catch (\Exception $e) {
-            return redirect()->route('partners.infomation')->with('alert', [
+            return redirect()->back()->with('alert', [
                 'type' => 'error',
                 'message' => 'An error occurred: ' . $e->getMessage()
             ]);
         }
     }
+    public function editInfomation(Request $request)
+    {
+        $channel = Channel::find($request->channel_id);
+        if (!$channel) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Channel not found.'
+            ]);
+        }
+        $info = $channel->info;
+        return view('partner.infomation.edit_infomation', compact('channel', 'info'));
+    }
+
+    // Phương thức updateInfomation trong controller
+    public function updateInfomation(Request $request)
+    {
+        $channel = Channel::find($request->channel_id);
+        if (!$channel) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Channel not found.'
+            ]);
+        }
+
+        if ($request->has('name_channel')) {
+            $channel->name_channel = $request->name_channel;
+        }
+
+        $info = $channel->info;
+        if ($info) {
+            if ($request->has('about')) {
+                $info->about = $request->about;
+            }
+            if ($request->hasFile('banner_url')) {
+                $file = $request->file('banner_url');
+                $path = $file->store('banners', 'public');
+                $info->banner_url = $path;
+            }
+            $info->save();
+        } else {
+            $channel->info()->create([
+                'about' => $request->input('about', ''),
+                'banner_url' => $request->hasFile('banner_url')
+                    ? $request->file('banner_url')->store('banners', 'public')
+                    : null,
+            ]);
+        }
+
+        $channel->save();
+
+        return redirect()->route('channels.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Update successfully.'
+        ]);
+    }
+
+
+
+
+
 
 
 
@@ -127,7 +184,7 @@ class PartnerProfileController extends Controller
                     ->orWhere('phone_number', $request->input('phone_number'))
                     ->orWhere('address', $request->input('address'));
             })
-                ->where('channel_id', '!=', $channel_id) // Loại bỏ kênh hiện tại khỏi kiểm tra
+                ->where('channel_id', '!=', $channel_id) 
                 ->first();
 
             // Nếu có kênh trùng thông tin, trả về thông báo lỗi

@@ -25,9 +25,14 @@
                         <h5 class="card-title mb-0">Information Details</h5>
                     </div>
                     <div class="card-body">
+                        
                         <!-- Information Form -->
                         <form id="information-form" action="{{ route('partners.store.infomation') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <div class="mb-3">
+                                <label for="about" class="form-label">About Us:</label>
+                                <textarea name="about" id="editor" class="form-control" placeholder="Enter about description" style="height: 300px;"></textarea>
+                            </div>
                             <div class="mb-3">
                                 <label for="banner_url" class="form-label">Banner Image:</label>
                                 <div class="dropzone p-0 dz-clickable" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 11.5rem;">
@@ -39,32 +44,11 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="about" class="form-label">About Us:</label>
-                                <textarea name="about" id="editor" class="form-control" placeholder="Enter about description" style="height: 300px;"></textarea>
-                            </div>
+                           
                         </form>
                     </div>
                 </div>
             </div>
-
-            <!-- Category and Image Upload Section -->
-            {{-- <div class="col-12 col-lg-4">
-                <div class="card mb-6">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Upload Image</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="dropzone p-0 dz-clickable" style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 11.5rem;">
-                            <img id="preview_img" class="mt-3 rounded" style="width: 100px; height: auto;">
-                            <div style="font-weight: 500; text-align: center; width: 300px; height: 2.5rem;">
-                                <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse Image</button>
-                                <input type="file" id="fileInput" name="image" style="display: none">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
 
     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Channel;
+use App\Models\ChannelInfo;
 use App\Models\Sale_news;
 use App\Models\Subcategory;
 use App\Models\UserFollowed;
@@ -27,16 +28,15 @@ class ChannelController extends Controller
     {
 
         $user = Auth::user();
-
         $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Lấy kênh của người dùng
-
+        // dd($channels);
         if (!$channels || is_null($channels->status)) {
             return redirect()->route('channels.create') // Chuyển hướng đến trang tạo kênh
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
-        $sale_news = $channels->saleNews()->with('sub_category','firstImage')
-        ->where('approved',1)
-        ->paginate(5);
+        $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
+            ->where('approved', 1)
+            ->paginate(5);
 
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory
@@ -55,8 +55,6 @@ class ChannelController extends Controller
             ->where('channel_id', $channels->channel_id)
             ->exists();
         return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed'));
-
-
     }
 
 
@@ -145,6 +143,7 @@ class ChannelController extends Controller
         // // Check if the user has created a channel
 
         $channel = Channel::where('user_id', $user->user_id)->first();
+        $information = ChannelInfo::where('channel_id', $id)->first();
 
 
         // If the user has a channel, continue to display the channel
@@ -169,7 +168,7 @@ class ChannelController extends Controller
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channels->channel_id)
             ->exists();
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed'));
+        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'information'));
     }
 
 
