@@ -726,13 +726,13 @@
                       <span class="align-middle">My Profile</span>
                     </a>
                   </li>
-                  <!-- <li>
-                    <a class="dropdown-item" href="{{ url('#') }}">
+                  <li>
+                    <a class="dropdown-item" href="{{ url('setting') }}">
                       <i class="bx bx-cog me-2"></i>
                       <span class="align-middle">Settings</span>
                     </a>
                   </li>
-                  <li>
+                  <!-- <li>
                     <a class="dropdown-item" href="{{ url('#') }}">
                       <span class="d-flex align-items-center align-middle">
                         <i class="flex-shrink-0 bx bx-credit-card me-2"></i>

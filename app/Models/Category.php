@@ -32,6 +32,9 @@ public function blogs()
 {
     return $this->hasMany(Blog::class, 'category_id', 'category_id');
 }
-
+public function subcategoryAttributes()
+    {
+        return $this->hasMany(SubcategoryAttribute::class, 'category_id'); // Assuming the foreign key is category_id
+    }
 
 }

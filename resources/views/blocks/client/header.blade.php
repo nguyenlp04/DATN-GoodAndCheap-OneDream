@@ -16,6 +16,7 @@
 
 <div class="page-wrapper">
 
+
     <header class="header header-intro-clearance header-4">
         <div class="header-middle">
             <div class="container">
@@ -67,6 +68,7 @@
                     </div>
                     <!-- End .compare-dropdown -->
 
+
                     <div class="dropdown cart-dropdown">
                         <a href="{{ route('wishlist') }}" class="dropdown-toggle" data-display="static">
                             <div class="icon">
@@ -85,6 +87,7 @@
                         <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false" data-display="static">
                             <div class="icon">
+
 
                                 <i class="fa-regular fa-bell fa-sm"></i>
 
@@ -230,6 +233,7 @@
                 @guest
                 <!-- Nếu chưa đăng nhập -->
                 <!-- <div class="col-md-5">
+
                 <a href="{{ route('login') }}">
                     <p><span class="highlight">Login</span></p>
                 </a>

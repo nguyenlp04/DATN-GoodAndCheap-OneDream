@@ -32,6 +32,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
 use App\Http\Controllers\UserManageController;
+use App\Http\Controllers\SettingsController;
 
 require __DIR__ . '/auth.php';
 
@@ -91,6 +92,9 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::patch('/manage-profile', [ManageProfileController::class, 'update'])->name('manage-profile.update');
     Route::get('/change-password', [ManageProfileController::class, 'showChangePasswordForm'])->name('change-password.index');
     Route::post('/change-password', [ManageProfileController::class, 'updatePassword'])->name('change-password.update');
+    Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index');
+
+    Route::post('/update-settings', [SettingsController::class, 'updateSettings'])->name('settings.update');
 });
 
 
@@ -98,7 +102,7 @@ Route::middleware(['auth.admin'])->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-   
+
     Route::delete('wishlist/{like}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
     Route::post('/add-to-wishlist', [WishlistController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
@@ -122,6 +126,10 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
+        Route::get('/infomation/create', [PartnerProfileController::class, 'createInfomation'])->name('create.infomation');
+        Route::post('/infomation/store', [PartnerProfileController::class, 'storeInfomation'])->name('store.infomation');
+        Route::get('/infomation/edit/{channel_id}', [PartnerProfileController::class, 'editInfomation'])->name('edit.infomation');
+        Route::put('/infomation/update/{channel_id}', [PartnerProfileController::class, 'updateInfomation'])->name('update.infomation');
         Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
@@ -160,7 +168,7 @@ Route::middleware('auth')->group(function () {
 // guest
 
 Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status','1')->with('images')->where('is_delete',null)->where('approved','1')->get();  // Truyền dữ liệu trực tiếp ở đây
+    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get();  // Truyền dữ liệu trực tiếp ở đây
     return view('home', ['data' => $data]);
 })->name('home');
 
