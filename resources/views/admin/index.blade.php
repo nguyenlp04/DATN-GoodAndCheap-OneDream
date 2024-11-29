@@ -2,6 +2,7 @@
 @section('content')
 <!-- Content wrapper -->
 <div class="content-wrapper">
+
   <!-- Content -->
 
   <div class="container-xxl flex-grow-1 container-p-y">
@@ -58,9 +59,10 @@
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
                       <a class="dropdown-item" href="{{ url("javascript:void(0);") }}">View More</a>
                       <a class="dropdown-item" href="{{ url("javascript:void(0);") }}">Delete</a>
+
                     </div>
-                  </div>
                 </div>
+
                 <span class="fw-semibold d-block mb-1">Profit</span>
                 <h3 class="card-title mb-2">$12,628</h3>
                 <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
@@ -126,9 +128,10 @@
                       <a class="dropdown-item" href="{{ url("javascript:void(0);") }}">2021</a>
                       <a class="dropdown-item" href="{{ url("javascript:void(0);") }}">2020</a>
                       <a class="dropdown-item" href="{{ url("javascript:void(0);") }}">2019</a>
+
                     </div>
-                  </div>
                 </div>
+
               </div>
               <div id="growthChart"></div>
               <div class="text-center fw-semibold pt-3 mb-2">62% Company Growth</div>
@@ -209,9 +212,10 @@
                     <div class="dropdown-menu" aria-labelledby="cardOpt1">
                       <a class="dropdown-item" href="{{ url("javascript:void(0);") }}">View More</a>
                       <a class="dropdown-item" href="{{ url("javascript:void(0);") }}">Delete</a>
+
                     </div>
-                  </div>
                 </div>
+
                 <span class="fw-semibold d-block mb-1">Transactions</span>
                 <h3 class="card-title mb-2">$14,857</h3>
                 <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
@@ -379,9 +383,10 @@
                         <i class="bx bx-chevron-up"></i>
                         42.9%
                       </small>
+
                     </div>
-                  </div>
                 </div>
+
                 <div id="incomeChart"></div>
                 <div class="d-flex justify-content-center pt-4 gap-2">
                   <div class="flex-shrink-0">
@@ -525,11 +530,14 @@
   <div class="content-backdrop fade"></div>
 </div>
 
+
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 <script src="{{ asset("/../admin/assets/vendor/libs/jquery/jquery.js") }}"></script>
 <script src="{{ asset("/../admin/assets/vendor/libs/popper/popper.js") }}"></script>
+
 <!-- <script src="{{ asset("/../admin/assets/vendor/js/bootstrap.js") }}"></script> -->
+modal{{ $item->sale_new_id }}
 <script src="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js") }}"></script>
 
 <script src="{{ asset("/../admin/assets/vendor/js/menu.js") }}"></script>

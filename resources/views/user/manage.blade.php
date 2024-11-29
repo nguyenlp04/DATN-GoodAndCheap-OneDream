@@ -100,7 +100,7 @@
                                         <!-- <h6>Edit Personal Information</h6><br> -->
                                         <div class="mb-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                                             <h6 class="mb-3 mb-md-0">Edit Personal Information</h6>
-                                            <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " style="border-radius: 25px;" id="btn-publish-profile">Save Changes</button>
+                                            <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " id="btn-publish-profile">Save Changes</button>
                                         </div>
 
                                         <div class="text-center">
@@ -204,7 +204,7 @@
                                             <header class="mt-2">
                                                 <div class="mb-2 d-flex justify-content-between">
                                                     <h6 class="">Update Password</h6><!-- End .checkout-title -->
-                                                    <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " style="border-radius: 25px;" id="btn-publish-password">{{ __('Change Password') }}</button>
+                                                    <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " id="btn-publish-password">{{ __('Change Password') }}</button>
                                                 </div>
                                                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                                                     {{ __('Ensure your account is using a long, random password to stay secure.') }}

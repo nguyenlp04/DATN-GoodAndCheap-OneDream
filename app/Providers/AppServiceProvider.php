@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Channel;
+use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Notification;
 use Illuminate\Support\Facades\View;
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $setting = Setting::first() ?? new Setting();
+        View::share('setting', $setting);
         View::composer('*', function ($view) {
             // Loại trừ các view trong thư mục admin
             if (str_starts_with($view->getName(), 'admin')) {

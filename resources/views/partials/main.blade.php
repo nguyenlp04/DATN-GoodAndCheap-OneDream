@@ -191,9 +191,9 @@
 
                                 </div>
                                 <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                <!-- <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
+                                        cart</span></a> -->
+                                <a href="#" class="btn-product btn-quickview"
                                     title="Quick view"><span>quick view</span></a>
                             </div><!-- End .product-action -->
                             </figure>
@@ -214,14 +214,14 @@
                                 </div><!-- End .ratings -->
                                 <span class="ratings-text">( 4 Reviews )</span>
                             </div><!-- End .rating-container -->
-                            <div class="product-nav product-nav-dots">
+                            <!-- <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
                                         name</span></a>
                                 <a href="#" style="background: #eaeaec;"><span class="sr-only">Color
                                         name</span></a>
                                 <a href="#" class="active" style="background: #333333;"><span
                                         class="sr-only">Color name</span></a>
-                            </div><!-- End .product-nav -->
+                            </div>End .product-nav -->
                             </div><!-- End .product-body -->
                         </div><!-- End .product -->
                         @endforeach
@@ -2757,7 +2757,18 @@
 
         // Kiểm tra nếu userId không có giá trị
         if (!userId) {
-            alert('You need login ');
+            Swal.fire({
+                icon: 'warning',
+                title: 'You need to log in to add  favorites list!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true
+            }).then(() => {
+                // Chuyển hướng đến trang login
+                window.location.href = '{{ route('login') }}';
+            });
             return;
         }
 
@@ -2797,7 +2808,7 @@
                 var response = JSON.parse(xhr.responseText);
                 Swal.fire({
                     icon: 'error',
-                    title: response.message || 'Có lỗi xảy ra!',
+                    title: response.message || 'Error here!',
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
@@ -2820,3 +2831,4 @@
         });
     @endif
 </script>
+
