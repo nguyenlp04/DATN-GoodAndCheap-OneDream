@@ -28,8 +28,8 @@
 
                         <div class="d-flex align-content-center flex-wrap gap-4">
                             <!-- <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
-                                    <button class="btn btn-label-primary">Save draft</button>
-                                </div> -->
+                                        <button class="btn btn-label-primary">Save draft</button>
+                                    </div> -->
                             <button type="submit" class="btn btn-primary" id="publish-product">Update Category</button>
                         </div>
 
@@ -57,8 +57,14 @@
                                     <div class="mb-6">
                                         <label for="name_category" class="form-label">Category Name:</label>
                                         <input type="text" name="name_category" class="form-control" id="name_category"
-                                            value="{{ $dataCategoryID->category_id }}" required
+                                            value="{{ $dataCategoryID->category_id }}"
                                             placeholder="Enter category name">
+                                            @error('name_category')
+                                    <div class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                     </div>
                                     <div class="mb-6">
                                         <label for="description_category" class="form-label">Category Description</label>
@@ -82,21 +88,32 @@
                                                         ->where('sub_category_id', $subcategory->sub_category_id)
                                                         ->exists();
                                                 @endphp
-                                                
+
                                                 <div class="input-group mb-2">
-                                                    <input type="hidden" name="subcategories[{{ $index }}][sub_category_id]" value="{{ $subcategory->sub_category_id }}">
-                                                    <input type="text" name="subcategories[{{ $index }}][name_sub_category]" class="form-control" placeholder="Enter subcategory" value="{{ $subcategory->name_sub_category }}" required>
+                                                    <input type="text"
+                                                        name="subcategories[{{ $index }}][name_sub_category]"
+                                                        class="form-control" placeholder="Enter subcategory"
+                                                        value="{{ $subcategory->name_sub_category }}">
+                                                    <input type="hidden"
+                                                        name="subcategories[{{ $index }}][sub_category_id]"
+                                                        value="{{ $subcategory->sub_category_id }}">
                                                     <div class="input-group-append">
-                                                        <button class="btn btn-danger remove-subcategory" type="button" 
-                                                                @if($hasTitleInSaleNews) disabled @endif>
-                                                                Remove
+                                                        <button class="btn btn-danger remove-subcategory" type="button"
+                                                            @if ($hasTitleInSaleNews) disabled @endif>
+                                                            Remove
                                                         </button>
                                                     </div>
                                                 </div>
                                             @endforeach
                                         </div>
+                                        @error('subcategories')
+                                        <div class="text-danger">
+                                            <i class="bx bx-error-circle me-2"></i>
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
                                     </div>
-                                    
+
 
 
                                     <!-- Script thêm/xóa Subcategory -->
@@ -114,11 +131,11 @@
                                             const div = document.createElement('div');
                                             div.classList.add('input-group', 'mb-2');
                                             div.innerHTML = `
-                                <input type="text" name="subcategories[]" class="form-control" placeholder="Enter subcategory">
-                                <div class="input-group-append">
-                                    <button class="btn btn-danger remove-subcategory" type="button">Remove</button>
-                                </div>
-                                `;
+                                        <input type="text" name="subcategories[]" class="form-control" placeholder="Enter subcategory">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-danger remove-subcategory" type="button">Remove</button>
+                                        </div>
+                                        `;
                                             wrapper.appendChild(div);
                                         });
 
@@ -134,7 +151,6 @@
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
-
                             <div class="card mb-6" data-select2-id="18">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Upload Imgae</h5>
@@ -158,6 +174,12 @@
                                                 id="btnBrowse">Browse image</button>
                                             <input type="file" id="fileInput" name="image" style="display: none">
                                         </div>
+                                        @error('image')
+                                    <div class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                     </div>
                                 </div>
                                 <div>
@@ -165,8 +187,7 @@
                             </div>
                         </div>
 
-
-
+                        <div class="col-12 col-lg-12">
                         <div class="card mb-6">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Variants</h5>
@@ -178,25 +199,35 @@
                             <div class="card-body">
                                 <div id="add-variant">
                                     @foreach ($dataCategoryID->subcategory_attributes as $index => $attributes)
-                                    {{-- {{ dd($attributes->subcategory_attribute_id) }}; --}}
-                                        <div class="variant-item mb-3" data-id="{{ $attributes->subcategory_attribute_id }}">
+                                        {{-- {{ dd($attributes->subcategory_attribute_id) }}; --}}
+                                        <div class="variant-item mb-3"
+                                            data-id="{{ $attributes->subcategory_attribute_id }}">
                                             <div class="input-group mb-2">
-                                                <input type="hidden" name="variants[{{ $index }}][subcategory_attribute_id]" value="{{ $attributes->subcategory_attribute_id }}">
-                                                <input type="text" name="variants[{{ $index }}][attributes_name]" class="form-control"
-                                                    placeholder="Enter variant name" value="{{ $attributes->attributes_name }}" required="">
+                                                <input type="text"
+                                                    name="variants[{{ $index }}][attributes_name]"
+                                                    class="form-control" placeholder="Enter variant name"
+                                                    value="{{ $attributes->attributes_name }}">
+                                                <input type="hidden"
+                                                    name="variants[{{ $index }}][subcategory_attribute_id]"
+                                                    value="{{ $attributes->subcategory_attribute_id }}">
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-danger remove-variant" type="button">Remove</button>
+                                                    <button class="btn btn-danger remove-variant"
+                                                        type="button">Remove</button>
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
+                                    @error('variants')
+                                <div class="text-danger">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{ $message }}
+                                </div>
+                                @enderror
                                 </div>
                             </div>
-                            
+
                         </div>
-                        <!-- </div> -->
-
-
+                        <div>
                         <script>
                             document.getElementById('btn-add-variant').addEventListener('click', function() {
                                 const variantWrapper = document.getElementById('add-variant');
@@ -208,7 +239,7 @@
                                 // Create the HTML for the new variant input fields
                                 div.innerHTML = `
                             <div class="input-group mb-2">
-                                <input type="text" name="variants[]" class="form-control" placeholder="Enter variant name" required>
+                                <input type="text" name="variants[]" class="form-control" placeholder="Enter variant name">
                                 <div class="input-group-append">
                                     <button class="btn btn-danger remove-variant" type="button">Remove</button>
                                 </div>

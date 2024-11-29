@@ -48,7 +48,13 @@
 
                                 <div class="mb-6">
                                     <label for="name_category" class="form-label">Category Name:</label>
-                                    <input type="text" name="name_category" class="form-control" id="name_category" required placeholder="Enter category name">
+                                    <input type="text" name="name_category" class="form-control" id="name_category" placeholder="Enter category name">
+                                    @error('name_category')
+                                    <div class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                                 <div class="mb-6">
                                     <label for="description_category" class="form-label">Category Description</label>
@@ -56,18 +62,30 @@
                                 </div>
 
                                 <!-- Thêm Subcategories -->
-                                <div class="mb-6" id="subcategory-section" style="display: none;">
+                                <div class="mb-6" id="subcategory-section" style="display: ;">
                                     <label for="subcategories" class="form-label">Subcategories:</label>
                                     <div id="subcategory-wrapper">
-                                        
+                                        <div class="input-group mb-2">
+                                        <input type="text" name="subcategories[]" class="form-control" placeholder="Enter subcategory">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-danger remove-subcategory" type="button">Remove</button>
+                                        </div>
+                                        </div>
                                     </div>
+                                    @error('subcategories*')
+                                    <div class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
+                                
 
 
                                 <!-- Script thêm/xóa Subcategory -->
                                 <script>
                                     // Khi trang tải, ẩn phần subcategory
-                                    document.getElementById('subcategory-section').style.display = 'none';
+                                    document.getElementById('subcategory-section').style.display = '';
 
                                     // Khi nhấn nút Add Subcategory
                                     document.getElementById('add-subcategory').addEventListener('click', function() {
@@ -121,6 +139,12 @@
                                         <button type="button" class="btn btn-sm btn-outline-primary" id="btnBrowse">Browse image</button>
                                         <input type="file" id="fileInput" name="image" style="display: none">
                                     </div>
+                                    @error('image')
+                                    <div class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div>
@@ -129,7 +153,7 @@
 
                     </div>
 
-
+                    <div class="col-12 col-lg-12">
 
                     <div class="card mb-6">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -142,10 +166,22 @@
                         <div class="card-body">
                             <div id="add-variant">
                                 <!-- New variants will be inserted here -->
+                                <div class="input-group mb-2">
+                                    <input type="text" name="variants[]" class="form-control" placeholder="Enter variant name" >
+                                    <div class="input-group-append">
+                                        <button class="btn btn-danger remove-variant" type="button">Remove</button>
+                                    </div>
+                                </div>
+                                @error('variants*')
+                                <div class="text-danger">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
-                    <!-- </div> -->
+                    </div> 
 
 
                     <script>
@@ -159,7 +195,7 @@
                             // Create the HTML for the new variant input fields
                             div.innerHTML = `
                             <div class="input-group mb-2">
-                                <input type="text" name="variants[]" class="form-control" placeholder="Enter variant name" required>
+                                <input type="text" name="variants[]" class="form-control" placeholder="Enter variant name" >
                                 <div class="input-group-append">
                                     <button class="btn btn-danger remove-variant" type="button">Remove</button>
                                 </div>

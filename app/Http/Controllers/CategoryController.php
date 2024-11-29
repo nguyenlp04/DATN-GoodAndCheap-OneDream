@@ -65,24 +65,23 @@ class CategoryController extends Controller
         if ($request->isMethod('get')) {
             return view('admin.categories.add-category');
         }
-        try {
+        
 
             $validatedData = $request->validate([
-                'name_category' => 'required|string|max:255',
+                'name_category' => 'required|string|max:255|unique:categories,name_category',
                 'description' => 'nullable|string|max:1000',
                 'subcategories' => 'required|array',
                 'subcategories.*' => 'string|max:255',
                 'variants' => 'required|array',
                 'variants.*' => 'required|string|max:255',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
-
             if ($request->hasFile('image')) {
                 $imageName = 'category_' . time() . '_' . uniqid() . '.' . $request->image->extension();
                 $imagePath = 'storage/category/' . $imageName;
                 Storage::disk('public')->putFileAs('category', $request->file('image'), $imageName);
             }
-
+            try {
             $dataCategory = [
                 'staff_id' => Auth::guard('staff')->user()->staff_id,
                 'name_category' => $validatedData['name_category'],
@@ -175,8 +174,8 @@ class CategoryController extends Controller
             'name_category' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'subcategories' => 'array', // Ensure this is an array of subcategory names
-            'variants' => 'array', // Ensure this is an array of variant names
+            'subcategories' => 'required|array', // Ensure this is an array of subcategory names
+            'variants' => 'required|array', // Ensure this is an array of variant names
         ]);
 
         // Update category name and description
@@ -197,9 +196,6 @@ class CategoryController extends Controller
             $category->image_category = $imagePath;
         }
 
-        // Begin database transaction for updating subcategories and variants
-        DB::beginTransaction();
-
         try {
             // Update or add new subcategories
             $subcategories = $request->input('subcategories', []);
@@ -208,7 +204,8 @@ class CategoryController extends Controller
             $existingSubcategories = $category->subcategories()->get()->keyBy('sub_category_id');
 
             // dd($subcategories, $existingSubcategories);
-
+            $subCategoryIdsInRequest = collect($subcategories)->pluck('sub_category_id')->filter();
+            $category->subcategories()->whereNotIn('sub_category_id', $subCategoryIdsInRequest)->delete();
             foreach ($subcategories as $subcategoryData) {
                 // dd($subcategoryData['sub_category_id']);
 
@@ -232,8 +229,7 @@ class CategoryController extends Controller
                     $query = DB::table('sub_categories')->insert($dataSubCategory);
                 }
             }
-            $subCategoryIdsInRequest = collect($subcategories)->pluck('sub_category_id')->filter();
-            $category->subcategories()->whereNotIn('sub_category_id', $subCategoryIdsInRequest)->delete();
+           
             
 
             $variants = $request->input('variants', []);
@@ -241,6 +237,8 @@ class CategoryController extends Controller
             $existingVariants = $category->subcategoryAttributes()->get()->keyBy('subcategory_attribute_id');
             // dd($variants);
 
+             $variantIdsInRequest = collect($variants)->pluck('subcategory_attribute_id')->filter();
+            $category->subcategoryAttributes()->whereNotIn('subcategory_attribute_id', $variantIdsInRequest)->delete();  
             foreach ($variants as $variantData) {
                 // dd($variantData['subcategory_attribute_id']);
                 if (is_array($variantData)) {
@@ -270,15 +268,7 @@ class CategoryController extends Controller
                 }
             }
 
-            $variantIdsInRequest = collect($variants)->pluck('subcategory_attribute_id')->filter();
-            $category->subcategoryAttributes()->whereNotIn('subcategory_attribute_id', $variantIdsInRequest)->delete();  
-
-
-
-
-
-            // Commit the transaction
-            DB::commit();
+           
 
             // Save the category (image and other details are updated here)
             $category->save();
@@ -289,9 +279,6 @@ class CategoryController extends Controller
                 'message' => 'Category updated successfully!'
             ]);
         } catch (\Exception $e) {
-            // Rollback the transaction in case of an error
-            DB::rollBack();
-
             // Handle any exceptions (e.g., foreign key violations)
             return redirect()->back()->with('alert', [
                 'type' => 'error',
