@@ -192,17 +192,19 @@
                     <i class="menu-icon tf-icons bx-user bx"></i>
                     <div data-i18n="Payment Management">Infomation</div>
                 </a>
+                
                 <ul class="menu-sub">
+                  <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
+                    <a href="{{ route('partners.infomation') }}" class="menu-link">
+                        <div data-i18n="Payment Method">Channel Infomation</div>
+                    </a>
+                </li>
                     <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
                       <a href="{{ url('partners/infomation/create') }}" class="menu-link">
                           <div data-i18n="Payment Method">Add Infomation</div>
                       </a>
                   </li>
-                  <li class="menu-item {{ Request::is('Partners/infomation') ? 'active' : '' }}">
-                    <a href="{{ route('partners.edit.infomation',  ['channel_id' => $channel->channel_id]) }}" class="menu-link">
-                        <div data-i18n="Payment Method">Edit Infomation</div>
-                    </a>
-                </li>
+                  
                 </ul>
             </li>
             <!-- Payment -->
@@ -225,6 +227,19 @@
                   </li>
               </ul>
           </li>
+          <li class="menu-item {{ Request::is('notification/*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-bell"></i>
+                <div data-i18n="Payment Management">Notification</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ Request::is('notification/') ? 'active' : '' }}">
+                    <a href="{{ url('partners/notification') }}" class="menu-link">
+                        <div data-i18n="Payment Method">List Notification</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
           <li class="menu-item {{ Request::is('Trash/*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-trash"></i>

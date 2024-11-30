@@ -27,14 +27,7 @@
                                         {{ $createdAt->format('d/m/Y H:i') }}
                                     </span>
                                 </div>
-                                <div>
-                                    <button 
-                                        class="btn btn-sm delete-notification"
-                                        title="Delete Notification"
-                                        onclick="handleDeleteNotification({{ $notifications[$i]['id'] ?? 'null' }})">
-                                        <i class="fas fa-trash-alt  "></i>
-                                    </button>
-                                </div>
+                               
                             </li>
             </a>
 
@@ -49,12 +42,5 @@
     </div>
 </div>
 
-<script>
-    function handleDeleteNotification(notificationId) {
-        if (confirm('Are you sure you want to delete this notification?')) {
-            // Add delete notification handling here
-            console.log('Delete notification ID:', notificationId);
-        }
-    }
-</script>
+
 @endsection
