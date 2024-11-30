@@ -70,19 +70,22 @@ class SaleNewsController extends Controller
     public function store(Request $request)
     {
         // dd($request);
+        $validatedData = $request->validate([
+            'productTitle' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'subcategory_id' => 'required|integer',
+            'variant' => 'required',
+            'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+            'hiddenAddress' => 'required',
+            'addressDetail' => 'required',
+            'images.*' => 'required|max:2048',
+            
+        ]);
+        // dd($errors->all());
+        // dd($validatedData, auth()->user()->user_id);
         try {
-            $validatedData = $request->validate([
-                'productTitle' => 'required|string',
-                'price' => 'required|numeric|min:0',
-                'description' => 'required|string',
-                'subcategory_id' => 'required|integer',
-                'variant' => 'required',
-                'hiddenAddress' => 'required',
-                // 'images.*' => 'required|max:2048',
-            ]);
-            // dd($errors->all());
-            // dd($validatedData, auth()->user()->user_id);
-
+        
             $jsonData = json_encode($validatedData['variant']);
 
             $productData = [
@@ -143,18 +146,19 @@ class SaleNewsController extends Controller
         $address = !empty($request->hiddenAddress) ? $request->hiddenAddress : $request->hiddenAddressChannel;
         // dd($address);
 
-        try {
             $validatedData = $request->validate([
                 'productTitle' => 'required|string',
                 'price' => 'required|numeric|min:0',
                 'description' => 'required|string',
                 'subcategory_id' => 'required|integer',
                 'variant' => 'required',
+                'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
                 // 'hiddenAddress' => 'required',
                 // 'images.*' => 'required|max:2048',
             ]);
             // dd($errors->all());
             // dd($validatedData, auth()->user()->user_id);
+            try {
 
             $jsonData = json_encode($validatedData['variant']);
             $channel = Channel::where('user_id', auth()->user()->user_id)->first(['vip_package_id', 'vip_start_at', 'vip_end_at']);
@@ -170,6 +174,7 @@ class SaleNewsController extends Controller
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'data' => $jsonData,
                 'address' => $address,
+                'phone' => $validatedData['phone'],
                 'approved' => 1,
                 'status' => 1,
                 'vip_package_id' => $channel->vip_package_id,
