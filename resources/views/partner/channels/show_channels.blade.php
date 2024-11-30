@@ -65,7 +65,7 @@
                                         <i class="fa-solid fa-location-dot me-2 text-info"></i>{{ $channels->address }}
                                     </p>
                                     <p class="small text-muted mb-0">
-                                        <i class="fa-solid fa-clock me-2 text-info"></i>{{ $channels->created_at->format('d-m-y') }}
+                                        <i class="fa-solid fa-clock me-2 text-info"></i>{{ $channels->created_at->format('y-m-d') }}
                                     </p>
                                 </div>
                                 <div class="detail-item">

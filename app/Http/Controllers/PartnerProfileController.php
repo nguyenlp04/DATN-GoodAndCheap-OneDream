@@ -21,7 +21,6 @@ class PartnerProfileController extends Controller
         }
 
         $user = Auth::user();
-        // dd($user->channel_id);
 
         $profiles = Channel::where('user_id', $user->user_id)->get();
 
@@ -32,6 +31,15 @@ class PartnerProfileController extends Controller
         return view('partner.profiles.profile_partners', compact('profiles'));
     }
 
+    public function infomation()
+    {
+        $user = Auth::user();
+        $channel = Channel::where('user_id', $user->user_id)->first(); // Lấy channel của user
+
+        $channels = ChannelInfo::where('channel_id', $channel->channel_id)->get();
+
+        return view('partner.infomation.channel_infomation', compact('channels'));
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -184,7 +192,7 @@ class PartnerProfileController extends Controller
                     ->orWhere('phone_number', $request->input('phone_number'))
                     ->orWhere('address', $request->input('address'));
             })
-                ->where('channel_id', '!=', $channel_id) 
+                ->where('channel_id', '!=', $channel_id)
                 ->first();
 
             // Nếu có kênh trùng thông tin, trả về thông báo lỗi

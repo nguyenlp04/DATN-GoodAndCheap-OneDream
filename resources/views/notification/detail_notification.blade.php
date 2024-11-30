@@ -9,21 +9,32 @@
     </div>
 
     <!-- Notification Content Section -->
-    <div class="bg-light p-4 rounded-lg shadow-sm">
+    <div class="bg-white p-4 rounded-lg shadow-sm border">
         <p class="mb-3">{!! $notification->content_notification !!}</p>
-
-        <!-- Button to go back to notifications list -->
     </div>
+
+    <!-- Back to Notifications List Button -->
     <div class="d-flex justify-content-between mt-4">
         <a href="{{ route('notifications.show') }}" class="btn btn-outline-primary">
             <i class="fa fa-arrow-left"></i> Back to notifications list
         </a>
     </div>
-    <!-- Optional Additional Details Section -->
+
+    <!-- Additional Details Section -->
     <div class="mt-5">
         <div class="alert alert-info">
-            <strong>Note:</strong> This notification may contain important information from the system or our promotional programs. Please make sure to check frequently.
+            <strong>Note:</strong> This notification may contain important information from the system or our promotional programs. Please check frequently.
         </div>
     </div>
 </div>
+
+<!-- Optional: Add some custom CSS for better styling -->
+<style>
+    .bg-white {
+        background-color: #ffffff; /* Change background color if needed */
+    }
+    .shadow-sm {
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    }
+</style>
 @endsection

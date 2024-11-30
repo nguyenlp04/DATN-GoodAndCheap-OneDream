@@ -126,6 +126,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
+        Route::get('/infomation/', [PartnerProfileController::class, 'infomation'])->name('infomation');
         Route::get('/infomation/create', [PartnerProfileController::class, 'createInfomation'])->name('create.infomation');
         Route::post('/infomation/store', [PartnerProfileController::class, 'storeInfomation'])->name('store.infomation');
         Route::get('/infomation/edit/{channel_id}', [PartnerProfileController::class, 'editInfomation'])->name('edit.infomation');
