@@ -50,7 +50,7 @@ class ManageProfileController extends Controller
                 }
             }
 
-            $avataName = 'avata_' . time() . '.' . $request->file('avata')->extension();
+            $avataName = 'avata_staff' . time() . '.' . $request->file('avata')->extension();
             $imageAvataPath = $request->file('avata')->storeAs('avatas', $avataName, 'public');
             $updateData['avata'] = 'storage/' . $imageAvataPath;
         }

@@ -35,6 +35,12 @@
                                         <label class="form-label" for="ecommerce-product-name">Name</label>
                                         <input type="text" class="form-control" id="ecommerce-product-name"
                                             placeholder="Product title" name="productTitle" aria-label="Product title">
+                                            {{-- @error('variants*') --}}
+                                <div class="text-danger">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{-- {{ $message }} --}}123
+                                </div>
+                                {{-- @enderror --}}
                                     </div>
                                     <!-- Price -->
 
