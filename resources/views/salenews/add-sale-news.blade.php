@@ -27,12 +27,25 @@
                         <div class="row">
                             <div class="col-lg-9">
                                 <!-- <label>Title</label>
-                                            <input type="text" class="form-control"> -->
+                                                        <input type="text" class="form-control"> -->
                                 <label class="font-weight-bold form-label" for="ecommerce-product-name">Title</label>
+                                @error('productTitle')
+                                    <span class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
                                 <input type="text" class="form-control" id="ecommerce-product-name"
                                     placeholder="Product title" name="productTitle" aria-label="Product title">
 
+
                                 <label for="description" class="font-weight-bold form-label">Description</label>
+                                @error('description')
+                                    <span class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
                                 <textarea class="form-control" name="description" id="description" rows="3"></textarea>
                                 <!-- Media -->
                                 <script
@@ -41,8 +54,14 @@
                                 <link rel="stylesheet"
                                     href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
                                 <div class="">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div class="card-header d-flex align-items-center">
                                         <label for="productImage" class="font-weight-bold form-label">Product Image</label>
+                                        @error('images.*')
+                                            <span class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="card-body rounded" style="border-style: dashed;">
                                         <div class="dropzone p-0 dz-clickable"
@@ -56,7 +75,7 @@
                                                 <button type="button" class="btn btn-sm btn-outline-primary"
                                                     id="btnBrowse">Browse image</button>
                                                 <input type="file" id="fileInput" name="images[]" multiple
-                                                    accept="image/*" style="display: none" required>
+                                                    accept="image/*" style="display: none">
                                             </div>
                                         </div>
                                     </div>
@@ -72,44 +91,71 @@
                                     <div id="add-variant" class="row">
                                     </div>
                                 </div>
-                                <div class="card-header d-flex justify-content-between align-items-center mt-1">
+                                <div class=" d-flex align-items-center mt-1">
                                     <label class="font-weight-bold">Address</label>
+                                    @error('addressDetail')
+                                        <span class="text-danger">
+                                            <i class="bx bx-error-circle me-2"></i>
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="text" id="addressDetail" class="form-control" placeholder="Address"
-                                            required>
+                                        <input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="Address"
+                                            >
                                     </div>
                                     <div class="col-6">
                                         <select name="" class="form-control" id="city">
-                                            <option selected required>Select Province/City</option>
+                                            <option selected >Select Province/City</option>
                                         </select>
                                     </div>
                                     <div class="col-6">
                                         <select name="" class="form-control" id="district">
-                                            <option selected required>Select District</option>
+                                            <option selected >Select District</option>
                                         </select>
                                     </div>
                                     <div class="col-6">
                                         <select name="" class="form-control" id="ward">
-                                            <option selected required>Select Ward</option>
+                                            <option selected >Select Ward</option>
                                         </select>
                                     </div>
                                 </div>
                                 <input type="hidden" id="hiddenAddress" name="hiddenAddress">
-
+                                <label class="font-weight-bold form-label" for="ecommerce-product-name">Phone
+                                    Number</label>
+                                @error('phone')
+                                    <span class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+                                <input type="text" class="form-control" id="ecommerce-product-phone"
+                                    placeholder="Phone Number" name="phone" aria-label="Product title">
 
                                 <!-- /Second column -->
                             </div><!-- End .col-lg-9 -->
                             <aside class="col-lg-3">
                                 <!-- <div class="summary"> -->
                                 <div>
-                                    <label for="price" class="font-weight-bold">Price</label>
+                                    <label for="price" class="font-weight-bold">Price</label> @error('price')
+                                    <span class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
                                     <input id="price" type="number" class="form-control" placeholder="Price"
-                                        name="price" required>
+                                        name="price">
+                                       
 
                                     <label for="category" class="font-weight-bold">Category Name</label>
-                                    <select id="category" name="category_id" class="form-control" required>
+                                    @error('subcategory_id')
+                                    <span class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+                                    <select id="category" name="category_id" class="form-control">
                                         <option value="">Select Category Name</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->category_id }}">{{ $category->name_category }}
@@ -119,7 +165,7 @@
                                     <div class="mb-3" id="subcategory-section" style="display: none;">
                                         <label for="subcategory" class="font-weight-bold form-label">SubCategory
                                             Name:</label>
-                                        <select id="subcategory" name="subcategory_id" class="form-control" required>
+                                        <select id="subcategory" name="subcategory_id" class="form-control">
                                         </select>
                                     </div>
 
