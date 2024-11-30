@@ -161,6 +161,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
 });
 
+Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+
+// Route::get('/search', function () {
+//     return view('salenews.search');
+// });
 
 // enduser
 
@@ -235,10 +240,9 @@ Route::prefix('trash')->group(function () {
 
 
 
-Route::get('/search', function () {
-    return view('salenews.search');
-});
+
 Route::get('/tb', function () {
     return view('notifications.list');
 });
 Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);
+

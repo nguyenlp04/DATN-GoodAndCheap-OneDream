@@ -75,17 +75,18 @@ class SaleNewsController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
             'subcategory_id' => 'required|integer',
+            'name_category' => 'required|integer',
             'variant' => 'required',
             'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
             'hiddenAddress' => 'required',
             'addressDetail' => 'required',
             'images.*' => 'required|max:2048',
-            
+
         ]);
         // dd($errors->all());
         // dd($validatedData, auth()->user()->user_id);
         try {
-        
+
             $jsonData = json_encode($validatedData['variant']);
 
             $productData = [
@@ -95,6 +96,7 @@ class SaleNewsController extends Controller
                 'description' => $validatedData['description'],
                 'sub_category_id' => $validatedData['subcategory_id'],
                 'data' => $jsonData,
+                'phone' => $validatedData['phone'],
                 'address' => $validatedData['hiddenAddress'],
                 'approved' => 0,
                 'status' => 1,
@@ -146,19 +148,20 @@ class SaleNewsController extends Controller
         $address = !empty($request->hiddenAddress) ? $request->hiddenAddress : $request->hiddenAddressChannel;
         // dd($address);
 
-            $validatedData = $request->validate([
-                'productTitle' => 'required|string',
-                'price' => 'required|numeric|min:0',
-                'description' => 'required|string',
-                'subcategory_id' => 'required|integer',
-                'variant' => 'required',
-                'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
-                // 'hiddenAddress' => 'required',
-                // 'images.*' => 'required|max:2048',
-            ]);
-            // dd($errors->all());
-            // dd($validatedData, auth()->user()->user_id);
-            try {
+        $validatedData = $request->validate([
+            'productTitle' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'category_id' => 'required|integer',
+            'subcategory_id' => 'required|integer',
+            'variant' => 'required',
+            'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+            // 'hiddenAddress' => 'required',
+            'images.*' => 'required|max:2048',
+        ]);
+        // dd($errors->all());
+        // dd($validatedData, auth()->user()->user_id);
+        try {
 
             $jsonData = json_encode($validatedData['variant']);
             $channel = Channel::where('user_id', auth()->user()->user_id)->first(['vip_package_id', 'vip_start_at', 'vip_end_at']);
@@ -503,5 +506,41 @@ class SaleNewsController extends Controller
             'type' => 'success',
             'message' => 'Operation successful'
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $threeDaysAgo = Carbon::now()->subDays(3);
+
+        $recentVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('categoryToSubcategory', 'user')
+            ->whereNotNull('vip_package_id')
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '>=', $threeDaysAgo); 
+            })
+            ->inRandomOrder()
+            ->get();
+
+        $olderVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('categoryToSubcategory', 'user')
+            ->whereNotNull('vip_package_id')
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '<', $threeDaysAgo); 
+            })
+            ->inRandomOrder()
+            ->get();
+
+
+        $perPage = $request->get('perPage', 4);
+        $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->whereNull('vip_package_id')
+            ->paginate($perPage);
+
+        $totalNonVipSaleNews = $nonVipSaleNews->total();
+
+
+        return view('salenews.search', compact('recentVipSaleNews', 'olderVipSaleNews', 'nonVipSaleNews', 'keyword', 'perPage', 'totalNonVipSaleNews'));
     }
 }

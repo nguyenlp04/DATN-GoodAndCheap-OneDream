@@ -35,12 +35,12 @@
                                         <label class="form-label" for="ecommerce-product-name">Name</label>
                                         <input type="text" class="form-control" id="ecommerce-product-name"
                                             placeholder="Product title" name="productTitle" aria-label="Product title">
-                                            {{-- @error('variants*') --}}
-                                <div class="text-danger">
-                                    <i class="bx bx-error-circle me-2"></i>
-                                    {{-- {{ $message }} --}}123
-                                </div>
-                                {{-- @enderror --}}
+                                        @error('productTitle')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                     <!-- Price -->
 
@@ -48,6 +48,12 @@
                                     <div>
                                         <label for="description" class="form-label">Description</label>
                                         <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                                        @error('description')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -73,8 +79,14 @@
                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                 id="btnBrowse">Browse image</button>
                                             <input type="file" id="fileInput" name="images[]" multiple accept="image/*"
-                                                style="display: none" required>
+                                                style="display: none">
                                         </div>
+                                        @error('images[]')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -103,23 +115,42 @@
                                         <label class="form-label" for="ecommerce-product-price">Price</label>
                                         <input type="number" class="form-control" id="ecommerce-product-price"
                                             placeholder="Price" name="price" aria-label="Product price">
+                                        @error('price')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                     <div class="mb-3">
                                         <label for="category" class="form-label">Category Name:</label>
-                                        <select id="category" name="category_id" class="form-select" required>
+                                        <select id="category" name="category_id" class="form-select">
                                             <option value="">Select Category Name</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->category_id }}">{{ $category->name_category }}
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error('category_id')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                     <div class="mb-3" id="subcategory-section" style="display: none;">
                                         <label for="subcategory" class="form-label">SubCategory Name:</label>
-                                        <select id="subcategory" name="subcategory_id" class="form-select" required>
+                                        @error('subcategory_id')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <select id="subcategory" name="subcategory_id" class="form-select">
                                         </select>
                                     </div>
-                                    <input type="hidden" id="dataVariantDetail" name="dataVariantDetail" value="">
+                                    <input type="hidden" id="dataVariantDetail" name="dataVariantDetail"
+                                        value="">
                                     <input type="hidden" id="variant" name="variant" value="">
                                     <!-- Status -->
                                     <div class="mb-6 col ecommerce-select2-dropdown" data-select2-id="47">
@@ -149,43 +180,63 @@
                                                     class="dropdown-wrapper" aria-hidden="true"></span></span></div>
                                     </div>
 
+                                    <div class="mb-3">
+                                        <label class="form-label" for="ecommerce-product-phone">Phone Number</label>
+                                        <input type="number" class="form-control" id="ecommerce-product-phone"
+                                            placeholder="phone" name="phone" aria-label="Product phone">
+                                        @error('phone')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
                                     <div class="">
                                         <label class="">
                                             <input type="checkbox" id="useOldAddress" name="use_channel_address"
                                                 onchange="toggleAddressInput()">
                                             Use Channel Address
-                                            <div id="showAddresChannel" class="mt-3"> {{ ($channels->address); }}</div>
+                                            @error('hiddenAddress')
+                                                <div class="text-danger">
+                                                    <i class="bx bx-error-circle me-2"></i>
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                            <div id="showAddresChannel" class="mt-3"> {{ $channels->address }}</div>
                                         </label>
                                         <div id="addressInputs" class="">
                                             <div class="row">
                                                 <div class="col-12 mb-3">
                                                     <label class="form-label" for="addressDetail">Address</label>
                                                     <input type="text" id="addressDetail" class="form-control"
-                                                        placeholder="Address" >
+                                                        placeholder="Address">
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <label class="form-label" for="city">Province/City</label>
                                                     <select class="form-select" name="" id="city">
-                                                        <option selected >Select Province/City</option>
+                                                        <option selected>Select Province/City</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <label class="form-label" for="district">District</label>
                                                     <select class="form-select" name="" id="district">
-                                                        <option selected >Select District</option>
+                                                        <option selected>Select District</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <label class="form-label" for="ward">Ward</label>
                                                     <select class="form-select" name="" id="ward">
-                                                        <option selected >Select Ward</option>
+                                                        <option selected>Select Ward</option>
                                                     </select>
                                                 </div>
                                                 <div id="result"></div>
                                             </div>
                                             <input type="hidden" id="hiddenAddress" name="hiddenAddress">
-                                            <input type="hidden" id="hiddenAddressChannel" name="hiddenAddressChannel" value="{{ $channels->address }}">
-                                            <input type="hidden" id="idChannel" name="idChannel" value="{{ $channels->channel_id }}">
+                                            <input type="hidden" id="hiddenAddressChannel" name="hiddenAddressChannel"
+                                                value="{{ $channels->address }}">
+                                            <input type="hidden" id="idChannel" name="idChannel"
+                                                value="{{ $channels->channel_id }}">
 
                                         </div>
                                     </div>
@@ -197,38 +248,38 @@
                         </div>
                     </div>
                 </form>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-                    <script>
-                        $(document).ready(function() {
-                            // Handle change event for category dropdown
-                            $('#category').change(function() {
-                                var categoryId = $(this).val();
-                                $('#add-variant').empty();
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        // Handle change event for category dropdown
+                        $('#category').change(function() {
+                            var categoryId = $(this).val();
+                            $('#add-variant').empty();
 
-                                if (categoryId) {
-                                    $.ajax({
-                                        url: '/get-subcategories/' + categoryId,
-                                        type: 'GET',
-                                        success: function(data) {
-                                            // Empty the subcategory dropdown
-                                            $('#subcategory').empty().append(
-                                                '<option value="">Select SubCategory Name</option>');
+                            if (categoryId) {
+                                $.ajax({
+                                    url: '/get-subcategories/' + categoryId,
+                                    type: 'GET',
+                                    success: function(data) {
+                                        // Empty the subcategory dropdown
+                                        $('#subcategory').empty().append(
+                                            '<option value="">Select SubCategory Name</option>');
 
-                                            // Populate subcategory dropdown
-                                            $.each(data.subcategories, function(index, subcategory) {
-                                                $('#subcategory').append('<option value="' + subcategory
-                                                    .sub_category_id + '">' + subcategory
-                                                    .name_sub_category + '</option>');
-                                            });
+                                        // Populate subcategory dropdown
+                                        $.each(data.subcategories, function(index, subcategory) {
+                                            $('#subcategory').append('<option value="' + subcategory
+                                                .sub_category_id + '">' + subcategory
+                                                .name_sub_category + '</option>');
+                                        });
 
-                                            // Show subcategory section
-                                            $('#subcategory-section').show();
+                                        // Show subcategory section
+                                        $('#subcategory-section').show();
 
-                                            // Add variants dynamically based on subcategory attributes
-                                            $.each(data.subcategory_attributes, function(index,
-                                                category_variant) {
-                                                $('#add-variant').append(`
+                                        // Add variants dynamically based on subcategory attributes
+                                        $.each(data.subcategory_attributes, function(index,
+                                            category_variant) {
+                                            $('#add-variant').append(`
                                                 <div class="col-6">
                                                     <div class="card mb-6 variant-card">
                                                     <div class="card-header">
@@ -242,212 +293,212 @@
                                                     </div>
                                                 </div>
                                                 `);
-                                            });
-
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error("Error fetching subcategories:", error);
-                                        }
-                                    });
-                                } else {
-                                    $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
-                                    $('#subcategory-section').hide();
-                                    $('#add-variant').empty();
-                                }
-                            });
-                            // Handle price and quantity input blur event
-                            $(document).on('blur', '.option-value', function() {
-                                var variants = [];
-                                var variantNames = [];
-
-                                // Collect all variant data
-                                $('.variant-card').each(function() {
-                                    var variantName = $(this).find('.option-input').val();
-                                    var optionValue = $(this).find('.option-value').val();
-                                    if (optionValue) {
-                                        // Split the options by comma and trim any extra spaces
-                                        var options = optionValue.split(',').map(function(value) {
-                                            return value.trim();
                                         });
-                                        // Construct the variant object
-                                        variants.push({
-                                            "name": variantName,
-                                            "options": options
-                                        });
+
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error("Error fetching subcategories:", error);
                                     }
                                 });
-                                if (variants.length > 0) {
-                                    var optionsForCombining = variants.map(variant => variant.options);
-                                    var variantNames = variants.map(variant => variant.name);
+                            } else {
+                                $('#subcategory').empty().append('<option value="">Select SubCategory Name</option>');
+                                $('#subcategory-section').hide();
+                                $('#add-variant').empty();
+                            }
+                        });
+                        // Handle price and quantity input blur event
+                        $(document).on('blur', '.option-value', function() {
+                            var variants = [];
+                            var variantNames = [];
 
-                                    //   renderVariantTable(variantNames, result);
-                                    $('#variant-table-section').show();
-                                } else {
-                                    $('#variant-table-section').hide();
-                                }
-                                console.log("Variants: ", JSON.stringify(variants, null, 2));
-                                $('#variant').val(JSON.stringify(variants));
-                                // If there's more than one option, also proceed with storing the result
-                                if (variants.length > 1 || variants[0].options.length > 1) {
-                                    var result = variants.map(variant => ({
-                                        "name": variant.name,
-                                        "options": variant.options
-                                    }));
-                                    $('#variant-table-section').show();
-                                    $('#variant').val(JSON.stringify(variants)); // Store the variants in the hidden input
+                            // Collect all variant data
+                            $('.variant-card').each(function() {
+                                var variantName = $(this).find('.option-input').val();
+                                var optionValue = $(this).find('.option-value').val();
+                                if (optionValue) {
+                                    // Split the options by comma and trim any extra spaces
+                                    var options = optionValue.split(',').map(function(value) {
+                                        return value.trim();
+                                    });
+                                    // Construct the variant object
+                                    variants.push({
+                                        "name": variantName,
+                                        "options": options
+                                    });
                                 }
                             });
-                        });
-                    </script>
-                    <script>
-                        let uploadedImages = [];
-                        document.getElementById('btnBrowse').addEventListener('click', function() {
-                            document.getElementById('fileInput').click();
-                        });
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const input = document.getElementById('fileInput');
-                            const previewContainer = document.getElementById('preview_images');
+                            if (variants.length > 0) {
+                                var optionsForCombining = variants.map(variant => variant.options);
+                                var variantNames = variants.map(variant => variant.name);
 
-                            function displayImages() {
-                                previewContainer.innerHTML = '';
-                                uploadedImages.forEach((imageSrc, index) => {
-                                    const imgContainer = document.createElement('div');
-                                    imgContainer.style.position = 'relative';
-                                    const img = document.createElement('img');
-                                    img.src = imageSrc;
-                                    img.style.width = '100px';
-                                    img.style.height = 'auto';
-                                    img.classList.add('mt-3', 'rounded');
-                                    const removeBtn = document.createElement('span');
-                                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-                                    removeBtn.style.position = 'absolute';
-                                    removeBtn.style.top = '0';
-                                    removeBtn.style.right = '0';
-                                    removeBtn.style.color = 'red';
-                                    removeBtn.style.cursor = 'pointer';
-                                    removeBtn.style.fontSize = '18px';
-                                    removeBtn.style.backgroundColor = 'white';
-                                    removeBtn.style.borderRadius = '50%';
-                                    removeBtn.style.padding = '2px 5px';
-                                    removeBtn.onclick = function() {
+                                //   renderVariantTable(variantNames, result);
+                                $('#variant-table-section').show();
+                            } else {
+                                $('#variant-table-section').hide();
+                            }
+                            console.log("Variants: ", JSON.stringify(variants, null, 2));
+                            $('#variant').val(JSON.stringify(variants));
+                            // If there's more than one option, also proceed with storing the result
+                            if (variants.length > 1 || variants[0].options.length > 1) {
+                                var result = variants.map(variant => ({
+                                    "name": variant.name,
+                                    "options": variant.options
+                                }));
+                                $('#variant-table-section').show();
+                                $('#variant').val(JSON.stringify(variants)); // Store the variants in the hidden input
+                            }
+                        });
+                    });
+                </script>
+                <script>
+                    let uploadedImages = [];
+                    document.getElementById('btnBrowse').addEventListener('click', function() {
+                        document.getElementById('fileInput').click();
+                    });
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const input = document.getElementById('fileInput');
+                        const previewContainer = document.getElementById('preview_images');
 
-                                        uploadedImages.splice(index, 1);
+                        function displayImages() {
+                            previewContainer.innerHTML = '';
+                            uploadedImages.forEach((imageSrc, index) => {
+                                const imgContainer = document.createElement('div');
+                                imgContainer.style.position = 'relative';
+                                const img = document.createElement('img');
+                                img.src = imageSrc;
+                                img.style.width = '100px';
+                                img.style.height = 'auto';
+                                img.classList.add('mt-3', 'rounded');
+                                const removeBtn = document.createElement('span');
+                                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                                removeBtn.style.position = 'absolute';
+                                removeBtn.style.top = '0';
+                                removeBtn.style.right = '0';
+                                removeBtn.style.color = 'red';
+                                removeBtn.style.cursor = 'pointer';
+                                removeBtn.style.fontSize = '18px';
+                                removeBtn.style.backgroundColor = 'white';
+                                removeBtn.style.borderRadius = '50%';
+                                removeBtn.style.padding = '2px 5px';
+                                removeBtn.onclick = function() {
+
+                                    uploadedImages.splice(index, 1);
+                                    displayImages();
+                                };
+                                imgContainer.appendChild(img);
+                                imgContainer.appendChild(removeBtn);
+                                previewContainer.appendChild(imgContainer);
+                            });
+                        }
+                        input.addEventListener('change', function(event) {
+                            const files = event.target.files;
+                            if (uploadedImages.length + files.length > 5) {
+                                alert('You can only upload up to 5 images.');
+                                return;
+                            }
+                            for (let i = 0; i < files.length; i++) {
+                                const file = files[i];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        uploadedImages.push(e.target.result);
                                         displayImages();
                                     };
-                                    imgContainer.appendChild(img);
-                                    imgContainer.appendChild(removeBtn);
-                                    previewContainer.appendChild(imgContainer);
-                                });
-                            }
-                            input.addEventListener('change', function(event) {
-                                const files = event.target.files;
-                                if (uploadedImages.length + files.length > 5) {
-                                    alert('You can only upload up to 5 images.');
-                                    return;
+                                    reader.readAsDataURL(file);
                                 }
-                                for (let i = 0; i < files.length; i++) {
-                                    const file = files[i];
-                                    if (file) {
-                                        const reader = new FileReader();
-                                        reader.onload = function(e) {
-                                            uploadedImages.push(e.target.result);
-                                            displayImages();
-                                        };
-                                        reader.readAsDataURL(file);
-                                    }
-                                }
-                            });
-                        });
-                    </script>
-                    <script>
-                        const host = "https://provinces.open-api.vn/api/";
-                        var callAPI = (api) => {
-                            return axios.get(api)
-                                .then((response) => {
-                                    renderData(response.data, "city");
-                                });
-                        }
-                        callAPI('https://provinces.open-api.vn/api/?depth=1');
-                        var callApiDistrict = (api) => {
-                            return axios.get(api)
-                                .then((response) => {
-                                    renderData(response.data.districts, "district");
-                                });
-                        }
-                        var callApiWard = (api) => {
-                            return axios.get(api)
-                                .then((response) => {
-                                    renderData(response.data.wards, "ward");
-                                });
-                        }
-
-                        var renderData = (array, select) => {
-                            let row = ' <option disable value="">Chọn</option>';
-                            array.forEach(element => {
-                                row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`
-                            });
-                            document.querySelector("#" + select).innerHTML = row
-                        }
-
-                        $("#addressDetail").change(() => {
-                            // Get the value entered in the #addressDetail input
-                            var addressDetailValue = $("#addressDetail").val();
-
-                            // Log the value to the console
-                            console.log("Address Detail:", addressDetailValue);
-
-                            // Call the printResult function to update other results (if needed)
-                            printResult();
-                        });
-
-                        $("#city").change(() => {
-                            callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
-                            printResult();
-                        });
-                        $("#district").change(() => {
-                            callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
-                            printResult();
-                        });
-                        $("#ward").change(() => {
-                            printResult();
-                        })
-
-                        var printResult = () => {
-                            var addressDetailValue = $("#addressDetail").val();
-                            if ($("#district").find(':selected').data('id') != "" && $("#city").find(':selected').data('id') != "" &&
-                                $("#ward").find(':selected').data('id') != "") {
-                                let result = addressDetailValue + ", " + $("#city option:selected").text() +
-                                    ", " + $("#district option:selected").text() + ", " +
-                                    $("#ward option:selected").text();
-                                $("#hiddenAddress").val(result);
-                                $("#result").text(result);
-                                console.log("Full address: ", result);
                             }
-                        };
-                    </script>
-                    <script>
-                        function toggleAddressInput() {
-                            const checkbox = document.getElementById('useOldAddress');
-                            const addressInputs = document.getElementById('addressInputs');
-                            const showAddresChannel = document.getElementById('showAddresChannel');
-                            
-
-                            if (checkbox.checked) {
-                                // Ẩn input nhập địa chỉ mới
-                                addressInputs.style.display = 'none';
-                                showAddresChannel.style.display = 'block';
-                            } else {
-                                // Hiện input nhập địa chỉ mới
-                                addressInputs.style.display = 'block';
-                                showAddresChannel.style.display = 'none';
-                            }
-                        }
-
-                        // Ẩn input nhập địa chỉ mới mặc định nếu checkbox đã tick
-                        document.addEventListener('DOMContentLoaded', function() {
-                            toggleAddressInput();
                         });
-                    </script>
+                    });
+                </script>
+                <script>
+                    const host = "https://provinces.open-api.vn/api/";
+                    var callAPI = (api) => {
+                        return axios.get(api)
+                            .then((response) => {
+                                renderData(response.data, "city");
+                            });
+                    }
+                    callAPI('https://provinces.open-api.vn/api/?depth=1');
+                    var callApiDistrict = (api) => {
+                        return axios.get(api)
+                            .then((response) => {
+                                renderData(response.data.districts, "district");
+                            });
+                    }
+                    var callApiWard = (api) => {
+                        return axios.get(api)
+                            .then((response) => {
+                                renderData(response.data.wards, "ward");
+                            });
+                    }
+
+                    var renderData = (array, select) => {
+                        let row = ' <option disable value="">Chọn</option>';
+                        array.forEach(element => {
+                            row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`
+                        });
+                        document.querySelector("#" + select).innerHTML = row
+                    }
+
+                    $("#addressDetail").change(() => {
+                        // Get the value entered in the #addressDetail input
+                        var addressDetailValue = $("#addressDetail").val();
+
+                        // Log the value to the console
+                        console.log("Address Detail:", addressDetailValue);
+
+                        // Call the printResult function to update other results (if needed)
+                        printResult();
+                    });
+
+                    $("#city").change(() => {
+                        callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+                        printResult();
+                    });
+                    $("#district").change(() => {
+                        callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+                        printResult();
+                    });
+                    $("#ward").change(() => {
+                        printResult();
+                    })
+
+                    var printResult = () => {
+                        var addressDetailValue = $("#addressDetail").val();
+                        if ($("#district").find(':selected').data('id') != "" && $("#city").find(':selected').data('id') != "" &&
+                            $("#ward").find(':selected').data('id') != "") {
+                            let result = addressDetailValue + ", " + $("#city option:selected").text() +
+                                ", " + $("#district option:selected").text() + ", " +
+                                $("#ward option:selected").text();
+                            $("#hiddenAddress").val(result);
+                            $("#result").text(result);
+                            console.log("Full address: ", result);
+                        }
+                    };
+                </script>
+                <script>
+                    function toggleAddressInput() {
+                        const checkbox = document.getElementById('useOldAddress');
+                        const addressInputs = document.getElementById('addressInputs');
+                        const showAddresChannel = document.getElementById('showAddresChannel');
+
+
+                        if (checkbox.checked) {
+                            // Ẩn input nhập địa chỉ mới
+                            addressInputs.style.display = 'none';
+                            showAddresChannel.style.display = 'block';
+                        } else {
+                            // Hiện input nhập địa chỉ mới
+                            addressInputs.style.display = 'block';
+                            showAddresChannel.style.display = 'none';
+                        }
+                    }
+
+                    // Ẩn input nhập địa chỉ mới mặc định nếu checkbox đã tick
+                    document.addEventListener('DOMContentLoaded', function() {
+                        toggleAddressInput();
+                    });
+                </script>
             </div>
         </div>
         <!-- / Content -->
