@@ -148,14 +148,14 @@
                                         name="price">
                                        
 
-                                    <label for="category" class="font-weight-bold">Category Name</label>
-                                    @error('subcategory_id')
+                                    <label for="category" class="font-weight-bold" name="name_category">Category Name</label>
+                                    @error('name_category')
                                     <span class="text-danger">
                                         <i class="bx bx-error-circle me-2"></i>
                                         {{ $message }}
                                     </span>
                                 @enderror
-                                    <select id="category" name="category_id" class="form-control">
+                                    <select id="category" name="name_category" class="form-control">
                                         <option value="">Select Category Name</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->category_id }}">{{ $category->name_category }}
@@ -165,6 +165,12 @@
                                     <div class="mb-3" id="subcategory-section" style="display: none;">
                                         <label for="subcategory" class="font-weight-bold form-label">SubCategory
                                             Name:</label>
+                                            @error('subcategory_id')
+                                    <span class="text-danger">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
                                         <select id="subcategory" name="subcategory_id" class="form-control">
                                         </select>
                                     </div>
