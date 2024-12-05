@@ -1,5 +1,4 @@
 <main class="main">
-
     <style>
         .image-container {
             width: 100%;
@@ -19,8 +18,35 @@
         }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="intro-slider-container mb-5">
+        <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl"
+            data-owl-options='{
+                        "dots": true,
+                        "nav": false, 
+                        "responsive": {
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'>
+            <div class="intro-slide"
+                style="background-image: url({{$setting->banner1}});">
+            </div><!-- End .intro-slide -->
 
+            <div class="intro-slide"
+                style="background-image: url({{$setting->banner2}});">
 
+            </div><!-- End .intro-slide -->
+
+            <div class="intro-slide"
+                style="background-image: url({{$setting->banner3}});">
+
+            </div><!-- End .intro-slide -->
+        </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+        <span class="slider-loader"></span><!-- End .slider-loader -->
+    </div><!-- End .intro-slider-container -->
 
 
 
