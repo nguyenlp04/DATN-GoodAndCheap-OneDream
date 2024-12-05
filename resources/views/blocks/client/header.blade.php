@@ -15,7 +15,7 @@
 .main-nav {
      width: 90%; white-space: nowrap; overflow: hidden; box-sizing: border-box;
       }
-       .main-nav span { display: inline-block; padding-left: 100%; animation: marquee 10s linear infinite;
+       .3 span { display: inline-block; padding-left: 100%; animation: marquee 10s linear infinite;
       }
       @keyframes marquee
       { from { transform: translate(0, 0);
@@ -206,10 +206,11 @@
                <li>
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
                </li>
-                <li>
-                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-star"></i>About Us</a>
-               </li>
-
+               <li>
+                  <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star"></i>Contact</a>
+               </li>  
+            
+                   
 
             </ul>
             <!-- Nếu chưa đăng nhập -->
@@ -234,6 +235,7 @@
                <li>
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
                </li>
+               
                <div class="col-md-5">
                   <div class="header-dropdown" style="display: flex; align-items: center;">
                      <div style="display: flex; align-items: center;   cursor: pointer;">

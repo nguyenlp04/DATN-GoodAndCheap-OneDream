@@ -65,7 +65,7 @@
                                     </div><!-- End .entry-tags -->
                                 </div><!-- End .col -->
 
-                               
+
                             </div><!-- End .entry-footer row no-gutters -->
                         </div><!-- End .entry-body -->
 
@@ -77,36 +77,21 @@
                     <div class="related-posts">
                         <h3 class="title">Related Posts</h3><!-- End .title -->
 
-                        <div class="owl-carousel owl-simple" data-toggle="owl" data-owl-options='{
-                                        "nav": false, 
-                                        "dots": true,
-                                        "margin": 20,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {
-                                                "items":1
-                                            },
-                                            "480": {
-                                                "items":2
-                                            },
-                                            "768": {
-                                                "items":3
-                                            }
-                                        }
-                                    }'>
-
+                        <div class="owl-carousel owl-simple" data-toggle="owl">
+                            @if(isset($relatedBlogs) && $relatedBlogs->count() > 0)
                             @foreach($relatedBlogs as $blog)
                             <article class="entry entry-grid">
                                 <figure class="entry-media">
                                     <a href="{{ route('blogs.detail', $blog->blog_id) }}">
-                                    <img  src="{{ asset('storage/' . $blog->image) }}"
-                                    alt="Blogs Image">
+                                        <img src="{{ asset('storage/' . $blog->image) }}" alt="Blogs Image"
+                                            style="max-height:130px">
                                     </a>
                                 </figure><!-- End .entry-media -->
 
                                 <div class="entry-body">
                                     <div class="entry-meta">
-                                        <a href="{{ route('blogs.detail', $blog->blog_id) }}">{{$blog->created_at ->format('M d, Y')}}</a>
+                                        <a
+                                            href="{{ route('blogs.detail', $blog->blog_id) }}">{{$blog->created_at ->format('M d, Y')}}</a>
 
 
                                     </div><!-- End .entry-meta -->
@@ -122,13 +107,16 @@
                                             {{ strtoupper($blogs->category->name_category) }}
                                         </a>
                                         @else
-                                        <span>Không có danh mục</span>
+                                        <p>Not empty blog category!</p>
                                         @endif
 
                                     </div><!-- End .entry-cats -->
                                 </div><!-- End .entry-body -->
                             </article><!-- End .entry -->
                             @endforeach
+                            @else
+                            <p>Not empty related blogs!</p>
+                            @endif
 
                         </div><!-- End .owl-carousel -->
                     </div><!-- End .related-posts -->

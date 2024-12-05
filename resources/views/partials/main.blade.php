@@ -1775,3 +1775,97 @@
 
 </main><!-- End .main -->
 <!-- Trong Blade view -->
+<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+<script>
+   var userId = @json(Auth::user() ? Auth::user()->user_id : null); // Lấy user_id nếu người dùng đã đăng nhập
+
+// Lắng nghe sự kiện click vào nút thêm vào danh sách yêu thích
+$(document).on('click', '.add-to-wishlist-btn', function (e) {
+    e.preventDefault(); // Ngăn hành vi gửi form mặc định của trình duyệt
+
+    var form = $(this).closest('form'); // Lấy form chứa nút bấm
+    var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy giá trị sale_new_id từ input hidden
+
+    // Kiểm tra nếu userId không có giá trị (người dùng chưa đăng nhập)
+    if (!userId) {
+        Swal.fire({
+            icon: 'warning', // Hiển thị biểu tượng cảnh báo
+            title: 'You need to log in to add this to your favorites!', // Thông báo yêu cầu đăng nhập
+            toast: true, // Hiển thị thông báo nhỏ
+            position: 'top-end', // Vị trí thông báo ở góc trên cùng bên phải
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 1000, // Thời gian hiển thị thông báo là 1 giây
+            timerProgressBar: true // Hiển thị thanh tiến trình đếm ngược
+        }).then(() => {
+            // Chuyển hướng người dùng đến trang đăng nhập
+            window.location.href = '{{ route('login') }}';
+        });
+        return; // Kết thúc hàm, không thực hiện các bước tiếp theo
+    }
+
+    // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
+    $.ajax({
+        url: form.attr('action'), // URL lấy từ thuộc tính action của form
+        type: 'POST', // Phương thức gửi yêu cầu là POST
+        data: {
+            _token: '{{ csrf_token() }}', // CSRF token để xác thực yêu cầu
+            user_id: userId, // ID của người dùng
+            sale_new_id: saleNewId // ID của sản phẩm
+        },
+        success: function (response) {
+            // Xử lý khi server phản hồi thành công
+            if (response.type === 'success') {
+                Swal.fire({
+                    icon: 'success', // Hiển thị biểu tượng thành công
+                    title: response.message, // Nội dung thông báo từ server
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            } else {
+                // Nếu server trả về lỗi
+                Swal.fire({
+                    icon: 'error', // Hiển thị biểu tượng lỗi
+                    title: response.message, // Nội dung lỗi từ server
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            // Xử lý khi yêu cầu gặp lỗi
+            var response = JSON.parse(xhr.responseText); // Phân tích lỗi trả về
+            Swal.fire({
+                icon: 'error', // Hiển thị biểu tượng lỗi
+                title: response.message || 'An error occurred!', // Nội dung lỗi
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        }
+    });
+});
+
+// Hiển thị thông báo nếu có từ session (sau khi load trang)
+@if (session('alert'))
+    Swal.fire({
+        icon: "{{ session('alert')['type'] }}", // Loại thông báo (success, error, warning)
+        title: "{{ session('alert')['message'] }}", // Nội dung thông báo
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+@endif
+
+
+
+</script>

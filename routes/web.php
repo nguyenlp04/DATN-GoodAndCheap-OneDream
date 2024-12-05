@@ -5,6 +5,8 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -131,7 +133,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/infomation/store', [PartnerProfileController::class, 'storeInfomation'])->name('store.infomation');
         Route::get('/infomation/edit/{channel_id}', [PartnerProfileController::class, 'editInfomation'])->name('edit.infomation');
         Route::put('/infomation/update/{channel_id}', [PartnerProfileController::class, 'updateInfomation'])->name('update.infomation');
-        Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
@@ -173,23 +174,10 @@ Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
 
 // guest
 
-Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get(); 
-    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get(); 
 
-    return view('home', [
-        'data' => $data,
-        'topRated' => $topRated,
-        'bestSelling' => $bestSelling,
-        'onSale' => $onSale,
-        'recommendation' => $recommendation,
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-]);
-})->name('home');
-
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
