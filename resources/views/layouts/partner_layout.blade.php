@@ -234,7 +234,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ Request::is('notification/') ? 'active' : '' }}">
-                    <a href="{{ url('partners/notification') }}" class="menu-link">
+                    <a href="{{ route('list_notification') }}" class="menu-link">
                         <div data-i18n="Payment Method">List Notification</div>
                     </a>
                 </li>

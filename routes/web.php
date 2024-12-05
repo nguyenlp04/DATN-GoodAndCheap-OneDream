@@ -162,10 +162,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 
-// Route::get('/search', function () {
-//     return view('salenews.search');
-// });
 
 // enduser
 
@@ -174,11 +172,11 @@ Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
 // guest
 
 Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get(); 
-    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get(); 
+    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get();
+    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
+    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
+    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
+    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get();
 
     return view('home', [
         'data' => $data,
@@ -187,7 +185,7 @@ Route::get('/', function () {
         'onSale' => $onSale,
         'recommendation' => $recommendation,
 
-]);
+    ]);
 })->name('home');
 
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
@@ -257,4 +255,3 @@ Route::get('/tb', function () {
     return view('notifications.list');
 });
 Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);
-
