@@ -1,20 +1,27 @@
 <main class="main">
-  
-<style>.image-container {
-  width: 100%;
-  height: 200px; /* Đặt chiều cao cố định cho khung chứa */
-  overflow: hidden; /* Đảm bảo không có phần thừa nào bị hiển thị */
-}
-.equal-height-image {
-    height: 200px; /* Đặt chiều cao cố định cho tất cả các ảnh */
-    width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của khung chứa */
-    object-fit: cover; /* Đảm bảo ảnh phủ kín khung mà không bị méo */
-}
-</style>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <style>
+        .image-container {
+            width: 100%;
+            height: 200px;
+            /* Đặt chiều cao cố định cho khung chứa */
+            overflow: hidden;
+            /* Đảm bảo không có phần thừa nào bị hiển thị */
+        }
+
+        .equal-height-image {
+            height: 200px;
+            /* Đặt chiều cao cố định cho tất cả các ảnh */
+            width: 100%;
+            /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của khung chứa */
+            object-fit: cover;
+            /* Đảm bảo ảnh phủ kín khung mà không bị méo */
+        }
+    </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-  
+
 
 
     <div class="container">
@@ -99,7 +106,7 @@
 
     <div class="mb-4"></div><!-- End .mb-4 -->
 
-    
+
 
     <div class="mb-3"></div><!-- End .mb-5 -->
 
@@ -167,53 +174,48 @@
                                     }
                                 }
                             }'>
-                     @foreach($data as $item)
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html" class="image-container">
+                    @foreach($data as $item)
+                    <div class="product product-2">
+                        <figure class="product-media">
+                            <span class="product-label label-circle label-top">Top</span>
+                            <a href="product.html" class="image-container">
                                 @if ($item->images->isNotEmpty())
-												<img src="{{ $item->images->first()->image_name }}" alt="Image"  class="equal-height-image" >
-											@endif
-                                            </a>
-                                     
-                             
-                               
-                                <div class="product-action-vertical">
-                                    
-                                    <!-- Thêm data-product-id để lưu id sản phẩm -->
-                                    <form action="{{ route('addToWishlist') }}" method="POST">
+                                
+                                {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" class="equal-height-image"> --}}
+                                <img src="assets/images/demos/demo-4/products/product-3.jpg" alt="">
+                                @endif
+                            </a>
+
+
+
+                            <div class="product-action-vertical">
+
+                                <!-- Thêm data-product-id để lưu id sản phẩm -->
+                                <form action="{{ route('addToWishlist') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
                                     <button type="submit" class=" btn-product-icon btn-wishlist color-danger add-to-wishlist-btn" title="Add to WishList  "></button>
-                                    
+
                                 </form>
 
-                                </div>
-                                <div class="product-action">
+                            </div>
+                            <div class="product-action">
                                 <!-- <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
                                         cart</span></a> -->
                                 <a href="#" class="btn-product btn-quickview"
                                     title="Quick view"><span>quick view</span></a>
                             </div><!-- End .product-action -->
-                            </figure>
-                            <!-- End .product-media -->
+                        </figure>
+                        <!-- End .product-media -->
 
-                            <div class="product-body">
+                        <div class="product-body">
                             <div class="product-cat">
-                                <a href="#">{{$item ->sub_category->name_sub_category}}</a>
+                                {{-- <a href="#">{{$item ->sub_category->name_sub_category}}</a> --}}
                             </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">{{ Str::limit($item->title, 35, '...') }}  </a></h3>
-                                <div class="product-price">
-                                    $1,199.99
-                                </div><!-- End .product-price -->
-                                <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+                            <h3 class="product-title"><a href="product.html">{{ Str::limit($item->title, 35, '...') }} </a></h3>
+                            <div class="product-price">
+                                ${{$item -> price}}
+                            </div><!-- End .product-price -->
                             <!-- <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
                                         name</span></a>
@@ -222,11 +224,11 @@
                                 <a href="#" class="active" style="background: #333333;"><span
                                         class="sr-only">Color name</span></a>
                             </div>End .product-nav -->
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
-                        @endforeach
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
+                    @endforeach
 
-                    
+
                 </div><!-- End .owl-carousel -->
             </div><!-- .End .tab-pane -->
             <div class="tab-pane p-0 fade" id="new-tv-tab" role="tabpanel" aria-labelledby="new-tv-link">
@@ -283,12 +285,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -329,12 +326,7 @@
                             <div class="product-price">
                                 $79.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 6 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -369,13 +361,7 @@
                                 <span class="new-price">$35.41</span>
                                 <span class="old-price">Was $41.67</span>
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 10 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #edd2c8;"><span
@@ -417,12 +403,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 5 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -455,13 +436,7 @@
                             <div class="product-price">
                                 $1,199.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div><!-- End .owl-carousel -->
@@ -521,12 +496,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 5 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -559,13 +529,7 @@
                             <div class="product-price">
                                 $1,199.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -598,12 +562,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -644,12 +603,7 @@
                             <div class="product-price">
                                 $79.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 6 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -684,13 +638,7 @@
                                 <span class="new-price">$35.41</span>
                                 <span class="old-price">Was $41.67</span>
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 10 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #edd2c8;"><span
@@ -759,13 +707,7 @@
                             <div class="product-price">
                                 $1,199.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -797,12 +739,7 @@
                             <div class="product-price">
                                 $79.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 6 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -835,12 +772,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -882,12 +814,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 5 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -920,13 +847,7 @@
                             <div class="product-price">
                                 $1,199.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -961,13 +882,7 @@
                                 <span class="new-price">$35.41</span>
                                 <span class="old-price">Was $41.67</span>
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 10 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #edd2c8;"><span
@@ -1038,13 +953,7 @@
                                 <span class="new-price">$35.41</span>
                                 <span class="old-price">Was $41.67</span>
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 10 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #edd2c8;"><span
@@ -1086,13 +995,7 @@
                             <div class="product-price">
                                 $1,199.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -1124,12 +1027,7 @@
                             <div class="product-price">
                                 $79.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 6 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -1162,12 +1060,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -1235,13 +1128,7 @@
                             <div class="product-price">
                                 $1,199.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -1274,12 +1161,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 5 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -1312,13 +1194,7 @@
                             <div class="product-price">
                                 $1,199.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 100%;"></div>
-                                    <!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -1350,12 +1226,7 @@
                             <div class="product-price">
                                 $79.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 6 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
 
@@ -1388,12 +1259,7 @@
                             <div class="product-price">
                                 $899.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -1639,13 +1505,7 @@
                                         <div class="product-price">
                                             $199.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 100%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" style="background: #69b4ff;"><span class="sr-only">Color
@@ -1687,13 +1547,7 @@
                                         <div class="product-price">
                                             $279.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 60%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 6 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -1727,13 +1581,7 @@
                                         <div class="product-price">
                                             $499.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -1778,13 +1626,7 @@
                                             <span class="new-price">$1,699.99</span>
                                             <span class="old-price">Was $1,999.99</span>
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 10 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -1818,13 +1660,7 @@
                                         <div class="product-price">
                                             $899.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -1891,13 +1727,7 @@
                                         <div class="product-price">
                                             $899.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -1939,13 +1769,7 @@
                                         <div class="product-price">
                                             $79.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 60%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 6 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -1981,13 +1805,7 @@
                                             <span class="new-price">$35.41</span>
                                             <span class="old-price">Was $41.67</span>
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 100%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 10 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" class="active" style="background: #edd2c8;"><span
@@ -2030,13 +1848,7 @@
                                         <div class="product-price">
                                             $899.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 60%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 5 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -2070,13 +1882,7 @@
                                         <div class="product-price">
                                             $1,199.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 100%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
                             </div><!-- End .owl-carousel -->
@@ -2134,13 +1940,7 @@
                                         <div class="product-price">
                                             $499.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -2183,13 +1983,7 @@
                                         <div class="product-price">
                                             $199.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 100%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" style="background: #69b4ff;"><span class="sr-only">Color
@@ -2231,13 +2025,7 @@
                                         <div class="product-price">
                                             $279.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 60%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 6 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -2271,13 +2059,7 @@
                                         <div class="product-price">
                                             $899.99
                                         </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 4 Reviews )</span>
-                                        </div><!-- End .rating-container -->
+
 
                                         <div class="product-nav product-nav-dots">
                                             <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
@@ -2343,12 +2125,6 @@
                                 <span class="new-price">$279.99</span>
                                 <span class="old-price">Was $349.99</span>
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 40%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #666666;"><span
@@ -2395,12 +2171,7 @@
                             <div class="product-price">
                                 $349.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 2 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -2437,12 +2208,7 @@
                             <div class="product-price">
                                 $214.49
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 0%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 0 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #e2e2e2;"><span
@@ -2486,12 +2252,7 @@
                                 <span class="out-price">$339.99</span>
                                 <span class="out-text">Out Of Stock</span>
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 11 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -2525,12 +2286,7 @@
                             <div class="product-price">
                                 $499.99
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 50%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 11 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -2564,12 +2320,7 @@
                             <div class="product-price">
                                 $49.00
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 24 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #ef837b;"><span
@@ -2614,12 +2365,7 @@
                                 <span class="new-price">$99.99</span>
                                 <span class="old-price">Was $129.99</span>
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 40%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 4 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
 
                             <div class="product-nav product-nav-dots">
                                 <a href="#" class="active" style="background: #666666;"><span
@@ -2666,12 +2412,7 @@
                             <div class="product-price">
                                 $149.00
                             </div><!-- End .product-price -->
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 60%;"></div><!-- End .ratings-val -->
-                                </div><!-- End .ratings -->
-                                <span class="ratings-text">( 2 Reviews )</span>
-                            </div><!-- End .rating-container -->
+
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
@@ -2741,94 +2482,6 @@
             </div><!-- End .row -->
         </div><!-- End .container -->
     </div><!-- End .icon-boxes-container -->
-    
+
 </main><!-- End .main -->
 <!-- Trong Blade view -->
-
-<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-<script>
-    var userId = @json(Auth::user() ? Auth::user()->user_id : null); // Lấy user_id nếu người dùng đã đăng nhập
-
-    $(document).on('click', '.add-to-wishlist-btn', function (e) {
-        e.preventDefault(); // Ngừng gửi form mặc định
-
-        var form = $(this).closest('form'); // Lấy form chứa nút bấm
-        var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy sale_new_id từ input hidden
-
-        // Kiểm tra nếu userId không có giá trị
-        if (!userId) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'You need to log in to add  favorites list!',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 1000,
-                timerProgressBar: true
-            }).then(() => {
-                // Chuyển hướng đến trang login
-                window.location.href = '{{ route('login') }}';
-            });
-            return;
-        }
-
-        $.ajax({
-            url: form.attr('action'),
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}', // CSRF token
-                user_id: userId, // User ID từ JavaScript
-                sale_new_id: saleNewId // Sale New ID
-            },
-            success: function (response) {
-                // Kiểm tra phản hồi thành công từ server
-                if (response.type === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: response.message,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: response.message,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                var response = JSON.parse(xhr.responseText);
-                Swal.fire({
-                    icon: 'error',
-                    title: response.message || 'Error here!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-            }
-        });
-    });
-
-    @if (session('alert'))
-        Swal.fire({
-            icon: "{{ session('alert')['type'] }}",
-            title: "{{ session('alert')['message'] }}",
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        });
-    @endif
-</script>
-

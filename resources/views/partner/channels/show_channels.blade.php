@@ -33,8 +33,7 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Channel</li>
+                <li class="breadcrumb-item active" aria-current="page">My Channel</li>
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -45,8 +44,8 @@
                     <div class="d-flex">
                         <div class="flex-shrink-0">
                             @if ($channels->image_channel)
+                          
                             <img src="{{ asset('storage/' . $channels->image_channel) }}"
-                            {{-- class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;"> --}}
                                 alt="Generic placeholder image" class="img-fluid" style="width: 140px; height:100px; border-radius: 10px;">
                             @else
                             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
@@ -54,8 +53,8 @@
                             @endif
                         </div>
                         <div class="channel-info ms-3">
-                            <h3 class="channel-name text-primary mb-2">{{ $channels->name_channel }}</h3>
-                            <p class="trusted-partner text-danger mb-3">
+                            <h3 class="channel-name text-primary ">{{ $channels->name_channel }}</h3>
+                            <p class="trusted-partner text-danger   ">
                                 <i class="fa-solid fa-handshake me-2 text-warning"></i> 
                                 Trusted partners receive the protection of the floor
                             </p>
@@ -70,7 +69,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <p class="small text-muted mb-1">
-                                        <i class="fa-solid fa-users me-2 text-info"></i>{{ $channels->followers_count }}
+                                        <i class="fa-solid fa-users me-2 text-info"></i>{{ $channels->isFollowed }}
                                     </p>
                                     <p class="small text-muted mb-0">
                                         <i class="fa-solid fa-clipboard-check me-2 text-info"></i>{{ $NewsCount }}
@@ -135,6 +134,7 @@
                         @if($sale_news->total() > 0)
                         @foreach ($sale_news as $sale_new)
                         <div class="product product-list">
+                            
                             <div class="row">
                                 <div class="col-6 col-lg-3">
                                     <figure class="product-media">
@@ -143,7 +143,8 @@
                                             On top
                                         </span>
                                         @endif
-                                        <img src="{{ asset($sale_new->firstImage->image_name) }}" alt="Product image1" class="product-image">
+                                <img src="assets/images/demos/demo-4/products/product-3.jpg" alt="">
+                                        {{-- <img src="{{ asset($sale_new->firstImage->image_name) }}" alt="Product image1" class="product-image"> --}}
                                     </figure><!-- End .product-media -->
                                 </div><!-- End .col-sm-6 col-lg-3 -->
 
