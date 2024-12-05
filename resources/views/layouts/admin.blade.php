@@ -223,12 +223,12 @@
               <ul class="menu-sub">
                 <li class="menu-item {{ Request::is('account/employee-management/*') || Request::is('account/employee-management') ? 'active' : '' }}">
                   <a href="{{ url('account/employee-management') }}" class="menu-link">
-                    <div data-i18n="Add Affiliate Account">Add Affiliate Account</div>
+                    <div data-i18n="Add Affiliate Account">Staff Management</div>
                   </a>
                 </li>
                 <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
                   <a href="{{ url('account/user-account-management') }}" class="menu-link">
-                    <div data-i18n="Confirm Partner">Confirm Partner</div>
+                    <div data-i18n="Confirm Partner">User Management</div>
                   </a>
                 </li>
 
@@ -378,14 +378,9 @@
               <div data-i18n="Trash">Trash</div>
             </a>
             <ul class="menu-sub">
-              <li class="menu-item {{ Request::is('trash/user') ? 'active' : '' }}">
-                <a href="{{ url('trash/user') }}" class="menu-link">
-                  <div data-i18n="Trash User">User</div>
-                </a>
-              </li>
-              <li class="menu-item {{ Request::is('trash/product') ? 'active' : '' }}">
-                <a href="{{ url('trash/product') }}" class="menu-link">
-                  <div data-i18n="Trash Product">Product</div>
+              <li class="menu-item {{ Request::is('trash/sale-news') ? 'active' : '' }}">
+                <a href="{{ url('trash/sale-news') }}" class="menu-link">
+                  <div data-i18n="Trash Sale News">Sale News</div>
                 </a>
               </li>
               <li class="menu-item {{ Request::is('trash/channel') ? 'active' : '' }}">

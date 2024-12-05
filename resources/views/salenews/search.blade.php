@@ -1,3 +1,4 @@
+
 @extends('layouts.client_layout') @section('content')
 <main class="main">
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -41,9 +42,7 @@
                                 "1200": {
                                     "items":4
                                 }
-                            }
-                        }'>
-
+                            }'>
                         @if ($recentVipSaleNews->isNotEmpty() || $olderVipSaleNews->isNotEmpty())
                         <div class="owl-stage-outer">
                             <div class="owl-stage"
@@ -358,47 +357,48 @@
                                     </a>
                                 </h3>
                                 <!-- End .widget-title -->
+                                    <div class="collapse show" id="widget-5">
+                                        <div class="widget-body">
+                                            <div class="filter-price">
+                                                <div class="filter-price-text">
+                                                    Price Range:
+                                                    <span id="filter-price-range">$0 - $500</span>
+                                                </div>
+                                                <!-- End .filter-price-text -->
 
-                                <div class="collapse show" id="widget-5">
-                                    <div class="widget-body">
-                                        <div class="filter-price">
-                                            <div class="filter-price-text">
-                                                Price Range:
-                                                <span id="filter-price-range">$0 - $500</span>
-                                            </div>
-                                            <!-- End .filter-price-text -->
-
-                                            <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
-                                                <div class="noUi-base">
-                                                    <div class="noUi-connects">
-                                                        <div class="noUi-connect"
-                                                            style="transform: translate(0%, 0px) scale(0.5, 1);"></div>
-                                                    </div>
-                                                    <div class="noUi-origin"
-                                                        style="transform: translate(-100%, 0px); z-index: 5;">
-                                                        <div class="noUi-handle noUi-handle-lower" data-handle="0"
-                                                            tabindex="0" role="slider" aria-orientation="horizontal"
-                                                            aria-valuemin="0.0" aria-valuemax="300.0" aria-valuenow="0.0"
-                                                            aria-valuetext="$0">
-                                                            <div class="noUi-touch-area"></div>
-                                                            <div class="noUi-tooltip">$0</div>
+                                                <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
+                                                    <div class="noUi-base">
+                                                        <div class="noUi-connects">
+                                                            <div class="noUi-connect"
+                                                                style="transform: translate(0%, 0px) scale(0.5, 1);"></div>
                                                         </div>
-                                                    </div>
-                                                    <div class="noUi-origin"
-                                                        style="transform: translate(-50%, 0px); z-index: 6;">
-                                                        <div class="noUi-handle noUi-handle-upper" data-handle="1"
-                                                            tabindex="0" role="slider" aria-orientation="horizontal"
-                                                            aria-valuemin="200.0" aria-valuemax="1000.0"
-                                                            aria-valuenow="500.0" aria-valuetext="$500">
-                                                            <div class="noUi-touch-area"></div>
-                                                            <div class="noUi-tooltip">$500</div>
+                                                        <div class="noUi-origin"
+                                                            style="transform: translate(-100%, 0px); z-index: 5;">
+                                                            <div class="noUi-handle noUi-handle-lower" data-handle="0"
+                                                                tabindex="0" role="slider" aria-orientation="horizontal"
+                                                                aria-valuemin="0.0" aria-valuemax="300.0" aria-valuenow="0.0"
+                                                                aria-valuetext="$0">
+                                                                <div class="noUi-touch-area"></div>
+                                                                <div class="noUi-tooltip">$0</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="noUi-origin"
+                                                            style="transform: translate(-50%, 0px); z-index: 6;">
+                                                            <div class="noUi-handle noUi-handle-upper" data-handle="1"
+                                                                tabindex="0" role="slider" aria-orientation="horizontal"
+                                                                aria-valuemin="200.0" aria-valuemax="1000.0"
+                                                                aria-valuenow="500.0" aria-valuetext="$500">
+                                                                <div class="noUi-touch-area"></div>
+                                                                <div class="noUi-tooltip">$500</div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!-- End #price-slider -->
                                             </div>
-                                            <!-- End #price-slider -->
+                                            <!-- End .filter-price -->
                                         </div>
-                                        <!-- End .filter-price -->
+                                        <!-- End .widget-body -->
                                     </div>
                                     <!-- End .widget-body -->
                                 </div>

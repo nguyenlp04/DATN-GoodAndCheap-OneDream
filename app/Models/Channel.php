@@ -56,4 +56,8 @@ class Channel extends Model
     {
         return $this->hasOne(ChannelInfo::class, 'channel_id', 'channel_id');
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

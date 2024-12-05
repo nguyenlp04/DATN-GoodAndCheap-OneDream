@@ -216,12 +216,12 @@ class PartnerProfileController extends Controller
                     Storage::delete('public/' . $channel->image_channel);
                 }
 
-                // Lưu ảnh mới
-                $path = $request->file('image_channel')->store('images', 'public');
-                $channel->image_channel = $path;
+
+                if ($request->hasFile('image_channel')) {
+                    $path = $request->file('image_channel')->store('channels', 'public'); // Thêm tiền tố '/storage/' vào đường dẫn
+                    $channel->image_channel = 'storage/' . $path;
+                }
             }
-
-
             // Lưu thông tin
             $channel->save();
 
