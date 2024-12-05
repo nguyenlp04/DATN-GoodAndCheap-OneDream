@@ -12,6 +12,7 @@
       /* Chiều cao dòng */
    }
 
+
    .main-nav {
       width: 90%;
       white-space: nowrap;
@@ -28,6 +29,7 @@
    @keyframes marquee {
       from {
          transform: translate(0, 0);
+
       }
 
       to {
@@ -219,8 +221,11 @@
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
                </li>
                <li>
-                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-star"></i>About Us</a>
-               </li>
+
+                  <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star"></i>Contact</a>
+               </li>  
+            
+                   
 
 
             </ul>
@@ -246,6 +251,7 @@
                <li>
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
                </li>
+               
                <div class="col-md-5">
                   <div class="header-dropdown" style="display: flex; align-items: center;">
                      <div style="display: flex; align-items: center;   cursor: pointer;">
