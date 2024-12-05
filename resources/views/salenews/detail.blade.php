@@ -75,6 +75,9 @@
 
 
                             <div class="mb-2">
+                                @if(isset(auth()->user()->user_id ))
+
+
                         @if (auth()->user()->user_id !== $get_user->user_id)
 
 
@@ -84,6 +87,7 @@
                             @if(isset(auth()->user()->user_id))
                             <a id="message-id" href=""  data-id="{{$new->user_id}}" data-name="{{ $get_user->full_name}}"  class="btn btn-primary btn-rounded"> <i class="fa-regular fa-comments"></i>  Message the seller </a>
                             @endif
+                        @endif
                         @endif
                                 </div>
 
@@ -134,7 +138,7 @@
                                                     @if ($get_user->image_user)
                                                     <img src="{{ asset($get_user->image_user) }}" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
                                                     @else
-                                                    <img src="https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
+                                                    <img src="https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/06378cbea0004c25b8f835a60c9031f7~tplv-omjb5zjo8w-origin-jpeg.jpeg?from=1995374044" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
                                                     @endif
                                     </div>
                                     <div class="col-9 col-md-10">
