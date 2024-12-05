@@ -163,10 +163,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 
-// Route::get('/search', function () {
-//     return view('salenews.search');
-// });
 
 // enduser
 
