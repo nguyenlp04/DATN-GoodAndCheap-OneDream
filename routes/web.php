@@ -230,10 +230,7 @@ Route::prefix('payment')->group(function () {
 Route::resource('channels', ChannelController::class);
 
 Route::prefix('trash')->group(function () {
-    Route::get('/user', function () {
-        return view('admin.index');
-    });
-    Route::get('/product', function () {
+    Route::get('/sale-news', function () {
         return view('admin.index');
     });
     Route::get('/channel', function () {

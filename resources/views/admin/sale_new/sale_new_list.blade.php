@@ -109,8 +109,7 @@
                                                 <th>Id news</th>
                                                 <th>Title</th>
                                                 <th>Category</th>
-
-                                                <th>approved</th>
+                                                <th>Approve Status</th>
                                                 <th>Content</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -385,8 +384,7 @@
                         <th>Id news</th>
                         <th>Title</th>
                         <th>Category</th>
-
-                        <th>approved</th>
+                        <th>Approve Status</th>
                         <th>Content</th>
                         <th>Actions</th>
                     </tr>
@@ -637,8 +635,7 @@
                 <th>Id news</th>
                 <th>Title</th>
                 <th>Category</th>
-
-                <th>approved</th>
+                <th>Approve Status</th>
                 <th>Content</th>
                 <th>Actions</th>
             </tr>
@@ -890,8 +887,7 @@
                 <th>Id news</th>
                 <th>Title</th>
                 <th>Category</th>
-
-                <th>approved</th>
+                <th>Approve Status</th>
                 <th>Content</th>
                 <th>Actions</th>
             </tr>

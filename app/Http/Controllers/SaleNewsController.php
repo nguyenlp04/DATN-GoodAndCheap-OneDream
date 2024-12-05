@@ -67,7 +67,7 @@ class SaleNewsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        // dd($request['variant']);
         $validatedData = $request->validate([
             'productTitle' => 'required|string',
             'price' => 'required|numeric|min:0',
@@ -81,11 +81,11 @@ class SaleNewsController extends Controller
             'images.*' => 'required|max:2048',
 
         ]);
-        // dd($errors->all());
         // dd($validatedData, auth()->user()->user_id);
         try {
-
+            
             $jsonData = json_encode($validatedData['variant']);
+            // dd($jsonData);
 
             $productData = [
                 'user_id' => auth()->user()->user_id,
@@ -145,6 +145,7 @@ class SaleNewsController extends Controller
     {
         $address = !empty($request->hiddenAddress) ? $request->hiddenAddress : $request->hiddenAddressChannel;
         // dd($address);
+        // dd($request['variant']);
 
         $validatedData = $request->validate([
             'productTitle' => 'required|string',
@@ -157,12 +158,43 @@ class SaleNewsController extends Controller
             // 'hiddenAddress' => 'required',
             'images.*' => 'required|max:2048',
         ]);
+        // dd($validatedData['variant']);
+
         // dd($errors->all());
         // dd($validatedData, auth()->user()->user_id);
         try {
 
-            $jsonData = json_encode($validatedData['variant']);
+
+            // Kiểm tra và giải mã JSON nếu cần
+            $variant = $validatedData['variant'];
+            if (is_string($variant)) {
+                $variant = json_decode($variant, true); // Giải mã JSON thành mảng
+            }
+
+            // Kiểm tra nếu biến $variant không phải là mảng sau khi giải mã
+            if (!is_array($variant)) {
+                die('Dữ liệu không hợp lệ: variant không phải là mảng.');
+            }
+
+            // Chuyển đổi cấu trúc
+            $formattedVariant = array_map(function ($item) {
+                return [
+                    'name' => $item['name'],
+                    'option' => $item['options'][0] ?? null // Lấy giá trị đầu tiên trong 'options', nếu không có thì trả về null
+                ];
+            }, $variant);
+
+            // Chuyển đổi thành JSON
+            $jsonData = json_encode($formattedVariant, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
+            // Hiển thị hoặc lưu lại JSON
+
+            // dd($jsonData);
+
+
+            // $jsonData = json_encode($validatedData['variant']);
             $channel = Channel::where('user_id', auth()->user()->user_id)->first(['vip_package_id', 'vip_start_at', 'vip_end_at']);
+            // dd($jsonData);
 
             // dd($channel);
 
