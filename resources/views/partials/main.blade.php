@@ -179,7 +179,7 @@
                                 <span class="product-label label-circle label-top">Top</span>
                                 <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
                                     @if ($item->images->isNotEmpty())
-                                        <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                        {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
                                             class="equal-height-image">
                                     @endif
                                 </a>
@@ -210,7 +210,7 @@
 
                             <div class="product-body">
                                 <div class="product-cat">
-                                    <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                    {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
                                 </div><!-- End .product-cat -->
                                 <h3 class="product-title"><a
                                         href="salenew-detail/{{ $item->sale_new_id }}">{{ Str::limit($item->title, 35, '...') }} </a></h3>
@@ -1481,7 +1481,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-circle label-top">Top</span>
                                             <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                                {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
                                                     class="equal-height-image">
                                             </a>
 
@@ -1500,7 +1500,7 @@
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                                {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
                                             </div><!-- End .product-cat -->
                                             <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                                     wireless headphones</a></h3><!-- End .product-title -->
@@ -1545,7 +1545,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-circle label-new">New</span>
                                             <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                                {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
                                                     class="equal-height-image">
                                             </a>
 
@@ -1564,7 +1564,7 @@
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                                {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
                                             </div><!-- End .product-cat -->
                                             <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                                     wireless headphones</a></h3><!-- End .product-title -->
@@ -1608,7 +1608,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-circle label-new">Sale</span>
                                             <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                                {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
                                                     class="equal-height-image">
                                             </a>
 
@@ -1627,7 +1627,7 @@
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                                {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
                                             </div><!-- End .product-cat -->
                                             <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                                     wireless headphones</a></h3><!-- End .product-title -->
@@ -1671,7 +1671,7 @@
                             <figure class="product-media">
                                 {{-- <span class="product-label label-circle label-top">Top</span> --}}
                                 <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                    <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                    {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
                                         class="equal-height-image">
                                 </a>
 
@@ -1690,7 +1690,7 @@
 
                             <div class="product-body">
                                 <div class="product-cat">
-                                    <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                    {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
                                 </div><!-- End .product-cat -->
                                 <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                         wireless headphones</a></h3><!-- End .product-title -->
