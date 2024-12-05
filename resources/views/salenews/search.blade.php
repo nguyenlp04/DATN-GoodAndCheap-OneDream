@@ -44,89 +44,92 @@
                             }
                         }'>
 
-                        @if ($recentVipSaleNews->isNotEmpty() || $olderVipSaleNews->isNotEmpty())
-                        <div class="owl-stage-outer">
-                            <div class="owl-stage"
-                                style="transform: translate3d(-237px, 0px, 0px); transition: all; width: 1188px;">
-                                @foreach ($recentVipSaleNews as $item)
-                                    <div class="owl-item" style="width: 217.6px; margin-right: 20px;">
-                                        <div class="product">
-                                            <figure class="product-media">
-                                                <span class="product-label label-top">Top</span>
-                                                <a href="product.html">
-                                                    @if ($item->images->isNotEmpty())
-                                                        <img src="{{ $item->images->first()->image_name }}"
-                                                            alt="Image" class="equal-height-image">
-                                                    @endif
-                                                </a>
-                                                <div class="product-action-vertical">
-                                                    <a href="#"
-                                                        class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                                            to
-                                                            wishlist</span></a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#">{{ $item->categoryToSubcategory->name_category }}</a>
-                                                </div>
-                                                <h3 class="product-title text-truncate-3">
-                                                    <a href="product.html">{{ $item->title }}</a>
-                                                </h3>
-                                                <div class="product-price">
-                                                    ${{ number_format($item->price, 2) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                    
-                                @foreach ($olderVipSaleNews as $item)
-                                    <div class="owl-item" style="width: 217.6px; margin-right: 20px;">
-                                        <div class="product">
-                                            <figure class="product-media">
-                                                <span class="product-label label-top">Top</span>
-                                                <a href="product.html">
-                                                    @if ($item->images->isNotEmpty())
-                                                        <img src="{{ $item->images->first()->image_name }}"
-                                                            alt="Image" class="equal-height-image">
-                                                    @endif
-                                                </a>
-                                                <div class="product-action-vertical">
-                                                    <a href="#"
-                                                        class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                                            to
-                                                            wishlist</span></a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#">{{ $item->categoryToSubcategory->name_category }}</a>
-                                                </div>
-                                                <h3 class="product-title text-truncate-3">
-                                                    <a href="product.html">{{ $item->title }}</a>
-                                                </h3>
-                                                <div class="product-price">
-                                                    ${{ number_format($item->price, 2) }}
+                            @if ($recentVipSaleNews->isNotEmpty() || $olderVipSaleNews->isNotEmpty())
+                                <div class="owl-stage-outer">
+                                    <div class="owl-stage"
+                                        style="transform: translate3d(-237px, 0px, 0px); transition: all; width: 1188px;">
+                                        @foreach ($recentVipSaleNews as $item)
+                                            <div class="owl-item" style="width: 217.6px; margin-right: 20px;">
+                                                <div class="product">
+                                                    <figure class="product-media">
+                                                        <span class="product-label label-top">Top</span>
+                                                        <a href="product.html">
+                                                            @if ($item->images->isNotEmpty())
+                                                                <img src="{{ $item->images->first()->image_name }}"
+                                                                    alt="Image" class="equal-height-image">
+                                                            @endif
+                                                        </a>
+                                                        <div class="product-action-vertical">
+                                                            <a href="#"
+                                                                class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                                    to
+                                                                    wishlist</span></a>
+                                                        </div>
+                                                    </figure>
+                                                    <div class="product-body">
+                                                        <div class="product-cat">
+                                                            <a
+                                                                href="#">{{ $item->categoryToSubcategory->name_category }}</a>
+                                                        </div>
+                                                        <h3 class="product-title text-truncate-3">
+                                                            <a href="product.html">{{ $item->title }}</a>
+                                                        </h3>
+                                                        <div class="product-price">
+                                                            ${{ number_format($item->price, 2) }}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endforeach
+
+                                        @foreach ($olderVipSaleNews as $item)
+                                            <div class="owl-item" style="width: 217.6px; margin-right: 20px;">
+                                                <div class="product">
+                                                    <figure class="product-media">
+                                                        <span class="product-label label-top">Top</span>
+                                                        <a href="product.html">
+                                                            @if ($item->images->isNotEmpty())
+                                                                <img src="{{ $item->images->first()->image_name }}"
+                                                                    alt="Image" class="equal-height-image">
+                                                            @endif
+                                                        </a>
+                                                        <div class="product-action-vertical">
+                                                            <a href="#"
+                                                                class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                                    to
+                                                                    wishlist</span></a>
+                                                        </div>
+                                                    </figure>
+                                                    <div class="product-body">
+                                                        <div class="product-cat">
+                                                            <a
+                                                                href="#">{{ $item->categoryToSubcategory->name_category }}</a>
+                                                        </div>
+                                                        <h3 class="product-title text-truncate-3">
+                                                            <a href="product.html">{{ $item->title }}</a>
+                                                        </h3>
+                                                        <div class="product-price">
+                                                            ${{ number_format($item->price, 2) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    
-                        <!-- Hiển thị owl-nav nếu có sản phẩm -->
-                        <div class="owl-nav">
-                            <button type="button" role="presentation" class="owl-prev" style="left: -20px; ">
-                                <i class="icon-angle-left"></i>
-                            </button>
-                            <button type="button" role="presentation" class="owl-prev disabled" style="left: -20px; ">
-                                <i class="icon-angle-left"></i>
-                            </button>
-                        </div>
-                    @endif
-                    
+                                </div>
+
+                                <!-- Hiển thị owl-nav nếu có sản phẩm -->
+                                <div class="owl-nav">
+                                    <button type="button" role="presentation" class="owl-prev" style="left: -20px; ">
+                                        <i class="icon-angle-left"></i>
+                                    </button>
+                                    <button type="button" role="presentation" class="owl-prev disabled"
+                                        style="left: -20px; ">
+                                        <i class="icon-angle-left"></i>
+                                    </button>
+                                </div>
+                            @endif
+
                             <style>
                                 .text-truncate-3 {
                                     display: -webkit-box;
@@ -302,64 +305,53 @@
 
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
-                            <div class="widget widget-collapsible">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-6" role="button" aria-expanded="true"
-                                        aria-controls="widget-5">
-                                        Location
-                                    </a>
-                                </h3>
-                                <!-- End .widget-title -->
-
-                                <div class="collapse show" id="widget-6">
-                                    <div class="widget-body">
-                                        <input type="text" class="form-control" />
-                                        <select class="form-select form-control" aria-label="Default select example">
-                                            <option selected>City</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                        <select class="form-select form-control" aria-label="Default select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                        <select class="form-select form-control" aria-label="Default select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
+                            <form method="GET" action="{{ route('search') }}">
+                                <!-- Filter by Address -->
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">
+                                        <a data-toggle="collapse" href="#widget-6" role="button" aria-expanded="true" aria-controls="widget-6">
+                                            Address
+                                        </a>
+                                    </h3>
+                                    <div class="collapse show" id="widget-6">
+                                        <div class="widget-body">
+                                            <input type="text" name="address" placeholder="Enter address" class="form-control"
+                                                value="{{ request()->get('address') }}">
+                                        </div>
                                     </div>
-                                    <!-- End .widget-body -->
                                 </div>
-                                <!-- End .collapse -->
-                            </div>
-                            <div class="widget widget-collapsible">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true"
-                                        aria-controls="widget-5">
-                                        Category
-                                    </a>
-                                </h3>
-                                <!-- End .widget-title -->
-
-                                <div class="collapse show" id="widget-2">
-                                    <div class="widget-body">
-                                        <select class="form-select form-control" aria-label="Default select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
+                            
+                                <!-- Filter by Category -->
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">
+                                        <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true" aria-controls="widget-2">
+                                            Category
+                                        </a>
+                                    </h3>
+                                    <div class="collapse show" id="widget-2">
+                                        <div class="widget-body">
+                                            <select class="form-select form-control" name="category">
+                                                <option value="">Select Category</option>
+                                                @foreach ($category as $item)
+                                                    <option value="{{ $item->category_id }}"
+                                                        {{ request()->get('category') == $item->category_id ? 'selected' : '' }}>
+                                                        {{ $item->name_category }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                    <!-- End .widget-body -->
                                 </div>
-                                <!-- End .collapse -->
-                            </div>
-                            <div class="widget widget-collapsible">
+                            
+                                <!-- Hidden input to retain search keyword -->
+                                <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
+                            
+                                <!-- Apply Filters Button -->
+                                <button type="submit" class="btn btn-primary">Apply Filter</button>
+                            </form>
+                            
+                            
+                            {{-- <div class="widget widget-collapsible">
                                 <h3 class="widget-title">
                                     <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
                                         aria-controls="widget-5">
@@ -412,7 +404,7 @@
                                     <!-- End .widget-body -->
                                 </div>
                                 <!-- End .collapse -->
-                            </div>
+                            </div> --}}
                         </div>
                         <!-- End .sidebar sidebar-shop -->
                     </aside>

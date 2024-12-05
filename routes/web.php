@@ -174,8 +174,20 @@ Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
 // guest
 
 Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get();  // Truyền dữ liệu trực tiếp ở đây
-    return view('home', ['data' => $data]);
+    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get(); 
+    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
+    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
+    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
+    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get(); 
+
+    return view('home', [
+        'data' => $data,
+        'topRated' => $topRated,
+        'bestSelling' => $bestSelling,
+        'onSale' => $onSale,
+        'recommendation' => $recommendation,
+
+]);
 })->name('home');
 
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
