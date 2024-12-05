@@ -183,7 +183,11 @@
                                     class="equal-height-image">
                                 @endif
                             </a>
+
+
+
                             <div class="product-action-vertical">
+
                                 <!-- Thêm data-product-id để lưu id sản phẩm -->
                                 <form action="{{ route('addToWishlist') }}" method="POST">
                                     @csrf
@@ -213,6 +217,7 @@
                             <div class="product-price">
                                 ${{ $item->price }}
                             </div><!-- End .product-price -->
+                            <!-- <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
                                         name</span></a>
                                 <a href="#" style="background: #eaeaec;"><span class="sr-only">Color
@@ -745,7 +750,6 @@
                                 <img src="assets/images/demos/demo-4/products/product-3.jpg" alt="Product image"
                                     class="product-image">
                             </a>
-
                             <div class="product-action-vertical">
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
@@ -1507,7 +1511,6 @@
 
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
-
                                 @endforeach
 
                             </div><!-- End .owl-carousel -->
@@ -1698,7 +1701,6 @@
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div>
-
                 @endforeach
 
 

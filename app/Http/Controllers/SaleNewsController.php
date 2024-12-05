@@ -507,87 +507,85 @@ class SaleNewsController extends Controller
     }
 
     public function search(Request $request)
-{
-    $keyword = $request->input('keyword');
-    $categoryId = $request->get('category'); // Get category filter
-    $address = $request->get('address');    // Get address filter
+    {
+        $keyword = $request->input('keyword');
+        $categoryId = $request->get('category'); // Get category filter
+        $address = $request->get('address');    // Get address filter
 
-    $threeDaysAgo = Carbon::now()->subDays(3);
+        $threeDaysAgo = Carbon::now()->subDays(3);
 
-    // Recent VIP SaleNews (users created within the last 3 days)
-    $recentVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
-        ->with('categoryToSubcategory', 'user', 'sub_category.category')
-        ->whereNotNull('vip_package_id')
-        ->whereHas('user', function ($query) use ($threeDaysAgo) {
-            $query->where('created_at', '>=', $threeDaysAgo);
-        });
+        // Recent VIP SaleNews (users created within the last 3 days)
+        $recentVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('categoryToSubcategory', 'user', 'sub_category.category')
+            ->whereNotNull('vip_package_id')
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '>=', $threeDaysAgo);
+            });
 
-    if ($categoryId) {
-        $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        });
+        if ($categoryId) {
+            $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+
+        if ($address) {
+            $recentVipSaleNews->where('address', 'like', "%$address%");
+        }
+
+        $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
+
+        // Older VIP SaleNews (users created more than 3 days ago)
+        $olderVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('categoryToSubcategory', 'user', 'sub_category.category')
+            ->whereNotNull('vip_package_id')
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '<', $threeDaysAgo);
+            });
+
+        if ($categoryId) {
+            $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+
+        if ($address) {
+            $olderVipSaleNews->where('address', 'like', "%$address%");
+        }
+
+        $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
+
+        // Non-VIP SaleNews with pagination
+        $perPage = $request->get('perPage', 2);
+        $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('sub_category.category')
+            ->whereNull('vip_package_id');
+
+        if ($categoryId) {
+            $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+
+        if ($address) {
+            $nonVipSaleNews->where('address', 'like', "%$address%");
+        }
+
+        $nonVipSaleNews = $nonVipSaleNews->paginate($perPage);
+
+        $totalNonVipSaleNews = $nonVipSaleNews->total();
+
+        $category = Category::all();
+
+        return view('salenews.search', compact(
+            'recentVipSaleNews',
+            'olderVipSaleNews',
+            'nonVipSaleNews',
+            'keyword',
+            'perPage',
+            'totalNonVipSaleNews',
+            'category',
+            'address',
+            'categoryId'
+        ));
     }
-
-    if ($address) {
-        $recentVipSaleNews->where('address', 'like', "%$address%");
-    }
-
-    $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
-
-    // Older VIP SaleNews (users created more than 3 days ago)
-    $olderVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
-        ->with('categoryToSubcategory', 'user', 'sub_category.category')
-        ->whereNotNull('vip_package_id')
-        ->whereHas('user', function ($query) use ($threeDaysAgo) {
-            $query->where('created_at', '<', $threeDaysAgo);
-        });
-
-    if ($categoryId) {
-        $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        });
-    }
-
-    if ($address) {
-        $olderVipSaleNews->where('address', 'like', "%$address%");
-    }
-
-    $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
-
-    // Non-VIP SaleNews with pagination
-    $perPage = $request->get('perPage', 2);
-    $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
-        ->with('sub_category.category')
-        ->whereNull('vip_package_id');
-
-    if ($categoryId) {
-        $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        });
-    }
-
-    if ($address) {
-        $nonVipSaleNews->where('address', 'like', "%$address%");
-    }
-
-    $nonVipSaleNews = $nonVipSaleNews->paginate($perPage);
-
-    $totalNonVipSaleNews = $nonVipSaleNews->total();
-
-    $category = Category::all();
-
-    return view('salenews.search', compact(
-        'recentVipSaleNews',
-        'olderVipSaleNews',
-        'nonVipSaleNews',
-        'keyword',
-        'perPage',
-        'totalNonVipSaleNews',
-        'category',
-        'address',
-        'categoryId'
-    ));
-}
-
-
 }

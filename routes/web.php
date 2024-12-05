@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+Route::post('/search-channel', [ChannelController::class, 'search_channel'])->name('search_channel');
 Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 
 
@@ -178,7 +179,6 @@ Route::get('/', function () {
     $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
     $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
     $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get();
-
     return view('home', [
         'data' => $data,
         'topRated' => $topRated,
