@@ -149,8 +149,6 @@
                                         <select id="subcategory" name="subcategory_id" class="form-select">
                                         </select>
                                     </div>
-                                    <input type="hidden" id="dataVariantDetail" name="dataVariantDetail"
-                                        value="">
                                     <input type="hidden" id="variant" name="variant" value="">
                                     <!-- Status -->
                                     <div class="mb-6 col ecommerce-select2-dropdown" data-select2-id="47">
