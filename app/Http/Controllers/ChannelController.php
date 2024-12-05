@@ -139,37 +139,49 @@ class ChannelController extends Controller
      */
     public function show(string $id)
     {
-        $user = Auth::user();
-        // // Check if the user has created a channel
+        $user = Auth::user(); // Lấy thông tin người dùng nếu đã đăng nhập
+        $channel = Channel::where('user_id', $user->user_id ?? null)->first(); // Lấy kênh nếu người dùng đã đăng nhập
 
-        $channel = Channel::where('user_id', $user->user_id)->first();
+        // Lấy thông tin của kênh đang được xem
         $information = ChannelInfo::where('channel_id', $id)->first();
+        $channels = Channel::findOrFail($id); // Lấy kênh theo ID
 
-
-        // If the user has a channel, continue to display the channel
-        $channels = Channel::findOrFail($id); // Get channel by ID
+        // Lấy danh sách tin đã được duyệt thuộc kênh
         $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
             ->where('approved', 1)
             ->paginate(5);
 
         foreach ($sale_news as $news) {
-            // Get name_sub_category from the relation subcategory
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
         }
 
-        // Count records of sub_category based on name
+        // Đếm số lượng bản ghi theo sub_category
         $subcategory_count = $sale_news->filter(function ($news) {
             return $news->sub_category !== null;
         })->countBy('name_sub_category');
 
-        // Count the number of news items that the channel has posted
+        // Đếm số lượng tin mà kênh đã đăng
         $NewsCount = $channels->saleNews()->count();
-        //loi viet
-        $isFollowed = UserFollowed::where('user_id', $user->user_id)
-            ->where('channel_id', $channels->channel_id)
-            ->exists();
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'information'));
+
+        // Kiểm tra nếu người dùng đã theo dõi kênh (nếu đã đăng nhập)
+        $isFollowed = false;
+        if ($user) {
+            $isFollowed = UserFollowed::where('user_id', $user->user_id)
+                ->where('channel_id', $channels->channel_id)
+                ->exists();
+        }
+
+        // Trả về view
+        return view('partner.channels.show_channels', compact(
+            'channels',
+            'NewsCount',
+            'sale_news',
+            'subcategory_count',
+            'isFollowed',
+            'information'
+        ));
     }
+
 
 
     /**
