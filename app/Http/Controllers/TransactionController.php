@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Transactions;
 use App\Models\Channel;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -17,7 +18,13 @@ class TransactionController extends Controller
         $data = Transactions::with(['user', 'channel'])->get();
         return view('admin.payments.transactions', ['data' => $data]);
     }
-
+    public function user_transaction_history()
+    {
+        $userId = Auth::id();
+        $data = Transactions::with(['user', 'channel'])->where('user_id', $userId)->get();
+        $title = 'Transaction History - Good & Cheep';
+        return view('user.transaction_history', ['data' => $data, 'title' => $title]);
+    }
     /**
      * Show the form for creating a new resource.
      */
