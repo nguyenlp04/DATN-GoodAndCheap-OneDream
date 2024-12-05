@@ -1,9 +1,27 @@
 <style>
-   
-   .hover-item-notification:hover{
-      background-color: #eee6e4;
-      color: #f3ecec;
+   .text-ellipsis {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      /* Số lượng hàng hiển thị */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+
+      line-height: 1.5em;
+      /* Chiều cao dòng */
    }
+
+.main-nav {
+     width: 90%; white-space: nowrap; overflow: hidden; box-sizing: border-box;
+      }
+       .main-nav span { display: inline-block; padding-left: 100%; animation: marquee 10s linear infinite;
+      }
+      @keyframes marquee
+      { from { transform: translate(0, 0);
+      } to { transform: translate(-100%, 0);
+      }
+      }
 </style>
 
 <div class="page-wrapper">
@@ -34,15 +52,19 @@
 
               
 
-               <form action="{{ route('search') }}" method="GET">
-                  <div class="header-search-wrapper search-wrapper-wide">
-                     <label for="q" class="sr-only">Search</label>
-                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                     <input type="search" class="form-control" name="keyword" id="keyword"
-                        placeholder="Search product ..." autofocus>
-                  </div>
-                  <!-- End .header-search-wrapper -->
-               </form>
+              <form action="{{ route('search') }}" method="GET">
+               <div class="header-search-wrapper search-wrapper-wide">
+                   <label for="q" class="sr-only">Search</label>
+                   <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                   <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
+                       placeholder="Search product ..." autofocus>
+           
+                   <!-- Hidden inputs to retain filter values -->
+                   <input type="hidden" name="address" value="{{ request()->get('address') }}">
+                   <input type="hidden" name="category" value="{{ request()->get('category') }}">
+               </div>
+           </form>
+           
             </div>
             <!-- End .header-search -->
          </div>
@@ -167,55 +189,29 @@
       <!-- End .header-left -->
       <div class="header-center">
          <nav class="main-nav">
-            <ul class="menu sf-arrows">
-               <li class="megamenu-container active">
-                  <a href="index.html" class="sf-with-ul">Home</a>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">Shop</a>
-                  <ul>
-                     <li>
-                        <a href="about.html" class="sf-with-ul">Sale new</a>
-                        <ul>
-                           <li><a href="about.html">s1</a></li>
-                           <li><a href="about-2.html">s2</a></li>
-                        </ul>
-                     </li>
-                     <li><a href="product.html">Product</a></li>
-                  </ul>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">Product</a>
-                  <ul>
-                     <li>
-                        <a href="about.html" class="sf-with-ul">New Product </a>
-                        <a href="about.html" class="sf-with-ul">Products </a>
-                     </li>
-                  </ul>
-               </li>
-               <li>
-                  <a href="{{route('blogs.listting')}}" class="">Blog</a>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">Contact</a>
-                  <ul>
-                     <li><a href="404.html">Error 404</a></li>
-                  </ul>
-               </li>
-               <li>
-                  <a href="#" class="sf-with-ul">About us</a>
-                  <ul>
-                     <li><a href="404.html">Error 404</a></li>
-                  </ul>
-               </li>
-            </ul>
-            <!-- End .menu -->
-         </nav>
+            <span>Welcome to Good & Cheap website wish you a great career</span>
+                      </nav>
          <!-- End .main-nav -->
       </div>
       <div class="header-right">
          <div class="row">
             @guest
+            <ul class="menu sf-arrows">
+               <li class="megamenu-container active">
+                  <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house"></i>Home</a>
+               </li>
+
+
+
+               <li>
+                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
+               </li>
+                <li>
+                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-star"></i>About Us</a>
+               </li>
+
+
+            </ul>
             <!-- Nếu chưa đăng nhập -->
             <!-- <div class="col-md-5">
                <a href="{{ route('login') }}">
@@ -231,6 +227,13 @@
             @auth
             <!-- Nếu đã đăng nhập -->
             <ul class="menu sf-arrows">
+               <li class="megamenu-container active">
+                  <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house"></i>Home</a>
+               </li>
+
+               <li>
+                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
+               </li>
                <div class="col-md-5">
                   <div class="header-dropdown" style="display: flex; align-items: center;">
                      <div style="display: flex; align-items: center;   cursor: pointer;">
