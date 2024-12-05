@@ -131,7 +131,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/infomation/store', [PartnerProfileController::class, 'storeInfomation'])->name('store.infomation');
         Route::get('/infomation/edit/{channel_id}', [PartnerProfileController::class, 'editInfomation'])->name('edit.infomation');
         Route::put('/infomation/update/{channel_id}', [PartnerProfileController::class, 'updateInfomation'])->name('update.infomation');
-        Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
+        // Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
@@ -159,13 +159,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/manage/update', [UserManageController::class, 'updateProfile'])->name('user.manage.update');
 
     Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
+    Route::get('/transaction-history', [TransactionController::class, 'user_transaction_history'])->name('user.transaction_history');
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 
-// Route::get('/search', function () {
-//     return view('salenews.search');
-// });
 
 // enduser
 
@@ -174,11 +173,11 @@ Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
 // guest
 
 Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get(); 
-    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get(); 
-    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get(); 
+    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get();
+    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
+    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
+    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
+    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get();
 
     return view('home', [
         'data' => $data,
@@ -187,7 +186,7 @@ Route::get('/', function () {
         'onSale' => $onSale,
         'recommendation' => $recommendation,
 
-]);
+    ]);
 })->name('home');
 
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
@@ -254,4 +253,3 @@ Route::get('/tb', function () {
     return view('notifications.list');
 });
 Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);
-
