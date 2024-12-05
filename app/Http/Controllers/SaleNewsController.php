@@ -67,7 +67,7 @@ class SaleNewsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        // dd($request['variant']);
         $validatedData = $request->validate([
             'productTitle' => 'required|string',
             'price' => 'required|numeric|min:0',
@@ -81,11 +81,11 @@ class SaleNewsController extends Controller
             'images.*' => 'required|max:2048',
 
         ]);
-        // dd($errors->all());
         // dd($validatedData, auth()->user()->user_id);
         try {
-
+            
             $jsonData = json_encode($validatedData['variant']);
+            // dd($jsonData);
 
             $productData = [
                 'user_id' => auth()->user()->user_id,
@@ -145,6 +145,7 @@ class SaleNewsController extends Controller
     {
         $address = !empty($request->hiddenAddress) ? $request->hiddenAddress : $request->hiddenAddressChannel;
         // dd($address);
+        // dd($request['variant']);
 
         $validatedData = $request->validate([
             'productTitle' => 'required|string',
@@ -157,12 +158,43 @@ class SaleNewsController extends Controller
             // 'hiddenAddress' => 'required',
             'images.*' => 'required|max:2048',
         ]);
+        // dd($validatedData['variant']);
+
         // dd($errors->all());
         // dd($validatedData, auth()->user()->user_id);
         try {
 
-            $jsonData = json_encode($validatedData['variant']);
+
+            // Kiểm tra và giải mã JSON nếu cần
+            $variant = $validatedData['variant'];
+            if (is_string($variant)) {
+                $variant = json_decode($variant, true); // Giải mã JSON thành mảng
+            }
+
+            // Kiểm tra nếu biến $variant không phải là mảng sau khi giải mã
+            if (!is_array($variant)) {
+                die('Dữ liệu không hợp lệ: variant không phải là mảng.');
+            }
+
+            // Chuyển đổi cấu trúc
+            $formattedVariant = array_map(function ($item) {
+                return [
+                    'name' => $item['name'],
+                    'option' => $item['options'][0] ?? null // Lấy giá trị đầu tiên trong 'options', nếu không có thì trả về null
+                ];
+            }, $variant);
+
+            // Chuyển đổi thành JSON
+            $jsonData = json_encode($formattedVariant, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
+            // Hiển thị hoặc lưu lại JSON
+
+            // dd($jsonData);
+
+
+            // $jsonData = json_encode($validatedData['variant']);
             $channel = Channel::where('user_id', auth()->user()->user_id)->first(['vip_package_id', 'vip_start_at', 'vip_end_at']);
+            // dd($jsonData);
 
             // dd($channel);
 
@@ -507,87 +539,85 @@ class SaleNewsController extends Controller
     }
 
     public function search(Request $request)
-{
-    $keyword = $request->input('keyword');
-    $categoryId = $request->get('category'); // Get category filter
-    $address = $request->get('address');    // Get address filter
+    {
+        $keyword = $request->input('keyword');
+        $categoryId = $request->get('category'); // Get category filter
+        $address = $request->get('address');    // Get address filter
 
-    $threeDaysAgo = Carbon::now()->subDays(3);
+        $threeDaysAgo = Carbon::now()->subDays(3);
 
-    // Recent VIP SaleNews (users created within the last 3 days)
-    $recentVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
-        ->with('categoryToSubcategory', 'user', 'sub_category.category')
-        ->whereNotNull('vip_package_id')
-        ->whereHas('user', function ($query) use ($threeDaysAgo) {
-            $query->where('created_at', '>=', $threeDaysAgo);
-        });
+        // Recent VIP SaleNews (users created within the last 3 days)
+        $recentVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('categoryToSubcategory', 'user', 'sub_category.category')
+            ->whereNotNull('vip_package_id')
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '>=', $threeDaysAgo);
+            });
 
-    if ($categoryId) {
-        $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        });
+        if ($categoryId) {
+            $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+
+        if ($address) {
+            $recentVipSaleNews->where('address', 'like', "%$address%");
+        }
+
+        $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
+
+        // Older VIP SaleNews (users created more than 3 days ago)
+        $olderVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('categoryToSubcategory', 'user', 'sub_category.category')
+            ->whereNotNull('vip_package_id')
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '<', $threeDaysAgo);
+            });
+
+        if ($categoryId) {
+            $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+
+        if ($address) {
+            $olderVipSaleNews->where('address', 'like', "%$address%");
+        }
+
+        $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
+
+        // Non-VIP SaleNews with pagination
+        $perPage = $request->get('perPage', 2);
+        $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
+            ->with('sub_category.category')
+            ->whereNull('vip_package_id');
+
+        if ($categoryId) {
+            $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+
+        if ($address) {
+            $nonVipSaleNews->where('address', 'like', "%$address%");
+        }
+
+        $nonVipSaleNews = $nonVipSaleNews->paginate($perPage);
+
+        $totalNonVipSaleNews = $nonVipSaleNews->total();
+
+        $category = Category::all();
+
+        return view('salenews.search', compact(
+            'recentVipSaleNews',
+            'olderVipSaleNews',
+            'nonVipSaleNews',
+            'keyword',
+            'perPage',
+            'totalNonVipSaleNews',
+            'category',
+            'address',
+            'categoryId'
+        ));
     }
-
-    if ($address) {
-        $recentVipSaleNews->where('address', 'like', "%$address%");
-    }
-
-    $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
-
-    // Older VIP SaleNews (users created more than 3 days ago)
-    $olderVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
-        ->with('categoryToSubcategory', 'user', 'sub_category.category')
-        ->whereNotNull('vip_package_id')
-        ->whereHas('user', function ($query) use ($threeDaysAgo) {
-            $query->where('created_at', '<', $threeDaysAgo);
-        });
-
-    if ($categoryId) {
-        $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        });
-    }
-
-    if ($address) {
-        $olderVipSaleNews->where('address', 'like', "%$address%");
-    }
-
-    $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
-
-    // Non-VIP SaleNews with pagination
-    $perPage = $request->get('perPage', 2);
-    $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
-        ->with('sub_category.category')
-        ->whereNull('vip_package_id');
-
-    if ($categoryId) {
-        $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        });
-    }
-
-    if ($address) {
-        $nonVipSaleNews->where('address', 'like', "%$address%");
-    }
-
-    $nonVipSaleNews = $nonVipSaleNews->paginate($perPage);
-
-    $totalNonVipSaleNews = $nonVipSaleNews->total();
-
-    $category = Category::all();
-
-    return view('salenews.search', compact(
-        'recentVipSaleNews',
-        'olderVipSaleNews',
-        'nonVipSaleNews',
-        'keyword',
-        'perPage',
-        'totalNonVipSaleNews',
-        'category',
-        'address',
-        'categoryId'
-    ));
-}
-
-
 }

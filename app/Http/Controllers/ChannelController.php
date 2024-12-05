@@ -6,9 +6,11 @@ use App\Models\Category;
 use App\Models\Channel;
 use App\Models\ChannelInfo;
 use App\Models\Sale_news;
+use App\Models\SaleNews;
 use App\Models\Subcategory;
 use App\Models\UserFollowed;
 use App\Models\VipPackage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +23,6 @@ class ChannelController extends Controller
     public function list_channel()
     {
         $channels = Channel::all(); // Lấy danh sách kênh với phân trang
-        // dd($channels);
         return view('admin.channels.list_channel', compact('channels'));
     }
     public function index()
@@ -39,7 +40,6 @@ class ChannelController extends Controller
             ->paginate(5);
 
         foreach ($sale_news as $news) {
-            // Get name_sub_category from the relation subcategory
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
         }
 
@@ -50,11 +50,12 @@ class ChannelController extends Controller
 
         // Count the number of news items that the channel has posted
         $NewsCount = $channels->saleNews()->count();
-        //loi viet
+        $category = Category::all();
+
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channels->channel_id)
             ->exists();
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed'));
+        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category'));
     }
 
 
@@ -161,14 +162,12 @@ class ChannelController extends Controller
         $subcategory_count = $sale_news->filter(function ($news) {
             return $news->sub_category !== null;
         })->countBy('name_sub_category');
-
-        // Count the number of news items that the channel has posted
         $NewsCount = $channels->saleNews()->count();
-        //loi viet
+        $category = Category::all();
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channels->channel_id)
             ->exists();
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'information'));
+        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'information', 'category'));
     }
 
 
@@ -321,5 +320,78 @@ class ChannelController extends Controller
             'message' => 'You have not followed this channel yet.'
         ]);
         return redirect()->back();
+    }
+    public function search_channel(Request $request)
+    {
+        $user = Auth::user();
+        $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Get user's channel
+
+        // Lấy từ dữ liệu POST
+        $keyword = $request->input('keyword');
+        $categoryId = $request->input('category');
+        $perPage = $request->input('perPage', 2); // Default to 2 per page
+        $threeDaysAgo = Carbon::now()->subDays(3);
+        $NewsCount = $channels->saleNews()->count();
+
+        $channelId = $request->input('channel_id');
+
+        // Hàm tạo query
+        $buildQuery = function ($isVip, $isRecent = null) use ($keyword, $categoryId, $threeDaysAgo, $channelId) {
+            $query = SaleNews::where('title', 'like', "%$keyword%")
+                ->with('categoryToSubcategory', 'user', 'sub_category.category');
+
+            $query->when($isVip, fn($q) => $q->whereNotNull('vip_package_id'));
+            $query->when(!$isVip, fn($q) => $q->whereNull('vip_package_id'));
+
+            if (!is_null($isRecent)) {
+                $query->whereHas('user', function ($q) use ($threeDaysAgo, $isRecent) {
+                    $isRecent
+                        ? $q->where('created_at', '>=', $threeDaysAgo)
+                        : $q->where('created_at', '<', $threeDaysAgo);
+                });
+            }
+
+            $query->when($categoryId, fn($q) => $q->whereHas('sub_category.category', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            }));
+
+            return $query;
+        };
+
+        $recentVipSaleNews = $buildQuery(true, true)->inRandomOrder()->get();
+        $olderVipSaleNews = $buildQuery(true, false)->inRandomOrder()->get();
+        $nonVipSaleNews = $buildQuery(false)->paginate($perPage);
+
+        $category = Category::all();
+
+        $sale_news = SaleNews::where('channel_id', $channels->channel_id)
+            ->where('title', 'like', "%$keyword%")
+            ->when($categoryId, fn($q) => $q->whereHas('sub_category.category', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            }))
+            ->with('categoryToSubcategory', 'user', 'sub_category.category')
+            ->get();
+        if ($sale_news->isEmpty()) {
+            $sale_news = null; // Đặt giá trị null để có thể kiểm tra trong view
+        }
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('partner.channels._sale_news', compact('sale_news'))->render()
+            ]);
+        }
+
+        return view('partner.channels.show_channels', compact(
+            'recentVipSaleNews',
+            'olderVipSaleNews',
+            'nonVipSaleNews',
+            'keyword',
+            'perPage',
+            'category',
+            'categoryId',
+            'channelId',
+            'channels',
+            'NewsCount',
+            'sale_news'
+        ));
     }
 }

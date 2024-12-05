@@ -174,50 +174,50 @@
                                 }
                             }'>
                     @foreach ($data as $item)
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
-                                    @if ($item->images->isNotEmpty())
-                                        <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                            class="equal-height-image">
-                                    @endif
-                                </a>
+                    <div class="product product-2">
+                        <figure class="product-media">
+                            <span class="product-label label-circle label-top">Top</span>
+                            <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
+                                @if ($item->images->isNotEmpty())
+                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                    class="equal-height-image">
+                                @endif
+                            </a>
 
 
 
-                                <div class="product-action-vertical">
+                            <div class="product-action-vertical">
 
-                                    <!-- Thêm data-product-id để lưu id sản phẩm -->
-                                    <form action="{{ route('addToWishlist') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
-                                        <button type="submit"
-                                            class=" btn-product-icon btn-wishlist color-danger add-to-wishlist-btn"
-                                            title="Add to WishList  "></button>
+                                <!-- Thêm data-product-id để lưu id sản phẩm -->
+                                <form action="{{ route('addToWishlist') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
+                                    <button type="submit"
+                                        class=" btn-product-icon btn-wishlist color-danger add-to-wishlist-btn"
+                                        title="Add to WishList  "></button>
 
-                                    </form>
+                                </form>
 
-                                </div>
-                                <div class="product-action">
-                                    <!-- <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
+                            </div>
+                            <div class="product-action">
+                                <!-- <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
                                         cart</span></a> -->
-                                    <a href="#" class="btn-product btn-quickview" title="Quick view"><span>quick
-                                            view</span></a>
-                                </div><!-- End .product-action -->
-                            </figure>
-                            <!-- End .product-media -->
+                                <a href="#" class="btn-product btn-quickview" title="Quick view"><span>quick
+                                        view</span></a>
+                            </div><!-- End .product-action -->
+                        </figure>
+                        <!-- End .product-media -->
 
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">{{ $item->sub_category->name_sub_category }}</a>
-                                </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a
-                                        href="salenew-detail/{{ $item->sale_new_id }}">{{ Str::limit($item->title, 35, '...') }} </a></h3>
-                                <div class="product-price">
-                                    ${{ $item->price }}
-                                </div><!-- End .product-price -->
-                                <!-- <div class="product-nav product-nav-dots">
+                        <div class="product-body">
+                            <div class="product-cat">
+                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                            </div><!-- End .product-cat -->
+                            <h3 class="product-title"><a
+                                    href="salenew-detail/{{ $item->sale_new_id }}">{{ Str::limit($item->title, 35, '...') }} </a></h3>
+                            <div class="product-price">
+                                ${{ $item->price }}
+                            </div><!-- End .product-price -->
+                            <!-- <div class="product-nav product-nav-dots">
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
                                         name</span></a>
                                 <a href="#" style="background: #eaeaec;"><span class="sr-only">Color
@@ -225,8 +225,8 @@
                                 <a href="#" class="active" style="background: #333333;"><span
                                         class="sr-only">Color name</span></a>
                             </div>End .product-nav -->
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
                     @endforeach
 
 
@@ -750,7 +750,6 @@
                                 <img src="assets/images/demos/demo-4/products/product-3.jpg" alt="Product image"
                                     class="product-image">
                             </a>
-
                             <div class="product-action-vertical">
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
@@ -1477,41 +1476,41 @@
                                         }'>
 
                                 @foreach ($topRated as $item)
-                                    <div class="product product-2">
-                                        <figure class="product-media">
-                                            <span class="product-label label-circle label-top">Top</span>
-                                            <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                                    class="equal-height-image">
-                                            </a>
+                                <div class="product product-2">
+                                    <figure class="product-media">
+                                        <span class="product-label label-circle label-top">Top</span>
+                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                            <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                                class="equal-height-image">
+                                        </a>
 
-                                            <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist"
-                                                    title="Add to wishlist"></a>
-                                            </div><!-- End .product-action -->
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist"
+                                                title="Add to wishlist"></a>
+                                        </div><!-- End .product-action -->
 
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"
-                                                    title="Add to cart"><span>add to cart</span></a>
-                                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                    title="Quick view"><span>quick view</span></a>
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
+                                        <div class="product-action">
+                                            <a href="#" class="btn-product btn-cart"
+                                                title="Add to cart"><span>add to cart</span></a>
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                                title="Quick view"><span>quick view</span></a>
+                                        </div><!-- End .product-action -->
+                                    </figure><!-- End .product-media -->
 
-                                        <div class="product-body">
-                                            <div class="product-cat">
-                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
-                                            </div><!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
-                                                    wireless headphones</a></h3><!-- End .product-title -->
-                                            <div class="product-price">
-                                                $199.99
-                                            </div><!-- End .product-price -->
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
+                                                wireless headphones</a></h3><!-- End .product-title -->
+                                        <div class="product-price">
+                                            $199.99
+                                        </div><!-- End .product-price -->
 
 
-                                            
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
+
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .product -->
                                 @endforeach
 
                             </div><!-- End .owl-carousel -->
@@ -1541,41 +1540,40 @@
                                             }
                                             }'>
                                 @foreach ($bestSelling as $item)
-                                    <div class="product product-2">
-                                        <figure class="product-media">
-                                            <span class="product-label label-circle label-new">New</span>
-                                            <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                                    class="equal-height-image">
-                                            </a>
+                                <div class="product product-2">
+                                    <figure class="product-media">
+                                        <span class="product-label label-circle label-new">New</span>
+                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                            <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                                class="equal-height-image">
+                                        </a>
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist"
+                                                title="Add to wishlist"></a>
+                                        </div><!-- End .product-action -->
 
-                                            <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist"
-                                                    title="Add to wishlist"></a>
-                                            </div><!-- End .product-action -->
+                                        <div class="product-action">
+                                            <a href="#" class="btn-product btn-cart"
+                                                title="Add to cart"><span>add to cart</span></a>
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                                title="Quick view"><span>quick view</span></a>
+                                        </div><!-- End .product-action -->
+                                    </figure><!-- End .product-media -->
 
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"
-                                                    title="Add to cart"><span>add to cart</span></a>
-                                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                    title="Quick view"><span>quick view</span></a>
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <div class="product-cat">
-                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
-                                            </div><!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
-                                                    wireless headphones</a></h3><!-- End .product-title -->
-                                            <div class="product-price">
-                                                $199.99
-                                            </div><!-- End .product-price -->
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
+                                                wireless headphones</a></h3><!-- End .product-title -->
+                                        <div class="product-price">
+                                            $199.99
+                                        </div><!-- End .product-price -->
 
 
-                                            
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
+
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .product -->
                                 @endforeach
                             </div><!-- End .owl-carousel -->
                         </div><!-- .End .tab-pane -->
@@ -1604,41 +1602,41 @@
                                             }
                                         }'>
                                 @foreach ($onSale as $item)
-                                    <div class="product product-2">
-                                        <figure class="product-media">
-                                            <span class="product-label label-circle label-new">Sale</span>
-                                            <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                                    class="equal-height-image">
-                                            </a>
+                                <div class="product product-2">
+                                    <figure class="product-media">
+                                        <span class="product-label label-circle label-new">Sale</span>
+                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                            <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                                class="equal-height-image">
+                                        </a>
 
-                                            <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist"
-                                                    title="Add to wishlist"></a>
-                                            </div><!-- End .product-action -->
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist"
+                                                title="Add to wishlist"></a>
+                                        </div><!-- End .product-action -->
 
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"
-                                                    title="Add to cart"><span>add to cart</span></a>
-                                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                    title="Quick view"><span>quick view</span></a>
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
+                                        <div class="product-action">
+                                            <a href="#" class="btn-product btn-cart"
+                                                title="Add to cart"><span>add to cart</span></a>
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                                title="Quick view"><span>quick view</span></a>
+                                        </div><!-- End .product-action -->
+                                    </figure><!-- End .product-media -->
 
-                                        <div class="product-body">
-                                            <div class="product-cat">
-                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
-                                            </div><!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
-                                                    wireless headphones</a></h3><!-- End .product-title -->
-                                            <div class="product-price">
-                                                $199.99
-                                            </div><!-- End .product-price -->
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
+                                                wireless headphones</a></h3><!-- End .product-title -->
+                                        <div class="product-price">
+                                            $199.99
+                                        </div><!-- End .product-price -->
 
 
-                                            
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
+
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .product -->
                                 @endforeach
                             </div><!-- End .owl-carousel -->
                         </div><!-- .End .tab-pane -->
@@ -1666,43 +1664,43 @@
             <div class="row justify-content-center">
 
                 @foreach ($recommendation as $item)
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                {{-- <span class="product-label label-circle label-top">Top</span> --}}
-                                <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                    <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                        class="equal-height-image">
-                                </a>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product product-2">
+                        <figure class="product-media">
+                            {{-- <span class="product-label label-circle label-top">Top</span> --}}
+                            <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                    class="equal-height-image">
+                            </a>
 
-                                <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist"
-                                        title="Add to wishlist"></a>
-                                </div><!-- End .product-action -->
+                            <div class="product-action-vertical">
+                                <a href="#" class="btn-product-icon btn-wishlist"
+                                    title="Add to wishlist"></a>
+                            </div><!-- End .product-action -->
 
-                                <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add
-                                            to cart</span></a>
-                                    <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                        title="Quick view"><span>quick view</span></a>
-                                </div><!-- End .product-action -->
-                            </figure><!-- End .product-media -->
+                            <div class="product-action">
+                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add
+                                        to cart</span></a>
+                                <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                    title="Quick view"><span>quick view</span></a>
+                            </div><!-- End .product-action -->
+                        </figure><!-- End .product-media -->
 
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">{{ $item->sub_category->name_sub_category }}</a>
-                                </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
-                                        wireless headphones</a></h3><!-- End .product-title -->
-                                <div class="product-price">
-                                    $199.99
-                                </div><!-- End .product-price -->
+                        <div class="product-body">
+                            <div class="product-cat">
+                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                            </div><!-- End .product-cat -->
+                            <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
+                                    wireless headphones</a></h3><!-- End .product-title -->
+                            <div class="product-price">
+                                $199.99
+                            </div><!-- End .product-price -->
 
 
-                               
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
-                    </div>
+
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
+                </div>
                 @endforeach
 
 
@@ -1774,6 +1772,7 @@
     </div><!-- End .icon-boxes-container -->
 
 </main><!-- End .main -->
+
 <!-- Trong Blade view -->
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script>
@@ -1869,3 +1868,4 @@ $(document).on('click', '.add-to-wishlist-btn', function (e) {
 
 
 </script>
+
