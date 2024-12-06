@@ -26,9 +26,10 @@
       @keyframes marquee
       { from { transform: translate(0, 0);
       } to { transform: translate(-100%, 0);
+      }}
 
 
-   
+
 </style>
 
 <div class="page-wrapper">
