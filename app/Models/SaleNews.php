@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Subcategory;
 use App\Models\Category;
+
 class SaleNews extends Model
 {
     use HasFactory;
@@ -13,7 +14,21 @@ class SaleNews extends Model
     protected $table = 'sale_news';
     protected $primaryKey = 'sale_new_id';
 
-    protected $fillable = [ 'channel_id', 'user_id', 'sub_category_id', 'title', 'price', 'description', 'data', 'status', 'vip_pakage_id', 'vip_start_at', 'vip_end_at', 'created_at', 'updated_at', 'is_delete',
+    protected $fillable = [
+        'channel_id',
+        'user_id',
+        'sub_category_id',
+        'title',
+        'price',
+        'description',
+        'data',
+        'status',
+        'vip_pakage_id',
+        'vip_start_at',
+        'vip_end_at',
+        'created_at',
+        'updated_at',
+        'is_delete',
 
     ];
 
@@ -50,10 +65,10 @@ class SaleNews extends Model
         );
     }
 
-        public function images()
-        {
-            return $this->hasMany(Imgproduct::class, 'sale_new_id');
-        }
+    public function images()
+    {
+        return $this->hasMany(Imgproduct::class, 'sale_new_id');
+    }
     public function firstImage()
     {
         return $this->hasOne(Imgproduct::class, 'sale_new_id');
@@ -67,6 +82,6 @@ class SaleNews extends Model
     {
         $currentDate = now();
         return ($this->vip_package_id && $this->vip_start_date <= $currentDate && $this->vip_end_date >= $currentDate) ||
-               ($this->channel && $this->channel->isVip());
+            ($this->channel && $this->channel->isVip());
     }
 }

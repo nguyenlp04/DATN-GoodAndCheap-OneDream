@@ -72,6 +72,9 @@ try {
 }
 
     }
+
+    
+
     
     public function index()
     {
@@ -97,11 +100,48 @@ try {
     // Trả về thông báo thành công qua JSON
     return response()->json([
         'success' => true,
-        'message' => 'Sale news has been removed from favorites list.'
+        'message' => 'Removed from favorites list.'
     ]);
 }
 // headeer
 
+public function toggleWishlist(Request $request)
+{
+    $user = Auth::user();
+
+    try {
+        if (!$user) {
+            return response()->json(['type' => 'error', 'message' => 'You need to log in to manage your wishlist.'], 401);
+        }
+
+        $request->validate([
+            'sale_new_id' => 'required|integer|exists:sale_news,sale_new_id',
+        ]);
+
+        // Tìm hoặc xóa sản phẩm khỏi danh sách yêu thích
+        $like = Like::where('user_id', $user->user_id)
+            ->where('sale_new_id', $request->sale_new_id)
+            ->first();
+
+        if ($like) {
+            // Nếu đã tồn tại, xóa khỏi danh sách yêu thích
+            $like->delete();
+
+            return response()->json(['type' => 'success', 'message' => 'Removed from favorites list.']);
+        } else {
+            // Nếu chưa tồn tại, thêm vào danh sách yêu thích
+            Like::create([
+                'user_id' => $user->user_id,
+                'sale_new_id' => $request->sale_new_id,
+                'status' => 1,
+            ]);
+
+            return response()->json(['type' => 'success', 'message' => 'Item added to your favorites list successfully.']);
+        }
+    } catch (\Exception $e) {
+        return response()->json(['type' => 'error', 'message' => 'Error: ' . $e->getMessage()], 500);
+    }
+}
 
     
     

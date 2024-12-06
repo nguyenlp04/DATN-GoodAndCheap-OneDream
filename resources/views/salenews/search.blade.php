@@ -52,7 +52,7 @@
                                     <div class="product">
                                         <figure class="product-media">
                                             <span class="product-label label-top">Top</span>
-                                            <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
+                                            <a href="salenew-detail/{{ $item->sale_new_id }}">
                                                 @if ($item->images->isNotEmpty())
                                                 <img src="{{ $item->images->first()->image_name }}"
                                                     alt="Image" class="equal-height-image">
@@ -71,7 +71,7 @@
                                                     href="#">{{ $item->categoryToSubcategory->name_category }}</a>
                                             </div>
                                             <h3 class="product-title text-truncate-3">
-                                                <a href="{{ route('salenew.detail', $item->sale_new_id) }}">{{ $item->title }}</a>
+                                                <a href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
                                             </h3>
                                             <div class="product-price">
                                                 ${{ number_format($item->price, 2) }}
@@ -86,7 +86,7 @@
                                     <div class="product">
                                         <figure class="product-media">
                                             <span class="product-label label-top">Top</span>
-                                            <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
+                                            <a href="salenew-detail/{{ $item->sale_new_id }}">
                                                 @if ($item->images->isNotEmpty())
                                                 <img src="{{ $item->images->first()->image_name }}"
                                                     alt="Image" class="equal-height-image">
@@ -105,7 +105,7 @@
                                                     href="#">{{ $item->categoryToSubcategory->name_category }}</a>
                                             </div>
                                             <h3 class="product-title text-truncate-3">
-                                                <a href="{{ route('salenew.detail', $item->sale_new_id) }}">{{ $item->title }}</a>
+                                                <a href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
                                             </h3>
                                             <div class="product-price">
                                                 ${{ number_format($item->price, 2) }}
@@ -204,7 +204,7 @@
                                 <div class="product">
                                     <figure class="product-media">
                                         <span class="product-label label-top">Top</span>
-                                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
+                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
                                             @if ($item->images->isNotEmpty())
                                             <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                 class="equal-height-image">
@@ -225,7 +225,7 @@
                                             @endif
                                         </div>
                                         <h3 class="product-title text-truncate-3">
-                                            <a href="{{ route('salenew.detail', $item->sale_new_id) }}">{{ $item->title }}</a>
+                                            <a href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
                                         </h3>
                                         <div class="product-price">
                                             ${{ number_format($item->price, 2) }}
