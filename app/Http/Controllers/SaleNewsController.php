@@ -373,7 +373,7 @@ class SaleNewsController extends Controller
             $news = SaleNews::with(['channel', 'images', 'firstImage', 'category', 'sub_category'])
                 ->where('sale_new_id', $id)
                 ->where('approved', 1)->first();
-
+            // dd($news);
 
             if (!is_null($news->channel_id)) {
                 $data_count_news = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 1)->count();
