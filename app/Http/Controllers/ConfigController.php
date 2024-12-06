@@ -15,7 +15,7 @@ class ConfigController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.setting.seo');
     }
 
     /**
@@ -144,7 +144,7 @@ class ConfigController extends Controller
             $webUrl = 'https://' . $webUrl;
         }
 
-        
+
         if (!filter_var($webUrl, FILTER_VALIDATE_URL)) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
@@ -152,12 +152,12 @@ class ConfigController extends Controller
             ]);
         }
 
-        
-        
+
+
         // Lấy hostname từ URL
         $parsedUrl = parse_url($webUrl);
         $host = $parsedUrl['host'] ?? null;
-        
+
         $webUrl = preg_replace('/^https?:\/\//', '', $host);
         if (!$host) {
             return redirect()->back()->with('alert', [
@@ -165,7 +165,7 @@ class ConfigController extends Controller
                 'message' => 'The URL is invalid. Could not extract the domain!'
             ]);
         }
-        
+
 
 
         // dd($webUrl);
@@ -188,32 +188,149 @@ class ConfigController extends Controller
                 'message' => 'Failed to save chat ID and bot token to .env!'
             ]);
         }
-        
     }
 
-      // Hàm cập nhật file .env
-      private function updateEnv(array $data)
-      {
-          $envPath = base_path('.env');
-          $envContent = file_get_contents($envPath);
-  
-          foreach ($data as $key => $value) {
-              $pattern = "/^{$key}=.*$/m";
-  
-              if (preg_match($pattern, $envContent)) {
-                  $envContent = preg_replace($pattern, "{$key}={$value}", $envContent);
-              } else {
-                  $envContent .= "\n{$key}={$value}";
-              }
-          }
-  
-          file_put_contents($envPath, $envContent);
-      }
+    // Hàm cập nhật file .env
+    private function updateEnv(array $data)
+    {
+        $envPath = base_path('.env');
+        $envContent = file_get_contents($envPath);
+
+        foreach ($data as $key => $value) {
+            $pattern = "/^{$key}=.*$/m";
+
+            if (preg_match($pattern, $envContent)) {
+                $envContent = preg_replace($pattern, "{$key}={$value}", $envContent);
+            } else {
+                $envContent .= "\n{$key}={$value}";
+            }
+        }
+
+        file_put_contents($envPath, $envContent);
+    }
 
 
     /**
      * Display the specified resource.
      */
+
+    public function saveScript(Request $request)
+    {
+        // Lấy nội dung script từ yêu cầu
+        $nameContent = $request->input('name');
+        $scriptContent = $request->input('script');
+
+        // Đường dẫn đến file script.js
+        $filePath = public_path('admin/js/seo.json');
+
+        // Đọc nội dung hiện có của tệp JSON
+        $currentData = [];
+        if (File::exists($filePath)) {
+            $currentData = json_decode(File::get($filePath), true) ?? [];
+        }
+
+        // Kiểm tra tên trùng lặp
+        foreach ($currentData as $entry) {
+            if ($entry['name'] == $nameContent) {
+                return response()->json(['error' => 'Name already exists'], 400);
+            }
+        }
+
+        // Thêm nội dung mới vào mảng
+        $currentData[] = [
+            'name' => $nameContent,
+            'script' => $scriptContent
+        ];
+
+        // Chuyển đổi mảng thành JSON
+        $jsonContent = json_encode($currentData, JSON_PRETTY_PRINT);
+
+        // Lưu nội dung vào file
+        try {
+            File::put($filePath, $jsonContent);
+            return response()->json([
+                'alert' => [
+                    'type' => 'success',
+                    'message' => 'Settings updated successfully!'
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to save script'], 500);
+        }
+    }
+    public function getScripts()
+    {
+        $filePath = public_path('admin/js/seo.json');
+
+        if (File::exists($filePath)) {
+            $scripts = json_decode(File::get($filePath), true) ?? [];
+        } else {
+            $scripts = [];
+        }
+
+        return response()->json($scripts);
+    }
+    public function deleteScript(Request $request)
+    {
+        $name = $request->input('name');
+        $filePath = public_path('admin/js/seo.json');
+        if (File::exists($filePath)) {
+            $scripts = json_decode(File::get($filePath), true) ?? [];
+            $scripts = array_filter($scripts, function ($script) use ($name) {
+                return $script['name'] !== $name;
+            });
+            File::put($filePath, json_encode(array_values($scripts), JSON_PRETTY_PRINT));
+            return response()->json(['alert' => ['type' => 'success', 'message' => 'Script deleted successfully!']]);
+        } else {
+            return response()->json(['error' => 'Failed to delete script'], 500);
+        }
+    }
+
+
+    public function saveNotification(Request $request)
+    {
+        $notificationContent = $request->input('Floating-notifications');
+        $filePath = public_path('admin/js/notification.json');
+        $jsonContent = json_encode(['Floating-notifications' => $notificationContent], JSON_PRETTY_PRINT);
+
+        try {
+            File::put($filePath, $jsonContent);
+            return response()->json([
+                'alert' => [
+                    'type' => 'success',
+                    'message' => 'The notification has been changed!'
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Không thể lưu thông báo'], 500);
+        }
+    }
+
+
+    public function getNotification()
+    {
+        $filePath = public_path('admin/js/notification.json');
+
+        // Kiểm tra nếu file tồn tại
+        if (File::exists($filePath)) {
+            // Đọc nội dung của file
+            $content = File::get($filePath);
+
+            // Chuyển đổi nội dung JSON thành mảng PHP
+            $notification = json_decode($content, true);
+
+            // Trả về nội dung dưới dạng JSON response
+            return response()->json($notification);
+        } else {
+            // Trả về thông báo lỗi nếu file không tồn tại
+            return response()->json(['error' => 'File not found'], 404);
+        }
+    }
+
+
+
+
+
     public function show($id)
     {
         //

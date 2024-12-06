@@ -40,7 +40,7 @@ use App\Http\Controllers\ConfigController;
 require __DIR__ . '/auth.php';
 
 
-// admin
+// staff
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
@@ -98,16 +98,26 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index');
 
     Route::post('/update-settings', [SettingsController::class, 'updateSettings'])->name('settings.update');
-    Route::get('/seo', function () {
-        return view('admin.setting.seo');
+});
+
+
+// admin
+
+Route::middleware(['auth.role.admin'])->group(function () {
+    Route::prefix('config')->group(function () {
+        Route::get('/seo', [ConfigController::class, 'index'])->name('seo');
+        Route::get('/get-scripts', [ConfigController::class, 'getScripts'])->name('getScripts');
+        Route::post('/save-script', [ConfigController::class, 'saveScript'])->name('saveScript');
+        Route::post('/delete-script', [ConfigController::class, 'deleteScript'])->name('deleteScript');
+        Route::post('/save-notification', [ConfigController::class, 'saveNotification'])->name('saveNotification');
+        Route::get('/get-notification', [ConfigController::class, 'getnotification'])->name('getnotification');
+
+        Route::get('/telegram', [ConfigController::class, 'createBotTeleGram'])->name('config.telegram');
+        Route::post('/telegram', [ConfigController::class, 'storeBotTeleGram'])->name('store.telegram');
+
+        Route::get('/vnpay', [ConfigController::class, 'createVnPay'])->name('config.vnpay');
+        Route::post('/vnpay', [ConfigController::class, 'storeVnPay'])->name('store.vnpay');
     });
-
-    Route::post('/save-script', [SettingsController::class, 'saveScript'])->name('saveScript');
-
-    Route::get('/get-scripts', [SettingsController::class, 'getScripts'])->name('getScripts');
-    Route::post('/delete-script', [SettingsController::class, 'deleteScript'])->name('deleteScript');
-    Route::post('/save-notification', [SettingsController::class, 'saveNotification'])->name('saveNotification');
-    Route::get('/get-notification', [SettingsController::class, 'getnotification'])->name('getnotification');
 });
 
 
@@ -255,13 +265,3 @@ Route::get('/tb', function () {
     return view('notifications.list');
 });
 Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);
-
-
-Route::prefix('config')->group(function () {
-    Route::get('/telegram', [ConfigController::class, 'createBotTeleGram'])->name('config.telegram');
-    Route::post('/telegram', [ConfigController::class, 'storeBotTeleGram'])->name('store.telegram');
-
-    Route::get('/vnpay', [ConfigController::class, 'createVnPay'])->name('config.vnpay');
-    Route::post('/vnpay', [ConfigController::class, 'storeVnPay'])->name('store.vnpay');
-});
-

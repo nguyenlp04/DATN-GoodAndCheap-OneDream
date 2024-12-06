@@ -26,9 +26,10 @@
       @keyframes marquee
       { from { transform: translate(0, 0);
       } to { transform: translate(-100%, 0);
+      }}
 
 
-   
+
 </style>
 
 <div class="page-wrapper">
@@ -222,9 +223,9 @@
                <li>
 
                   <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star"></i>Contact</a>
-               </li>  
-            
-                   
+               </li>
+
+
 
 
             </ul>
@@ -250,7 +251,7 @@
                <li>
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
                </li>
-               
+
                <div class="col-md-5">
                   <div class="header-dropdown" style="display: flex; align-items: center;">
                      <div style="display: flex; align-items: center;   cursor: pointer;">
