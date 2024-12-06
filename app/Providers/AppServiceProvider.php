@@ -24,9 +24,31 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-   
+
     public function boot(): void
     {
+
+
+        // Floating-notifications
+        $jsonPath = public_path('admin/js/notification.json');
+        $jsonData = json_decode(file_get_contents($jsonPath), true);
+        $notification = $jsonData['Floating-notifications'] ?? null;
+        View::share('floating_notifications', $notification);
+        // End Floating-notifications
+
+
+        // Embed source code
+        $filePath = public_path('admin/js/seo.json');
+        $scripts = [];
+        if (file_exists($filePath)) {
+            $scripts = json_decode(file_get_contents($filePath), true);
+        }
+        // dd($scripts);
+        View::share('scripts_seo', $scripts);
+        // End Embed source code
+
+
+
         Paginator::useBootstrap();
         $setting = Setting::first() ?? new Setting();
         View::share('setting', $setting);
@@ -35,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
             if (str_starts_with($view->getName(), 'admin')) {
                 return; // Không chia sẻ biến với view admin
             }
-            
+
             // Lấy tất cả các thông báo công khai
             $notifications_userid = Notification::where('status', 'public')->get();
             $notification_web = Notification::where('type', 'website')->get();

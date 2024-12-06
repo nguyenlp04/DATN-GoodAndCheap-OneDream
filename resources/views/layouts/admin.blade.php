@@ -22,9 +22,11 @@
 
 <head>
   <meta charset="utf-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>Vertical Layouts - Forms | OneDream Dashboard</title>
 
@@ -169,7 +171,7 @@
                         <a href="{{ url('category') }}" class="menu-link">
                             <div data-i18n="Add Category">Add Category</div>
                         </a>
-                    </li> 
+                    </li>
                     <li class="menu-item {{ Request::is('sale-news/approve') ? 'active' : '' }}">
                         <a href="{{ url('sale-news/approve') }}" class="menu-link">
                             <div data-i18n="Approve sale-news">Approve Sale News (affiliate)</div>
@@ -784,6 +786,7 @@
     </div>
 
     <!-- Overlay -->
+    @include('layouts.script-admin')
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
   <!-- / Layout wrapper -->
@@ -813,7 +816,6 @@
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  @include('layouts.script-admin')
 </body>
 
 </html>

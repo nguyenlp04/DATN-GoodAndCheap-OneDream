@@ -151,7 +151,7 @@
             <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -179,7 +179,7 @@
                                 <span class="product-label label-circle label-top">Top</span>
                                 <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
                                     @if ($item->images->isNotEmpty())
-                                        {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
+                                        <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                             class="equal-height-image">
                                     @endif
                                 </a>
@@ -210,7 +210,7 @@
 
                             <div class="product-body">
                                 <div class="product-cat">
-                                    {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
+                                    <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                 </div><!-- End .product-cat -->
                                 <h3 class="product-title"><a
                                         href="salenew-detail/{{ $item->sale_new_id }}">{{ Str::limit($item->title, 35, '...') }} </a></h3>
@@ -235,7 +235,7 @@
             <div class="tab-pane p-0 fade" id="new-tv-tab" role="tabpanel" aria-labelledby="new-tv-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -446,7 +446,7 @@
                 aria-labelledby="new-computers-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -656,7 +656,7 @@
             <div class="tab-pane p-0 fade" id="new-phones-tab" role="tabpanel" aria-labelledby="new-phones-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -899,7 +899,7 @@
             <div class="tab-pane p-0 fade" id="new-watches-tab" role="tabpanel" aria-labelledby="new-watches-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -1076,7 +1076,7 @@
             <div class="tab-pane p-0 fade" id="new-acc-tab" role="tabpanel" aria-labelledby="new-acc-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -1365,7 +1365,7 @@
         <hr class="mb-0">
         <div class="owl-carousel mt-5 mb-5 owl-simple" data-toggle="owl"
             data-owl-options='{
-                        "nav": false, 
+                        "nav": false,
                         "dots": false,
                         "margin": 30,
                         "loop": false,
@@ -1456,7 +1456,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1481,7 +1481,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-circle label-top">Top</span>
                                             <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
+                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                     class="equal-height-image">
                                             </a>
 
@@ -1500,7 +1500,7 @@
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
+                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                             </div><!-- End .product-cat -->
                                             <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                                     wireless headphones</a></h3><!-- End .product-title -->
@@ -1509,7 +1509,7 @@
                                             </div><!-- End .product-price -->
 
 
-                                            
+
                                         </div><!-- End .product-body -->
                                     </div><!-- End .product -->
                                 @endforeach
@@ -1521,7 +1521,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1545,7 +1545,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-circle label-new">New</span>
                                             <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
+                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                     class="equal-height-image">
                                             </a>
 
@@ -1564,7 +1564,7 @@
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
+                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                             </div><!-- End .product-cat -->
                                             <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                                     wireless headphones</a></h3><!-- End .product-title -->
@@ -1573,7 +1573,7 @@
                                             </div><!-- End .product-price -->
 
 
-                                            
+
                                         </div><!-- End .product-body -->
                                     </div><!-- End .product -->
                                 @endforeach
@@ -1584,7 +1584,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1608,7 +1608,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-circle label-new">Sale</span>
                                             <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                                {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
+                                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                     class="equal-height-image">
                                             </a>
 
@@ -1627,7 +1627,7 @@
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
+                                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                             </div><!-- End .product-cat -->
                                             <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                                     wireless headphones</a></h3><!-- End .product-title -->
@@ -1636,7 +1636,7 @@
                                             </div><!-- End .product-price -->
 
 
-                                            
+
                                         </div><!-- End .product-body -->
                                     </div><!-- End .product -->
                                 @endforeach
@@ -1671,7 +1671,7 @@
                             <figure class="product-media">
                                 {{-- <span class="product-label label-circle label-top">Top</span> --}}
                                 <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                    {{-- <img src="{{ $item->images->first()->image_name }}" alt="Image" --}}
+                                    <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                         class="equal-height-image">
                                 </a>
 
@@ -1690,7 +1690,7 @@
 
                             <div class="product-body">
                                 <div class="product-cat">
-                                    {{-- <a href="#">{{ $item->sub_category->name_sub_category }}</a> --}}
+                                    <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                 </div><!-- End .product-cat -->
                                 <h3 class="product-title"><a href="salenew-detail/{{ $item->sale_new_id }}">Bose - SoundSport
                                         wireless headphones</a></h3><!-- End .product-title -->
@@ -1699,7 +1699,7 @@
                                 </div><!-- End .product-price -->
 
 
-                               
+
                             </div><!-- End .product-body -->
                         </div><!-- End .product -->
                     </div>

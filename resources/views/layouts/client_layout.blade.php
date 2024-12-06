@@ -11,6 +11,12 @@
     <meta name="author" content="p-themes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @if (!empty($scripts_seo))
+        @foreach ($scripts_seo as $script)
+            {!! $script['script'] !!}
+        @endforeach
+    @endif
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="{{ $setting->favicon ? asset($setting->favicon) : 'assets/images/web/favicon.png' }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
@@ -83,7 +89,7 @@
             icon: "{{ session('alert')['type'] }}",
             title: "{{ session('alert')['message'] }}"
         });
-        
+
     </script>
     @endif
 </body>

@@ -7,13 +7,18 @@
       overflow: hidden;
       text-overflow: ellipsis;
 
-
       line-height: 1.5em;
       /* Chiều cao dòng */
-   }
+    }
 
-.main-nav {
-     width: 90%; white-space: nowrap; overflow: hidden; box-sizing: border-box;
+    .main-nav {
+        width: 100%;
+        /* text-transform: uppercase; */
+           /* font-weight: bold; */
+        /* color: black; */
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
       }
        .main-nav span { display: inline-block; padding-left: 100%; animation: marquee 10s linear infinite;
       }
@@ -50,7 +55,7 @@
                   </div>
               </form> --}}
 
-              
+
 
               <form action="{{ route('search') }}" method="GET">
                <div class="header-search-wrapper search-wrapper-wide">
@@ -58,13 +63,13 @@
                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                    <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
                        placeholder="Search product ..." autofocus>
-           
+
                    <!-- Hidden inputs to retain filter values -->
                    <input type="hidden" name="address" value="{{ request()->get('address') }}">
                    <input type="hidden" name="category" value="{{ request()->get('category') }}">
                </div>
            </form>
-           
+
             </div>
             <!-- End .header-search -->
          </div>
@@ -109,7 +114,7 @@
                </a>
                <div class="dropdown-menu dropdown-menu-right dropdown-item dropdown-notifications-item">
                    @if (!empty($notifications))
-                       @for ($i = 0; $i < min(10, count($notifications)); $i++) 
+                       @for ($i = 0; $i < min(10, count($notifications)); $i++)
                            <div class="border-bottom mb-1 hover-item-notification">
                                <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}" class="notification-link">
                                    <div>
@@ -189,8 +194,12 @@
       <!-- End .header-left -->
       <div class="header-center">
          <nav class="main-nav">
+            @if(!empty($floating_notifications))
+            <span>{{ $floating_notifications }}</span>
+            @else
             <span>Welcome to Good & Cheap website wish you a great career</span>
-                      </nav>
+            @endif
+        </nav>
          <!-- End .main-nav -->
       </div>
       <div class="header-right">
@@ -242,8 +251,8 @@
                            <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
                               alt="User Avatar" style="width: 100%; height: auto;">
                         </div>
-                        <span class="highlight"
-                           style="white-space: nowrap;">{{ Auth::user()->full_name }}</span>
+                        {{-- <span class="highlight"
+                           style="white-space: nowrap;">{{ Auth::user()->full_name }}</span> --}}
                         <!-- Hiển thị tên người dùng đã đăng nhập -->
                      </div>
                      <div class="header-menu" style="margin-left: 10px;">

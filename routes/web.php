@@ -95,6 +95,16 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index');
 
     Route::post('/update-settings', [SettingsController::class, 'updateSettings'])->name('settings.update');
+    Route::get('/seo', function () {
+        return view('admin.setting.seo');
+    });
+
+    Route::post('/save-script', [SettingsController::class, 'saveScript'])->name('saveScript');
+
+    Route::get('/get-scripts', [SettingsController::class, 'getScripts'])->name('getScripts');
+    Route::post('/delete-script', [SettingsController::class, 'deleteScript'])->name('deleteScript');
+    Route::post('/save-notification', [SettingsController::class, 'saveNotification'])->name('saveNotification');
+    Route::get('/get-notification', [SettingsController::class, 'getnotification'])->name('getnotification');
 });
 
 
@@ -107,7 +117,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-to-wishlist', [WishlistController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist-count', [WishlistController::class, 'count'])->name('wishlist.count');
-    //end wishlisst 
+    //end wishlisst
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -131,7 +141,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/infomation/store', [PartnerProfileController::class, 'storeInfomation'])->name('store.infomation');
         Route::get('/infomation/edit/{channel_id}', [PartnerProfileController::class, 'editInfomation'])->name('edit.infomation');
         Route::put('/infomation/update/{channel_id}', [PartnerProfileController::class, 'updateInfomation'])->name('update.infomation');
-        Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
+
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');

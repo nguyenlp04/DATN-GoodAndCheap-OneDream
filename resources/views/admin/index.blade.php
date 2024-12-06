@@ -508,21 +508,11 @@
 </div>
 
 
-<<<<<<< HEAD
-<!-- Core JS -->
-<!-- build:js assets/vendor/js/core.js -->
-<script src="{{ asset("/../admin/assets/vendor/libs/jquery/jquery.js") }}"></script>
-<script src="{{ asset("/../admin/assets/vendor/libs/popper/popper.js") }}"></script>
- <script src="{{ asset("/../admin/assets/vendor/js/bootstrap.js") }}"></script> 
-{{-- 
- modal{{ $item->sale_new_id }} --}}
-<script src="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js") }}"></script>
-=======
 <script src="{{ asset('/../admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('/../admin/assets/vendor/libs/popper/popper.js') }}"></script>
 
     <script src="{{ asset('/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
->>>>>>> ee2a4262f270193d1feff2260cff81e5b2f2c379
+
 
     <script src="{{ asset('/../admin/assets/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->
