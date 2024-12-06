@@ -7,35 +7,29 @@
       overflow: hidden;
       text-overflow: ellipsis;
 
-
       line-height: 1.5em;
       /* Chiều cao dòng */
-   }
+    }
 
 
-   .main-nav {
-      width: 90%;
+    .main-nav {
+        width: 100%;
+        /* text-transform: uppercase; */
+           /* font-weight: bold; */
+        /* color: black; */
       white-space: nowrap;
       overflow: hidden;
       box-sizing: border-box;
-   }
-
-   .main-nav span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 10s linear infinite;
-   }
-
-   @keyframes marquee {
-      from {
-         transform: translate(0, 0);
-
       }
-
-      to {
-         transform: translate(-100%, 0);
+       .main-nav span { display: inline-block; padding-left: 100%; animation: marquee 10s linear infinite;
       }
-   }
+      @keyframes marquee
+      { from { transform: translate(0, 0);
+      } to { transform: translate(-100%, 0);
+      }}
+
+
+
 </style>
 
 <div class="page-wrapper">
@@ -62,6 +56,7 @@
                      <input type="text" name="keyword" placeholder="Search products..." class="form-control" autofocus>
                      <button type="submit" class="btn btn-primary">Search</button>
                   </div>
+
                   </form> --}}
                   <form action="{{ route('search') }}" method="GET">
                      <div class="header-search-wrapper search-wrapper-wide">
@@ -77,6 +72,7 @@
 
                </div>
                <!-- End .header-search -->
+
             </div>
             <div class="header-right">
                @if(isset(auth()->user()->user_id))
@@ -139,6 +135,8 @@
                   <div class="dropdown-cart-action mt-2 flex justify-content-center">
                      <a href="{{ route('notifications.show') }}" class="dropdown-item text-center">View all</a>
                   </div>
+
+
                </div>
             </div>
             @else
@@ -193,8 +191,14 @@
       <!-- End .header-left -->
       <div class="header-center">
          <nav class="main-nav">
+            @if(!empty($floating_notifications))
+            <span>{{ $floating_notifications }}</span>
+            @else
             <span>Welcome to Good & Cheap website wish you a great career</span>
-         </nav>
+
+            @endif
+        </nav>
+
          <!-- End .main-nav -->
       </div>
       <div class="header-right">
@@ -245,8 +249,8 @@
                            <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
                               alt="User Avatar" style="width: 100%; height: auto;">
                         </div>
-                        <span class="highlight"
-                           style="white-space: nowrap;">{{ Auth::user()->full_name }}</span>
+                        {{-- <span class="highlight"
+                           style="white-space: nowrap;">{{ Auth::user()->full_name }}</span> --}}
                         <!-- Hiển thị tên người dùng đã đăng nhập -->
                      </div>
                      <div class="header-menu" style="margin-left: 10px;">
@@ -306,5 +310,7 @@
       <!-- End .container -->
    </div>
    <!-- End .header-bottom -->
-   </header>
-   <!-- End .header -->
+
+</header>
+<!-- End .header -->
+

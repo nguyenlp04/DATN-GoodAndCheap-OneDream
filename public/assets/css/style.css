@@ -16365,7 +16365,7 @@ button:focus {
     padding: 0;
 }
 
-.filter-btn i {
+.form-control i {
     margin-right: 8px; /* Khoảng cách giữa biểu tượng và chữ */
 }
 .filter-btn:hover{
@@ -16375,30 +16375,12 @@ button:focus {
     margin-bottom: 0 !important;
     margin-left: 5px;
 }
-.search-blogs {
-    max-width: 400px; /* Điều chỉnh chiều rộng tối đa */
-    
-    
-    text-align: center;
-}
+ 
+ 
 
-.search-blogs input.form-control {
-    width: 100%; /* Đảm bảo input chiếm toàn bộ chiều rộng của div */
-    background-color: #fff; /* Màu nền sáng hơn khi focus */
-    border-radius: 30px; /* Bo góc input */
-    border: 1px solid #ccc; /* Đặt màu viền cho input */
-    font-size: 14px; /* Đặt kích thước chữ */
-}
+ 
 
-.search-blogs input.form-control:focus {
-    border-color: #007bff; /* Đổi màu viền khi input được focus */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Thêm bóng khi focus */
-}
-
-.search-blogs input.form-control::placeholder {
-    color: #888; /* Màu sắc của text placeholder */
-    font-style: italic; /* Đặt chữ nghiêng cho placeholder */
-}
+ 
 @media (max-width:575px){
     .search-blogs {
         max-width: 300px; /* Điều chỉnh chiều rộng tối đa */

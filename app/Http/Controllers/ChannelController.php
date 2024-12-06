@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Like;
 class ChannelController extends Controller
 {
     /**
@@ -140,6 +140,7 @@ class ChannelController extends Controller
      */
     public function show(string $id)
     {
+
         $user = Auth::user(); // Lấy thông tin người dùng nếu đã đăng nhập
         $channel = Channel::where('user_id', $user->user_id ?? null)->first(); // Lấy kênh nếu người dùng đã đăng nhập
 
@@ -148,13 +149,20 @@ class ChannelController extends Controller
         $channels = Channel::findOrFail($id); // Lấy kênh theo ID
 
         // Lấy danh sách tin đã được duyệt thuộc kênh
+
         $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
             ->where('approved', 1)
             ->paginate(5);
-
+    
         foreach ($sale_news as $news) {
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
+    
+            // Check if the sale_new is favorited
+            $news->isFavorited = Like::where('sale_new_id', $news->sale_new_id)
+                                     ->where('user_id', $user->user_id)
+                                     ->exists();
         }
+
 
         // Đếm số lượng bản ghi theo sub_category
         $subcategory_count = $sale_news->filter(function ($news) {
@@ -182,7 +190,9 @@ class ChannelController extends Controller
             'category'
         ));
 
+
     }
+    
 
 
 

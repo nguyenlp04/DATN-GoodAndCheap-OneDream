@@ -117,7 +117,7 @@
             <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -140,15 +140,17 @@
                                 }
                             }'>
                     @foreach ($data as $item)
-                    <div class="product product-2">
-                        <figure class="product-media">
-                            <span class="product-label label-circle label-top">Top</span>
-                            <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
-                                @if ($item->images->isNotEmpty())
-                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                    class="equal-height-image">
-                                @endif
-                            </a>
+
+                        <div class="product product-2">
+                            <figure class="product-media">
+                                <span class="product-label label-circle label-top">Top</span>
+                                <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
+                                    @if ($item->images->isNotEmpty())
+                                        <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                            class="equal-height-image">
+                                    @endif
+                                </a>
+
 
 
 
@@ -165,7 +167,6 @@
                                 </form>
 
                             </div>
-
                         </figure>
                         <!-- End .product-media -->
 
@@ -179,6 +180,7 @@
                                 ${{ $item->price }}
                             </div><!-- End .product-price -->
                             <!-- <div class="product-nav product-nav-dots">
+
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
                                         name</span></a>
                                 <a href="#" style="background: #eaeaec;"><span class="sr-only">Color
@@ -196,7 +198,7 @@
             <div class="tab-pane p-0 fade" id="new-tv-tab" role="tabpanel" aria-labelledby="new-tv-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -380,7 +382,7 @@
                 aria-labelledby="new-computers-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -565,7 +567,7 @@
             <div class="tab-pane p-0 fade" id="new-phones-tab" role="tabpanel" aria-labelledby="new-phones-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -777,7 +779,7 @@
             <div class="tab-pane p-0 fade" id="new-watches-tab" role="tabpanel" aria-labelledby="new-watches-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -934,7 +936,7 @@
             <div class="tab-pane p-0 fade" id="new-acc-tab" role="tabpanel" aria-labelledby="new-acc-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -1198,7 +1200,7 @@
         <hr class="mb-0">
         <div class="owl-carousel mt-5 mb-5 owl-simple" data-toggle="owl"
             data-owl-options='{
-                        "nav": false, 
+                        "nav": false,
                         "dots": false,
                         "margin": 30,
                         "loop": false,
@@ -1289,7 +1291,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1310,6 +1312,7 @@
                                         }'>
 
                                 @foreach ($topRated as $item)
+
                                 <div class="product product-2">
                                     <figure class="product-media">
                                         <span class="product-label label-circle label-top">Top</span>
@@ -1340,6 +1343,7 @@
 
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
+
                                 @endforeach
 
                             </div><!-- End .owl-carousel -->
@@ -1349,7 +1353,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1369,6 +1373,7 @@
                                             }
                                             }'>
                                 @foreach ($bestSelling as $item)
+
                                 <div class="product product-2">
                                     <figure class="product-media">
                                         <span class="product-label label-circle label-new">New</span>
@@ -1398,6 +1403,7 @@
 
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
+
                                 @endforeach
                             </div><!-- End .owl-carousel -->
                         </div><!-- .End .tab-pane -->
@@ -1406,7 +1412,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1426,6 +1432,7 @@
                                             }
                                         }'>
                                 @foreach ($onSale as $item)
+
                                 <div class="product product-2">
                                     <figure class="product-media">
                                         <span class="product-label label-circle label-new">Sale</span>
@@ -1456,6 +1463,7 @@
 
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
+
                                 @endforeach
                             </div><!-- End .owl-carousel -->
                         </div><!-- .End .tab-pane -->
@@ -1483,6 +1491,7 @@
             <div class="row justify-content-center">
 
                 @foreach ($recommendation as $item)
+
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="product product-2">
                         <figure class="product-media">
@@ -1515,6 +1524,7 @@
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div>
+
                 @endforeach
 
 
