@@ -359,7 +359,7 @@
               </li>
               <li class="menu-item {{ Request::is('config/vnpay') ? 'active' : '' }}">
                 <a href="{{ url('config/vnpay') }}" class="menu-link">
-                  <div data-i18n="Config VnPay">VnPay</div>
+                  <div data-i18n="Config VNPAY">VNPAY</div>
                 </a>
               </li>
               <li class="menu-item {{ Request::is('config/seo') ? 'active' : '' }}">
