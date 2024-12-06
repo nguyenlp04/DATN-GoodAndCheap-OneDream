@@ -13,10 +13,6 @@
 
 @section('content')
 <div class="container">
-    <!-- Tiêu đề -->
-    <h2 class="title text-center mb-4 mt-2">What's Hot Today?</h2>
-
-    <!-- Tabs danh mục -->
     <div class="cat-blocks-container">
         <div class="row">
             <!-- Tab "Tất cả tin đăng" -->

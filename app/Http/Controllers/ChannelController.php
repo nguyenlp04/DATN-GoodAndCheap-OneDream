@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Like;
+
 class ChannelController extends Controller
 {
     /**
@@ -153,14 +154,14 @@ class ChannelController extends Controller
         $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
             ->where('approved', 1)
             ->paginate(5);
-    
+
         foreach ($sale_news as $news) {
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
-    
+
             // Check if the sale_new is favorited
             $news->isFavorited = Like::where('sale_new_id', $news->sale_new_id)
-                                     ->where('user_id', $user->user_id)
-                                     ->exists();
+                ->where('user_id', $user->user_id)
+                ->exists();
         }
 
 
@@ -189,10 +190,8 @@ class ChannelController extends Controller
             'information',
             'category'
         ));
-
-
     }
-    
+
 
 
 
@@ -349,17 +348,15 @@ class ChannelController extends Controller
     public function search_channel(Request $request)
     {
         $user = Auth::user();
-        $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Get user's channel
 
-        $keyword = $request->input('keyword');
+        $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Lấy channel của user
+
+        $keyword = $request->input('keyword', '');
         $categoryId = $request->input('category');
-        $perPage = $request->input('perPage', 2); // Default to 2 per page
+        $perPage = $request->input('perPage', 2); // Mặc định 2 trang
         $threeDaysAgo = Carbon::now()->subDays(3);
         $NewsCount = $channels->saleNews()->count();
-
-        $channelId = $request->input('channel_id');
-
-        $buildQuery = function ($isVip, $isRecent = null) use ($keyword, $categoryId, $threeDaysAgo, $channelId) {
+        $buildQuery = function ($isVip, $isRecent = null) use ($keyword, $categoryId, $threeDaysAgo) {
             $query = SaleNews::where('title', 'like', "%$keyword%")
                 ->with('categoryToSubcategory', 'user', 'sub_category.category');
 
@@ -381,12 +378,11 @@ class ChannelController extends Controller
             return $query;
         };
 
-        $recentVipSaleNews = $buildQuery(true, true)->inRandomOrder()->get();
-        $olderVipSaleNews = $buildQuery(true, false)->inRandomOrder()->get();
+        $recentVipSaleNews = $buildQuery(true, true)->inRandomOrder()->limit(10)->get();
+        $olderVipSaleNews = $buildQuery(true, false)->inRandomOrder()->limit(10)->get();
         $nonVipSaleNews = $buildQuery(false)->paginate($perPage);
 
         $category = Category::all();
-
         $sale_news = SaleNews::where('channel_id', $channels->channel_id)
             ->where('title', 'like', "%$keyword%")
             ->when($categoryId, fn($q) => $q->whereHas('sub_category.category', function ($q) use ($categoryId) {
@@ -394,27 +390,29 @@ class ChannelController extends Controller
             }))
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->get();
+
         if ($sale_news->isEmpty()) {
             $sale_news = collect();
-            if ($request->ajax()) {
-                return response()->json([
-                    'html' => view('partner.channels._sale_news', compact('sale_news'))->render()
-                ]);
-            }
-
-            return view('partner.channels.show_channels', compact(
-                'recentVipSaleNews',
-                'olderVipSaleNews',
-                'nonVipSaleNews',
-                'keyword',
-                'perPage',
-                'category',
-                'categoryId',
-                'channelId',
-                'channels',
-                'NewsCount',
-                'sale_news'
-            ));
         }
+
+        // Trả về view hoặc xử lý AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('partner.channels._sale_news', compact('sale_news'))->render()
+            ]);
+        }
+
+        return view('partner.channels.show_channels', compact(
+            'recentVipSaleNews',
+            'olderVipSaleNews',
+            'nonVipSaleNews',
+            'keyword',
+            'perPage',
+            'category',
+            'categoryId',
+            'channels',
+            'sale_news',
+            'NewsCount'
+        ));
     }
 }
