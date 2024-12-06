@@ -55,10 +55,9 @@
 
         <div class="cat-blocks-container">
             <div class="row">
-
                 @foreach ($categories as $category)
                 <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
+                    <a href="{{ route('search') }}?category={{ $category->category_id }}" class="cat-block">
                         <figure>
                             <span>
                                 <img style=" width: 111px;height: 64px;object-fit: cover;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
@@ -68,22 +67,9 @@
                     </a>
                 </div><!-- End .col-sm-4 col-lg-2 -->
                 @endforeach
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/2.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Digital Cameras</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
             </div><!-- End .row -->
         </div><!-- End .cat-blocks-container -->
     </div><!-- End .container -->
-
     <div class="mb-4"></div><!-- End .mb-4 -->
 
 
