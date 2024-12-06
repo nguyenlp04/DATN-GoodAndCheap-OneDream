@@ -1943,7 +1943,7 @@ blockquote.text-white cite span {
     margin-left: 1rem;
 }
 .header-bottom .menu > li > a {
-    padding: 1.65rem 1rem;
+    padding: 1.25rem 0rem;
 }
 .header-bottom .menu > li > .sf-with-ul {
     padding-right: 3rem;
@@ -16353,11 +16353,11 @@ button:focus {
 .filter-btn {
 
     color: #777; /* Màu chữ trắng */
-    
+
     border: none; /* Không viền */
     border-radius: 5px; /* Bo góc */
     cursor: pointer; /* Con trỏ chuột khi hover */
-   
+
     display: inline-flex;
     align-items: center;
     transition: 0.2s;
@@ -16375,8 +16375,14 @@ button:focus {
     margin-bottom: 0 !important;
     margin-left: 5px;
 }
- 
- 
+
+.search-blogs {
+    max-width: 400px; /* Điều chỉnh chiều rộng tối đa */
+
+
+    text-align: center;
+}
+
 
  
 
@@ -16384,7 +16390,7 @@ button:focus {
 @media (max-width:575px){
     .search-blogs {
         max-width: 300px; /* Điều chỉnh chiều rộng tối đa */
-        
+
         margin-top: 10px;
         text-align: center;
     }
