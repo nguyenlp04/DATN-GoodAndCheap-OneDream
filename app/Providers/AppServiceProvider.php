@@ -9,7 +9,7 @@ use App\Models\Notification;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\Paginator;
-
+use App\Models\Category;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,7 +51,16 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrap();
         $setting = Setting::first() ?? new Setting();
-        View::share('setting', $setting);
+        $categories = Category::with(['subCategories' => function ($query) {
+            $query->where('status', 1);
+        }])
+            ->where('status', 1)
+            ->where('is_delete', '!=', 0)
+            ->get();
+        View::share([
+            'setting' => $setting,
+            'categories' => $categories,
+        ]);
         View::composer('*', function ($view) {
             // Loại trừ các view trong thư mục admin
             if (str_starts_with($view->getName(), 'admin')) {

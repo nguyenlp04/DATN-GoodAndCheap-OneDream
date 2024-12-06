@@ -1,4 +1,3 @@
-
 @extends('layouts.client_layout') @section('content')
 <main class="main">
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -25,22 +24,23 @@
                     <div class="owl-carousel owl-simple owl-nav-top carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
                         data-toggle="owl"
                         data-owl-options='{
-                            "nav": true,
-                            "dots": false,
-                            "margin": 20,
-                            "loop": false,
-                            "responsive": {
-                                "0": {
-                                    "items":2
-                                },
-                                "480": {
-                                    "items":2
-                                },
-                                "768": {
-                                    "items":3
-                                },
-                                "1200": {
-                                    "items":4
+                                "nav": true,
+                                "dots": false,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "1200": {
+                                        "items":4
+                                    }
                                 }
                             }'>
                         @if ($recentVipSaleNews->isNotEmpty() || $olderVipSaleNews->isNotEmpty())
@@ -214,6 +214,7 @@
                                             @endif
                                         </a>
                                     </figure>
+
                                     <div class="product-body">
                                         <div class="product-cat">
                                             @if ($item->categoryToSubcategory)
@@ -350,13 +351,14 @@
 
 
                         {{-- <div class="widget widget-collapsible">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
-                                        aria-controls="widget-5">
-                                        Price
-                                    </a>
-                                </h3>
-                                <!-- End .widget-title -->
+                                    <h3 class="widget-title">
+                                        <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
+                                            aria-controls="widget-5">
+                                            Price
+                                        </a>
+                                    </h3>
+                                    <!-- End .widget-title -->
+
                                     <div class="collapse show" id="widget-5">
                                         <div class="widget-body">
                                             <div class="filter-price">
@@ -400,10 +402,8 @@
                                         </div>
                                         <!-- End .widget-body -->
                                     </div>
-                                    <!-- End .widget-body -->
-                                </div>
-                                <!-- End .collapse -->
-                            </div> --}}
+                                    <!-- End .collapse -->
+                                </div> --}}
                     </div>
                     <!-- End .sidebar sidebar-shop -->
                 </aside>
