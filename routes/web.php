@@ -35,11 +35,12 @@ use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
 use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ConfigController;
 
 require __DIR__ . '/auth.php';
 
 
-// admin
+// staff
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
@@ -100,6 +101,26 @@ Route::middleware(['auth.admin'])->group(function () {
 });
 
 
+// admin
+
+Route::middleware(['auth.role.admin'])->group(function () {
+    Route::prefix('config')->group(function () {
+        Route::get('/seo', [ConfigController::class, 'index'])->name('seo');
+        Route::get('/get-scripts', [ConfigController::class, 'getScripts'])->name('getScripts');
+        Route::post('/save-script', [ConfigController::class, 'saveScript'])->name('saveScript');
+        Route::post('/delete-script', [ConfigController::class, 'deleteScript'])->name('deleteScript');
+        Route::post('/save-notification', [ConfigController::class, 'saveNotification'])->name('saveNotification');
+        Route::get('/get-notification', [ConfigController::class, 'getnotification'])->name('getnotification');
+
+        Route::get('/telegram', [ConfigController::class, 'createBotTeleGram'])->name('config.telegram');
+        Route::post('/telegram', [ConfigController::class, 'storeBotTeleGram'])->name('store.telegram');
+
+        Route::get('/vnpay', [ConfigController::class, 'createVnPay'])->name('config.vnpay');
+        Route::post('/vnpay', [ConfigController::class, 'storeVnPay'])->name('store.vnpay');
+    });
+});
+
+
 // user
 
 
@@ -109,9 +130,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-to-wishlist', [WishlistController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist-count', [WishlistController::class, 'count'])->name('wishlist.count');
+
     Route::post('/wishlist/toggle', [WishlistController::class, 'toggleWishlist'])->name('toggleWishlist');
 
     //end wishlisst 
+
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

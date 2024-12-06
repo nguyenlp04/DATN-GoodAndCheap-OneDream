@@ -1,5 +1,4 @@
 <main class="main">
-
     <style>
         .image-container {
             width: 100%;
@@ -19,8 +18,35 @@
         }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="intro-slider-container mb-5">
+        <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl"
+            data-owl-options='{
+                        "dots": true,
+                        "nav": false, 
+                        "responsive": {
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'>
+            <div class="intro-slide"
+                style="background-image: url({{$setting->banner1}});">
+            </div><!-- End .intro-slide -->
 
+            <div class="intro-slide"
+                style="background-image: url({{$setting->banner2}});">
 
+            </div><!-- End .intro-slide -->
+
+            <div class="intro-slide"
+                style="background-image: url({{$setting->banner3}});">
+
+            </div><!-- End .intro-slide -->
+        </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+        <span class="slider-loader"></span><!-- End .slider-loader -->
+    </div><!-- End .intro-slider-container -->
 
 
 
@@ -29,17 +55,19 @@
 
         <div class="cat-blocks-container">
             <div class="row">
+
+                @foreach ($categories as $category)
                 <div class="col-6 col-sm-4 col-lg-2">
                     <a href="category.html" class="cat-block">
                         <figure>
                             <span>
-                                <img src="assets/images/demos/demo-4/cats/1.png" alt="Category image">
+                                <img style=" width: 111px;height: 64px;object-fit: cover;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
                             </span>
                         </figure>
-
-                        <h3 class="cat-block-title">Computer & Laptop</h3><!-- End .cat-block-title -->
+                        <h3 class="cat-block-title">{{ $category->name_category }}</h3><!-- End .cat-block-title -->
                     </a>
                 </div><!-- End .col-sm-4 col-lg-2 -->
+                @endforeach
 
                 <div class="col-6 col-sm-4 col-lg-2">
                     <a href="category.html" class="cat-block">
@@ -50,54 +78,6 @@
                         </figure>
 
                         <h3 class="cat-block-title">Digital Cameras</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/3.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Smart Phones</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/4.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Televisions</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/5.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Audio</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/6.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Smart Watches</h3><!-- End .cat-block-title -->
                     </a>
                 </div><!-- End .col-sm-4 col-lg-2 -->
             </div><!-- End .row -->
@@ -151,7 +131,7 @@
             <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -174,15 +154,17 @@
                                 }
                             }'>
                     @foreach ($data as $item)
-                    <div class="product product-2">
-                        <figure class="product-media">
-                            <span class="product-label label-circle label-top">Top</span>
-                            <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
-                                @if ($item->images->isNotEmpty())
-                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                    class="equal-height-image">
-                                @endif
-                            </a>
+
+                        <div class="product product-2">
+                            <figure class="product-media">
+                                <span class="product-label label-circle label-top">Top</span>
+                                <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
+                                    @if ($item->images->isNotEmpty())
+                                        <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                            class="equal-height-image">
+                                    @endif
+                                </a>
+
 
 
 
@@ -199,12 +181,6 @@
                                 </form>
 
                             </div>
-                            <div class="product-action">
-                                <!-- <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a> -->
-                                <a href="#" class="btn-product btn-quickview" title="Quick view"><span>quick
-                                        view</span></a>
-                            </div><!-- End .product-action -->
                         </figure>
                         <!-- End .product-media -->
 
@@ -218,6 +194,7 @@
                                 ${{ $item->price }}
                             </div><!-- End .product-price -->
                             <!-- <div class="product-nav product-nav-dots">
+
                                 <a href="#" style="background: #edd2c8;"><span class="sr-only">Color
                                         name</span></a>
                                 <a href="#" style="background: #eaeaec;"><span class="sr-only">Color
@@ -235,7 +212,7 @@
             <div class="tab-pane p-0 fade" id="new-tv-tab" role="tabpanel" aria-labelledby="new-tv-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -269,12 +246,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -310,12 +282,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -342,13 +309,6 @@
 
                             <div class="product-action-vertical">
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                            </div><!-- End .product-action -->
-
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
                             </div><!-- End .product-action -->
                         </figure><!-- End .product-media -->
 
@@ -387,12 +347,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -420,12 +375,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -446,7 +396,7 @@
                 aria-labelledby="new-computers-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -480,12 +430,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -513,12 +458,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -546,12 +486,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -587,12 +522,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -621,12 +551,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -656,7 +581,7 @@
             <div class="tab-pane p-0 fade" id="new-phones-tab" role="tabpanel" aria-labelledby="new-phones-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -690,12 +615,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -722,12 +642,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -754,12 +669,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -796,12 +706,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -829,12 +734,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -863,12 +763,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -898,7 +793,7 @@
             <div class="tab-pane p-0 fade" id="new-watches-tab" role="tabpanel" aria-labelledby="new-watches-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -933,12 +828,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -976,12 +866,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1008,12 +893,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1041,12 +921,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1075,7 +950,7 @@
             <div class="tab-pane p-0 fade" id="new-acc-tab" role="tabpanel" aria-labelledby="new-acc-link">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
-                                "nav": true, 
+                                "nav": true,
                                 "dots": true,
                                 "margin": 20,
                                 "loop": false,
@@ -1109,12 +984,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1142,12 +1012,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1175,12 +1040,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1207,12 +1067,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1240,12 +1095,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1364,7 +1214,7 @@
         <hr class="mb-0">
         <div class="owl-carousel mt-5 mb-5 owl-simple" data-toggle="owl"
             data-owl-options='{
-                        "nav": false, 
+                        "nav": false,
                         "dots": false,
                         "margin": 30,
                         "loop": false,
@@ -1455,7 +1305,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1476,6 +1326,7 @@
                                         }'>
 
                                 @foreach ($topRated as $item)
+
                                 <div class="product product-2">
                                     <figure class="product-media">
                                         <span class="product-label label-circle label-top">Top</span>
@@ -1489,12 +1340,7 @@
                                                 title="Add to wishlist"></a>
                                         </div><!-- End .product-action -->
 
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"
-                                                title="Add to cart"><span>add to cart</span></a>
-                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                title="Quick view"><span>quick view</span></a>
-                                        </div><!-- End .product-action -->
+
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
@@ -1511,6 +1357,7 @@
 
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
+
                                 @endforeach
 
                             </div><!-- End .owl-carousel -->
@@ -1520,7 +1367,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1540,6 +1387,7 @@
                                             }
                                             }'>
                                 @foreach ($bestSelling as $item)
+
                                 <div class="product product-2">
                                     <figure class="product-media">
                                         <span class="product-label label-circle label-new">New</span>
@@ -1552,12 +1400,7 @@
                                                 title="Add to wishlist"></a>
                                         </div><!-- End .product-action -->
 
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"
-                                                title="Add to cart"><span>add to cart</span></a>
-                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                title="Quick view"><span>quick view</span></a>
-                                        </div><!-- End .product-action -->
+
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
@@ -1574,6 +1417,7 @@
 
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
+
                                 @endforeach
                             </div><!-- End .owl-carousel -->
                         </div><!-- .End .tab-pane -->
@@ -1582,7 +1426,7 @@
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
                                 data-toggle="owl"
                                 data-owl-options='{
-                                            "nav": true, 
+                                            "nav": true,
                                             "dots": false,
                                             "margin": 20,
                                             "loop": false,
@@ -1602,6 +1446,7 @@
                                             }
                                         }'>
                                 @foreach ($onSale as $item)
+
                                 <div class="product product-2">
                                     <figure class="product-media">
                                         <span class="product-label label-circle label-new">Sale</span>
@@ -1615,12 +1460,7 @@
                                                 title="Add to wishlist"></a>
                                         </div><!-- End .product-action -->
 
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"
-                                                title="Add to cart"><span>add to cart</span></a>
-                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                title="Quick view"><span>quick view</span></a>
-                                        </div><!-- End .product-action -->
+
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
@@ -1637,6 +1477,7 @@
 
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
+
                                 @endforeach
                             </div><!-- End .owl-carousel -->
                         </div><!-- .End .tab-pane -->
@@ -1664,6 +1505,7 @@
             <div class="row justify-content-center">
 
                 @foreach ($recommendation as $item)
+
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="product product-2">
                         <figure class="product-media">
@@ -1678,12 +1520,7 @@
                                     title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add
-                                        to cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1701,6 +1538,7 @@
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div>
+
                 @endforeach
 
 
@@ -1776,58 +1614,73 @@
 <!-- Trong Blade view -->
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script>
-   var userId = @json(Auth::user() ? Auth::user()->user_id : null); // Lấy user_id nếu người dùng đã đăng nhập
+    var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}"; // Lấy user_id nếu người dùng đã đăng nhập
 
-// Lắng nghe sự kiện click vào nút thêm vào danh sách yêu thích
-$(document).on('click', '.add-to-wishlist-btn', function (e) {
-    e.preventDefault(); // Ngăn hành vi gửi form mặc định của trình duyệt
+    // Lắng nghe sự kiện click vào nút thêm vào danh sách yêu thích
+    $(document).on('click', '.add-to-wishlist-btn', function(e) {
+        e.preventDefault(); // Ngăn hành vi gửi form mặc định của trình duyệt
 
-    var form = $(this).closest('form'); // Lấy form chứa nút bấm
-    var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy giá trị sale_new_id từ input hidden
+        var form = $(this).closest('form'); // Lấy form chứa nút bấm
+        var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy giá trị sale_new_id từ input hidden
 
-    // Kiểm tra nếu userId không có giá trị (người dùng chưa đăng nhập)
-    if (!userId) {
-        Swal.fire({
-            icon: 'warning', // Hiển thị biểu tượng cảnh báo
-            title: 'You need to log in to add this to your favorites!', // Thông báo yêu cầu đăng nhập
-            toast: true, // Hiển thị thông báo nhỏ
-            position: 'top-end', // Vị trí thông báo ở góc trên cùng bên phải
-            showConfirmButton: false, // Không hiển thị nút xác nhận
-            timer: 1000, // Thời gian hiển thị thông báo là 1 giây
-            timerProgressBar: true // Hiển thị thanh tiến trình đếm ngược
-        }).then(() => {
-            // Chuyển hướng người dùng đến trang đăng nhập
-            window.location.href = '{{ route('login') }}';
-        });
-        return; // Kết thúc hàm, không thực hiện các bước tiếp theo
-    }
+        // Kiểm tra nếu userId không có giá trị (người dùng chưa đăng nhập)
+        if (!userId) {
+            Swal.fire({
+                icon: 'warning', // Hiển thị biểu tượng cảnh báo
+                title: 'You need to log in to add this to your favorites!', // Thông báo yêu cầu đăng nhập
+                toast: true, // Hiển thị thông báo nhỏ
+                position: 'top-end', // Vị trí thông báo ở góc trên cùng bên phải
+                showConfirmButton: false, // Không hiển thị nút xác nhận
+                timer: 1000, // Thời gian hiển thị thông báo là 1 giây
+                timerProgressBar: true // Hiển thị thanh tiến trình đếm ngược
+            }).then(() => {
+                // Chuyển hướng người dùng đến trang đăng nhập
+                window.location.href = @json(route('login'));
 
-    // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
-    $.ajax({
-        url: form.attr('action'), // URL lấy từ thuộc tính action của form
-        type: 'POST', // Phương thức gửi yêu cầu là POST
-        data: {
-            _token: '{{ csrf_token() }}', // CSRF token để xác thực yêu cầu
-            user_id: userId, // ID của người dùng
-            sale_new_id: saleNewId // ID của sản phẩm
-        },
-        success: function (response) {
-            // Xử lý khi server phản hồi thành công
-            if (response.type === 'success') {
-                Swal.fire({
-                    icon: 'success', // Hiển thị biểu tượng thành công
-                    title: response.message, // Nội dung thông báo từ server
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-            } else {
-                // Nếu server trả về lỗi
+            });
+            return; // Kết thúc hàm, không thực hiện các bước tiếp theo
+        }
+
+        // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
+        $.ajax({
+            url: form.attr('action'), // URL lấy từ thuộc tính action của form
+            type: 'POST', // Phương thức gửi yêu cầu là POST
+            data: {
+                _token: '{{ csrf_token() }}', // CSRF token để xác thực yêu cầu
+                user_id: userId, // ID của người dùng
+                sale_new_id: saleNewId // ID của sản phẩm
+            },
+            success: function(response) {
+                // Xử lý khi server phản hồi thành công
+                if (response.type === 'success') {
+                    Swal.fire({
+                        icon: 'success', // Hiển thị biểu tượng thành công
+                        title: response.message, // Nội dung thông báo từ server
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    // Nếu server trả về lỗi
+                    Swal.fire({
+                        icon: 'error', // Hiển thị biểu tượng lỗi
+                        title: response.message, // Nội dung lỗi từ server
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Xử lý khi yêu cầu gặp lỗi
+                var response = JSON.parse(xhr.responseText); // Phân tích lỗi trả về
                 Swal.fire({
                     icon: 'error', // Hiển thị biểu tượng lỗi
-                    title: response.message, // Nội dung lỗi từ server
+                    title: response.message || 'An error occurred!', // Nội dung lỗi
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
@@ -1835,25 +1688,11 @@ $(document).on('click', '.add-to-wishlist-btn', function (e) {
                     timerProgressBar: true
                 });
             }
-        },
-        error: function (xhr, status, error) {
-            // Xử lý khi yêu cầu gặp lỗi
-            var response = JSON.parse(xhr.responseText); // Phân tích lỗi trả về
-            Swal.fire({
-                icon: 'error', // Hiển thị biểu tượng lỗi
-                title: response.message || 'An error occurred!', // Nội dung lỗi
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            });
-        }
+        });
     });
-});
 
-// Hiển thị thông báo nếu có từ session (sau khi load trang)
-@if (session('alert'))
+    // Hiển thị thông báo nếu có từ session (sau khi load trang)
+    @if(session('alert'))
     Swal.fire({
         icon: "{{ session('alert')['type'] }}", // Loại thông báo (success, error, warning)
         title: "{{ session('alert')['message'] }}", // Nội dung thông báo
@@ -1863,9 +1702,5 @@ $(document).on('click', '.add-to-wishlist-btn', function (e) {
         timer: 3000,
         timerProgressBar: true
     });
-@endif
-
-
-
+    @endif
 </script>
-

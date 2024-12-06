@@ -22,9 +22,11 @@
 
 <head>
   <meta charset="utf-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>Vertical Layouts - Forms | OneDream Dashboard</title>
 
@@ -169,7 +171,7 @@
                         <a href="{{ url('category') }}" class="menu-link">
                             <div data-i18n="Add Category">Add Category</div>
                         </a>
-                    </li> 
+                    </li>
                     <li class="menu-item {{ Request::is('sale-news/approve') ? 'active' : '' }}">
                         <a href="{{ url('sale-news/approve') }}" class="menu-link">
                             <div data-i18n="Approve sale-news">Approve Sale News (affiliate)</div>
@@ -200,7 +202,7 @@
             </li>
             <li class="menu-item {{ Request::is('channel/*') || Request::is('channel') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <i class="menu-icon tf-icons bx bx-store"></i>
                 <div data-i18n="Product Management">Channel Management</div>
               </a>
               <ul class="menu-sub">
@@ -221,11 +223,13 @@
                 <div data-i18n="Account Management">Account</div>
               </a>
               <ul class="menu-sub">
+                   @if (Auth::guard('staff')->user()->role == 'admin')
                 <li class="menu-item {{ Request::is('account/employee-management/*') || Request::is('account/employee-management') ? 'active' : '' }}">
                   <a href="{{ url('account/employee-management') }}" class="menu-link">
                     <div data-i18n="Add Affiliate Account">Staff Management</div>
                   </a>
                 </li>
+                @endif
                 <li class="menu-item {{ Request::is('account/user-account-management') ? 'active' : '' }}">
                   <a href="{{ url('account/user-account-management') }}" class="menu-link">
                     <div data-i18n="Confirm Partner">User Management</div>
@@ -332,13 +336,7 @@
           </ul>
           </li>
 
-          <!-- Order Management (Affiliate) -->
-          <li class="menu-item {{ Request::is('order-affiliate') ? 'active' : '' }}">
-            <a href="{{ url('order-affiliate') }}" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-package"></i>
-              <div data-i18n="Analytics">Order (Affiliate)</div>
-            </a>
-          </li>
+
 
           <!-- Payment -->
 
@@ -351,25 +349,13 @@
 
           <li class="menu-item {{ Request::is('vip-packages') ? 'active' : '' }}">
             <a href="{{ url('vip-packages') }}" class="menu-link">
-              <i class="menu-icon tf-icons bx bxl-paypal"></i>
+          <i class="menu-icon tf-icons bx bx-crown"></i>
               <div data-i18n="Analytics">Vip Package</div>
             </a>
           </li>
 
 
-          {{-- <li class="menu-item {{ Request::is('payment/transactions/*') ? 'active open' : '' }}">
-          <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons bx bxl-paypal"></i>
-            <div data-i18n="Payment Management">Payment</div>
-          </a>
-          <ul class="menu-sub">
-            <li class="menu-item {{ Request::is('payment/transactions') ? 'active' : '' }}">
-              <a href="{{ url('payment/transactions') }}" class="menu-link">
-                <div data-i18n="Payment Method">Transactions</div>
-              </a>
-            </li>
-          </ul>
-          </li> --}}
+
 
           <!-- Trash -->
           <li class="menu-item {{ Request::is('trash/*') ? 'active open' : '' }}">
@@ -402,257 +388,38 @@
             </ul>
           </li>
 
-          <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
 
-          <!-- Layouts -->
-          <li class="menu-item">
-            <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-layout"></i>
-              <div data-i18n="Layouts">Layouts</div>
+          @if (Auth::guard('staff')->user()->role == 'admin')
+           <!-- Config -->
+           <li class="menu-item {{ Request::is('config/*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              {{-- <i class="menu-icon tf-icons bx bx-trash"></i> --}}
+              <i class="menu-icon fa-solid fa-gears"></i>
+              <div data-i18n="Config">Config</div>
             </a>
-
             <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="{{ url('layouts-without-menu.html') }}" class="menu-link">
-                  <div data-i18n="Without menu">Without menu</div>
+              <li class="menu-item {{ Request::is('config/telegram') ? 'active' : '' }}">
+                <a href="{{ url('config/telegram') }}" class="menu-link">
+                  <div data-i18n="Config Bot Telegram">Telegram</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="{{ url('layouts-without-navbar.html') }}" class="menu-link">
-                  <div data-i18n="Without navbar">Without navbar</div>
+              <li class="menu-item {{ Request::is('config/vnpay') ? 'active' : '' }}">
+                <a href="{{ url('config/vnpay') }}" class="menu-link">
+                  <div data-i18n="Config VnPay">VnPay</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="{{ url('layouts-container.html') }}" class="menu-link">
-                  <div data-i18n="Container">Container</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('layouts-fluid.html') }}" class="menu-link">
-                  <div data-i18n="Fluid">Fluid</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('layouts-blank.html') }}" class="menu-link">
-                  <div data-i18n="Blank">Blank</div>
+              <li class="menu-item {{ Request::is('config/seo') ? 'active' : '' }}">
+                <a href="{{ url('config/seo') }}" class="menu-link">
+                  <div data-i18n="Config Category">Seo</div>
                 </a>
               </li>
             </ul>
           </li>
 
-          <li class="menu-item">
-            <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-dock-top"></i>
-              <div data-i18n="Account Settings">Account Settings</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="{{ url('profile.html') }}" class="menu-link">
-                  <div data-i18n="Account">Account</div>
-                </a>
-              </li>
-
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-              <div data-i18n="Authentications">Authentications</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="{{ url('auth-login-basic.html') }}" class="menu-link" target="_blank">
-                  <div data-i18n="Basic">Login</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('auth-register-basic.html') }}" class="menu-link" target="_blank">
-                  <div data-i18n="Basic">Register</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('auth-forgot-password-basic.html') }}" class="menu-link" target="_blank">
-                  <div data-i18n="Basic">Forgot Password</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-              <div data-i18n="Misc">Misc</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="{{ url('pages-misc-error.html') }}" class="menu-link">
-                  <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('pages-misc-under-maintenance.html') }}" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- Components -->
-
-          <!-- User interface -->
-          <li class="menu-item">
-            <a href="{{ url('javascript:void(0)') }}" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-box"></i>
-              <div data-i18n="User interface">User interface</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="{{ url('ui-accordion.html') }}" class="menu-link">
-                  <div data-i18n="Accordion">Accordion</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-alerts.html') }}" class="menu-link">
-                  <div data-i18n="Alerts">Alerts</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-badges.html') }}" class="menu-link">
-                  <div data-i18n="Badges">Badges</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-buttons.html') }}" class="menu-link">
-                  <div data-i18n="Buttons">Buttons</div>
-                </a>
-              </li>
-
-              <li class="menu-item">
-                <a href="{{ url('ui-collapse.html') }}" class="menu-link">
-                  <div data-i18n="Collapse">Collapse</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-dropdowns.html') }}" class="menu-link">
-                  <div data-i18n="Dropdowns">Dropdowns</div>
-                </a>
-              </li>
-
-              <li class="menu-item">
-                <a href="{{ url('ui-list-groups.html') }}" class="menu-link">
-                  <div data-i18n="List Groups">List groups</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-modals.html') }}" class="menu-link">
-                  <div data-i18n="Modals">Modals</div>
-                </a>
-              </li>
-
-              <li class="menu-item">
-                <a href="{{ url('ui-offcanvas.html') }}" class="menu-link">
-                  <div data-i18n="Offcanvas">Offcanvas</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-pagination-breadcrumbs.html') }}" class="menu-link">
-                  <div data-i18n="Pagination &amp; Breadcrumbs">Pagination &amp; Breadcrumbs</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-progress.html') }}" class="menu-link">
-                  <div data-i18n="Progress">Progress</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-spinners.html') }}" class="menu-link">
-                  <div data-i18n="Spinners">Spinners</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-tabs-pills.html') }}" class="menu-link">
-                  <div data-i18n="Tabs &amp; Pills">Tabs &amp; Pills</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-toasts.html') }}" class="menu-link">
-                  <div data-i18n="Toasts">Toasts</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('ui-tooltips-popovers.html') }}" class="menu-link">
-                  <div data-i18n="Tooltips & Popovers">Tooltips &amp; popovers</div>
-                </a>
-              </li>
-
-            </ul>
-          </li>
+            @endif
 
 
 
-          <!-- Forms & Tables -->
-          <!-- Forms -->
-          <li class="menu-item">
-            <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Elements">Form Elements</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="{{ url('forms-basic-inputs.html') }}" class="menu-link">
-                  <div data-i18n="Basic Inputs">Basic Inputs</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('forms-input-groups.html') }}" class="menu-link">
-                  <div data-i18n="Input groups">Input groups</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="{{ url('javascript:void(0);') }}" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Layouts">Form Layouts</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="{{ url('form-layouts-vertical.html') }}" class="menu-link">
-                  <div data-i18n="Vertical Form">Vertical Form</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ url('form-layouts-horizontal.html') }}" class="menu-link">
-                  <div data-i18n="Horizontal Form">Horizontal Form</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- Tables -->
-          <li class="menu-item">
-            <a href="{{ url('tables-basic.html') }}" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-table"></i>
-              <div data-i18n="Tables">Tables</div>
-            </a>
-          </li>
-          <!-- Misc -->
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">Support</span></li>
-          <li class="menu-item">
-            <a
-              href="https://github.com/OneDream/sneat-html-admin-template-free/issues"
-              target="_blank"
-              class="menu-link">
-              <i class="menu-icon tf-icons bx bx-support"></i>
-              <div data-i18n="Support">Support</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a
-              href="https://OneDream.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-              target="_blank"
-              class="menu-link">
-              <i class="menu-icon tf-icons bx bx-file"></i>
-              <div data-i18n="Documentation">Documentation</div>
-            </a>
-          </li>
         </ul>
       </aside>
       <!-- / Menu -->
@@ -779,6 +546,7 @@
     </div>
 
     <!-- Overlay -->
+    @include('layouts.script-admin')
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
   <!-- / Layout wrapper -->
@@ -808,7 +576,6 @@
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  @include('layouts.script-admin')
 </body>
 
 </html>

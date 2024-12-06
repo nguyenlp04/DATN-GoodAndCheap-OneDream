@@ -7,35 +7,29 @@
       overflow: hidden;
       text-overflow: ellipsis;
 
-
       line-height: 1.5em;
       /* Chiều cao dòng */
-   }
+    }
 
 
-   .main-nav {
-      width: 90%;
+    .main-nav {
+        width: 100%;
+        /* text-transform: uppercase; */
+           /* font-weight: bold; */
+        /* color: black; */
       white-space: nowrap;
       overflow: hidden;
       box-sizing: border-box;
-   }
-
-   .main-nav span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 10s linear infinite;
-   }
-
-   @keyframes marquee {
-      from {
-         transform: translate(0, 0);
-
       }
-
-      to {
-         transform: translate(-100%, 0);
+       .main-nav span { display: inline-block; padding-left: 100%; animation: marquee 10s linear infinite;
       }
-   }
+      @keyframes marquee
+      { from { transform: translate(0, 0);
+      } to { transform: translate(-100%, 0);
+      }}
+
+
+
 </style>
 
 <div class="page-wrapper">
@@ -47,7 +41,7 @@
                   <span class="sr-only">Toggle mobile menu</span>
                   <i class="icon-bars"></i>
                </button>
-               <a href="#" class="logo">
+               <a href="{{ route('home') }}" class="logo">
                   <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
                   <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
                </a>
@@ -62,17 +56,14 @@
                      <input type="text" name="keyword" placeholder="Search products..." class="form-control" autofocus>
                      <button type="submit" class="btn btn-primary">Search</button>
                   </div>
+
                   </form> --}}
-
-
-
                   <form action="{{ route('search') }}" method="GET">
                      <div class="header-search-wrapper search-wrapper-wide">
                         <label for="q" class="sr-only">Search</label>
                         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                         <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
                            placeholder="Search product ..." autofocus>
-
                         <!-- Hidden inputs to retain filter values -->
                         <input type="hidden" name="address" value="{{ request()->get('address') }}">
                         <input type="hidden" name="category" value="{{ request()->get('category') }}">
@@ -81,6 +72,7 @@
 
                </div>
                <!-- End .header-search -->
+
             </div>
             <div class="header-right">
                @if(isset(auth()->user()->user_id))
@@ -143,6 +135,8 @@
                   <div class="dropdown-cart-action mt-2 flex justify-content-center">
                      <a href="{{ route('notifications.show') }}" class="dropdown-item text-center">View all</a>
                   </div>
+
+
                </div>
             </div>
             @else
@@ -175,13 +169,15 @@
          <div class="dropdown category-dropdown">
             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                aria-expanded="false" data-display="static" title="Browse Categories">
-               Browse Categories <i class="icon-angle-down"></i>
+               Categories <i class="icon-angle-down"></i>
             </a>
             <div class="dropdown-menu">
                <nav class="side-nav">
                   <ul class="menu-vertical sf-arrows">
-                     <li class="item-lead"><a href="#">Daily offers</a></li>
-                     <li class="item-lead"><a href="#">Gift Ideas</a></li>
+                     @foreach ($categories as $category)
+                     @foreach ($category->subCategories as $subCategory)
+                     <li><a href="#">{{ $subCategory->name_sub_category }}</a></li>
+                     <!-- <li class="item-lead"><a href="#">Gift Ideas</a></li>
                      <li><a href="#">Beds</a></li>
                      <li><a href="#">Lighting</a></li>
                      <li><a href="#">Sofas & Sleeper sofas</a></li>
@@ -190,7 +186,9 @@
                      <li><a href="#">Decoration </a></li>
                      <li><a href="#">Kitchen Cabinets</a></li>
                      <li><a href="#">Coffee & Tables</a></li>
-                     <li><a href="#">Outdoor Furniture </a></li>
+                     <li><a href="#">Outdoor Furniture </a></li> -->
+                     @endforeach
+                     @endforeach
                   </ul>
                   <!-- End .menu-vertical -->
                </nav>
@@ -203,8 +201,14 @@
       <!-- End .header-left -->
       <div class="header-center">
          <nav class="main-nav">
+            @if(!empty($floating_notifications))
+            <span>{{ $floating_notifications }}</span>
+            @else
             <span>Welcome to Good & Cheap website wish you a great career</span>
-         </nav>
+
+            @endif
+        </nav>
+
          <!-- End .main-nav -->
       </div>
       <div class="header-right">
@@ -212,7 +216,7 @@
             @guest
             <ul class="menu sf-arrows">
                <li class="megamenu-container active">
-                  <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house"></i>Home</a>
+                  <a href="{{ route("home")}}" class=""><i class="fa-solid fa-house"></i>Home</a>
                </li>
 
 
@@ -223,9 +227,9 @@
                <li>
 
                   <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star"></i>Contact</a>
-               </li>  
-            
-                   
+               </li>
+
+
 
 
             </ul>
@@ -251,7 +255,7 @@
                <li>
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
                </li>
-               
+
                <div class="col-md-5">
                   <div class="header-dropdown" style="display: flex; align-items: center;">
                      <div style="display: flex; align-items: center;   cursor: pointer;">
@@ -260,8 +264,8 @@
                            <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
                               alt="User Avatar" style="width: 100%; height: auto;">
                         </div>
-                        <span class="highlight"
-                           style="white-space: nowrap;">{{ Auth::user()->full_name }}</span>
+                        {{-- <span class="highlight"
+                           style="white-space: nowrap;">{{ Auth::user()->full_name }}</span> --}}
                         <!-- Hiển thị tên người dùng đã đăng nhập -->
                      </div>
                      <div class="header-menu" style="margin-left: 10px;">
@@ -321,5 +325,7 @@
       <!-- End .container -->
    </div>
    <!-- End .header-bottom -->
-   </header>
-   <!-- End .header -->
+
+</header>
+<!-- End .header -->
+

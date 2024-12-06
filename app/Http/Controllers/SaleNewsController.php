@@ -83,7 +83,7 @@ class SaleNewsController extends Controller
         ]);
         // dd($validatedData, auth()->user()->user_id);
         try {
-            
+
             $jsonData = json_encode($validatedData['variant']);
             // dd($jsonData);
 

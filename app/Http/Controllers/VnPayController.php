@@ -15,6 +15,9 @@ use Illuminate\Support\Carbon;
 use App\Models\Channel;
 use App\Services\PhpMailerService;
 use App\Models\User;
+use App\Services\TelegramService;
+use Illuminate\Support\Facades\File;
+
 
 
 class VnPayController extends Controller
@@ -34,9 +37,9 @@ class VnPayController extends Controller
         }
         $vipPackage = VipPackage::findOrFail($request->vip_package_id);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "https://datn.lndo.site/IPN";
-        $vnp_TmnCode = "KA9BQ8KD"; // Mã website tại VNPAY
-        $vnp_HashSecret = "9Y2K4UHS31CG1PV5ECLNNOIY8Q3385CP"; // Chuỗi bí mật
+        $vnp_Returnurl = 'https://' . env('VNPAY_WEB_URL') . '/IPN';
+        $vnp_TmnCode = env('VNPAY_TERMINAL_ID'); // Mã website tại VNPAY
+        $vnp_HashSecret = env('VNPAY_SECRET_KEY'); // Chuỗi bí mật
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $vnp_channel_id = $request->channel_id;
         $vnp_user_id =  $request->user_id;
@@ -120,7 +123,7 @@ class VnPayController extends Controller
         }
     }
 
-    public function handleIPN()
+    public function handleIPN(TelegramService $telegramService)
     {
         $vnp_HashSecret = "9Y2K4UHS31CG1PV5ECLNNOIY8Q3385CP";
         $vnp_SecureHash = $_GET['vnp_SecureHash'];
@@ -193,23 +196,24 @@ class VnPayController extends Controller
                 $route = 'channels';
             }
 
-
-
             $user = User::where('user_id', Auth()->user()->user_id)->first();
-            // dd($user);
-
             $to = $user->email;
-            // dd($to);
             $subject = 'Payment Confirmation';
 
+            $filePath = public_path('admin/js/telegram.json');
 
-
-            // Gửi email
-
-
+            if (File::exists($filePath)) {
+                $content = File::get($filePath);
+                $data = json_decode($content, true);
+                $messageTemplate = $data['message'];
+            } else {
+                \Log::error('Telegram JSON file not found.');
+                return false;
+            }
 
             if ($_GET['vnp_ResponseCode'] == '00') {
                 if (strpos($vnp_TxnRef, 'US_') === 0) {
+
                     $listing = SaleNews::findOrFail($sale_news_id);
                     $vipPackage = VipPackage::findOrFail($id_package);
                     $namePackage = $vipPackage->name;
@@ -217,6 +221,31 @@ class VnPayController extends Controller
                     $listing->vip_start_at = Carbon::now();
                     $listing->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
                     $listing->save();
+
+                    $message = str_replace(
+                        [
+                            '{UPGRADE}',
+                            '{NAME_PACKAGE}',
+                            'Channel/Sale News ID: {CHANNEL/SALE_NEWS_ID}',
+                            '{PERIOD}',
+                            '{TRANSACTION_ID}',
+                            '{AMOUNT}',
+                            '{PAYMENT_DATE}'
+                        ],
+                        [
+                            $upgrade ?? 'N/A',
+                            $namePackage,
+                            'Sale News ID: ' . $sale_news_id,
+                            $listing->vip_start_at->format('d-m-Y') . ' to ' . $listing->vip_end_at->format('d-m-Y'),
+                            '#' . $vnp_TransactionNo, // Transaction ID (example)
+                            '$' . number_format($vnp_Amount / 100, 2), // Example: package price
+                            Carbon::now()->format('d-m-Y') // Payment date
+                        ],
+                        $messageTemplate
+                    );
+
+                    $telegramService->sendMessage($message);
+                    // dd(123);
                     // $query = DB::table('transactions')->insert($transactionData);
 
                     $body = '<div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif;">
@@ -248,7 +277,6 @@ class VnPayController extends Controller
                         </div>
                     </div>';
                     $result = PhpMailerService::sendEmail($to, $subject, $body);
-                    // dd('ok news');
                 } else {
                     $transaction = Transactions::where('channel_id', $channel_id)->first();
                     if ($transaction) {
@@ -261,6 +289,31 @@ class VnPayController extends Controller
                         $Channel->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
                         $Channel->save();
                         Transactions::where('transaction_id', $transaction->transaction_id)->delete();
+
+                        $message = str_replace(
+                            [
+                                '{UPGRADE}',
+                                '{NAME_PACKAGE}',
+                                'Channel/Sale News ID: {CHANNEL/SALE_NEWS_ID}',
+                                '{PERIOD}',
+                                '{TRANSACTION_ID}',
+                                '{AMOUNT}',
+                                '{PAYMENT_DATE}'
+                            ],
+                            [
+                                $upgrade ?? 'N/A',
+                                $namePackage,
+                                'Channel ID: ' . $channel_id,
+                                $Channel->vip_start_at->format('d-m-Y') . ' to ' . $Channel->vip_end_at->format('d-m-Y'),
+                                '#' . $vnp_TransactionNo, // Transaction ID (example)
+                                '$' . number_format($vnp_Amount / 100, 2), // Example: package price
+                                Carbon::now()->format('d-m-Y') // Payment date
+                            ],
+                            $messageTemplate
+                        );
+    
+                        $telegramService->sendMessage($message);
+                        // dd(123);
                         // dd($transaction->transaction_id);
                         // $query = DB::table('transactions')->insert($transactionData);
 
@@ -293,11 +346,10 @@ class VnPayController extends Controller
                         </div>
                     </div>';
                         $result = PhpMailerService::sendEmail($to, $subject, $body);
-                        // dd('ok channel');
                     }
                 }
 
-
+                $telegramService->sendMessage($message);
 
                 return redirect('/' . $route)->with('alert', [
                     'type' => 'success',
