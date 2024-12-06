@@ -404,6 +404,34 @@
             </ul>
           </li>
 
+
+           <!-- Config -->
+           <li class="menu-item {{ Request::is('config/*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              {{-- <i class="menu-icon tf-icons bx bx-trash"></i> --}}
+              <i class="menu-icon fa-solid fa-gears"></i>
+              <div data-i18n="Config">Config</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item {{ Request::is('config/telegram') ? 'active' : '' }}">
+                <a href="{{ url('config/telegram') }}" class="menu-link">
+                  <div data-i18n="Config Bot Telegram">Telegram</div>
+                </a>
+              </li>
+              <li class="menu-item {{ Request::is('config/vnpay') ? 'active' : '' }}">
+                <a href="{{ url('config/vnpay') }}" class="menu-link">
+                  <div data-i18n="Config VnPay">VnPay</div>
+                </a>
+              </li>
+              <li class="menu-item {{ Request::is('config/category') ? 'active' : '' }}">
+                <a href="{{ url('config/category') }}" class="menu-link">
+                  <div data-i18n="Config Category">Category</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+
           <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
 
           <!-- Layouts -->
