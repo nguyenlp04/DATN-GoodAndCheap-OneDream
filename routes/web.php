@@ -195,8 +195,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
 Route::post('/search-channel', [ChannelController::class, 'search_channel'])->name('search_channel');
 Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
-
-
+Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('all_sale_news');
 // enduser
 
 

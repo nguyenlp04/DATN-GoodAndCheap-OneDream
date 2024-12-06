@@ -351,7 +351,6 @@ class ChannelController extends Controller
         $user = Auth::user();
         $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Get user's channel
 
-        // Lấy từ dữ liệu POST
         $keyword = $request->input('keyword');
         $categoryId = $request->input('category');
         $perPage = $request->input('perPage', 2); // Default to 2 per page
@@ -360,7 +359,6 @@ class ChannelController extends Controller
 
         $channelId = $request->input('channel_id');
 
-        // Hàm tạo query
         $buildQuery = function ($isVip, $isRecent = null) use ($keyword, $categoryId, $threeDaysAgo, $channelId) {
             $query = SaleNews::where('title', 'like', "%$keyword%")
                 ->with('categoryToSubcategory', 'user', 'sub_category.category');
@@ -397,26 +395,26 @@ class ChannelController extends Controller
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->get();
         if ($sale_news->isEmpty()) {
-            $sale_news = null; // Đặt giá trị null để có thể kiểm tra trong view
-        }
-        if ($request->ajax()) {
-            return response()->json([
-                'html' => view('partner.channels._sale_news', compact('sale_news'))->render()
-            ]);
-        }
+            $sale_news = collect();
+            if ($request->ajax()) {
+                return response()->json([
+                    'html' => view('partner.channels._sale_news', compact('sale_news'))->render()
+                ]);
+            }
 
-        return view('partner.channels.show_channels', compact(
-            'recentVipSaleNews',
-            'olderVipSaleNews',
-            'nonVipSaleNews',
-            'keyword',
-            'perPage',
-            'category',
-            'categoryId',
-            'channelId',
-            'channels',
-            'NewsCount',
-            'sale_news'
-        ));
+            return view('partner.channels.show_channels', compact(
+                'recentVipSaleNews',
+                'olderVipSaleNews',
+                'nonVipSaleNews',
+                'keyword',
+                'perPage',
+                'category',
+                'categoryId',
+                'channelId',
+                'channels',
+                'NewsCount',
+                'sale_news'
+            ));
+        }
     }
 }

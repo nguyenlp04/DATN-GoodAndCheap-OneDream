@@ -84,6 +84,7 @@ class SaleNewsController extends Controller
         // dd($validatedData, auth()->user()->user_id);
         try {
 
+
             $jsonData = json_encode($validatedData['variant']);
             // dd($jsonData);
 
@@ -622,5 +623,21 @@ class SaleNewsController extends Controller
             'address',
             'categoryId'
         ));
+    }
+    public function all_sale_news()
+    {
+        $data = SaleNews::with(['user', 'sub_category.category', 'images'])
+            ->where('status', 1)
+            ->where('approved', 1)
+            ->get();
+
+        $groupedData = $data->groupBy(function ($item) {
+            return $item->sub_category->category_id;
+        });
+
+        $allItems = $data;
+        $groupedData['all'] = $allItems;
+
+        return view('salenews.all-sale-news', compact('groupedData'));
     }
 }

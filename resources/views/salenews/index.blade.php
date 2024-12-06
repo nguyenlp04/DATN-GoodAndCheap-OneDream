@@ -451,10 +451,6 @@
             cursor: pointer;
         }
 
-
-
-
-
         .illustration img {
             width: 100px;
             height: auto;
