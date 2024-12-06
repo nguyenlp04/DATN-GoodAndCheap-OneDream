@@ -33,6 +33,7 @@ use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
 use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ConfigController;
 
 require __DIR__ . '/auth.php';
 
@@ -253,3 +254,12 @@ Route::get('/tb', function () {
     return view('notifications.list');
 });
 Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);
+
+
+Route::prefix('config')->group(function () {
+    Route::get('/telegram', [ConfigController::class, 'createBotTeleGram'])->name('config.telegram');
+    Route::post('/telegram', [ConfigController::class, 'storeBotTeleGram'])->name('store.telegram');
+
+    Route::get('/vnpay', [ConfigController::class, 'createVnPay'])->name('config.vnpay');
+    Route::post('/vnpay', [ConfigController::class, 'storeVnPay'])->name('store.vnpay');
+});
