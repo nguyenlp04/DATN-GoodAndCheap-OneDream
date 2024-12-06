@@ -171,13 +171,15 @@
          <div class="dropdown category-dropdown">
             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                aria-expanded="false" data-display="static" title="Browse Categories">
-               Browse Categories <i class="icon-angle-down"></i>
+               Categories <i class="icon-angle-down"></i>
             </a>
             <div class="dropdown-menu">
                <nav class="side-nav">
                   <ul class="menu-vertical sf-arrows">
-                     <li class="item-lead"><a href="#">Daily offers</a></li>
-                     <li class="item-lead"><a href="#">Gift Ideas</a></li>
+                     @foreach ($categories as $category)
+                     @foreach ($category->subCategories as $subCategory)
+                     <li><a href="#">{{ $subCategory->name_sub_category }}</a></li>
+                     <!-- <li class="item-lead"><a href="#">Gift Ideas</a></li>
                      <li><a href="#">Beds</a></li>
                      <li><a href="#">Lighting</a></li>
                      <li><a href="#">Sofas & Sleeper sofas</a></li>
@@ -186,7 +188,9 @@
                      <li><a href="#">Decoration </a></li>
                      <li><a href="#">Kitchen Cabinets</a></li>
                      <li><a href="#">Coffee & Tables</a></li>
-                     <li><a href="#">Outdoor Furniture </a></li>
+                     <li><a href="#">Outdoor Furniture </a></li> -->
+                     @endforeach
+                     @endforeach
                   </ul>
                   <!-- End .menu-vertical -->
                </nav>
@@ -219,9 +223,9 @@
                <li>
 
                   <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star"></i>Contact</a>
-               </li>  
-            
-                   
+               </li>
+
+
 
 
             </ul>
@@ -247,7 +251,7 @@
                <li>
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib"></i>Blog</a>
                </li>
-               
+
                <div class="col-md-5">
                   <div class="header-dropdown" style="display: flex; align-items: center;">
                      <div style="display: flex; align-items: center;   cursor: pointer;">
