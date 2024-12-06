@@ -8,6 +8,7 @@
         "php": "^8.2",
         "ably/ably-php": "^1.1",
         "barryvdh/laravel-debugbar": "*",
+        "guzzlehttp/guzzle": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.0",

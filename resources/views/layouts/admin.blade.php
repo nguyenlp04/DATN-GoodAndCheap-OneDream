@@ -22,9 +22,11 @@
 
 <head>
   <meta charset="utf-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>Vertical Layouts - Forms | OneDream Dashboard</title>
 
@@ -169,7 +171,7 @@
                         <a href="{{ url('category') }}" class="menu-link">
                             <div data-i18n="Add Category">Add Category</div>
                         </a>
-                    </li> 
+                    </li>
                     <li class="menu-item {{ Request::is('sale-news/approve') ? 'active' : '' }}">
                         <a href="{{ url('sale-news/approve') }}" class="menu-link">
                             <div data-i18n="Approve sale-news">Approve Sale News (affiliate)</div>
@@ -401,6 +403,34 @@
 
             </ul>
           </li>
+
+
+           <!-- Config -->
+           <li class="menu-item {{ Request::is('config/*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              {{-- <i class="menu-icon tf-icons bx bx-trash"></i> --}}
+              <i class="menu-icon fa-solid fa-gears"></i>
+              <div data-i18n="Config">Config</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item {{ Request::is('config/telegram') ? 'active' : '' }}">
+                <a href="{{ url('config/telegram') }}" class="menu-link">
+                  <div data-i18n="Config Bot Telegram">Telegram</div>
+                </a>
+              </li>
+              <li class="menu-item {{ Request::is('config/vnpay') ? 'active' : '' }}">
+                <a href="{{ url('config/vnpay') }}" class="menu-link">
+                  <div data-i18n="Config VnPay">VnPay</div>
+                </a>
+              </li>
+              <li class="menu-item {{ Request::is('config/category') ? 'active' : '' }}">
+                <a href="{{ url('config/category') }}" class="menu-link">
+                  <div data-i18n="Config Category">Category</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
 
           <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
 
@@ -779,6 +809,7 @@
     </div>
 
     <!-- Overlay -->
+    @include('layouts.script-admin')
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
   <!-- / Layout wrapper -->
@@ -808,7 +839,6 @@
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  @include('layouts.script-admin')
 </body>
 
 </html>
