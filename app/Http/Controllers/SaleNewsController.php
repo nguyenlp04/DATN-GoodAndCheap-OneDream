@@ -84,6 +84,7 @@ class SaleNewsController extends Controller
         // dd($validatedData, auth()->user()->user_id);
         try {
 
+
             $jsonData = json_encode($validatedData['variant']);
             // dd($jsonData);
 
@@ -373,7 +374,7 @@ class SaleNewsController extends Controller
             $news = SaleNews::with(['channel', 'images', 'firstImage', 'category', 'sub_category'])
                 ->where('sale_new_id', $id)
                 ->where('approved', 1)->first();
-
+            // dd($news);
 
             if (!is_null($news->channel_id)) {
                 $data_count_news = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 1)->count();
@@ -537,7 +538,6 @@ class SaleNewsController extends Controller
             'message' => 'Operation successful'
         ]);
     }
-
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -550,10 +550,11 @@ class SaleNewsController extends Controller
         $recentVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->whereNotNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1)
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
-
         if ($categoryId) {
             $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -570,6 +571,8 @@ class SaleNewsController extends Controller
         $olderVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->whereNotNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1)
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
@@ -583,14 +586,15 @@ class SaleNewsController extends Controller
         if ($address) {
             $olderVipSaleNews->where('address', 'like', "%$address%");
         }
-
         $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
 
         // Non-VIP SaleNews with pagination
-        $perPage = $request->get('perPage', 2);
+        $perPage = $request->get('perPage', 8);
         $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('sub_category.category')
-            ->whereNull('vip_package_id');
+            ->whereNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1);
 
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {

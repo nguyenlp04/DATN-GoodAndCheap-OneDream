@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Like;
 class ChannelController extends Controller
 {
     /**
@@ -140,32 +140,60 @@ class ChannelController extends Controller
      */
     public function show(string $id)
     {
-        $user = Auth::user();
-        $channel = Channel::find($id);
-        $information = ChannelInfo::where('channel_id', $id)->first();
 
-        // If the user has a channel, continue to display the channel
-        $channels = Channel::findOrFail($id); // Get channel by ID
+        $user = Auth::user(); // Lấy thông tin người dùng nếu đã đăng nhập
+        $channel = Channel::where('user_id', $user->user_id ?? null)->first(); // Lấy kênh nếu người dùng đã đăng nhập
+
+        // Lấy thông tin của kênh đang được xem
+        $information = ChannelInfo::where('channel_id', $id)->first();
+        $channels = Channel::findOrFail($id); // Lấy kênh theo ID
+
+        // Lấy danh sách tin đã được duyệt thuộc kênh
+
         $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
             ->where('approved', 1)
             ->paginate(5);
-
+    
         foreach ($sale_news as $news) {
-            // Get name_sub_category from the relation subcategory
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
+    
+            // Check if the sale_new is favorited
+            $news->isFavorited = Like::where('sale_new_id', $news->sale_new_id)
+                                     ->where('user_id', $user->user_id)
+                                     ->exists();
         }
 
-        // Count records of sub_category based on name
+
+        // Đếm số lượng bản ghi theo sub_category
         $subcategory_count = $sale_news->filter(function ($news) {
             return $news->sub_category !== null;
         })->countBy('name_sub_category');
+        // Đếm số lượng tin mà kênh đã đăng
         $NewsCount = $channels->saleNews()->count();
         $category = Category::all();
-        $isFollowed = UserFollowed::where('user_id', $user->user_id)
-            ->where('channel_id', $channels->channel_id)
-            ->exists();
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'information', 'category'));
+        // Kiểm tra nếu người dùng đã theo dõi kênh (nếu đã đăng nhập)
+        $isFollowed = false;
+        if ($user) {
+            $isFollowed = UserFollowed::where('user_id', $user->user_id)
+                ->where('channel_id', $channels->channel_id)
+                ->exists();
+        }
+
+        // Trả về view
+        return view('partner.channels.show_channels', compact(
+            'channels',
+            'NewsCount',
+            'sale_news',
+            'subcategory_count',
+            'isFollowed',
+            'information',
+            'category'
+        ));
+
+
     }
+    
+
 
 
     /**

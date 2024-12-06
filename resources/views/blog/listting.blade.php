@@ -9,12 +9,57 @@
     </div><!-- End .pagessets/css/bootstrap.min.css-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
         <div class="container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Blog</a></li>
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Breadcrumb -->
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Blog</a></li>
+                </ol>
 
-            </ol>
-        </div><!-- End .container -->
+                <!-- Filter Button -->
+                <ol class="breadcrumb mb-0">
+                   
+                    <div class="widget widget-search search-blogs">
+                        
+
+                        <form action="{{ route('blog.search') }}" method="GET">
+                            <label for="ws" class="sr-only">Search in blog</label>
+                            <input type="search" class="form-control" name="ws" placeholder="Search in blog" value="{{ request('ws') }}">
+                            <button type="submit" class="btn"><i class="icon-search"></i><span
+                                    class="sr-only">Search</span></button>
+                        </form>
+                    </div><!-- End .widget -->
+                    <!-- Collapse Section for Filter -->
+                    <div class="collapse position-absolute right-0 mt-5" id="filter-collapse">
+                        <div class="widget widget-collapsible">
+                            <div class="widget-body">
+                                <select name="filter" class="form-control" id="filter-collapse">
+                                    <option value="" disabled selected>Please select a time period</option>
+                                    <option value="option1">Option 1</option>
+                                    <option value="option2">Option 2</option>
+                                    <option value="option3">Option 3</option>
+                                    <option value="option4">Option 4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Search Form -->
+
+
+
+                </ol>
+
+            </div>
+
+            <!-- Collapse Section (Filter Input) -->
+
+        </div>
+
+
+        <!-- End .container -->
+        <!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
 
     <div class="page-content">
@@ -23,15 +68,25 @@
                 <ul class="menu-cat entry-filter justify-content-center">
                     <li class="active"><a href="#" data-filter="*">All Blog Posts<span>{{ $blogs->count() }}</span></a>
                     </li>
+                    @if($category->isNotEmpty())
                     @foreach($category as $cat)
-                    <li><a href="#"
-                            data-filter=".cat{{$cat->category_id}}">{{ $cat->name_category }}<span>{{ $cat->blogs_count }}</span></a>
+                    @if($cat->blogs_count > 0)
+                    <li>
+                        <a href="#" data-filter=".cat{{$cat->category_id}}">
+                            {{ $cat->name_category }} <span>{{ $cat->blogs_count }}</span>
+                        </a>
                     </li>
+                    @endif
                     @endforeach
+                    @else
+                    <p>Not empty blog category!</p>
+                    @endif
+
                 </ul><!-- End .blog-menu -->
             </nav><!-- End .blog-nav -->
 
             <div class="entry-container max-col-4">
+                @if($blogs->isNotEmpty())
                 @foreach($blogs as $blog)
                 <div class="entry-item cat{{$blog->category_id}} shopping col-sm-6 col-md-4 col-lg-3">
                     <article class="entry entry-grid text-center">
@@ -55,7 +110,7 @@
                                     {{$blog->category->name_category}}
                                 </a>
                                 @else
-                                <span>Không có danh mục</span>
+                                <p>Not empty blog category!</p>
                                 @endif
 
                             </div><!-- End .entry-meta -->
@@ -73,6 +128,9 @@
                     </article><!-- End .entry -->
                 </div><!-- End .entry-item -->
                 @endforeach
+                @else
+                <p>Not empty blogs!</p>
+                @endif
             </div><!-- End .entry-container -->
 
             <nav aria-label="Page navigation">

@@ -5,6 +5,8 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -33,11 +35,12 @@ use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\StaffResetPasswordController;
 use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ConfigController;
 
 require __DIR__ . '/auth.php';
 
 
-// admin
+// staff
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
@@ -98,6 +101,29 @@ Route::middleware(['auth.admin'])->group(function () {
 });
 
 
+// admin
+
+Route::middleware(['auth.role.admin'])->group(function () {
+    Route::prefix('config')->group(function () {
+        Route::get('/seo', [ConfigController::class, 'index'])->name('seo');
+        Route::get('/get-scripts', [ConfigController::class, 'getScripts'])->name('getScripts');
+        Route::post('/save-script', [ConfigController::class, 'saveScript'])->name('saveScript');
+        Route::post('/delete-script', [ConfigController::class, 'deleteScript'])->name('deleteScript');
+        Route::post('/save-notification', [ConfigController::class, 'saveNotification'])->name('saveNotification');
+        Route::get('/get-notification', [ConfigController::class, 'getnotification'])->name('getnotification');
+
+        Route::get('/telegram', [ConfigController::class, 'createBotTeleGram'])->name('config.telegram');
+        Route::post('/telegram', [ConfigController::class, 'storeBotTeleGram'])->name('store.telegram');
+
+        Route::get('/vnpay', [ConfigController::class, 'createVnPay'])->name('config.vnpay');
+        Route::post('/vnpay', [ConfigController::class, 'storeVnPay'])->name('store.vnpay');
+
+        Route::get('/mail', [ConfigController::class, 'createMail'])->name('config.mail');
+        Route::post('/mail', [ConfigController::class, 'storeMail'])->name('store.mail');
+    });
+});
+
+
 // user
 
 
@@ -107,7 +133,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-to-wishlist', [WishlistController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist-count', [WishlistController::class, 'count'])->name('wishlist.count');
+
+    Route::post('/wishlist/toggle', [WishlistController::class, 'toggleWishlist'])->name('toggleWishlist');
+
     //end wishlisst 
+
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -131,7 +161,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/infomation/store', [PartnerProfileController::class, 'storeInfomation'])->name('store.infomation');
         Route::get('/infomation/edit/{channel_id}', [PartnerProfileController::class, 'editInfomation'])->name('edit.infomation');
         Route::put('/infomation/update/{channel_id}', [PartnerProfileController::class, 'updateInfomation'])->name('update.infomation');
-        // Route::post('sale-news/like', [LikeController::class, 'store'])->name('like.store');
+
         Route::get('/sale-news/add', [SaleNewsController::class, 'createSaleNewsPartner'])->name('createSaleNewsPartner');
         Route::post('/sale-news/add', [SaleNewsController::class, 'storeSaleNewsPartner'])->name('add.storeSaleNewsPartner');
         Route::get('/sale-news', [SaleNewsController::class, 'indexSaleNewsPartner'])->name('indexSaleNewsPartner');
@@ -172,22 +202,10 @@ Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name(
 
 // guest
 
-Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get();
-    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
-    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
-    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
-    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get();
-    return view('home', [
-        'data' => $data,
-        'topRated' => $topRated,
-        'bestSelling' => $bestSelling,
-        'onSale' => $onSale,
-        'recommendation' => $recommendation,
 
-    ]);
-})->name('home');
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/blog/search', [BlogController::class, 'search'])->name('blog.search');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
