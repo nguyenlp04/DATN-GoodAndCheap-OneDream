@@ -42,12 +42,9 @@ class ConfigController extends Controller
             }
         }
 
-        // Lấy dữ liệu khác từ cơ sở dữ liệu
-        $channels = Channel::all();
-        $users = User::all();
 
         // Trả về view với dữ liệu
-        return view('admin.config.telegram', compact('users', 'channels', 'data'));
+        return view('admin.config.telegram', compact('data'));
     }
 
     /**
@@ -123,11 +120,49 @@ class ConfigController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function createMail()
+    {
+        return view('admin.config.mail');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeMail(Request $request)
+    {
+
+        $request->validate([
+            'mailUserName' => 'required|email', // Validate email format
+        ]);
+
+        $mailUserName = $request->input('mailUserName');
+        $mailPassWord = $request->input('mailPassWord');
+        $mailPassWord = str_replace(' ', '', $mailPassWord);
+
+
+        try {
+            $this->updateEnv([
+                'MAIL_USERNAME' => $mailUserName,
+                'MAIL_FROM_ADDRESS' => $mailUserName,
+                'MAIL_PASSWORD' => $mailPassWord,
+
+            ]);
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Configuration saved successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Failed to save chat ID and bot token to .env!'
+            ]);
+        }
+    }
+
     public function createVnPay()
     {
-        $channels = Channel::all();
-        $users = User::all();
-        return view('admin.config.vnpay', compact('users', 'channels'));
+        return view('admin.config.vnpay');
     }
 
     /**

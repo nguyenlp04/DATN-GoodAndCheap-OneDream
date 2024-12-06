@@ -410,12 +410,18 @@
               </li>
               <li class="menu-item {{ Request::is('config/seo') ? 'active' : '' }}">
                 <a href="{{ url('config/seo') }}" class="menu-link">
-                  <div data-i18n="Config Category">Seo</div>
+                  <div data-i18n="Config SEO">SEO</div>
+                </a>
+              </li>
+              <li class="menu-item {{ Request::is('config/mail') ? 'active' : '' }}">
+                <a href="{{ url('config/mail') }}" class="menu-link">
+                  <div data-i18n="Config Category">Mail</div>
                 </a>
               </li>
             </ul>
           </li>
 
+          <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
             @endif
 
 

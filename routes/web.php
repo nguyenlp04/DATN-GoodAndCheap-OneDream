@@ -117,6 +117,9 @@ Route::middleware(['auth.role.admin'])->group(function () {
 
         Route::get('/vnpay', [ConfigController::class, 'createVnPay'])->name('config.vnpay');
         Route::post('/vnpay', [ConfigController::class, 'storeVnPay'])->name('store.vnpay');
+
+        Route::get('/mail', [ConfigController::class, 'createMail'])->name('config.mail');
+        Route::post('/mail', [ConfigController::class, 'storeMail'])->name('store.mail');
     });
 });
 
