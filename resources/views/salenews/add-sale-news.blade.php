@@ -82,7 +82,6 @@
                                 </div>
                                 <!-- /Media -->
 
-                                <!-- Variants -->
                                 <input type="hidden" id="variant" name="variant" value="">
                                 <div class="card-header d-flex justify-content-between align-items-center mt-1">
                                     <label for="variants" class="font-weight-bold form-label">Variants</label>

@@ -5,6 +5,8 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -169,9 +171,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/manage/update', [UserManageController::class, 'updateProfile'])->name('user.manage.update');
 
     Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
+    Route::get('/transaction-history', [TransactionController::class, 'user_transaction_history'])->name('user.transaction_history');
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+Route::post('/search-channel', [ChannelController::class, 'search_channel'])->name('search_channel');
 Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 
 
@@ -181,23 +185,11 @@ Route::get('partners/list', [PartnerController::class, 'list_notification'])->na
 
 // guest
 
-Route::get('/', function () {
-    $data = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->get();
-    $topRated = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
-    $bestSelling = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
-    $onSale = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->get();
-    $recommendation = \App\Models\SaleNews::where('status', '1')->with('images')->where('is_delete', null)->where('approved', '1')->inRandomOrder()->limit(8)->get();
 
-    return view('home', [
-        'data' => $data,
-        'topRated' => $topRated,
-        'bestSelling' => $bestSelling,
-        'onSale' => $onSale,
-        'recommendation' => $recommendation,
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    ]);
-})->name('home');
 
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
@@ -238,10 +230,7 @@ Route::prefix('payment')->group(function () {
 Route::resource('channels', ChannelController::class);
 
 Route::prefix('trash')->group(function () {
-    Route::get('/user', function () {
-        return view('admin.index');
-    });
-    Route::get('/product', function () {
+    Route::get('/sale-news', function () {
         return view('admin.index');
     });
     Route::get('/channel', function () {

@@ -173,19 +173,6 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu-item {{ Request::is('partners/orders') ? 'active' : '' }}">
-                <a href="{{ url('partners/orders') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-package"></i>
-                    <div data-i18n="Analytics">Order </div>
-                </a>
-            </li>
-            <li class="menu-item {{ Request::is('partners/profile') ? 'active' : '' }}">
-              <a href="{{ url('partners/profile') }}" class="menu-link">
-                  <i class="menu-icon tf-icons bx-user bx "></i>
-                  <div data-i18n="Analytics">My Profile </div>
-              </a>
-          </li>
-            <!-- Infomation -->
 
             <li class="menu-item {{ Request::is('Partners/*') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -303,7 +290,8 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="{{ url("javascript:void(0);") }}" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
+                      
+                      <img src="{{ asset( auth()->user()->channel->image_channel) }}" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -312,11 +300,11 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="{{ asset("/../admin/assets/img/avatars/1.png") }}" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="{{ asset( auth()->user()->channel->image_channel) }}" alt class="w-px-40 h-auto rounded-circle" />
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">Partner</span>
+                            <span class="fw-semibold d-block">{{ auth()->user()->channel->name_channel }}</span>
                             <small class="text-muted">Partner</small>
                           </div>
                         </div>

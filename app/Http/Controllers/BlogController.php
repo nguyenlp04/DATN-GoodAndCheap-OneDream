@@ -35,7 +35,7 @@ class BlogController extends Controller
             $query->where('status', '1');
         }])
         ->where('status', '1')
-        ->get();
+        ->get();        
         $blogs = Blog::where('status', '1')->with('category')->get();  
         $count = Blog::where('status', '1')->count();
       
@@ -228,6 +228,7 @@ public function update(Request $request, Blog $blog)
             }])
             ->where('status', '1')
             ->get();
+
             
         return view('blog.detail-blog', compact('blogs', 'topBlogs', 'alltags','category','relatedBlogs'));
     }
