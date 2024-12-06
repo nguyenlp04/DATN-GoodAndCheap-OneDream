@@ -27,7 +27,7 @@
     <meta name="application-name" content="Molla">
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="{{ asset('assets/images/icons/browserconfig.xml') }}">
-    <meta name="theme-color" content="#ffffff"> --}}
+    <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet"
         {{-- href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}"> --}}
 

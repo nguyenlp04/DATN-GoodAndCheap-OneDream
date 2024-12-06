@@ -129,8 +129,9 @@ if (window.innerWidth <= 768) {
             sendMessage(currentChannel);
         }
     }
+    var ablyKey = "{{ env('ABLY_API_KEY') }}";
     var ably = new Ably.Realtime.Promise({
-        key: '4d5fHg.WXPepQ:AXXlxQ75Vq4OJgEfb_7IwwwzYTKJc_gZ5tSC9TM_Zs4'
+        key: ablyKey
      });
 
       var recipientId = null;

@@ -45,16 +45,6 @@
          <div class="header-center">
             <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
                <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-
-               {{-- <form action="{{ route('products.search') }}" method="GET">
-                  <div class="input-group">
-                      <input type="text" name="keyword" placeholder="Search products..." class="form-control" autofocus>
-                      <button type="submit" class="btn btn-primary">Search</button>
-                  </div>
-              </form> --}}
-
-
-
               <form action="{{ route('search') }}" method="GET">
                <div class="header-search-wrapper search-wrapper-wide">
                    <label for="q" class="sr-only">Search</label>
@@ -236,10 +226,20 @@
                <li class="header-dropdown">
                    <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
                               alt="User Avatar" style="width: 30px; height: 30px;border-radius: 50%;" class="btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                               <ul class="header-menu" style="left: 50%; transform: translateX(-50%);">
+                        <ul class="header-menu" style="left: 50%; transform: translateX(-50%);">
                                     <li>
                               <a class="dropdown-item" href="{{ route('user.manage') }}">
                               {{ __('Profile') }}
+                              </a>
+                           </li>
+                            <li>
+                              <a class="dropdown-item" href="{{ route('sl.index') }}">
+                                 {{ __('Salenews Status') }}
+                              </a>
+                           </li>
+                           <li>
+                              <a href="{{ route('user.transaction_history') }}">
+                                 {{ __('Transaction History') }}
                               </a>
                            </li>
                            @if(!auth()->user()->channel || auth()->user()->channel->status === null)
