@@ -15,10 +15,19 @@
             <h3 class="widget-title">Categories</h3><!-- End .widget-title -->
 
             <ul>
+                @if($category->isNotEmpty())
+                <!-- Kiểm tra nếu $category không rỗng -->
                 @foreach($category as $cat)
+                @if($cat->blogs_count > 0)
                 <li><a href="#">{{$cat->name_category}}<span>{{$cat->blogs_count}}</span></a></li>
-
+                @endif
                 @endforeach
+                @else
+                <p>No blog categories available!</p> <!-- Thông báo khi không có danh mục blog nào -->
+                @endif
+
+
+
             </ul>
         </div><!-- End .widget -->
 

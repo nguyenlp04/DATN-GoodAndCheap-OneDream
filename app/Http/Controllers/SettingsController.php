@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Setting;
+use Illuminate\Support\Facades\File;
 
 class SettingsController extends Controller
 {
@@ -13,6 +14,127 @@ class SettingsController extends Controller
         $setting = Setting::first() ?? new Setting();
         return view("admin.setting.setting", compact('setting'));
     }
+
+
+    public function saveScript(Request $request)
+    {
+        // Lấy nội dung script từ yêu cầu
+        $nameContent = $request->input('name');
+        $scriptContent = $request->input('script');
+
+        // Đường dẫn đến file script.js
+        $filePath = public_path('admin/js/seo.json');
+
+        // Đọc nội dung hiện có của tệp JSON
+        $currentData = [];
+        if (File::exists($filePath)) {
+            $currentData = json_decode(File::get($filePath), true) ?? [];
+        }
+
+        // Kiểm tra tên trùng lặp
+        foreach ($currentData as $entry) {
+            if ($entry['name'] == $nameContent) {
+                return response()->json(['error' => 'Name already exists'], 400);
+            }
+        }
+
+        // Thêm nội dung mới vào mảng
+        $currentData[] = [
+            'name' => $nameContent,
+            'script' => $scriptContent
+        ];
+
+        // Chuyển đổi mảng thành JSON
+        $jsonContent = json_encode($currentData, JSON_PRETTY_PRINT);
+
+        // Lưu nội dung vào file
+        try {
+            File::put($filePath, $jsonContent);
+            return response()->json([
+                'alert' => [
+                    'type' => 'success',
+                    'message' => 'Settings updated successfully!'
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to save script'], 500);
+        }
+    }
+    public function getScripts()
+    {
+        $filePath = public_path('admin/js/seo.json');
+
+        if (File::exists($filePath)) {
+            $scripts = json_decode(File::get($filePath), true) ?? [];
+        } else {
+            $scripts = [];
+        }
+
+        return response()->json($scripts);
+    }
+    public function deleteScript(Request $request)
+    {
+        $name = $request->input('name');
+        $filePath = public_path('admin/js/seo.json');
+        if (File::exists($filePath)) {
+            $scripts = json_decode(File::get($filePath), true) ?? [];
+            $scripts = array_filter($scripts, function ($script) use ($name) {
+                return $script['name'] !== $name;
+            });
+            File::put($filePath, json_encode(array_values($scripts), JSON_PRETTY_PRINT));
+            return response()->json(['alert' => ['type' => 'success', 'message' => 'Script deleted successfully!']]);
+        } else {
+            return response()->json(['error' => 'Failed to delete script'], 500);
+        }
+    }
+
+
+    public function saveNotification(Request $request)
+    {
+        $notificationContent = $request->input('Floating-notifications');
+        $filePath = public_path('admin/js/notification.json');
+        $jsonContent = json_encode(['Floating-notifications' => $notificationContent], JSON_PRETTY_PRINT);
+
+        try {
+            File::put($filePath, $jsonContent);
+            return response()->json([
+                'alert' => [
+                    'type' => 'success',
+                    'message' => 'The notification has been changed!'
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Không thể lưu thông báo'], 500);
+        }
+    }
+
+
+    public function getNotification()
+    {
+        $filePath = public_path('admin/js/notification.json');
+
+        // Kiểm tra nếu file tồn tại
+        if (File::exists($filePath)) {
+            // Đọc nội dung của file
+            $content = File::get($filePath);
+
+            // Chuyển đổi nội dung JSON thành mảng PHP
+            $notification = json_decode($content, true);
+
+            // Trả về nội dung dưới dạng JSON response
+            return response()->json($notification);
+        } else {
+            // Trả về thông báo lỗi nếu file không tồn tại
+            return response()->json(['error' => 'File not found'], 404);
+        }
+    }
+
+
+
+
+
+
+
 
     public function updateSettings(Request $request)
     {
