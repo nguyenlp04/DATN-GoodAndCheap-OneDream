@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Like;
 class ChannelController extends Controller
 {
     /**
@@ -141,34 +141,42 @@ class ChannelController extends Controller
     public function show(string $id)
     {
         $user = Auth::user();
-        // // Check if the user has created a channel
-
+    
+        // Check if the user has created a channel
         $channel = Channel::where('user_id', $user->user_id)->first();
         $information = ChannelInfo::where('channel_id', $id)->first();
-
-
+    
         // If the user has a channel, continue to display the channel
         $channels = Channel::findOrFail($id); // Get channel by ID
         $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
             ->where('approved', 1)
             ->paginate(5);
-
+    
         foreach ($sale_news as $news) {
             // Get name_sub_category from the relation subcategory
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
+    
+            // Check if the sale_new is favorited
+            $news->isFavorited = Like::where('sale_new_id', $news->sale_new_id)
+                                     ->where('user_id', $user->user_id)
+                                     ->exists();
         }
-
+    
         // Count records of sub_category based on name
         $subcategory_count = $sale_news->filter(function ($news) {
             return $news->sub_category !== null;
         })->countBy('name_sub_category');
+    
         $NewsCount = $channels->saleNews()->count();
         $category = Category::all();
+    
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channels->channel_id)
             ->exists();
+    
         return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'information', 'category'));
     }
+    
 
 
     /**

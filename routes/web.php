@@ -109,6 +109,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-to-wishlist', [WishlistController::class, 'addToWishlist'])->name('addToWishlist');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist-count', [WishlistController::class, 'count'])->name('wishlist.count');
+    Route::post('/wishlist/toggle', [WishlistController::class, 'toggleWishlist'])->name('toggleWishlist');
+
     //end wishlisst 
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
@@ -177,8 +179,7 @@ Route::get('partners/list', [PartnerController::class, 'list_notification'])->na
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-
+Route::get('/blog/search', [BlogController::class, 'search'])->name('blog.search');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
