@@ -549,10 +549,11 @@ class SaleNewsController extends Controller
         $recentVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->whereNotNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1)
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
-
         if ($categoryId) {
             $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -569,6 +570,8 @@ class SaleNewsController extends Controller
         $olderVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->whereNotNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1)
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
@@ -582,14 +585,15 @@ class SaleNewsController extends Controller
         if ($address) {
             $olderVipSaleNews->where('address', 'like', "%$address%");
         }
-
         $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
 
         // Non-VIP SaleNews with pagination
         $perPage = $request->get('perPage', 8);
         $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('sub_category.category')
-            ->whereNull('vip_package_id');
+            ->whereNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1);
 
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
