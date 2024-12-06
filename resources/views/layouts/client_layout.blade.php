@@ -10,12 +10,10 @@
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="{{ $setting->favicon ? asset($setting->favicon) : 'assets/images/web/favicon.png' }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="manifest" href="{{ asset('assets/images/icons/site.html') }}">
     <link rel="mask-icon" href="{{ asset('assets/images/icons/safari-pinned-tab.svg') }}" color="#666666">
     <link rel="shortcut icon" href="{{ asset('assets/images/web/favicon.png') }}">
@@ -83,7 +81,6 @@
             icon: "{{ session('alert')['type'] }}",
             title: "{{ session('alert')['message'] }}"
         });
-        
     </script>
     @endif
 </body>
