@@ -18,21 +18,23 @@
 
                 <!-- Filter Button -->
                 <ol class="breadcrumb mb-0">
-                <button class="filter-btn breadcrumb-item" data-toggle="collapse" data-target="#filter-collapse">
-                        filter by date <i class="ml-2 fas fa-filter"></i>
-                    </button>
-                    <div class="search-blogs">
-                        <form action="#" method="GET">
-                            <input type="text" name="search" class="form-control m-0" placeholder="Search blogs...">
-                        </form>
-                    </div>
+                   
+                    <div class="widget widget-search search-blogs">
+                        
 
+                        <form action="{{ route('blog.search') }}" method="GET">
+                            <label for="ws" class="sr-only">Search in blog</label>
+                            <input type="search" class="form-control" name="ws" placeholder="Search in blog" value="{{ request('ws') }}">
+                            <button type="submit" class="btn"><i class="icon-search"></i><span
+                                    class="sr-only">Search</span></button>
+                        </form>
+                    </div><!-- End .widget -->
                     <!-- Collapse Section for Filter -->
                     <div class="collapse position-absolute right-0 mt-5" id="filter-collapse">
                         <div class="widget widget-collapsible">
                             <div class="widget-body">
                                 <select name="filter" class="form-control" id="filter-collapse">
-                                    <option value="" disabled selected>Select filter criteria</option>
+                                    <option value="" disabled selected>Please select a time period</option>
                                     <option value="option1">Option 1</option>
                                     <option value="option2">Option 2</option>
                                     <option value="option3">Option 3</option>

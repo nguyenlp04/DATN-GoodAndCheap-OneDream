@@ -780,3 +780,68 @@ $(document).ready(function () {
         }, 10000)
     }
 });
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.wishlist-form').forEach(form => {
+        form.querySelector('.wishlist-btn').addEventListener('click', function () {
+            const saleNewId = form.getAttribute('data-id');
+            const button = this;
+
+            fetch(form.getAttribute('action'), {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sale_new_id: saleNewId }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.type === 'success') {
+                        // Hiển thị thông báo SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+
+                        // Cập nhật giao diện
+                        if (button.classList.contains('text-primary')) {
+                            button.classList.remove('text-primary');
+                            button.innerHTML = `<i class="fas fa-heart"></i> Add to wishlist`;
+                        } else {
+                            button.classList.add('text-primary');
+                            button.innerHTML = `<i class="fas fa-heart"></i> Added to wishlist`;
+                        }
+                    } else {
+                        // Hiển thị lỗi nếu có
+                        Swal.fire({
+                            icon: 'error',
+                            title: data.message || 'Something went wrong.',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Thông báo lỗi SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error has occurred.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                });
+        });
+    });
+});

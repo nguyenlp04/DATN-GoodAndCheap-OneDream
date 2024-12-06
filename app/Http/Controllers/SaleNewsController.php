@@ -83,7 +83,7 @@ class SaleNewsController extends Controller
         ]);
         // dd($validatedData, auth()->user()->user_id);
         try {
-            
+
             $jsonData = json_encode($validatedData['variant']);
             // dd($jsonData);
 
@@ -537,7 +537,6 @@ class SaleNewsController extends Controller
             'message' => 'Operation successful'
         ]);
     }
-
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -587,7 +586,7 @@ class SaleNewsController extends Controller
         $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
 
         // Non-VIP SaleNews with pagination
-        $perPage = $request->get('perPage', 2);
+        $perPage = $request->get('perPage', 8);
         $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('sub_category.category')
             ->whereNull('vip_package_id');

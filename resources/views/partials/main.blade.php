@@ -55,81 +55,21 @@
 
         <div class="cat-blocks-container">
             <div class="row">
+                @foreach ($categories as $category)
                 <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
+                    <a href="{{ route('search') }}?category={{ $category->category_id }}" class="cat-block">
                         <figure>
                             <span>
-                                <img src="assets/images/demos/demo-4/cats/1.png" alt="Category image">
+                                <img style=" width: 111px;height: 64px;object-fit: cover;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
                             </span>
                         </figure>
-
-                        <h3 class="cat-block-title">Computer & Laptop</h3><!-- End .cat-block-title -->
+                        <h3 class="cat-block-title">{{ $category->name_category }}</h3><!-- End .cat-block-title -->
                     </a>
                 </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/2.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Digital Cameras</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/3.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Smart Phones</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/4.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Televisions</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/5.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Audio</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
-
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.html" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="assets/images/demos/demo-4/cats/6.png" alt="Category image">
-                            </span>
-                        </figure>
-
-                        <h3 class="cat-block-title">Smart Watches</h3><!-- End .cat-block-title -->
-                    </a>
-                </div><!-- End .col-sm-4 col-lg-2 -->
+                @endforeach
             </div><!-- End .row -->
         </div><!-- End .cat-blocks-container -->
     </div><!-- End .container -->
-
     <div class="mb-4"></div><!-- End .mb-4 -->
 
 
@@ -227,13 +167,6 @@
                                 </form>
 
                             </div>
-                            <div class="product-action">
-                                <!-- <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a> -->
-
-                                <a href="#" class="btn-product btn-quickview" title="Quick view"><span>quick
-                                        view</span></a>
-                            </div><!-- End .product-action -->
                         </figure>
                         <!-- End .product-media -->
 
@@ -299,12 +232,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -340,12 +268,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -372,13 +295,6 @@
 
                             <div class="product-action-vertical">
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                            </div><!-- End .product-action -->
-
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
                             </div><!-- End .product-action -->
                         </figure><!-- End .product-media -->
 
@@ -417,12 +333,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -450,12 +361,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -510,12 +416,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -543,12 +444,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -576,12 +472,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -617,12 +508,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -651,12 +537,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -720,12 +601,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -752,12 +628,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -784,12 +655,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -826,12 +692,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -859,12 +720,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -893,12 +749,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -963,12 +814,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1006,12 +852,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1038,12 +879,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1071,12 +907,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1139,12 +970,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1172,12 +998,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1205,12 +1026,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1237,12 +1053,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1270,12 +1081,7 @@
                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                        cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1469,12 +1275,7 @@
                                                 title="Add to wishlist"></a>
                                         </div><!-- End .product-action -->
 
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"
-                                                title="Add to cart"><span>add to cart</span></a>
-                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                title="Quick view"><span>quick view</span></a>
-                                        </div><!-- End .product-action -->
+
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
@@ -1534,12 +1335,7 @@
                                                 title="Add to wishlist"></a>
                                         </div><!-- End .product-action -->
 
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"
-                                                title="Add to cart"><span>add to cart</span></a>
-                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                title="Quick view"><span>quick view</span></a>
-                                        </div><!-- End .product-action -->
+
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
@@ -1599,12 +1395,7 @@
                                                 title="Add to wishlist"></a>
                                         </div><!-- End .product-action -->
 
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"
-                                                title="Add to cart"><span>add to cart</span></a>
-                                            <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                                title="Quick view"><span>quick view</span></a>
-                                        </div><!-- End .product-action -->
+
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
@@ -1664,12 +1455,7 @@
                                     title="Add to wishlist"></a>
                             </div><!-- End .product-action -->
 
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add
-                                        to cart</span></a>
-                                <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                    title="Quick view"><span>quick view</span></a>
-                            </div><!-- End .product-action -->
+
                         </figure><!-- End .product-media -->
 
                         <div class="product-body">
@@ -1763,58 +1549,73 @@
 <!-- Trong Blade view -->
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script>
-   var userId = @json(Auth::user() ? Auth::user()->user_id : null); // Lấy user_id nếu người dùng đã đăng nhập
+    var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}"; // Lấy user_id nếu người dùng đã đăng nhập
 
-// Lắng nghe sự kiện click vào nút thêm vào danh sách yêu thích
-$(document).on('click', '.add-to-wishlist-btn', function (e) {
-    e.preventDefault(); // Ngăn hành vi gửi form mặc định của trình duyệt
+    // Lắng nghe sự kiện click vào nút thêm vào danh sách yêu thích
+    $(document).on('click', '.add-to-wishlist-btn', function(e) {
+        e.preventDefault(); // Ngăn hành vi gửi form mặc định của trình duyệt
 
-    var form = $(this).closest('form'); // Lấy form chứa nút bấm
-    var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy giá trị sale_new_id từ input hidden
+        var form = $(this).closest('form'); // Lấy form chứa nút bấm
+        var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy giá trị sale_new_id từ input hidden
 
-    // Kiểm tra nếu userId không có giá trị (người dùng chưa đăng nhập)
-    if (!userId) {
-        Swal.fire({
-            icon: 'warning', // Hiển thị biểu tượng cảnh báo
-            title: 'You need to log in to add this to your favorites!', // Thông báo yêu cầu đăng nhập
-            toast: true, // Hiển thị thông báo nhỏ
-            position: 'top-end', // Vị trí thông báo ở góc trên cùng bên phải
-            showConfirmButton: false, // Không hiển thị nút xác nhận
-            timer: 1000, // Thời gian hiển thị thông báo là 1 giây
-            timerProgressBar: true // Hiển thị thanh tiến trình đếm ngược
-        }).then(() => {
-            // Chuyển hướng người dùng đến trang đăng nhập
-            window.location.href = '{{ route('login') }}';
-        });
-        return; // Kết thúc hàm, không thực hiện các bước tiếp theo
-    }
+        // Kiểm tra nếu userId không có giá trị (người dùng chưa đăng nhập)
+        if (!userId) {
+            Swal.fire({
+                icon: 'warning', // Hiển thị biểu tượng cảnh báo
+                title: 'You need to log in to add this to your favorites!', // Thông báo yêu cầu đăng nhập
+                toast: true, // Hiển thị thông báo nhỏ
+                position: 'top-end', // Vị trí thông báo ở góc trên cùng bên phải
+                showConfirmButton: false, // Không hiển thị nút xác nhận
+                timer: 1000, // Thời gian hiển thị thông báo là 1 giây
+                timerProgressBar: true // Hiển thị thanh tiến trình đếm ngược
+            }).then(() => {
+                // Chuyển hướng người dùng đến trang đăng nhập
+                window.location.href = @json(route('login'));
 
-    // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
-    $.ajax({
-        url: form.attr('action'), // URL lấy từ thuộc tính action của form
-        type: 'POST', // Phương thức gửi yêu cầu là POST
-        data: {
-            _token: '{{ csrf_token() }}', // CSRF token để xác thực yêu cầu
-            user_id: userId, // ID của người dùng
-            sale_new_id: saleNewId // ID của sản phẩm
-        },
-        success: function (response) {
-            // Xử lý khi server phản hồi thành công
-            if (response.type === 'success') {
-                Swal.fire({
-                    icon: 'success', // Hiển thị biểu tượng thành công
-                    title: response.message, // Nội dung thông báo từ server
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-            } else {
-                // Nếu server trả về lỗi
+            });
+            return; // Kết thúc hàm, không thực hiện các bước tiếp theo
+        }
+
+        // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
+        $.ajax({
+            url: form.attr('action'), // URL lấy từ thuộc tính action của form
+            type: 'POST', // Phương thức gửi yêu cầu là POST
+            data: {
+                _token: '{{ csrf_token() }}', // CSRF token để xác thực yêu cầu
+                user_id: userId, // ID của người dùng
+                sale_new_id: saleNewId // ID của sản phẩm
+            },
+            success: function(response) {
+                // Xử lý khi server phản hồi thành công
+                if (response.type === 'success') {
+                    Swal.fire({
+                        icon: 'success', // Hiển thị biểu tượng thành công
+                        title: response.message, // Nội dung thông báo từ server
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    // Nếu server trả về lỗi
+                    Swal.fire({
+                        icon: 'error', // Hiển thị biểu tượng lỗi
+                        title: response.message, // Nội dung lỗi từ server
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Xử lý khi yêu cầu gặp lỗi
+                var response = JSON.parse(xhr.responseText); // Phân tích lỗi trả về
                 Swal.fire({
                     icon: 'error', // Hiển thị biểu tượng lỗi
-                    title: response.message, // Nội dung lỗi từ server
+                    title: response.message || 'An error occurred!', // Nội dung lỗi
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
@@ -1822,25 +1623,11 @@ $(document).on('click', '.add-to-wishlist-btn', function (e) {
                     timerProgressBar: true
                 });
             }
-        },
-        error: function (xhr, status, error) {
-            // Xử lý khi yêu cầu gặp lỗi
-            var response = JSON.parse(xhr.responseText); // Phân tích lỗi trả về
-            Swal.fire({
-                icon: 'error', // Hiển thị biểu tượng lỗi
-                title: response.message || 'An error occurred!', // Nội dung lỗi
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            });
-        }
+        });
     });
-});
 
-// Hiển thị thông báo nếu có từ session (sau khi load trang)
-@if (session('alert'))
+    // Hiển thị thông báo nếu có từ session (sau khi load trang)
+    @if(session('alert'))
     Swal.fire({
         icon: "{{ session('alert')['type'] }}", // Loại thông báo (success, error, warning)
         title: "{{ session('alert')['message'] }}", // Nội dung thông báo
@@ -1850,9 +1637,5 @@ $(document).on('click', '.add-to-wishlist-btn', function (e) {
         timer: 3000,
         timerProgressBar: true
     });
-@endif
-
-
-
+    @endif
 </script>
-
