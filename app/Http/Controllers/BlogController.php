@@ -235,62 +235,70 @@ public function update(Request $request, Blog $blog)
     }
 
     public function search(Request $request)
-    {
-        // Nếu từ khóa (ws) rỗng, chuyển hướng về trang danh sách
-        if (!$request->has('ws') || $request->ws == '') {
-            return redirect()->route('blogs.listting')->with('message', 'Vui lòng nhập từ khóa để tìm kiếm.');
-        }
-    
-        // Khởi tạo query cho Blog
-        $query = Blog::query();
-    
-        // Lọc theo từ khóa
-        if ($request->has('ws') && $request->ws != '') {
-            $query->where(function ($query) use ($request) {
-                $query->where('title', 'like', '%' . $request->ws . '%')
-                      ->orWhere('content', 'like', '%' . $request->ws . '%');
-            });
-        }
-    
-        // Lọc theo ngày tháng (nếu có)
-        if ($request->has('date_filter') && $request->date_filter != '') {
-            $dateFilter = $request->date_filter;
-    
-            switch ($dateFilter) {
-                case 'today':
-                    $query->whereDate('created_at', now()->toDateString());
-                    break;
-                case 'yesterday':
-                    $query->whereDate('created_at', now()->subDay()->toDateString());
-                    break;
-                case 'this-week':
-                    $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                    break;
-                case 'last-week':
-                    $query->whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()]);
-                    break;
-                case 'this-month':
-                    $query->whereMonth('created_at', now()->month);
-                    break;
-                case 'last-month':
-                    $lastMonth = now()->subMonth();
-                        $query->whereMonth('created_at', $lastMonth->month)
-                            ->whereYear('created_at', $lastMonth->year);
-                                    default:
-                                        break;
-            }
-        }
-    
-        // Lấy kết quả
-        $blogs = $query->get();
-    
-        // Nếu không có bài viết nào khớp
-        if ($blogs->isEmpty()) {
-            return view('blog.listting_search', ['message' => 'Không có bài viết nào phù hợp với từ khóa hoặc ngày tháng đã chọn.']);
-        }
-    
-        return view('blog.listting_search', compact('blogs'));
+{
+    // Nếu từ khóa (ws) rỗng, chuyển hướng về trang danh sách
+    if (!$request->has('ws') || $request->ws == '') {
+        return redirect()->route('blogs.listting')->with('alert', [
+            'type' => 'error',
+            'message' => 'Please enter keywords!']);
+        
     }
+
+    // Khởi tạo query cho Blog
+    $query = Blog::query();
+
+    // Lọc theo từ khóa
+    if ($request->has('ws') && $request->ws != '') {
+        $query->where(function ($query) use ($request) {
+            $query->where('title', 'like', '%' . $request->ws . '%')
+                  ->orWhere('content', 'like', '%' . $request->ws . '%');
+        });
+    }
+
+    // Lọc theo ngày tháng (nếu có)
+    if ($request->has('date_filter') && $request->date_filter != '') {
+        $dateFilter = $request->date_filter;
+
+        switch ($dateFilter) {
+            case 'today':
+                $query->whereDate('created_at', now()->toDateString());
+                break;
+            case 'yesterday':
+                $query->whereDate('created_at', now()->subDay()->toDateString());
+                break;
+            case 'this-week':
+                $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                break;
+            case 'last-week':
+                $query->whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()]);
+                break;
+            case 'this-month':
+                $query->whereMonth('created_at', now()->month)
+                      ->whereYear('created_at', now()->year);
+                break;
+            case 'last-month':
+                $lastMonth = now()->subMonth();
+                $query->whereMonth('created_at', $lastMonth->month)
+                      ->whereYear('created_at', $lastMonth->year);
+                break;
+            default:
+                break;
+        }
+    }
+
+    $blogs = $query->get();
+    // dd($query->toSql(), $query->getBindings());
+    
+    // Kiểm tra dữ liệu trống
+    if ($blogs->isEmpty()) {
+        return view('blog.listting_search', [
+            'message' => 'There are no articles matching the selected keyword or date.'
+        ]);
+    }
+
+    return view('blog.listting_search', compact('blogs'));
+}
+
     
 
 
