@@ -309,6 +309,7 @@
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
+                                {{-- @csrf --}}
                                 <!-- Filter by Address -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
@@ -380,8 +381,10 @@
                                 </div>
                                 <!-- Hidden input to retain search keyword -->
                                 <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
-                                <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
-                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
+                                <input type="hidden" id="minPrice" name="minPrice"
+                                    value="{{ request()->get('minPrice') }}">
+                                <input type="hidden" id="maxPrice" name="maxPrice"
+                                    value="{{ request()->get('maxPrice') }}">
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
@@ -446,27 +449,10 @@
                         maxInput.value = maxValue; // Set the maximum value
                     }
 
-
-                    const handles = priceSlider.querySelectorAll('.noUi-handle');
-
-                    // Access values from the current handle
-                    if (handle === 0) {
-                        // Lower handle
-                        const minSliderHandle = handles[0];
-                        const minValue = minSliderHandle.getAttribute('aria-valuenow');
-                        console.log('Min Value:', minValue);
-                    } else if (handle === 1) {
-                        // Upper handle
-                        const maxSliderHandle = handles[1];
-                        const maxValue = maxSliderHandle.getAttribute('aria-valuenow');
-                        console.log('Max Value:', maxValue);
-                    }
-
-
-
                     console.log('Min Value:', minValue);
                     console.log('Max Value:', maxValue);
                 });
+
 
 
 
