@@ -661,7 +661,7 @@ class SaleNewsController extends Controller
         $data = SaleNews::with(['user', 'sub_category.category', 'images'])
             ->where('status', 1)
             ->where('approved', 1)
-            ->get();
+            ->paginate(8);
 
         $groupedData = $data->groupBy(function ($item) {
             return $item->sub_category->category_id;
