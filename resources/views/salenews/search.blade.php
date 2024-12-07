@@ -52,7 +52,7 @@
                                                 <div class="product">
                                                     <figure class="product-media">
                                                         <span class="product-label label-top">Top</span>
-                                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                                        <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                                             @if ($item->images->isNotEmpty())
                                                                 <img src="{{ $item->images->first()->image_name }}"
                                                                     alt="Image" class="equal-height-image">
@@ -72,7 +72,7 @@
                                                         </div>
                                                         <h3 class="product-title text-truncate-3">
                                                             <a
-                                                                href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
+                                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
                                                         </h3>
                                                         <div class="product-price">
                                                             ${{ number_format($item->price, 2) }}
@@ -87,7 +87,7 @@
                                                 <div class="product">
                                                     <figure class="product-media">
                                                         <span class="product-label label-top">Top</span>
-                                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                                        <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                                             @if ($item->images->isNotEmpty())
                                                                 <img src="{{ $item->images->first()->image_name }}"
                                                                     alt="Image" class="equal-height-image">
@@ -107,7 +107,7 @@
                                                         </div>
                                                         <h3 class="product-title text-truncate-3">
                                                             <a
-                                                                href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
+                                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
                                                         </h3>
                                                         <div class="product-price">
                                                             ${{ number_format($item->price, 2) }}
@@ -206,7 +206,7 @@
                                         <div class="product">
                                             <figure class="product-media">
                                                 <span class="product-label label-top">Top</span>
-                                                <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                                <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                                     @if ($item->images->isNotEmpty())
                                                         <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                             class="equal-height-image">
@@ -228,7 +228,7 @@
                                                 </div>
                                                 <h3 class="product-title text-truncate-3">
                                                     <a
-                                                        href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
+                                                        href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
                                                 </h3>
                                                 <div class="product-price">
                                                     ${{ number_format($item->price, 2) }}
@@ -305,6 +305,7 @@
                     </div>
                     <!-- End .col-lg-9 -->
 
+
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
@@ -355,7 +356,7 @@
                                         </a>
                                     </h3>
                                     <!-- End .widget-title -->
-    
+
                                     <div class="collapse show" id="widget-5">
                                         <div class="widget-body">
                                             <div class="filter-price">
@@ -364,34 +365,10 @@
                                                     <span id="filter-price-range">$0 - $500</span>
                                                 </div>
                                                 <!-- End .filter-price-text -->
-    
+
                                                 <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
-                                                    {{-- <div class="noUi-base">
-                                                        <div class="noUi-connects">
-                                                            <div class="noUi-connect"
-                                                                style="transform: translate(0%, 0px) scale(0.5, 1);"></div>
-                                                        </div>
-                                                        <div class="noUi-origin"
-                                                            style="transform: translate(-100%, 0px); z-index: 5;">
-                                                            <div class="noUi-handle noUi-handle-lower" data-handle="0"
-                                                                tabindex="0" role="slider" aria-orientation="horizontal"
-                                                                aria-valuemin="0.0" aria-valuemax="300.0" aria-valuenow="0.0"
-                                                                aria-valuetext="$0">
-                                                                <div class="noUi-touch-area"></div>
-                                                                <div class="noUi-tooltip">$0</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="noUi-origin"
-                                                            style="transform: translate(-50%, 0px); z-index: 6;">
-                                                            <div class="noUi-handle noUi-handle-upper" data-handle="1"
-                                                                tabindex="0" role="slider" aria-orientation="horizontal"
-                                                                aria-valuemin="200.0" aria-valuemax="1000.0"
-                                                                aria-valuenow="500.0" aria-valuetext="$500">
-                                                                <div class="noUi-touch-area"></div>
-                                                                <div class="noUi-tooltip">$500</div>
-                                                            </div>
-                                                        </div>
-                                                    </div> --}}
+
+
                                                 </div>
                                                 <!-- End #price-slider -->
                                             </div>
@@ -403,13 +380,14 @@
                                 </div>
                                 <!-- Hidden input to retain search keyword -->
                                 <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
-
+                                <input type="hidden" id="minPrice" name="minPrice" value="">
+                                <input type="hidden" id="maxPrice" name="maxPrice" value="">
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
 
 
-                            
+
                         </div>
                         <!-- End .sidebar sidebar-shop -->
                     </aside>
@@ -418,4 +396,81 @@
             </div>
         </div>
     </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            console.log(123);
+
+            // Slider For category pages / filter price
+            if (typeof noUiSlider === 'object') {
+                var priceSlider = document.getElementById('price-slider');
+
+                // Check if #price-slider elem is exists if not return
+                // to prevent error logs
+                if (priceSlider == null) return;
+
+                noUiSlider.create(priceSlider, {
+                    start: [0, <?php echo $maxPrice / 2; ?>],
+                    connect: true,
+                    step: 50,
+                    margin: 200,
+                    range: {
+                        'min': 0,
+                        'max': <?php echo $maxPrice; ?>
+                    },
+                    tooltips: true,
+                    format: wNumb({
+                        decimals: 0,
+                        prefix: '$'
+                    })
+                });
+
+                // Update Price Range
+                priceSlider.noUiSlider.on('update', function(values, handle) {
+                    // Update visible price range text
+                    $('#filter-price-range').text(values.join(' - '));
+
+                    // Select hidden inputs
+                    const minInput = document.getElementById('minPrice');
+                    const maxInput = document.getElementById('maxPrice');
+
+                    // Remove the "$" symbol from the slider values
+                    const minValue = values[0].replace('$', '');
+                    const maxValue = values[1].replace('$', '');
+
+                    // Update hidden inputs with the cleaned slider values
+                    if (minInput && maxInput) {
+                        minInput.value = minValue; // Set the minimum value
+                        maxInput.value = maxValue; // Set the maximum value
+                    }
+
+
+                    const handles = priceSlider.querySelectorAll('.noUi-handle');
+
+                    // Access values from the current handle
+                    if (handle === 0) {
+                        // Lower handle
+                        const minSliderHandle = handles[0];
+                        const minValue = minSliderHandle.getAttribute('aria-valuenow');
+                        console.log('Min Value:', minValue);
+                    } else if (handle === 1) {
+                        // Upper handle
+                        const maxSliderHandle = handles[1];
+                        const maxValue = maxSliderHandle.getAttribute('aria-valuenow');
+                        console.log('Max Value:', maxValue);
+                    }
+
+
+
+                    console.log('Min Value:', minValue);
+                    console.log('Max Value:', maxValue);
+                });
+
+
+
+            }
+        })
+    </script>
 @endsection

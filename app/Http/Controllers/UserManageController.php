@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\UserFollowed;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transactions;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -18,8 +19,12 @@ class UserManageController extends Controller
             ->with('channel')
             ->get();
         $transactionCount = Transactions::where('user_id', $userId)->count();
+        $createdAt = Auth::user()->created_at;
+        $now = now();
+        $diffInMonths =  (int) $createdAt->diffInMonths($now);
+        $diffInDays = (int) $createdAt->diffInDays($now->copy()->subMonths($diffInMonths));
         $title = 'Profile - Good & Cheep';
-        return view('user.manage', compact('followedChannels', 'transactionCount', 'title'));
+        return view('user.manage', compact('followedChannels', 'transactionCount', 'title', 'diffInMonths', 'diffInDays'));
     }
     public function unfollow($id)
     {
@@ -84,5 +89,25 @@ class UserManageController extends Controller
                 'message' => 'An error occurred while updating your profile. Please try again later.'
             ]);
         }
+    }
+
+    public function show($id){
+        $user=User::findOrFail($id);
+        $sale_news = $user->saleNews()->with('sub_category', 'firstImage')
+       
+        ->where('is_delete', null)
+        ->where('approved',1)
+        ->paginate(5);
+     
+        $sale_news1 = $user->saleNews()->with('sub_category', 'firstImage')
+       
+        ->where('is_delete', null)
+        ->where('approved',1)
+        ->where('status',1)
+        ->paginate(5);
+     
+        
+       
+        return view('user.user-show',compact('user','sale_news','sale_news1'));
     }
 }

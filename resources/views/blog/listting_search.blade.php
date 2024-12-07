@@ -13,7 +13,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <!-- Breadcrumb -->
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url("/") }}">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Blog</a></li>
                         <li class="breadcrumb-item"><a href="#">{{ request('ws') }}</a></li>
                     </ol>
@@ -166,9 +166,9 @@
 <script src="{{ asset('assets/js/isotope.pkgd.min.js') }}"></script>
 
 <script>
-document.getElementById('date-filter').addEventListener('change', function() {
-    document.getElementById('filter-form').submit();
-});
+    document.getElementById('date-filter').addEventListener('change', function() {
+        document.getElementById('filter-form').submit();
+    });
 </script>
 
 @endsection

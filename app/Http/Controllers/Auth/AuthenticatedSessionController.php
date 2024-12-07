@@ -26,6 +26,22 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        $user = Auth::user();
+        if ($user->is_delete != 0) {
+            Auth::logout();
+            return redirect()->route('login')->with('alert', [
+                'type' => 'error',
+                'message' => 'Your account has been deleted. Please contact the administrator.',
+            ]);
+        }
+        if ($user->status != 1) {
+            Auth::logout();
+            return redirect()->route('login')->with('alert', [
+                'type' => 'error',
+                'message' => 'Your account has been locked.',
+            ]);
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('home', absolute: false));

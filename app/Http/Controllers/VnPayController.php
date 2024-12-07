@@ -37,7 +37,7 @@ class VnPayController extends Controller
         }
         $vipPackage = VipPackage::findOrFail($request->vip_package_id);
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = 'https://' . env('VNPAY_WEB_URL') . '/IPN';
+        $vnp_Returnurl = 'http://' . env('VNPAY_WEB_URL') . '/IPN';
         $vnp_TmnCode = env('VNPAY_TERMINAL_ID'); // Mã website tại VNPAY
         $vnp_HashSecret = env('VNPAY_SECRET_KEY'); // Chuỗi bí mật
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -125,7 +125,7 @@ class VnPayController extends Controller
 
     public function handleIPN(TelegramService $telegramService)
     {
-        $vnp_HashSecret = "9Y2K4UHS31CG1PV5ECLNNOIY8Q3385CP";
+        $vnp_HashSecret = env('VNPAY_SECRET_KEY');
         $vnp_SecureHash = $_GET['vnp_SecureHash'];
         $inputData = array();
         foreach ($_GET as $key => $value) {
@@ -245,7 +245,7 @@ class VnPayController extends Controller
                     );
 
                     $telegramService->sendMessage($message);
-                    // dd(123);
+
                     // $query = DB::table('transactions')->insert($transactionData);
 
                     $body = '<div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif;">
@@ -277,6 +277,7 @@ class VnPayController extends Controller
                         </div>
                     </div>';
                     $result = PhpMailerService::sendEmail($to, $subject, $body);
+
                 } else {
                     $transaction = Transactions::where('channel_id', $channel_id)->first();
                     if ($transaction) {
@@ -311,7 +312,7 @@ class VnPayController extends Controller
                             ],
                             $messageTemplate
                         );
-    
+
                         $telegramService->sendMessage($message);
                         // dd(123);
                         // dd($transaction->transaction_id);

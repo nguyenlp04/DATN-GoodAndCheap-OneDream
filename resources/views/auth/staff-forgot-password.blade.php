@@ -73,7 +73,7 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="{{ url("index.html") }}" class="app-brand-link gap-2">
+                            <a href="{{ url("/") }}" class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">
                                     <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="150">
                                 </span>

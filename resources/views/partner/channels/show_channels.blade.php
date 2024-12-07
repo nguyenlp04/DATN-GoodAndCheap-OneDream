@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url("/") }}">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">My Channel</li>
             </ol>
         </div><!-- End .container -->
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                @if(isset(auth()->user()->user_id))
+                    @if(isset(auth()->user()->user_id))
                     @if(!(auth()->user()->user_id == $channels->user_id))
                     <div class="col col-md-9 col-lg-7 col-xl-6 d-flex justify-content-end">
                         @if ($isFollowed)
@@ -105,59 +105,63 @@
 
                         <div class="products mb-3">
                             @foreach ($sale_news as $sale_new)
-    <div class="product product-list">
-        <div class="row">
-            <div class="col-6 col-lg-3">
-                <figure class="product-media">
-                    @if($sale_new->vip_package_id != null)
-                        <span class="product-label label-new">On top</span>
-                    @endif
-                    <img src="{{ asset($sale_new->firstImage->image_name) }}" alt="Product image1" class="product-image">
-                </figure>
-            </div>
-            <div class="col-6 col-lg-3 order-lg-last">
-                <div class="product-list-action">
-                    <div class="product-price">
-                        <h4 class="text-primary">${{ $sale_new->price }}</h4>
-                    </div>
-                    <div class="product-actions">
-                        <form action="{{ route('toggleWishlist') }}" method="POST"
-                        class="wishlist-form" data-id="{{ $sale_new->sale_new_id }}">
-                        @csrf
-                        <button type="button"
-                            class="btn btn-light mb-2 wishlist-btn {{ $sale_new->isFavorited ? 'text-primary' : '' }} color-danger"
-                            title="{{ $sale_new->isFavorited ? 'Remove from wishlist' : 'Add to wishlist' }}">
-                            <i class="fas fa-heart"></i>
-                            {{ $sale_new->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}
-                        </button>
-                    </form>
-                        <a href="{{ route('salenew.detail', $sale_new->sale_new_id) }}" class="btn btn-primary">
-                            <i class="fa-solid fa-eye"></i> Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="product-body product-action-inner">
-                    <div class="product-cat">
-                        <a href="#">{{ $sale_new->name_sub_category }}</a>
-                    </div>
-                    <h3 class="product-title">{{ $sale_new->title }}</h3>
-                    <div class="product-content wrap">
-                        <p class="text-truncate">{{ $sale_new->description }}</p>
-                    </div>
-                    <div class="product-description">
-                        <p><i class="fas fa-map-marker-alt" style="color: #74C0FC;"></i> {{ $sale_new->address }}</p>
-                        <p><i class="fas fa-calendar-alt" style="color: #74C0FC;"></i> {{ $sale_new->created_at }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endforeach
+                            <div class="product product-list">
+                                <div class="row">
+                                    <div class="col-6 col-lg-3">
+                                        <figure class="product-media">
+                                            @if($sale_new->vip_package_id != null)
+                                            <span class="product-label label-new">On top</span>
+                                            @endif
+                                            <img src="{{ asset($sale_new->firstImage->image_name) }}" alt="Product image1" class="product-image">
+                                        </figure>
+                                    </div>
+                                    <div class="col-6 col-lg-3 order-lg-last">
+                                        <div class="product-list-action">
+                                            <div class="product-price">
+                                                <h4 class="text-primary">${{ $sale_new->price }}</h4>
+                                            </div>
+                                            <div class="product-actions">
+                                                <form action="{{ route('toggleWishlist') }}" method="POST"
+                                                    class="wishlist-form" data-id="{{ $sale_new->sale_new_id }}">
+                                                    @csrf
+                                                    <button type="button"
+                                                        class="btn btn-light mb-2 wishlist-btn {{ $sale_new->isFavorited ? 'text-primary' : '' }} color-danger"
+                                                        title="{{ $sale_new->isFavorited ? 'Remove from wishlist' : 'Add to wishlist' }}">
+                                                        <i class="fas fa-heart"></i>
+                                                        {{ $sale_new->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}
+                                                    </button>
+                                                </form>
+                                                <a href="{{ route('salenew.detail', $sale_new->sale_new_id) }}" class="btn btn-primary">
+                                                    <i class="fa-solid fa-eye"></i> Details
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="product-body product-action-inner">
+                                            <div class="product-cat">
+                                                <a href="#">{{ $sale_new->name_sub_category }}</a>
+                                            </div>
+                                            <h3 class="product-title">{{ $sale_new->title }}</h3>
+                                            <div class="product-content wrap">
+                                                <p class="text-truncate">{{ $sale_new->description }}</p>
+                                            </div>
+                                            <div class="product-description">
+                                                <p><i class="fas fa-map-marker-alt" style="color: #74C0FC;"></i> {{ $sale_new->address }}</p>
+                                                <p><i class="fas fa-calendar-alt" style="color: #74C0FC;"></i> {{ $sale_new->created_at }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
 
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> dbbbed3a2c0cb5e3ef02358438a029daa8ec40cb
 
 
 
@@ -181,14 +185,14 @@
                                             <select class="form-select form-control filter-input" name="category">
                                                 <option value="">Select Category</option>
                                                 @if(isset($category) && $category->count())
-                                                    @foreach ($category as $item)
-                                                        <option value="{{ $item->category_id }}"
-                                                            {{ old('category') == $item->category_id ? 'selected' : '' }}>
-                                                            {{ $item->name_category }}
-                                                        </option>
-                                                    @endforeach
+                                                @foreach ($category as $item)
+                                                <option value="{{ $item->category_id }}"
+                                                    {{ old('category') == $item->category_id ? 'selected' : '' }}>
+                                                    {{ $item->name_category }}
+                                                </option>
+                                                @endforeach
                                                 @else
-                                                    <p>No categories available.</p>
+                                                <p>No categories available.</p>
                                                 @endif
                                             </select>
                                         </div>
@@ -198,6 +202,21 @@
                                 <input type="text" class="form-control" name="keyword" value="{{ old('keyword') }}" placeholder="Search ..." />
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
+<<<<<<< HEAD
+=======
+
+
+
+
+                            {{-- <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
+                                        aria-controls="widget-5">
+                                        Price
+                                    </a>
+                                </h3>
+                                <!-- End .widget-title -->
+>>>>>>> dbbbed3a2c0cb5e3ef02358438a029daa8ec40cb
 
 
                         </div>
