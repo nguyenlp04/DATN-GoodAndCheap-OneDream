@@ -154,7 +154,7 @@
                                                     </div>
                                                 </div> --}}
                                             </tr>
-                                        @endforeach
+                                        @endf oreach
                                     </tbody>
                                 </table>
 

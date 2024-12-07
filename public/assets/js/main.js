@@ -780,6 +780,7 @@ $(document).ready(function () {
         }, 10000)
     }
 });
+ 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.wishlist-form').forEach(form => {
         form.querySelector('.wishlist-btn').addEventListener('click', function () {
