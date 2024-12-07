@@ -365,6 +365,22 @@ class SaleNewsController extends Controller
         return redirect()->route('listings.index')->with('success', 'Listing promoted successfully.');
     }
 
+    public function getNextSaleNewId($currentId)
+    {
+        return SaleNews::where('sale_new_id', '>', $currentId)
+            ->where('approved', 1)
+            ->orderBy('sale_new_id')
+            ->first();
+    }
+
+    public function getPreviousSaleNewId($currentId)
+    {
+        return SaleNews::where('sale_new_id', '<', $currentId)
+            ->where('approved', 1)
+            ->orderBy('sale_new_id', 'desc')
+            ->first();
+    }
+
     public function renderSaleNewDetail(string $id)
     {
         // dd($get_data_7subcategory);
@@ -397,6 +413,11 @@ class SaleNewsController extends Controller
             if ($news) {
                 $data = $news->data;
                 $data_json = json_decode($data);
+                $nextNews = $this->getNextSaleNewId($id);
+                $prevNews = $this->getPreviousSaleNewId($id);
+                $nextNewsId = $nextNews ? $nextNews->sale_new_id : null;
+                $prevNewsId = $prevNews ? $prevNews->sale_new_id : null;
+
                 //  dd($data_json);
                 if (!is_null($news->channel_id)) {
                     return view('salenews.detail', [
@@ -406,7 +427,9 @@ class SaleNewsController extends Controller
                         'data_count_news_sold' => $data_count_news_sold,
                         'data_json' => $data_json,
                         // 'variant_data_details' =>$variant_data_details,
-                        'get_data_7subcategory' => $get_data_7subcategory
+                        'get_data_7subcategory' => $get_data_7subcategory,
+                        'nextNewsId' => $nextNewsId,
+                        'prevNewsId' => $prevNewsId
                     ]);
                 }
 
@@ -415,7 +438,9 @@ class SaleNewsController extends Controller
                     'get_user' => $get_user_phone,
                     'data_json' => $data_json,
                     // 'variant_data_details' =>$variant_data_details,
-                    'get_data_7subcategory' => $get_data_7subcategory
+                    'get_data_7subcategory' => $get_data_7subcategory,
+                    'nextNewsId' => $nextNewsId,
+                    'prevNewsId' => $prevNewsId
                 ]);
             }
             return redirect()->back()->with('alert', [
