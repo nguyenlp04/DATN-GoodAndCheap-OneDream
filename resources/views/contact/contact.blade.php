@@ -189,3 +189,9 @@
     </script>
 
 @endsection
+@section('script-link-css')
+    <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.elevateZoom.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
+@endsection

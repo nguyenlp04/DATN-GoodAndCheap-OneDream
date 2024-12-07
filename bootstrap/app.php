@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('auth.role.admin', [
             App\Http\Middleware\CheckAuthenticatedAdminRole::class
         ]);
+        $middleware->group('auth', [
+            App\Http\Middleware\CheckAuthenticatedUser::class
+        ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
