@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\UserFollowed;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transactions;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -88,5 +89,25 @@ class UserManageController extends Controller
                 'message' => 'An error occurred while updating your profile. Please try again later.'
             ]);
         }
+    }
+
+    public function show($id){
+        $user=User::findOrFail($id);
+        $sale_news = $user->saleNews()->with('sub_category', 'firstImage')
+       
+        ->where('is_delete', null)
+        ->where('approved',1)
+        ->paginate(5);
+     
+        $sale_news1 = $user->saleNews()->with('sub_category', 'firstImage')
+       
+        ->where('is_delete', null)
+        ->where('approved',1)
+        ->where('status',1)
+        ->paginate(5);
+     
+        
+       
+        return view('user.user-show',compact('user','sale_news','sale_news1'));
     }
 }

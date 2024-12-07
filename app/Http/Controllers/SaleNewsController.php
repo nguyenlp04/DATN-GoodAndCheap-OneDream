@@ -293,7 +293,7 @@ class SaleNewsController extends Controller
      */
 
 
-
+ 
     public function getAllSaleStatus()
     {
         $data = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
