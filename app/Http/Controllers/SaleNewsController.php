@@ -588,9 +588,9 @@ class SaleNewsController extends Controller
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
-        if (!empty($subcategoryID)) {
-            $recentVipSaleNews->where('sub_category_id', $subcategoryID);
-        }
+        // if (!empty($subcategoryID)) {
+        //     $recentVipSaleNews->where('sub_category_id', $subcategoryID);
+        // }
         if ($categoryId) {
             $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -612,9 +612,9 @@ class SaleNewsController extends Controller
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
-        if (!empty($subcategoryID)) {
-            $olderVipSaleNews->where('sub_category_id', $subcategoryID);
-        }
+        // if (!empty($subcategoryID)) {
+        //     $olderVipSaleNews->where('sub_category_id', $subcategoryID);
+        // }
         if ($categoryId) {
             $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -633,10 +633,10 @@ class SaleNewsController extends Controller
             ->where('status', 1)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->where('approved', 1);
-            ->where('sub_category_id', $subcategoryID);
-        if (!empty($subcategoryID)) {
-            $nonVipSaleNews->where('sub_category_id', $subcategoryID);
-        }
+            // ->where('sub_category_id', $subcategoryID);
+        // if (!empty($subcategoryID)) {
+        //     $nonVipSaleNews->where('sub_category_id', $subcategoryID);
+        // }
 
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {

@@ -36,15 +36,18 @@ use App\Http\Controllers\StaffResetPasswordController;
 use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\DashboardController;
 
 require __DIR__ . '/auth.php';
 
 
 // staff
 Route::middleware(['auth.admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.index');
-    })->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return view('admin.index');
+    // })->name('dashboard');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('/blogs', BlogController::class);
