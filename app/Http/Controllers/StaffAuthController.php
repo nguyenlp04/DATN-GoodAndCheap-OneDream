@@ -24,14 +24,6 @@ class StaffAuthController extends Controller
             $staff = Auth::guard('staff')->user();
 
             // Kiểm tra trạng thái tài khoản
-            if ($staff->is_delete != 0) {
-                Auth::guard('staff')->logout();
-                return back()->with('alert', [
-                    'type' => 'error',
-                    'message' => 'Your account has been deleted. Please contact the administrator.',
-                ])->withInput($request->only('email'));
-            }
-
             if ($staff->status != 1) {
                 Auth::guard('staff')->logout();
                 return back()->with('alert', [
