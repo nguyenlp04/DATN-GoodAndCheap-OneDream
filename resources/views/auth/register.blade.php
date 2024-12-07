@@ -73,9 +73,9 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="{{ url("index.html") }}" class="app-brand-link gap-2">
+                            <a href="{{ url("/") }}" class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">
-                                <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="150">
+                                    <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="150">
                                 </span>
                             </a>
                         </div>
@@ -84,7 +84,7 @@
                         <p class="mb-4">Make your app management easy and fun!</p>
 
                         <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                            @csrf
                             <div class="mb-3">
                                 <x-input-label for="name" :value="__('Full Name')" />
                                 <x-text-input
@@ -115,7 +115,7 @@
                                         required autocomplete="new-password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                         aria-describedby="password" />
-                                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 </div>
                             </div>
@@ -131,8 +131,8 @@
                                         required autocomplete="new-password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                         aria-describedby="password" />
-                                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                                 </div>
                             </div>
 

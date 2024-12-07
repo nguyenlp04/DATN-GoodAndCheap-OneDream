@@ -5,13 +5,13 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="col-md-12">
-                <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                <!-- <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <li class="nav-item">
                         <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-cog me-2"></i> Settings</a>
                     </li>
-                </ul>
+                </ul> -->
                 <div class="card mb-4">
-                    <h5 class="card-header">Profile Details</h5>
+                    <h5 class="card-header">Settings</h5>
                     <hr class="my-0" />
                     <div class="card-body">
                         <form action="{{ route('settings.update') }}" id="formSettings" method="POST" enctype="multipart/form-data">
@@ -43,7 +43,7 @@
                                     <label for="favicon" class="form-label w-25"><strong>Favicon</strong></label>
                                     <input type="file" class="form-control d-none" id="faviconInput" name="favicon" accept="image/*" onchange="previewImage(event, 'faviconPreview')" />
                                     <img id="faviconPreview" src="{{ $setting->favicon ? asset($setting->favicon) : '' }}" alt="Image favicon" style="margin-top: 10px; max-width: 100px; max-height: 100px; cursor: pointer;" onclick="document.getElementById('faviconInput').click();" />
-                                    <small class="text-muted d-block mt-2">Kích thước đề xuất: 25x25, ảnh .png</small>
+                                    <small class="text-muted d-block mt-2">Recommended size: 25x25, .png image</small>
                                     @error('favicon')
                                     <div class="text-danger">
                                         <i class="bx bx-error-circle me-2"></i>
