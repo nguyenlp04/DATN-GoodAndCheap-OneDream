@@ -62,6 +62,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(PartnerProfileController::class);
     }
+    public function saleNews()
+    {
+        return $this->hasMany(SaleNews::class, 'user_id', 'user_id');
+    }
+
     // public function salenew()
     // {
     //     return $this->hasMany(SaleNews::class,'user_id');

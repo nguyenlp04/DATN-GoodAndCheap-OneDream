@@ -12,15 +12,15 @@
             <div class="d-flex justify-content-between align-items-center">
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url("/") }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="#">Blog</a></li>
                 </ol>
 
                 <!-- Filter Button -->
                 <ol class="breadcrumb mb-0">
-                   
+
                     <div class="widget widget-search search-blogs">
-                        
+
 
                         <form action="{{ route('blog.search') }}" method="GET">
                             <label for="ws" class="sr-only">Search in blog</label>
@@ -128,9 +128,7 @@
                     </article><!-- End .entry -->
                 </div><!-- End .entry-item -->
                 @endforeach
-                @else
-                <p>Not empty blogs!</p>
-                @endif
+
             </div><!-- End .entry-container -->
 
             <nav aria-label="Page navigation">
@@ -150,6 +148,9 @@
                     </li>
                 </ul>
             </nav>
+            @else
+            <p class="text-danger ">Not empty blogs!</p>
+            @endif
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->

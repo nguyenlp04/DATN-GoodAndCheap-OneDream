@@ -13,60 +13,89 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <!-- Breadcrumb -->
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url("/") }}">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Blog</a></li>
                         <li class="breadcrumb-item"><a href="#">{{ request('ws') }}</a></li>
                     </ol>
 
                     <!-- Filter Button -->
                     <ol class="breadcrumb mb-0">
-                      
-                            <!-- Dropdown trực tiếp -->
-                            <div class="dropdown">
-                                <form action="{{ route('blog.search') }}" method="GET" id="filter-form">
-                                    <select name="date_filter" class="form-control dropdown-toggle" id="date-filter">
-                                        <option value="" disabled selected>Filter by date  </option>
-                                        <option value="today" {{ request('date_filter') == 'today' ? 'selected' : '' }}>
-                                            Today</option>
-                                        <option value="yesterday"
-                                            {{ request('date_filter') == 'yesterday' ? 'selected' : '' }}>Yesterday
-                                        </option>
-                                        <option value="this-week"
-                                            {{ request('date_filter') == 'this-week' ? 'selected' : '' }}>This Week
-                                        </option>
-                                        <option value="last-week"
-                                            {{ request('date_filter') == 'last-week' ? 'selected' : '' }}>Last Week
-                                        </option>
-                                        <option value="this-month"
-                                            {{ request('date_filter') == 'this-month' ? 'selected' : '' }}>This Month
-                                        </option>
-                                        <option value="last-month"
-                                            {{ request('date_filter') == 'last-month' ? 'selected' : '' }}>Last Month
-                                        </option>
-                                    </select>
-                                </form>
+                        <form action="{{ route('blog.search') }}" method="GET" id="filter-form" class="d-flex">
+                            <!-- Tìm kiếm từ khóa -->
+
+
+                            <!-- Dropdown lọc ngày -->
+                            <div class="widget widget-search search-blogs position-relative">
+
+
+
+                                <label for="ws" class="sr-only">Search in blog</label>
+                                <input type="search" class="form-control" name="ws" placeholder="Search in blog"
+                                    value="{{ old('ws', request('ws')) }}">
+                                <button type="submit" class="btn"><i class="icon-search"></i><span
+                                        class="sr-only">Search</span></button>
+
+                            </div>
+                            <div class="dropdown position-relative">
+                                <!-- Nút hiển thị -->
+                                <button class="btn btn-white  no-hover dropdown-toggle" type="button" id="dateFilterDropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Filter by date <i class="ml-2 fas fa-filter"></i>
+                                </button>
+
+                                <!-- Danh sách dropdown -->
+                                <ul class="dropdown-menu" aria-labelledby="dateFilterDropdown">
+                                    <form action="{{ route('blog.search') }}" method="GET" id="filter-form">
+                                        <!-- Danh sách các lựa chọn -->
+                                        <li class="dropdown-item  li-pad">
+                                            <button type="submit" name="date_filter" value="today"
+                                                class="btn btn-link text-left p-0">
+                                                <i class="   mr-2"></i> Today
+                                            </button>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <button type="submit" name="date_filter" value="yesterday"
+                                                class="btn btn-link text-left p-0">
+                                                <i class="  mr-2"></i> Yesterday
+                                            </button>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <button type="submit" name="date_filter" value="this-week"
+                                                class="btn btn-link text-left p-0">
+                                                <i class="  mr-2"></i> This Week
+                                            </button>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <button type="submit" name="date_filter" value="last-week"
+                                                class="btn btn-link text-left p-0">
+                                                <i class="  mr-2"></i> Last Week
+                                            </button>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <button type="submit" name="date_filter" value="this-month"
+                                                class="btn btn-link text-left p-0">
+                                                <i class="  mr-2"></i> This Month
+                                            </button>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <button type="submit" name="date_filter" value="last-month"
+                                                class="btn btn-link text-secondary text-left p-0">
+                                                <i class="  mr-2"></i> Last Month
+                                            </button>
+                                        </li>
+                                    </form>
+                                </ul>
                             </div>
 
-                            <div class="widget widget-search search-blogs">
 
 
-                                <form action="{{ route('blog.search') }}" method="GET">
-                                    <label for="ws" class="sr-only">Search in blog</label>
-                                    <input type="search" class="form-control" name="ws" placeholder="Search in blog"
-                                        value="{{ request('ws') }}">
-                                    <button type="submit" class="btn"><i class="icon-search"></i><span
-                                            class="sr-only">Search</span></button>
-                                </form>
-                            </div><!-- End .widget -->
-                            <!-- Collapse Section for Filter -->
+                        </form>
+
+                        <!-- Search Form -->
 
 
 
-                            <!-- Search Form -->
-
-
-
-                        </ol>
+                    </ol>
 
                 </div>
 
@@ -112,14 +141,17 @@
                             </h2><!-- End .entry-title -->
 
                             <div class="entry-content">
-                                <a href="{{ route('blogs.detail', $blog->blog_id) }}" class="read-more">Xem thêm</a>
+                                <a href="{{ route('blogs.detail', $blog->blog_id) }}" class="read-more">Continue
+                                    Reading</a>
                             </div><!-- End .entry-cats -->
                         </div><!-- End .entry-body -->
                     </article><!-- End .entry -->
                 </div><!-- End .entry-item -->
                 @endforeach
                 @else
-                <p class="text-center">Không có bài viết nào phù hợp!</p>
+                <p class="text-center">
+                <p>Not empty blog category!</p>
+                </p>
                 @endif
             </div>
 
@@ -134,9 +166,9 @@
 <script src="{{ asset('assets/js/isotope.pkgd.min.js') }}"></script>
 
 <script>
-document.getElementById('date-filter').addEventListener('change', function() {
-    document.getElementById('filter-form').submit();
-});
+    document.getElementById('date-filter').addEventListener('change', function() {
+        document.getElementById('filter-form').submit();
+    });
 </script>
 
 @endsection

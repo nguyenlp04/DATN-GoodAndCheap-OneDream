@@ -26,7 +26,7 @@
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-<meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ $title ?? $setting->site_name ?? 'Good & Cheap' }} Dashboard</title>
 
@@ -80,7 +80,7 @@
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="{{ url('index.html') }}" class="app-brand-link">
+          <a href="{{ url('dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
               <img src="{{ asset($setting->logo) }}" alt="" style="width: 150px; height: auto;">
             </span>
@@ -177,7 +177,7 @@
                 <div data-i18n="Account Management">Account</div>
               </a>
               <ul class="menu-sub">
-                   @if (Auth::guard('staff')->user()->role == 'admin')
+                @if (Auth::guard('staff')->user()->role == 'admin')
                 <li class="menu-item {{ Request::is('account/employee-management/*') || Request::is('account/employee-management') ? 'active' : '' }}">
                   <a href="{{ url('account/employee-management') }}" class="menu-link">
                     <div data-i18n="Add Affiliate Account">Staff Management</div>
@@ -303,7 +303,7 @@
 
           <li class="menu-item {{ Request::is('vip-packages') ? 'active' : '' }}">
             <a href="{{ url('vip-packages') }}" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-crown"></i>
+              <i class="menu-icon tf-icons bx bx-crown"></i>
               <div data-i18n="Analytics">Vip Package</div>
             </a>
           </li>
@@ -344,8 +344,8 @@
 
 
           @if (Auth::guard('staff')->user()->role == 'admin')
-           <!-- Config -->
-           <li class="menu-item {{ Request::is('config/*') ? 'active open' : '' }}">
+          <!-- Config -->
+          <li class="menu-item {{ Request::is('config/*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               {{-- <i class="menu-icon tf-icons bx bx-trash"></i> --}}
               <i class="menu-icon fa-solid fa-gears"></i>
@@ -376,7 +376,7 @@
           </li>
 
           <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
-            @endif
+          @endif
 
 
 

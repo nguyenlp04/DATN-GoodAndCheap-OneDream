@@ -15,7 +15,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Channel;
 use App\Models\Subcategory;
 use App\Models\SubcategoryAttribute;
-
+use App\Models\Transactions;
 
 class SaleNewsController extends Controller
 
@@ -293,7 +293,7 @@ class SaleNewsController extends Controller
      */
 
 
-
+ 
     public function getAllSaleStatus()
     {
         $data = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
@@ -325,9 +325,9 @@ class SaleNewsController extends Controller
             ->where('approved', 1)->where('user_id', auth()->user()->user_id)
             ->get();
         // dd($list_pending_approval);
+        $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->count();
 
-
-        return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden'));
+        return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden', 'transactionCount'));
     }
     // public function tv2(){
     //     return view('salenews.promote');
@@ -365,6 +365,22 @@ class SaleNewsController extends Controller
         return redirect()->route('listings.index')->with('success', 'Listing promoted successfully.');
     }
 
+    public function getNextSaleNewId($currentId)
+    {
+        return SaleNews::where('sale_new_id', '>', $currentId)
+            ->where('approved', 1)
+            ->orderBy('sale_new_id')
+            ->first();
+    }
+
+    public function getPreviousSaleNewId($currentId)
+    {
+        return SaleNews::where('sale_new_id', '<', $currentId)
+            ->where('approved', 1)
+            ->orderBy('sale_new_id', 'desc')
+            ->first();
+    }
+
     public function renderSaleNewDetail(string $id)
     {
         // dd($get_data_7subcategory);
@@ -397,6 +413,11 @@ class SaleNewsController extends Controller
             if ($news) {
                 $data = $news->data;
                 $data_json = json_decode($data);
+                $nextNews = $this->getNextSaleNewId($id);
+                $prevNews = $this->getPreviousSaleNewId($id);
+                $nextNewsId = $nextNews ? $nextNews->sale_new_id : null;
+                $prevNewsId = $prevNews ? $prevNews->sale_new_id : null;
+
                 //  dd($data_json);
                 if (!is_null($news->channel_id)) {
                     return view('salenews.detail', [
@@ -406,7 +427,9 @@ class SaleNewsController extends Controller
                         'data_count_news_sold' => $data_count_news_sold,
                         'data_json' => $data_json,
                         // 'variant_data_details' =>$variant_data_details,
-                        'get_data_7subcategory' => $get_data_7subcategory
+                        'get_data_7subcategory' => $get_data_7subcategory,
+                        'nextNewsId' => $nextNewsId,
+                        'prevNewsId' => $prevNewsId
                     ]);
                 }
 
@@ -415,7 +438,9 @@ class SaleNewsController extends Controller
                     'get_user' => $get_user_phone,
                     'data_json' => $data_json,
                     // 'variant_data_details' =>$variant_data_details,
-                    'get_data_7subcategory' => $get_data_7subcategory
+                    'get_data_7subcategory' => $get_data_7subcategory,
+                    'nextNewsId' => $nextNewsId,
+                    'prevNewsId' => $prevNewsId
                 ]);
             }
             return redirect()->back()->with('alert', [
@@ -543,8 +568,13 @@ class SaleNewsController extends Controller
         $keyword = $request->input('keyword');
         $categoryId = $request->get('category'); // Get category filter
         $address = $request->get('address');    // Get address filter
+
         $minPrice = $request->get('minPrice');
         $maxPrice = $request->get('maxPrice');
+
+
+        $subcategoryID = $request->get('subcategory');    // Get address filter
+        // dd($subcategoryID);
 
         $threeDaysAgo = Carbon::now()->subDays(3);
 
@@ -558,6 +588,9 @@ class SaleNewsController extends Controller
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
+        if (!empty($subcategoryID)) {
+            $recentVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
         if ($categoryId) {
             $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -567,7 +600,6 @@ class SaleNewsController extends Controller
         if ($address) {
             $recentVipSaleNews->where('address', 'like', "%$address%");
         }
-
         $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
 
         // Older VIP SaleNews (users created more than 3 days ago)
@@ -580,7 +612,9 @@ class SaleNewsController extends Controller
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
-
+        if (!empty($subcategoryID)) {
+            $olderVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
         if ($categoryId) {
             $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -591,7 +625,6 @@ class SaleNewsController extends Controller
             $olderVipSaleNews->where('address', 'like', "%$address%");
         }
         $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
-
         // Non-VIP SaleNews with pagination
         $perPage = $request->get('perPage', 8);
         $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
@@ -600,6 +633,10 @@ class SaleNewsController extends Controller
             ->where('status', 1)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->where('approved', 1);
+            ->where('sub_category_id', $subcategoryID);
+        if (!empty($subcategoryID)) {
+            $nonVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
 
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
