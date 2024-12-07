@@ -543,6 +543,8 @@ class SaleNewsController extends Controller
         $keyword = $request->input('keyword');
         $categoryId = $request->get('category'); // Get category filter
         $address = $request->get('address');    // Get address filter
+        $minPrice = $request->get('minPrice');
+        $maxPrice = $request->get('maxPrice');
 
         $threeDaysAgo = Carbon::now()->subDays(3);
 
@@ -552,6 +554,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
@@ -573,6 +576,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
@@ -594,6 +598,7 @@ class SaleNewsController extends Controller
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
             ->where('approved', 1);
 
         if ($categoryId) {
@@ -612,6 +617,8 @@ class SaleNewsController extends Controller
 
         $category = Category::all();
 
+        $maxPrice = SaleNews::max('price');
+
         return view('salenews.search', compact(
             'recentVipSaleNews',
             'olderVipSaleNews',
@@ -621,7 +628,8 @@ class SaleNewsController extends Controller
             'totalNonVipSaleNews',
             'category',
             'address',
-            'categoryId'
+            'categoryId',
+            'maxPrice'
         ));
     }
     public function all_sale_news()
