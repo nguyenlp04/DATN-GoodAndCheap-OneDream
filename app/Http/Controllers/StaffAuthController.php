@@ -12,7 +12,6 @@ class StaffAuthController extends Controller
     {
         return view('auth.staff-login'); // Tạo view login cho nhân viên
     }
-
     public function login(Request $request)
     {
         $request->validate([
@@ -20,14 +19,48 @@ class StaffAuthController extends Controller
             'password' => 'required',
         ]);
 
+        // Xác thực thông tin đăng nhập
         if (Auth::guard('staff')->attempt($request->only('email', 'password'))) {
-            return redirect()->intended('dashboard');
-        }
+            $staff = Auth::guard('staff')->user();
 
+            // Kiểm tra trạng thái tài khoản
+            if ($staff->is_delete != 0) {
+                Auth::guard('staff')->logout();
+                return back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'Your account has been deleted. Please contact the administrator.',
+                ])->withInput($request->only('email'));
+            }
+
+            if ($staff->status != 1) {
+                Auth::guard('staff')->logout();
+                return back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'Your account is not active. Please contact the administrator.',
+                ])->withInput($request->only('email'));
+            }
+            // return redirect()->intended('dashboard');
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput($request->only('email'));
     }
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ]);
+
+    //     if (Auth::guard('staff')->attempt($request->only('email', 'password'))) {
+    //         return redirect()->intended('dashboard');
+    //     }
+
+    //     return back()->withErrors([
+    //         'email' => 'The provided credentials do not match our records.',
+    //     ])->withInput($request->only('email'));
+    // }
 
     public function logout(Request $request)
     {
