@@ -202,7 +202,9 @@ Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name(
 
 // guest
 
-
+//show user
+Route::get('/user/{id}', [UserManageController::class, 'show'])->name('user.show');
+//end show
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/blog/search', [BlogController::class, 'search'])->name('blog.search');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
