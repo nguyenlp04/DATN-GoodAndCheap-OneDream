@@ -52,7 +52,7 @@
                                                 <div class="product">
                                                     <figure class="product-media">
                                                         <span class="product-label label-top">Top</span>
-                                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                                        <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                                             @if ($item->images->isNotEmpty())
                                                                 <img src="{{ $item->images->first()->image_name }}"
                                                                     alt="Image" class="equal-height-image">
@@ -72,7 +72,7 @@
                                                         </div>
                                                         <h3 class="product-title text-truncate-3">
                                                             <a
-                                                                href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
+                                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
                                                         </h3>
                                                         <div class="product-price">
                                                             ${{ number_format($item->price, 2) }}
@@ -87,7 +87,7 @@
                                                 <div class="product">
                                                     <figure class="product-media">
                                                         <span class="product-label label-top">Top</span>
-                                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                                        <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                                             @if ($item->images->isNotEmpty())
                                                                 <img src="{{ $item->images->first()->image_name }}"
                                                                     alt="Image" class="equal-height-image">
@@ -107,7 +107,7 @@
                                                         </div>
                                                         <h3 class="product-title text-truncate-3">
                                                             <a
-                                                                href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
+                                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
                                                         </h3>
                                                         <div class="product-price">
                                                             ${{ number_format($item->price, 2) }}
@@ -206,7 +206,7 @@
                                         <div class="product">
                                             <figure class="product-media">
                                                 <span class="product-label label-top">Top</span>
-                                                <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                                <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                                     @if ($item->images->isNotEmpty())
                                                         <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                             class="equal-height-image">
@@ -228,7 +228,7 @@
                                                 </div>
                                                 <h3 class="product-title text-truncate-3">
                                                     <a
-                                                        href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
+                                                        href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
                                                 </h3>
                                                 <div class="product-price">
                                                     ${{ number_format($item->price, 2) }}
@@ -380,8 +380,10 @@
                                 </div>
                                 <!-- Hidden input to retain search keyword -->
                                 <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
+
                                 <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
                                 <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
+
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
@@ -412,7 +414,9 @@
                 if (priceSlider == null) return;
 
                 noUiSlider.create(priceSlider, {
+
                     start: [0, <?php echo $maxPrice; ?>],
+
                     connect: true,
                     step: 50,
                     margin: 200,

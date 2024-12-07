@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Subcategory;
+use Illuminate\Support\Facades\File;
 
 
 
@@ -65,23 +66,23 @@ class CategoryController extends Controller
         if ($request->isMethod('get')) {
             return view('admin.categories.add-category');
         }
-        
 
-            $validatedData = $request->validate([
-                'name_category' => 'required|string|max:255|unique:categories,name_category',
-                'description' => 'nullable|string|max:1000',
-                'subcategories' => 'required|array',
-                'subcategories.*' => 'string|max:255',
-                'variants' => 'required|array',
-                'variants.*' => 'required|string|max:255',
-                'image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-            if ($request->hasFile('image')) {
-                $imageName = 'category_' . time() . '_' . uniqid() . '.' . $request->image->extension();
-                $imagePath = 'storage/category/' . $imageName;
-                Storage::disk('public')->putFileAs('category', $request->file('image'), $imageName);
-            }
-            try {
+
+        $validatedData = $request->validate([
+            'name_category' => 'required|string|max:255|unique:categories,name_category',
+            'description' => 'nullable|string|max:1000',
+            'subcategories' => 'required|array',
+            'subcategories.*' => 'string|max:255',
+            'variants' => 'required|array',
+            'variants.*' => 'required|string|max:255',
+            'image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        if ($request->hasFile('image')) {
+            $imageName = 'category_' . time() . '_' . uniqid() . '.' . $request->image->extension();
+            $imagePath = 'storage/category/' . $imageName;
+            Storage::disk('public')->putFileAs('category', $request->file('image'), $imageName);
+        }
+        try {
             $dataCategory = [
                 'staff_id' => Auth::guard('staff')->user()->staff_id,
                 'name_category' => $validatedData['name_category'],
@@ -229,16 +230,16 @@ class CategoryController extends Controller
                     $query = DB::table('sub_categories')->insert($dataSubCategory);
                 }
             }
-           
-            
+
+
 
             $variants = $request->input('variants', []);
             // Get the existing variants for the category
             $existingVariants = $category->subcategoryAttributes()->get()->keyBy('subcategory_attribute_id');
             // dd($variants);
 
-             $variantIdsInRequest = collect($variants)->pluck('subcategory_attribute_id')->filter();
-            $category->subcategoryAttributes()->whereNotIn('subcategory_attribute_id', $variantIdsInRequest)->delete();  
+            $variantIdsInRequest = collect($variants)->pluck('subcategory_attribute_id')->filter();
+            $category->subcategoryAttributes()->whereNotIn('subcategory_attribute_id', $variantIdsInRequest)->delete();
             foreach ($variants as $variantData) {
                 // dd($variantData['subcategory_attribute_id']);
                 if (is_array($variantData)) {
@@ -263,12 +264,10 @@ class CategoryController extends Controller
                         'created_at' => now(),
                     ];
                     $query = DB::table('subcategory_attributes')->insert($dataAttributes);
-
-
                 }
             }
 
-           
+
 
             // Save the category (image and other details are updated here)
             $category->save();
@@ -318,8 +317,113 @@ class CategoryController extends Controller
         }
     }
 
-    public function blogs()
+    // public function blogs()
+    // {
+    //     return $this->hasMany(Blog::class, 'category_id');
+    // }
+    public function trash()
     {
-        return $this->hasMany(Blog::class, 'category_id');
+
+        $data = Category::select('categories.*')
+            ->selectRaw('COUNT(DISTINCT sub_categories.sub_category_id) AS sub_category_count')
+            ->selectRaw('COUNT(DISTINCT subcategory_attributes.subcategory_attribute_id) AS attribute_count')
+            ->selectRaw('GROUP_CONCAT(DISTINCT sub_categories.name_sub_category ORDER BY sub_categories.name_sub_category) AS sub_category_names')
+            ->selectRaw('GROUP_CONCAT(DISTINCT sub_categories.status ORDER BY sub_categories.name_sub_category) AS sub_category_statuses')
+            ->selectRaw('GROUP_CONCAT(DISTINCT subcategory_attributes.attributes_name ORDER BY sub_categories.sub_category_id) AS attribute_names')
+            ->selectRaw('staffs.full_name AS staff_full_name')
+            ->leftJoin('sub_categories', 'categories.category_id', '=', 'sub_categories.category_id')
+            ->leftJoin('subcategory_attributes', 'categories.category_id', '=', 'subcategory_attributes.category_id')
+            ->leftJoin('staffs', 'categories.staff_id', '=', 'staffs.staff_id')
+            // ->leftJoin('blogs', 'categories.category_id', '=', 'blogs.category_id')  // Sửa ở đây, thay `category_id` cho đúng
+            ->where('categories.is_delete', '=', '1')
+            ->groupBy(
+                'categories.category_id',
+                'categories.name_category',
+                'categories.image_category',
+                'categories.delete_at',
+                'categories.staff_id',
+                'categories.description',
+                'categories.status',
+                'categories.is_delete',
+                'categories.created_at',
+                'categories.updated_at',
+                'staffs.full_name'
+            )
+            ->get();
+        return view('admin.trash.category', compact('data'));
+    }
+    public function restore($id)
+    {
+        try {
+            $item = Category::findOrFail($id);
+
+            // Thay đổi trạng thái giữa 0 và 2
+            $item->is_delete = '0';
+            $item->save();
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => ' Reject  successfully!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Error: ' . $th->getMessage()
+            ]);
+        }
+    }
+    public function destroyofadmin(string $id)
+    {
+        // Tìm bản ghi Category
+        $check = Category::findOrFail($id);
+
+        // Kiểm tra và xóa các bản ghi liên quan trước
+        if ($check) {
+
+            foreach ($check->blogs as $blog) {
+                $blog->delete();
+            }
+            foreach ($check->subcategoryAttributes as $subcategoryAttribute) {
+                $subcategoryAttribute->delete();
+            }
+
+
+            foreach ($check->subcategories as $subcategory) {
+
+                foreach ($subcategory->salenews as $saleNews) {
+
+                    foreach ($saleNews->images as $photo) {
+                        // Xác định đường dẫn tệp ảnh
+                        $filePath = public_path($photo->image_name);
+
+                        // Kiểm tra và xóa tệp ảnh nếu tồn tại
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                        $photo->delete();
+                    }
+                    $saleNews->likes()->delete();
+
+
+                    $saleNews->delete();
+                }
+
+
+                $subcategory->delete();
+            }
+
+            // Sau đó xóa bản ghi Category
+            $check->delete();
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Delete successful!'
+            ]);
+        } else {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Not found!'
+            ]);
+        }
     }
 }

@@ -37,6 +37,7 @@
 </style>
 
 <div class="page-wrapper">
+
 <header class="header header-intro-clearance header-4">
    <div class="header-middle">
       <div class="container">
@@ -63,9 +64,11 @@
                    <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
                        placeholder="Search product ..." autofocus>
 
+
                        <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
                        <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
                    <!-- Hidden inputs to retain filter values -->
+
                </div>
            </form>
 
@@ -293,6 +296,7 @@
       </div>
       <!-- End .header-center -->
       <!-- End .container -->
+   </div>
    </div>
    <!-- End .header-bottom -->
    </header>

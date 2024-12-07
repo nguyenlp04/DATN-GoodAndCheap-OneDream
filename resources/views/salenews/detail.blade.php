@@ -4,6 +4,8 @@
 @section('content')
 
 <main class="main">
+
+    <div class="container">
     <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
         <div class="container d-flex align-items-center">
             <ol class="breadcrumb">
@@ -301,15 +303,12 @@
 
         </div><!-- End .container -->
     </div><!-- End .page-content -->
+    </div>
 </main><!-- End .main -->
-
-
-
-
-
 
 @endsection
 @section('script-link-css')
+
 <script>
 
     const postTime = new Date('{{ $new->created_at }}');

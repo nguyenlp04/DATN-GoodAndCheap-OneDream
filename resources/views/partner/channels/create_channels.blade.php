@@ -30,12 +30,17 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0">
-                                    @if ($paymentOrCreat->image_channel)
-                                    <img src="{{ asset($paymentOrCreat->image_channel) }}"
-                                        alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
-                                    @else
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                                        alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+
+                                  @if ($paymentOrCreat->image_channel)
+                                      <img src="{{ asset($paymentOrCreat->image_channel) }}"
+                                    alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                                  @else
+                                    <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+                                    alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+
+
+
+
                                     @endif
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -71,6 +76,7 @@
 
                 <div class="col col-md-9 col-lg-7 col-xl-6 d-flex justify-content-end">
 
+
                     <button type="submit" class="btn btn-primary btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-credit-card"></i> Payment</button>
 
 
@@ -82,6 +88,7 @@
         <form action="{{ route('channels.store') }}" method="POST" enctype="multipart/form-data">
             {{-- <form action="{{ route('vnpay.initiatePayment') }}" method="POST" enctype="multipart/form-data"> --}}
             @csrf
+
 
             <!-- Display errors -->
             @if ($errors->any())

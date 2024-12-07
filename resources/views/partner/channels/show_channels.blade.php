@@ -16,12 +16,12 @@
         {{ session('success') }}
     </div>
     @endif
-    <main class="main">
+
         <div class="page-content">
             <div class="container">
                 <div class="row d-flex justify-content-Start">
                     <div class="col col-md-9 col-lg-7 col-xl-6">
-                        <div style="width:  fit-content;min-width:460px; ">
+                        <div style="width:  fit-content;min-width:400px; ">
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
@@ -79,17 +79,6 @@
                     @endif
                     @endif
                 </div>
-
-
-
-
-
-
-                <!-- Sales News -->
-
-
-
-
 
 
 
@@ -172,6 +161,8 @@
 
 
 
+
+
                         </div><!-- End .products -->
 
 
@@ -213,7 +204,8 @@
 
 
 
-                            {{-- <div class="widget widget-collapsible">
+
+                             <div class="widget widget-collapsible">
                                 <h3 class="widget-title">
                                     <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
                                         aria-controls="widget-5">
@@ -222,59 +214,16 @@
                                 </h3>
                                 <!-- End .widget-title -->
 
-                                <div class="collapse show" id="widget-5">
-                                    <div class="widget-body">
-                                        <div class="filter-price">
-                                            <div class="filter-price-text">
-                                                Price Range:
-                                                <span id="filter-price-range">$0 - $500</span>
-                                            </div>
-                                            <!-- End .filter-price-text -->
 
-                                            <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
-                                                <div class="noUi-base">
-                                                    <div class="noUi-connects">
-                                                        <div class="noUi-connect"
-                                                            style="transform: translate(0%, 0px) scale(0.5, 1);"></div>
-                                                    </div>
-                                                    <div class="noUi-origin"
-                                                        style="transform: translate(-100%, 0px); z-index: 5;">
-                                                        <div class="noUi-handle noUi-handle-lower" data-handle="0"
-                                                            tabindex="0" role="slider" aria-orientation="horizontal"
-                                                            aria-valuemin="0.0" aria-valuemax="300.0" aria-valuenow="0.0"
-                                                            aria-valuetext="$0">
-                                                            <div class="noUi-touch-area"></div>
-                                                            <div class="noUi-tooltip">$0</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="noUi-origin"
-                                                        style="transform: translate(-50%, 0px); z-index: 6;">
-                                                        <div class="noUi-handle noUi-handle-upper" data-handle="1"
-                                                            tabindex="0" role="slider" aria-orientation="horizontal"
-                                                            aria-valuemin="200.0" aria-valuemax="1000.0"
-                                                            aria-valuenow="500.0" aria-valuetext="$500">
-                                                            <div class="noUi-touch-area"></div>
-                                                            <div class="noUi-tooltip">$500</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- End #price-slider -->
-                                        </div>
-                                        <!-- End .filter-price -->
-                                    </div>
-                                    <!-- End .widget-body -->
-                                </div>
-                                <!-- End .collapse -->
-                            </div> --}}
+
                         </div>
                         <!-- End .sidebar sidebar-shop -->
                     </aside>
                 </div><!-- End .row -->
             </div><!-- End .container -->
         </div><!-- End .page-content -->
-    </main><!-- End .main -->
-    </div>
+
+
 
 </main>
 @endsection
