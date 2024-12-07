@@ -568,8 +568,14 @@ class SaleNewsController extends Controller
         $keyword = $request->input('keyword');
         $categoryId = $request->get('category'); // Get category filter
         $address = $request->get('address');    // Get address filter
+
+        $minPrice = $request->get('minPrice');
+        $maxPrice = $request->get('maxPrice');
+
+
         $subcategoryID = $request->get('subcategory');    // Get address filter
         // dd($subcategoryID);
+
         $threeDaysAgo = Carbon::now()->subDays(3);
 
         // Recent VIP SaleNews (users created within the last 3 days)
@@ -578,6 +584,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
@@ -601,6 +608,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
@@ -623,11 +631,13 @@ class SaleNewsController extends Controller
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
-            ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
+            ->where('approved', 1);
             ->where('sub_category_id', $subcategoryID);
         if (!empty($subcategoryID)) {
             $nonVipSaleNews->where('sub_category_id', $subcategoryID);
         }
+
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -644,6 +654,8 @@ class SaleNewsController extends Controller
 
         $category = Category::all();
 
+        $maxPrice = SaleNews::max('price');
+
         return view('salenews.search', compact(
             'recentVipSaleNews',
             'olderVipSaleNews',
@@ -653,7 +665,8 @@ class SaleNewsController extends Controller
             'totalNonVipSaleNews',
             'category',
             'address',
-            'categoryId'
+            'categoryId',
+            'maxPrice'
         ));
     }
     public function all_sale_news()

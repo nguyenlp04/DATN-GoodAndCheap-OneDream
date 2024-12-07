@@ -245,7 +245,7 @@ class VnPayController extends Controller
                     );
 
                     $telegramService->sendMessage($message);
-                    // dd(123);
+
                     // $query = DB::table('transactions')->insert($transactionData);
 
                     $body = '<div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif;">
@@ -277,6 +277,7 @@ class VnPayController extends Controller
                         </div>
                     </div>';
                     $result = PhpMailerService::sendEmail($to, $subject, $body);
+
                 } else {
                     $transaction = Transactions::where('channel_id', $channel_id)->first();
                     if ($transaction) {

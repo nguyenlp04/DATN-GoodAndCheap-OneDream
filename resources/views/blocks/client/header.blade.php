@@ -61,11 +61,12 @@
                         <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
                            placeholder="Search product ..." autofocus>
 
-                        <!-- Hidden inputs to retain filter values -->
-                        <input type="hidden" name="a~ddress" value="{{ request()->get('address') }}">
-                        <input type="hidden" name="category" value="{{ request()->get('category') }}">
-                     </div>
-                  </form>
+                   <!-- Hidden inputs to retain filter values -->
+                   <input type="hidden" name="address" value="{{ request()->get('address') }}">
+                   <input type="hidden" name="category" value="{{ request()->get('category') }}">
+               </div>
+           </form>
+
 
                </div>
                <!-- End .header-search -->
