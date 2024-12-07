@@ -15,7 +15,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Channel;
 use App\Models\Subcategory;
 use App\Models\SubcategoryAttribute;
-
+use App\Models\Transactions;
 
 class SaleNewsController extends Controller
 
@@ -325,9 +325,9 @@ class SaleNewsController extends Controller
             ->where('approved', 1)->where('user_id', auth()->user()->user_id)
             ->get();
         // dd($list_pending_approval);
+        $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->count();
 
-
-        return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden'));
+        return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden', 'transactionCount'));
     }
     // public function tv2(){
     //     return view('salenews.promote');
@@ -543,7 +543,8 @@ class SaleNewsController extends Controller
         $keyword = $request->input('keyword');
         $categoryId = $request->get('category'); // Get category filter
         $address = $request->get('address');    // Get address filter
-
+        $subcategoryID = $request->get('subcategory');    // Get address filter
+        // dd($subcategoryID);
         $threeDaysAgo = Carbon::now()->subDays(3);
 
         // Recent VIP SaleNews (users created within the last 3 days)
@@ -555,6 +556,9 @@ class SaleNewsController extends Controller
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
+        if (!empty($subcategoryID)) {
+            $recentVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
         if ($categoryId) {
             $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -564,7 +568,6 @@ class SaleNewsController extends Controller
         if ($address) {
             $recentVipSaleNews->where('address', 'like', "%$address%");
         }
-
         $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
 
         // Older VIP SaleNews (users created more than 3 days ago)
@@ -576,7 +579,9 @@ class SaleNewsController extends Controller
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
-
+        if (!empty($subcategoryID)) {
+            $olderVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
         if ($categoryId) {
             $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -587,15 +592,17 @@ class SaleNewsController extends Controller
             $olderVipSaleNews->where('address', 'like', "%$address%");
         }
         $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
-
         // Non-VIP SaleNews with pagination
         $perPage = $request->get('perPage', 8);
         $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
-            ->where('approved', 1);
-
+            ->where('approved', 1)
+            ->where('sub_category_id', $subcategoryID);
+        if (!empty($subcategoryID)) {
+            $nonVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);

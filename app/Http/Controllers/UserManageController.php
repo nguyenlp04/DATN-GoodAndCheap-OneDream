@@ -18,8 +18,12 @@ class UserManageController extends Controller
             ->with('channel')
             ->get();
         $transactionCount = Transactions::where('user_id', $userId)->count();
+        $createdAt = Auth::user()->created_at;
+        $now = now();
+        $diffInMonths =  (int) $createdAt->diffInMonths($now);
+        $diffInDays = (int) $createdAt->diffInDays($now->copy()->subMonths($diffInMonths));
         $title = 'Profile - Good & Cheep';
-        return view('user.manage', compact('followedChannels', 'transactionCount', 'title'));
+        return view('user.manage', compact('followedChannels', 'transactionCount', 'title', 'diffInMonths', 'diffInDays'));
     }
     public function unfollow($id)
     {

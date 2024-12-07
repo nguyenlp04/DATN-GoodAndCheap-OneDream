@@ -55,7 +55,13 @@
                                         <p style="color: #ff0000;"><i class="fa-solid fa-face-smile" style="color: #FFD43B;"></i> Become a partner for easier management </p>
                                         <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary  " style="width: fit-content">
                                             <div>
-                                                <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> 1282</p>
+                                                <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i>
+                                                    @if ($diffInMonths > 0)
+                                                    <strong>{{ $diffInMonths }}</strong> month <strong>{{ $diffInDays }}</strong> day.
+                                                    @else
+                                                    <strong>{{ $diffInDays }}</strong> day.
+                                                    @endif
+                                                </p>
                                                 {{-- <p class="small text-muted "><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> 56</p> --}}
                                                 <p class="small text-muted "> <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i> {{ $transactionCount}}</p>
                                             </div>

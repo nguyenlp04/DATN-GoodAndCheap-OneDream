@@ -60,7 +60,7 @@
                     <a href="{{ route('search') }}?category={{ $category->category_id }}" class="cat-block">
                         <figure>
                             <span>
-                                <img style=" width: 111px;height: 64px;object-fit: cover;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
+                                <img style="max-width: 120px;max-height: 70px;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
                             </span>
                         </figure>
                         <h3 class="cat-block-title">{{ $category->name_category }}</h3><!-- End .cat-block-title -->
@@ -141,15 +141,15 @@
                             }'>
                     @foreach ($data as $item)
 
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
-                                    @if ($item->images->isNotEmpty())
-                                        <img src="{{ $item->images->first()->image_name }}" alt="Image"
-                                            class="equal-height-image">
-                                    @endif
-                                </a>
+                    <div class="product product-2">
+                        <figure class="product-media">
+                            <span class="product-label label-circle label-top">Top</span>
+                            <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
+                                @if ($item->images->isNotEmpty())
+                                <img src="{{ $item->images->first()->image_name }}" alt="Image"
+                                    class="equal-height-image">
+                                @endif
+                            </a>
 
 
 
