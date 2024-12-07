@@ -14,6 +14,8 @@ use App\Models\VipPackage;
 use Illuminate\Support\Carbon;
 use App\Models\Channel;
 use App\Models\Subcategory;
+use Illuminate\Support\Facades\File;
+
 use App\Models\SubcategoryAttribute;
 
 
@@ -430,6 +432,7 @@ class SaleNewsController extends Controller
         }
     }
 
+
     public function list_salenew()
     {
         $data = SaleNews::with('user', 'sub_category.category', 'images')
@@ -639,5 +642,55 @@ class SaleNewsController extends Controller
         $groupedData['all'] = $allItems;
 
         return view('salenews.all-sale-news', compact('groupedData'));
+    }
+    public function trash()
+    {
+
+        $data = SaleNews::with('vipPackage', 'images', 'firstImage', 'sub_category')
+            ->where('is_delete', 1)->get();
+        return view('admin.trash.sale-news', compact('data'));
+    }
+    public function restore($id)
+    {
+        try {
+            $item = SaleNews::findOrFail($id);
+
+            // Thay đổi trạng thái giữa 0 và 2
+            $item->is_delete = null;
+            $item->save();
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => ' Reject  successfully!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Error: ' . $th->getMessage()
+            ]);
+        }
+    }
+    public function destroyofadmin(string $id)
+    {
+        $check = SaleNews::findOrFail($id);
+        if ($check) {
+            foreach ($check->images as $photo) {
+                $filePath = public_path($photo->image_name);
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+                $photo->delete();
+            }
+            $check->delete();
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Delete successful !'
+            ]);
+        } else {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Not found !'
+            ]);
+        }
     }
 }

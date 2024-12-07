@@ -34,7 +34,7 @@
                                       <img src="{{ asset($paymentOrCreat->image_channel) }}"
                                     alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
                                   @else
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                    <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
                                     alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
                                     @endif
                                 </div>

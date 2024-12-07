@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Blog;
 use App\Models\Staff;
+use Illuminate\Support\Facades\File;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -15,13 +16,13 @@ class BlogController extends Controller
     // Hiển thị danh sách bài viết
     public function index()
     {
-        $blogs = Blog::paginate(10); // Sử dụng phân trang
+        $blogs = Blog::where('is_delete', 0)->paginate(10); // Sử dụng phân trang
         return view('admin.blogs.index', compact('blogs'));
     }
     public function create()
-    {  $category = Category::all();
+    {
+        $category = Category::all();
         return view('admin.blogs.create', compact('category'));
-        
     }
 
     public function listting()
@@ -34,133 +35,133 @@ class BlogController extends Controller
         $category = Category::withCount(['blogs as blogs_count' => function ($query) {
             $query->where('status', '1');
         }])
-        ->where('status', '1')
-        ->get();    
-        $title = 'Blogs - Good & Cheap';    
-        $blogs = Blog::where('status', '1')->with('category')->get();  
+            ->where('status', '1')
+            ->get();
+        $title = 'Blogs - Good & Cheap';
+        $blogs = Blog::where('status', '1')->with('category')->get();
         $count = Blog::where('status', '1')->count();
-      
-        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count','category','title')); // Trả về view với danh sách blog
+
+        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count', 'category', 'title')); // Trả về view với danh sách blog
 
     }
 
     // Lưu bài viết mới
     public function store(Request $request)
-{
-    
+    {
 
-    try {
-        // Lấy ID của người dùng đăng nhập hiện tại
-        $userId = Auth::guard('staff')->user()->staff_id;
-       
-        // Kiểm tra xem người dùng có phải là staff không
-        $staff = Staff::find($userId);
 
-        if (!$staff) {
-            // Nếu người dùng không phải là staff, trả về thông báo không đủ quyền
+        try {
+            // Lấy ID của người dùng đăng nhập hiện tại
+            $userId = Auth::guard('staff')->user()->staff_id;
+
+            // Kiểm tra xem người dùng có phải là staff không
+            $staff = Staff::find($userId);
+
+            if (!$staff) {
+                // Nếu người dùng không phải là staff, trả về thông báo không đủ quyền
+                return redirect()->back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'You do not have sufficient privileges.'
+                ]);
+            }
+
+            // Xác thực dữ liệu
+            $validatedData = $request->validate([
+                'title' => 'required|max:255',
+                'content' => 'required|string',
+                'short_description' => 'min:10|string|max:255', // Kiểm tra mô tả ngắn
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
+                'category_id' => 'required|exists:categories,category_id', // Kiểm tra category_id hợp lệ
+            ]);
+
+            // Xử lý ảnh
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('images', 'public'); // Lưu ảnh vào thư mục 'images' trong 'public'
+            }
+
+            // Lấy danh sách tags
+            $tags = $request->input('tags', []); // Tags mặc định là mảng rỗng nếu không có
+
+            // Tạo bản ghi mới trong bảng blogs
+            Blog::create([
+                'title' => $validatedData['title'],
+                'tags' => $tags,
+                'content' => $validatedData['content'],
+                'staff_id' => $userId, // Lưu ID của người dùng đăng nhập vào trường staff_id
+                'image' => $imagePath, // Lưu đường dẫn ảnh
+                'short_description' => $validatedData['short_description'],
+                'category_id' => $validatedData['category_id'], // Lưu category_id
+            ]);
+
+            // Chuyển hướng về trang danh sách blog với thông báo thành công
+            return redirect()->route('blogs.index')->with('alert', [
+                'type' => 'success',
+                'message' => 'Blog created successfully!'
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý ngoại lệ và trả về thông báo lỗi
             return redirect()->back()->with('alert', [
                 'type' => 'error',
-                'message' => 'You do not have sufficient privileges.'
+                'message' => 'Error: ' . $e->getMessage()
             ]);
         }
+    }
 
-        // Xác thực dữ liệu
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required|string',
-            'short_description' => 'min:10|string|max:255', // Kiểm tra mô tả ngắn
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
+    public function edit(Blog $blog)
+    {
+        $categories = Category::all(); // Get all categories
+        return view('admin.blogs.edit', compact('blog', 'categories'));
+    }
+
+    public function update(Request $request, Blog $blog)
+    {
+        // Xác thực dữ liệu đầu vào
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string|min:6',
+            'short_description' => 'required|string|min:10|max:255',
+            'status' => 'required|in:0,1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ảnh có thể không bắt buộc
             'category_id' => 'required|exists:categories,category_id', // Kiểm tra category_id hợp lệ
         ]);
 
-        // Xử lý ảnh
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public'); // Lưu ảnh vào thư mục 'images' trong 'public'
-        }
+        try {
+            // Cập nhật thông tin bài viết
+            $blog->title = $request->title;
+            $blog->content = $request->content;
+            $blog->tags = $request->tags;
+            $blog->short_description = $request->short_description; // Cập nhật mô tả ngắn
+            $blog->status = $request->status;
+            $blog->category_id = $request->category_id; // Cập nhật category_id
 
-        // Lấy danh sách tags
-        $tags = $request->input('tags', []); // Tags mặc định là mảng rỗng nếu không có
-
-        // Tạo bản ghi mới trong bảng blogs
-        Blog::create([
-            'title' => $validatedData['title'],
-            'tags' => $tags,
-            'content' => $validatedData['content'],
-            'staff_id' => $userId, // Lưu ID của người dùng đăng nhập vào trường staff_id
-            'image' => $imagePath, // Lưu đường dẫn ảnh
-            'short_description' => $validatedData['short_description'],
-            'category_id' => $validatedData['category_id'], // Lưu category_id
-        ]);
-
-        // Chuyển hướng về trang danh sách blog với thông báo thành công
-        return redirect()->route('blogs.index')->with('alert', [
-            'type' => 'success',
-            'message' => 'Blog created successfully!'
-        ]);
-    } catch (\Exception $e) {
-        // Xử lý ngoại lệ và trả về thông báo lỗi
-        return redirect()->back()->with('alert', [
-            'type' => 'error',
-            'message' => 'Error: ' . $e->getMessage()
-        ]);
-    }
-}
-
-public function edit(Blog $blog)
-{
-    $categories = Category::all(); // Get all categories
-    return view('admin.blogs.edit', compact('blog','categories'));
-} 
-
-public function update(Request $request, Blog $blog)
-{
-    // Xác thực dữ liệu đầu vào
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'content' => 'required|string|min:6',
-        'short_description' => 'required|string|min:10|max:255',
-        'status' => 'required|in:0,1',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ảnh có thể không bắt buộc
-        'category_id' => 'required|exists:categories,category_id', // Kiểm tra category_id hợp lệ
-    ]);
-
-    try {
-        // Cập nhật thông tin bài viết
-        $blog->title = $request->title;
-        $blog->content = $request->content;
-        $blog->tags = $request->tags;
-        $blog->short_description = $request->short_description; // Cập nhật mô tả ngắn
-        $blog->status = $request->status;
-        $blog->category_id = $request->category_id; // Cập nhật category_id
-
-        // Xử lý ảnh
-        if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu có
-            if ($blog->image && Storage::disk('public')->exists($blog->image)) {
-                Storage::disk('public')->delete($blog->image);
+            // Xử lý ảnh
+            if ($request->hasFile('image')) {
+                // Xóa ảnh cũ nếu có
+                if ($blog->image && Storage::disk('public')->exists($blog->image)) {
+                    Storage::disk('public')->delete($blog->image);
+                }
+                // Lưu ảnh mới
+                $imagePath = $request->file('image')->store('images', 'public');
+                $blog->image = $imagePath; // Cập nhật đường dẫn ảnh
             }
-            // Lưu ảnh mới
-            $imagePath = $request->file('image')->store('images', 'public');
-            $blog->image = $imagePath; // Cập nhật đường dẫn ảnh
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            $blog->save();
+
+            // Trả về thông báo thành công
+            return redirect()->route('blogs.index')->with('alert', [
+                'type' => 'success',
+                'message' => 'Blog updated successfully!'
+            ]);
+        } catch (\Exception $e) {
+            // Trả về thông báo lỗi nếu có lỗi xảy ra
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Error: ' . $e->getMessage()
+            ]);
         }
-
-        // Lưu thay đổi vào cơ sở dữ liệu
-        $blog->save();
-
-        // Trả về thông báo thành công
-        return redirect()->route('blogs.index')->with('alert', [
-            'type' => 'success',
-            'message' => 'Blog updated successfully!'
-        ]);
-    } catch (\Exception $e) {
-        // Trả về thông báo lỗi nếu có lỗi xảy ra
-        return redirect()->back()->with('alert', [
-            'type' => 'error',
-            'message' => 'Error: ' . $e->getMessage()
-        ]);
     }
-}
 
     // Xóa bài viết
     public function destroy(Blog $blog)
@@ -214,94 +215,131 @@ public function update(Request $request, Blog $blog)
     public function detail($id)
     {
         $blogs = Blog::findOrFail($id);
-        $alltags = Blog::all() ->take(4) ;
+        $alltags = Blog::all()->take(4);
         $topBlogs = Blog::where('status', 1) // Lọc bài viết có status = 1
             ->orderBy('views', 'desc')       // Sắp xếp theo số lượt xem giảm dần
             ->take(4)                         // Lấy 5 bài viết có views cao nhất
             ->get();
-            $relatedBlogs = Blog::where('category_id', $blogs->category_id)   // Lọc bài viết theo cùng danh mục
+        $relatedBlogs = Blog::where('category_id', $blogs->category_id)   // Lọc bài viết theo cùng danh mục
             ->where('status', 1)  // Lọc bài viết có status = 1
             ->where('blog_id', '!=', $blogs->blog_id)  // Loại trừ bài viết hiện tại
-           
+
             ->get();
-            $category = Category::withCount(['blogs as blogs_count' => function ($query) {
-                $query->where('status', '1');
-            }])
+        $category = Category::withCount(['blogs as blogs_count' => function ($query) {
+            $query->where('status', '1');
+        }])
             ->where('status', '1')
             ->get();
 
-            
-        return view('blog.detail-blog', compact('blogs', 'topBlogs', 'alltags','category','relatedBlogs'));
+
+        return view('blog.detail-blog', compact('blogs', 'topBlogs', 'alltags', 'category', 'relatedBlogs'));
     }
 
     public function search(Request $request)
-{
-    // Nếu từ khóa (ws) rỗng, chuyển hướng về trang danh sách
-    if (!$request->has('ws') || $request->ws == '') {
-        return redirect()->route('blogs.listting')->with('alert', [
-            'type' => 'error',
-            'message' => 'Please enter keywords!']);
-        
+    {
+        // Nếu từ khóa (ws) rỗng, chuyển hướng về trang danh sách
+        if (!$request->has('ws') || $request->ws == '') {
+            return redirect()->route('blogs.listting')->with('alert', [
+                'type' => 'error',
+                'message' => 'Please enter keywords!'
+            ]);
+        }
+
+        // Khởi tạo query cho Blog
+        $query = Blog::query();
+
+        // Lọc theo từ khóa
+        if ($request->has('ws') && $request->ws != '') {
+            $query->where(function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->ws . '%')
+                    ->orWhere('content', 'like', '%' . $request->ws . '%');
+            });
+        }
+
+        // Lọc theo ngày tháng (nếu có)
+        if ($request->has('date_filter') && $request->date_filter != '') {
+            $dateFilter = $request->date_filter;
+
+            switch ($dateFilter) {
+                case 'today':
+                    $query->whereDate('created_at', now()->toDateString());
+                    break;
+                case 'yesterday':
+                    $query->whereDate('created_at', now()->subDay()->toDateString());
+                    break;
+                case 'this-week':
+                    $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    break;
+                case 'last-week':
+                    $query->whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()]);
+                    break;
+                case 'this-month':
+                    $query->whereMonth('created_at', now()->month)
+                        ->whereYear('created_at', now()->year);
+                    break;
+                case 'last-month':
+                    $lastMonth = now()->subMonth();
+                    $query->whereMonth('created_at', $lastMonth->month)
+                        ->whereYear('created_at', $lastMonth->year);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $blogs = $query->get();
+        // dd($query->toSql(), $query->getBindings());
+
+        // Kiểm tra dữ liệu trống
+        if ($blogs->isEmpty()) {
+            return view('blog.listting_search', [
+                'message' => 'There are no articles matching the selected keyword or date.'
+            ]);
+        }
+
+        return view('blog.listting_search', compact('blogs'));
     }
+    public function trash()
+    {
 
-    // Khởi tạo query cho Blog
-    $query = Blog::query();
-
-    // Lọc theo từ khóa
-    if ($request->has('ws') && $request->ws != '') {
-        $query->where(function ($query) use ($request) {
-            $query->where('title', 'like', '%' . $request->ws . '%')
-                  ->orWhere('content', 'like', '%' . $request->ws . '%');
-        });
+        $blogs = Blog::where('is_delete', 1)->get();
+        return view('admin.trash.blog', compact('blogs'));
     }
+    public function restore($id)
+    {
+        try {
+            $item = Blog::findOrFail($id);
 
-    // Lọc theo ngày tháng (nếu có)
-    if ($request->has('date_filter') && $request->date_filter != '') {
-        $dateFilter = $request->date_filter;
+            // Thay đổi trạng thái giữa 0 và 2
+            $item->is_delete = 0;
+            $item->save();
 
-        switch ($dateFilter) {
-            case 'today':
-                $query->whereDate('created_at', now()->toDateString());
-                break;
-            case 'yesterday':
-                $query->whereDate('created_at', now()->subDay()->toDateString());
-                break;
-            case 'this-week':
-                $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                break;
-            case 'last-week':
-                $query->whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()]);
-                break;
-            case 'this-month':
-                $query->whereMonth('created_at', now()->month)
-                      ->whereYear('created_at', now()->year);
-                break;
-            case 'last-month':
-                $lastMonth = now()->subMonth();
-                $query->whereMonth('created_at', $lastMonth->month)
-                      ->whereYear('created_at', $lastMonth->year);
-                break;
-            default:
-                break;
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => ' Reject  successfully!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Error: ' . $th->getMessage()
+            ]);
         }
     }
+    public function destroyofadmin(string $id)
+    {
+        $check = Blog::findOrFail($id);
+        if ($check) {
 
-    $blogs = $query->get();
-    // dd($query->toSql(), $query->getBindings());
-    
-    // Kiểm tra dữ liệu trống
-    if ($blogs->isEmpty()) {
-        return view('blog.listting_search', [
-            'message' => 'There are no articles matching the selected keyword or date.'
-        ]);
+            $check->delete();
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Delete successful !'
+            ]);
+        } else {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Not found !'
+            ]);
+        }
     }
-
-    return view('blog.listting_search', compact('blogs'));
-}
-
-    
-
-
-
-    
 }

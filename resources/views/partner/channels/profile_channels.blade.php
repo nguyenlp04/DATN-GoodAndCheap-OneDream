@@ -139,7 +139,7 @@
                             <img src="{{ Storage('') }}"
                                 alt="User image" class="img-fluid" style="width: 120px; border-radius: 10px;">
                             @else
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                            <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
                                 alt="Generic placeholder image" class="img-fluid" style="width: 120px; border-radius: 10px;">
                             @endif
                         </div>
@@ -149,11 +149,11 @@
                                 <!-- Phần bên trái -->
                                 <div class="rounded-3 p-2 mb-2 bg-body-tertiary" style="width: fit-content;">
                                     <p class="small text-muted">
-                                        <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i> 
+                                        <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i>
                                         {{ $channels->address }}
                                     </p>
                                 </div>
-                                
+
                                 <!-- Phần bên phải -->
                                 <div>
                                     <div class="d-flex flex-column align-items-start rounded-3 p-2 mb-2 bg-body-tertiary" style="width: fit-content;">
@@ -165,13 +165,13 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
       <div class="container for-you">
          <!-- Sales News -->
          <main class="main">
@@ -247,7 +247,7 @@
                            @endforeach
                         </div>
                         <!-- End .products mb-3 -->
-                        @if($NewsCount == 0) 
+                        @if($NewsCount == 0)
                         <ul class="pagination">
                            <p >No found sales news</p>
                         </ul>

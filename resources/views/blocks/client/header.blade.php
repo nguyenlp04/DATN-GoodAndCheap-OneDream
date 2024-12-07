@@ -281,6 +281,7 @@
       <!-- End .header-center -->
       <!-- End .container -->
    </div>
+   </div>
    <!-- End .header-bottom -->
 </header>
 <!-- End .header -->

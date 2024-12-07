@@ -46,7 +46,7 @@
                             <div class="card-body" style="padding: 0.4rem 1.5rem 1.8rem 1.2rem;">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
-                                        <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' }}"
+                                        <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
                                             alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
                                     </div>
                                     <div class="flex-grow-1 ms-3">
