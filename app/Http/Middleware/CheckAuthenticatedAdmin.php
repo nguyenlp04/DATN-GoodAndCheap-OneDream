@@ -21,16 +21,10 @@ class CheckAuthenticatedAdmin
             session()->put('url.intended', url()->current());
             return redirect()->route('staff.login');
         }
-        //check status && is_delete staff
-        $staff = Auth::guard('staff')->user();
-        if (!isset($staff->staff_id) || $staff->is_delete != 0) {
-            Auth::guard('staff')->logout();
-            return redirect('/staff/login')->with('alert', [
-                'type' => 'error',
-                'message' => 'Your account has been deleted. Please contact the administrator.',
-            ]);
-        }
-        if ($staff->status != 1) {
+        //check status &&
+
+
+        if (Auth::guard('staff')->user()->status != 1) {
             Auth::guard('staff')->logout();
             return redirect('/staff/login')->with('alert', [
                 'type' => 'error',
