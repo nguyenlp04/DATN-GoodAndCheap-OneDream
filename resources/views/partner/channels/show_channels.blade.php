@@ -26,29 +26,29 @@
                      <div class="card-body">
                         <div class="d-flex">
                            <div class="flex-shrink-0">
-                              @if ($channels->image_channel)
-                              <img src="{{ asset($channels->image_channel) }}"
-                                 alt="{{ $channels->image_channel }}" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                              @if ($channel->image_channel)
+                              <img src="{{ asset($channel->image_channel) }}"
+                                 alt="{{ $channel->image_channel }}" class="img-fluid" style="width: 120px;  border-radius: 10px;">
                               @else
                               <img src="https://cdnphoto.dantri.com.vn/lWbNf1jAm5A1aQriE5UO0SAuuYg=/2024/01/15/co-gai-xinh-dep2-edited-edited-1705310658178.jpeg"
                                  alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
                               @endif
                            </div>
                            <div class="flex-grow-1 ms-3">
-                              <h5>{{ $channels->name_channel }}</h5>
+                              <h5>{{ $channel->name_channel }}</h5>
                               <p style="color: #ff0000;position: relative; top:-8px;" ><i class="fa-solid fa-handshake" style="color: #FFD43B;"></i>
                                  Trusted partners receive the protection of the floor
                               </p>
                               <div class="d-flex justify-content-start rounded-3 p-2 mb-md-2 bg-body-tertiary  " style="width: fit-content">
                                  <div class="mx-3">
-                                    <p class="small text-muted "> <i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> {{ $channels->address }} </p>
-                                    <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channels->created_at->format('d-m-Y') }}</p>
+                                    <p class="small text-muted "> <i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> {{ $channel->address }} </p>
+                                    <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channel->created_at->format('d-m-Y') }}</p>
                                     {{-- 
                                     <p class="small text-muted "><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> 56</p>
                                     --}}
                                  </div>
                                  <div>
-                                    <p class="small text-muted "><i class="fa-solid fa-users" style="color: #74C0FC;"></i> {{ $channels->followers_count }} </p>
+                                    <p class="small text-muted "><i class="fa-solid fa-users" style="color: #74C0FC;"></i> {{ $channel->followers_count }} </p>
                                     <p class="small text-muted "> <i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> {{ $NewsCount }} </p>
                                  </div>
                               </div>
@@ -58,15 +58,15 @@
                   </div>
                </div>
                @if(isset(auth()->user()->user_id))
-               @if(!(auth()->user()->user_id == $channels->user_id))
+               @if(!(auth()->user()->user_id == $channel->user_id))
                <div class="col col-md-9 col-lg-7 col-xl-6 d-flex justify-content-end">
                   @if ($isFollowed)
-                  <form id="unfollow-form" action="{{ route('unfollow.channel', $channels->channel_id) }}" method="POST">
+                  <form id="unfollow-form" action="{{ route('unfollow.channel', $channel->channel_id) }}" method="POST">
                      @csrf @method('DELETE')
                      <button type="submit" class="btn btn-danger btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-user-minus me-2"></i>Unfollow</button>
                   </form>
                   @else
-                  <form id="follow-form" action="{{ route('follow.channel', $channels->channel_id) }}" method="POST">
+                  <form id="follow-form" action="{{ route('follow.channel', $channel->channel_id) }}" method="POST">
                      @csrf
                      <button type="submit" class="btn btn-primary btn-rounded mt-md-3 mx-md-3" style="height: 50px"><i class="fa-solid fa-user-plus"></i> Follow</button>
                   </form>
@@ -76,13 +76,13 @@
                @endif
             </div>
             <!-- Sales News -->
-            @if($sale_news->isNotEmpty())
+         @if($sale_news->isNotEmpty())
             <div class="row">
                <div class="col-lg-9">
                   <div class="toolbox">
                      <div class="toolbox-left">
                         <div class="toolbox-info">
-                           Showing <span>9 of 56</span> Products
+                           Showing <span></span> Products
                         </div>
                         <!-- End .toolbox-info -->
                      </div>
@@ -155,10 +155,24 @@
                   </div>
                   <!-- End .products -->
                </div>
+            @else
+               <div class="row">
+                  <div class="col-12 text-center">
+                     @if(request()->has('keyword') || request()->has('category'))
+                     <h4>No products matched your search criteria.</h4>
+                     <p>Please try different keywords or categories.</p>
+                     @else
+                     <h4>There are currently no products in this store.</h4>
+                     <p>Please come back later or check other stores.</p>
+                     @endif
+                  </div>
+               </div>
+               @endif
                <!-- End .col-lg-9 -->
+               @if(count($all_sales) > 0)
                <aside class="col-lg-3 col-xl-5col order-lg-first">
                   <div class="sidebar sidebar-shop">
-                     <form method="POST" action="{{ route('search_channel') }}">
+                     <form method="POST" action="{{ route('search_channel', ['id' => $channel->channel_id]) }}">
                         @csrf
                         <div class="widget widget-collapsible">
                            <h3 class="widget-title">
@@ -244,16 +258,10 @@
                   </div>
                   <!-- End .sidebar sidebar-shop -->
                </aside>
+               @endif
             </div>
             <!-- End .row -->
-            @else
-            <div class="row">
-               <div class="col-12 text-center">
-                  <h4>There are currently no products in this store.</h4>
-                  <p>Please come back later or check other stores.</p>
-               </div>
-            </div>
-            @endif
+           
          </div>
          <!-- End .container -->
       </div>
