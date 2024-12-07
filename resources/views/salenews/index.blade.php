@@ -16,22 +16,36 @@
     <div class="page-content">
         <div class="cart">
             <div class="container">
-                <div class="row d-flex justify-content-Start">
-                    <div class="col col-md-9 col-lg-7 col-xl-6">
-                        <div style="width:  fit-content;min-width:460px; ">
-                            <div class="card-body">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">New</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">View news status</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+        <div class="page-content">
+            <div class="cart">
+                <div class="container">
+                        <div class="row d-flex justify-content-Start">
+                          <div class="col col-md-9 col-lg-7 col-xl-6">
+                            <div style="width:  fit-content;min-width:400px; ">
+                              <div class="card-body">
+
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
                                         @if (auth()->user()->image_user)
                                         <img src="{{ asset(auth()->user()->image_user) }}"
-                                            alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
-                                        @else
-                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                                            alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
-                                        @endif
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="mb-1">{{ auth()->user()->full_name }}</h5>
+
+                                      alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                                    @else
+                                      <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+                                      alt="Generic placeholder image" class="img-fluid" style="width: 120px;  border-radius: 10px;">
+                                      @endif
+                                  </div>
+                                  <div class="flex-grow-1 ms-3">
+                                    <h5 class="mb-1">{{ auth()->user()->full_name }}</h5>
+
 
                                         <p style="color: #ff0000;"><i class="fa-solid fa-face-smile" style="color: #FFD43B;"></i> Become a partner for easier management </p>
                                         <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary  " style="width: fit-content">
@@ -454,4 +468,6 @@
         height: auto;
     }
 </style>
+
 @endsection
+

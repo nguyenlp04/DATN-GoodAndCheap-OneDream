@@ -19,4 +19,8 @@ class Subcategory extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    public function salenews()
+    {
+        return $this->hasMany(SaleNews::class, 'sale_new_id');
+    }
 }

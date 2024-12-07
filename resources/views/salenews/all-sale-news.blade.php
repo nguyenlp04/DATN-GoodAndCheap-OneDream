@@ -30,7 +30,7 @@
                     <h3 class="cat-block-title">Hot news</h3>
                 </a>
             </div>
-    
+
             <!-- Các danh mục khác -->
             @foreach($groupedData as $categoryId => $items)
                 @if ($categoryId !== 'all')
@@ -48,7 +48,7 @@
             @endforeach
         </div>
     </div>
-    
+
     <!-- Danh sách sản phẩm -->
     <div class="mb-4">
         @foreach($groupedData as $categoryId => $items)
@@ -58,7 +58,7 @@
                     <div class="col-12 col-sm-6 col-lg-3 mb-4">
                         <div class="product">
                             <figure class="product-media">
-                                <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
+                                <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}" class="image-container">
                                     @if ($item->images->isNotEmpty())
                                         <img src="{{ $item->images->first()->image_name }}" alt="{{ $item->title }}" class="img-fluid">
                                     @else
@@ -79,7 +79,7 @@
                                     <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                 </div>
                                 <h3 class="product-title">
-                                    <a href="salenew-detail/{{ $item->sale_new_id }}">
+                                    <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                         {{ Str::limit($item->title, 35, '...') }}
                                     </a>
                                 </h3>
