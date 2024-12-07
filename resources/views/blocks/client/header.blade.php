@@ -46,15 +46,17 @@
             <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
                <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
               <form action="{{ route('search') }}" method="GET">
+                 <input type="hidden" name="address" value="{{ request()->get('address') }}">
+                 <input type="hidden" name="category" value="{{ request()->get('category') }}">
                <div class="header-search-wrapper search-wrapper-wide">
                    <label for="q" class="sr-only">Search</label>
                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                    <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
                        placeholder="Search product ..." autofocus>
 
+                       <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
+                       <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
                    <!-- Hidden inputs to retain filter values -->
-                   <input type="hidden" name="address" value="{{ request()->get('address') }}">
-                   <input type="hidden" name="category" value="{{ request()->get('category') }}">
                </div>
            </form>
 
