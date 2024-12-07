@@ -16375,7 +16375,32 @@ button:focus {
     margin-bottom: 0 !important;
     margin-left: 5px;
 }
-
+ .no-hover{
+     margin-left: 5px;
+     color: #999999 !important;
+     
+ }
+ .no-hover:hover{
+    margin-left: 5px;
+    color: #3399FF !important;
+    background-color: inherit !important;
+     
+}
+.dropdown-item .btn-link{
+    color: #999999 !important;
+}
+.dropdown-item  .btn-link:hover{
+    color: #3399FF !important;
+}
+.li-pad{
+    padding-right: 100px;
+    
+}
+.no-hover:focus{
+    margin-left: 5px;
+    color: #3399FF !important;
+    background-color: inherit !important;
+}
 .search-blogs {
     max-width: 400px; /* Điều chỉnh chiều rộng tối đa */
 

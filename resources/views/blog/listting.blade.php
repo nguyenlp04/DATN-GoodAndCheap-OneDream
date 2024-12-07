@@ -128,9 +128,7 @@
                     </article><!-- End .entry -->
                 </div><!-- End .entry-item -->
                 @endforeach
-                @else
-                <p>Not empty blogs!</p>
-                @endif
+                
             </div><!-- End .entry-container -->
 
             <nav aria-label="Page navigation">
@@ -150,6 +148,9 @@
                     </li>
                 </ul>
             </nav>
+            @else
+                <p class="text-danger ">Not empty blogs!</p>
+                @endif
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->

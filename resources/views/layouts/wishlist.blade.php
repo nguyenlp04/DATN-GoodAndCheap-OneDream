@@ -103,7 +103,7 @@
 
                 </tbody>
                 @else
-                <H4>No sale news here</H4>
+                <H4 class="text-danger text-center ">No sale news here</H4>
                 @endif
             </table><!-- End .table table-wishlist -->
 
