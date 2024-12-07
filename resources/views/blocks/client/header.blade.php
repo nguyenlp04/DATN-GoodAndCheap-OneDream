@@ -105,35 +105,48 @@
                <div class="dropdown cart-dropdown">
                   <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                      aria-expanded="false" data-display="static">
-                     <div class="icon">
-                        <i class="fa-regular fa-bell fa-sm"></i>
-                     </div>
-                     <p>notifications</p>
+                      <div class="icon">
+                          <i class="fa-regular fa-bell fa-sm"></i>
+                      </div>
+                      <p>notifications</p>
                   </a>
-                  <div class="dropdown-menu dropdown-menu-right dropdown-item dropdown-notifications-item">
-                     @if (!empty($notifications))
-                     @for ($i = 0; $i < min(10, count($notifications)); $i++)
-                        <div class="border-bottom mb-1 hover-item-notification">
-                        <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}" class="notification-link">
-                           <div>
-                              <i class="fa-regular fa-bell fa-sm pr-3"></i>
-                              @php
-                              $createdAt = new DateTime($notifications[$i]['created_at']);
-                              @endphp
-                              <span class="dropdown-notifications-item-content-details">{{ $createdAt->format('d/m/Y H:i') }}</span>
-                              <div class="h6 mt-1">{{ Str::limit($notifications[$i]['title_notification'], 27) }}</div>
-                           </div>
-                        </a>
+                  <div class="dropdown-menu-right">
+                      @if (!empty($notifications))
+                          <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
+                              <li class="dropdown-notifications-list scrollable-container" style="max-height: 200px; overflow-y: auto;">
+                                  <ul class="list-group list-group-flush">
+                                      @for ($i = 0; $i < count($notifications); $i++)
+                                          <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}" class="notification-link">
+                                              <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read border-bottom" style="border-bottom: 1px solid #ddd;">
+                                                  <div class="d-flex">
+                                                      <div class="flex-grow-1">
+                                                          <h6 class="mb-1">{{ Str::limit($notifications[$i]['title_notification'], 27) }}</h6>
+                                                          <h5 class="mb-0">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</h5>
+                                                          @php
+                                                          $createdAt = new DateTime($notifications[$i]['created_at']);
+                                                          @endphp
+                                                          <small class="text-muted">{{ $createdAt->format('d/m/Y H:i') }}</small>
+                                                      </div>
+                                                  </div>
+                                              </li>
+                                          </a>
+                                      @endfor
+                                  </ul>
+                              </li>
+                              <li class="border-top">
+                                  <div class="d-grid p-4">
+                                      <a class="btn btn-primary" href="{{ route('notifications.show') }}">
+                                          <small >View all notifications</small>
+                                      </a>
+                                  </div>
+                              </li>
+                          </ul>
+                      @else
+                          <p class="text-center" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">No notifications available.</p>
+                      @endif
                   </div>
-                  @endfor
-                  @else
-                  <p class="text-center">No notifications available.</p>
-                  @endif
-                  <div class="dropdown-cart-action mt-2 flex justify-content-center">
-                     <a href="{{ route('notifications.show') }}" class="dropdown-item text-center">View all</a>
-                  </div>
-               </div>
-            </div>
+              </div>
+                 
             @else
             <div class="wishlist">
                <a href="{{ route('login') }}" style="font-size: 1.8rem">

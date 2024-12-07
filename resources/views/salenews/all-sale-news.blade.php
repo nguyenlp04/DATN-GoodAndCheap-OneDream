@@ -1,25 +1,31 @@
 @extends('layouts.client_layout')
 
+@section('content')
 <style>
     /* Đảm bảo các ảnh luôn chiếm đầy không gian mà không bị méo */
     .product-media img {
         object-fit: cover;
         width: 100%;
         height: 200px; /* Chỉnh chiều cao cố định cho ảnh */
-        border-radius: 10px;
     }
-
+    .product-body{
+        height: 130px;
+    }
+    .tablinks img{
+        width: 40px;
+        height: 40px;
+    }
+    
 </style>
 
-@section('content')
 <div class="container">
-    <div class="cat-blocks-container">
+    <div class="cat-blocks-container mt-2">
         <div class="row">
             <!-- Tab "Tất cả tin đăng" -->
-            <div class="col-6 col-sm-4 col-lg-2">
+            <div class="col-4 col-sm-3 col-lg-2">
                 <a href="javascript:void(0);" onclick="openTab(event, 'catall')" class="cat-block tablinks active">
                         <span>
-                            <img src="{{ asset('storage/category/hot.png') }}" alt="All categories" class="img-fluid" width="100px">
+                            <img src="{{ asset('storage/category/hot.png') }}" alt="All categories" class="img-fluid" >
                         </span>
                     <h3 class="cat-block-title">Hot news</h3>
                 </a>
@@ -28,14 +34,14 @@
             <!-- Các danh mục khác -->
             @foreach($groupedData as $categoryId => $items)
                 @if ($categoryId !== 'all')
-                <div class="col-6 col-sm-4 col-lg-2">
+                <div class="col-4 col-sm-3 col-lg-2">
                     <a href="javascript:void(0);" onclick="openTab(event, 'cat{{ $categoryId }}')" class="cat-block tablinks">
                         <figure>
                             <span>
                                 <img src="{{ asset($items->first()->sub_category->category->image_category ?? 'default-placeholder.jpg') }}" alt="Category image" >
                             </span>
                         </figure>
-                        <h3 class="cat-block-title ">{{ $items->first()->sub_category->category->name_category }}</h3>
+                        <h3 class="cat-block-title">{{ $items->first()->sub_category->category->name_category }}</h3>
                     </a>
                 </div>
                 @endif
@@ -84,7 +90,6 @@
                     @endforeach
                 </div>
             </div>
-           
         @endforeach
     </div>
 </div>
@@ -111,4 +116,5 @@ function openTab(evt, tabName) {
     evt.currentTarget.classList.add("active");
 }
 </script>
+
 @endsection

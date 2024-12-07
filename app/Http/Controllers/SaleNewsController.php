@@ -293,7 +293,7 @@ class SaleNewsController extends Controller
      */
 
 
- 
+
     public function getAllSaleStatus()
     {
         $data = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
@@ -632,7 +632,7 @@ class SaleNewsController extends Controller
             ->whereNull('vip_package_id')
             ->where('status', 1)
             ->whereBetween('price', [$minPrice, $maxPrice])
-            ->where('approved', 1);
+            ->where('approved', 1)
             ->where('sub_category_id', $subcategoryID);
         if (!empty($subcategoryID)) {
             $nonVipSaleNews->where('sub_category_id', $subcategoryID);
