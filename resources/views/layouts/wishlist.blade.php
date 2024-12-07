@@ -151,7 +151,7 @@ $(document).on('click', '.btn-remove', function(e) {
                 // Kiểm tra nếu danh sách không còn sản phẩm nào
                 if ($('tbody tr').length === 0) {
                     // Nếu không còn sản phẩm, hiển thị thông báo "No sale news here"
-                    $('tbody').html('<h4>No sale news here</h4>'); // Thay đổi nội dung tbody
+                    $('tbody').html('<h4 class="text-danger text-center ">No sale news here</h4>'); // Thay đổi nội dung tbody
                     $('thead').remove(); // Xóa header nếu còn
                 }
 

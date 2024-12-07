@@ -221,8 +221,8 @@
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
                </li>
                 <li class="mx-3">
-                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-star mx-1"></i>contact</a>
-               </li>
+                  <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>contact</a>
+               </li> 
                <li class="header-dropdown">
                    <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
                               alt="User Avatar" style="width: 30px; height: 30px;border-radius: 50%;" class="btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
