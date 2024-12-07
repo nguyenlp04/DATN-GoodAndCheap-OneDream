@@ -158,10 +158,8 @@
 
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> dbbbed3a2c0cb5e3ef02358438a029daa8ec40cb
+
 
 
 
@@ -202,13 +200,12 @@
                                 <input type="text" class="form-control" name="keyword" value="{{ old('keyword') }}" placeholder="Search ..." />
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
-<<<<<<< HEAD
-=======
 
 
 
 
-                            {{-- <div class="widget widget-collapsible">
+
+                             <div class="widget widget-collapsible">
                                 <h3 class="widget-title">
                                     <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
                                         aria-controls="widget-5">
@@ -216,7 +213,7 @@
                                     </a>
                                 </h3>
                                 <!-- End .widget-title -->
->>>>>>> dbbbed3a2c0cb5e3ef02358438a029daa8ec40cb
+
 
 
                         </div>

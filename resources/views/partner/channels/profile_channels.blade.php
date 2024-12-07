@@ -152,6 +152,7 @@
    <div class="row">
       <div class="row d-flex justify-content-start">
          <div class="col col-md-9 col-lg-7 col-xl-6">
+
             <div style="width: fit-content; min-width:400px;">
                 <div class="card-body">
                     <div class="d-flex">
@@ -183,6 +184,7 @@
                                         </p>
                                     </div>
 
+
                            <!-- Phần bên phải -->
                            <div>
                               <div class="d-flex flex-column align-items-start rounded-3 p-2 mb-2 bg-body-tertiary" style="width: fit-content;">
@@ -194,11 +196,14 @@
                            </div>
                         </div>
 
-                    </div>
-                </div>
+                     </div>
+
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
+         </div>
+      </div>
+
 
       <div class="container for-you">
          <!-- Sales News -->

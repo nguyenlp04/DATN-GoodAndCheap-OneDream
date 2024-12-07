@@ -275,4 +275,7 @@ Route::prefix('trash')->group(function () {
     Route::get('/blog', function () {
         return view('admin.index');
     });
+
 });
+
+

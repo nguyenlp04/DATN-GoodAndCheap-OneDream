@@ -62,17 +62,12 @@
     <script src="{{ asset('assets/js/superfish.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/wNumb.js') }}"></script>
-<<<<<<< HEAD
+
     <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> --}}
-=======
-    {{-- <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script> --}}
-    <!-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> -->
 
-    
->>>>>>> dbbbed3a2c0cb5e3ef02358438a029daa8ec40cb
+
     @yield('script-link-css')
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>

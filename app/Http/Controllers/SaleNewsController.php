@@ -14,7 +14,9 @@ use App\Models\VipPackage;
 use Illuminate\Support\Carbon;
 use App\Models\Channel;
 use App\Models\Subcategory;
+
 use Illuminate\Support\Facades\File;
+
 
 use App\Models\SubcategoryAttribute;
 use App\Models\Transactions;
@@ -568,9 +570,15 @@ class SaleNewsController extends Controller
     }
     public function search(Request $request)
     {
-        $keyword = $request->input('keyword');
-        $categoryId = $request->get('category'); // Get category filter
         $address = $request->get('address');    // Get address filter
+        $categoryId = $request->get('category'); // Get category filter
+        $keyword = $request->input('keyword');
+        $minPrice = $request->get('minPrice');
+        $maxPrice = $request->get('maxPrice');
+
+
+        $subcategoryID = $request->get('subcategory');    // Get address filter
+        // dd($subcategoryID);
 
         $minPrice = $request->get('minPrice');
         $maxPrice = $request->get('maxPrice');
@@ -587,6 +595,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->where('is_delete', 0)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
@@ -611,6 +620,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->where('is_delete', 0)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
@@ -634,13 +644,10 @@ class SaleNewsController extends Controller
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
-            ->whereBetween('price', [$minPrice, $maxPrice])
-            ->where('approved', 1);
-            ->where('sub_category_id', $subcategoryID);
-        if (!empty($subcategoryID)) {
-            $nonVipSaleNews->where('sub_category_id', $subcategoryID);
-        }
-
+            ->where('is_delete', 0)
+            ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice]);
+      
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -677,6 +684,7 @@ class SaleNewsController extends Controller
         $data = SaleNews::with(['user', 'sub_category.category', 'images'])
             ->where('status', 1)
             ->where('approved', 1)
+            ->where('is_delete', 0)
             ->get();
 
         $groupedData = $data->groupBy(function ($item) {

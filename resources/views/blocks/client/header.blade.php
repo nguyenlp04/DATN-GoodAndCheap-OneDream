@@ -37,33 +37,38 @@
 </style>
 
 <div class="page-wrapper">
-   <header class="header header-intro-clearance header-4">
-      <div class="header-middle">
-         <div class="container">
-            <div class="header-left">
-               <button class="mobile-menu-toggler">
-                  <span class="sr-only">Toggle mobile menu</span>
-                  <i class="icon-bars"></i>
-               </button>
-               <a href="{{ route("home") }}" class="logo">
-                  <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
-                  <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
-               </a>
-            </div>
-            <!-- End .header-left -->
-            <div class="header-center">
-               <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
-                  <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                  <form action="{{ route('search') }}" method="GET">
-                     <div class="header-search-wrapper search-wrapper-wide">
-                        <label for="q" class="sr-only">Search</label>
-                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                        <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
-                           placeholder="Search product ..." autofocus>
 
+<header class="header header-intro-clearance header-4">
+   <div class="header-middle">
+      <div class="container">
+         <div class="header-left">
+            <button class="mobile-menu-toggler">
+            <span class="sr-only">Toggle mobile menu</span>
+            <i class="icon-bars"></i>
+            </button>
+            <a href="#" class="logo">
+            <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
+            <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
+            </a>
+         </div>
+         <!-- End .header-left -->
+         <div class="header-center">
+            <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+               <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+              <form action="{{ route('search') }}" method="GET">
+                 <input type="hidden" name="address" value="{{ request()->get('address') }}">
+                 <input type="hidden" name="category" value="{{ request()->get('category') }}">
+               <div class="header-search-wrapper search-wrapper-wide">
+                   <label for="q" class="sr-only">Search</label>
+                   <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                   <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
+                       placeholder="Search product ..." autofocus>
+
+
+                       <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
+                       <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
                    <!-- Hidden inputs to retain filter values -->
-                   <input type="hidden" name="address" value="{{ request()->get('address') }}">
-                   <input type="hidden" name="category" value="{{ request()->get('category') }}">
+
                </div>
            </form>
 

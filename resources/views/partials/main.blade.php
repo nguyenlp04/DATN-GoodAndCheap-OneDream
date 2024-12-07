@@ -114,6 +114,7 @@
                     @foreach ($data as $item)
 
 
+
                         <div class="product product-2">
                             <figure class="product-media">
                                 <span class="product-label label-circle label-top">Top</span>
@@ -123,6 +124,7 @@
                                             class="equal-height-image">
                                     @endif
                                 </a>
+
 
 
 
@@ -159,8 +161,10 @@
                 </div><!-- End .owl-carousel -->
             </div><!-- .End .tab-pane -->
 
+
         </div><!-- End .tab-content -->
     </div><!-- End .container -->
+
 
     <div class="mb-6"></div><!-- End .mb-6 -->
 
@@ -249,7 +253,9 @@
 
                                 <div class="product product-2">
                                     <figure class="product-media">
+
                                         <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
+
                                             <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                 class="equal-height-image">
                                         </a>
@@ -429,7 +435,9 @@
                     <div class="product product-2">
                         <figure class="product-media">
                             {{-- --}}
+
                             <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
+
                                 <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                     class="equal-height-image">
                             </a>
