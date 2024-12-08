@@ -64,6 +64,8 @@
                    <!-- Hidden inputs to retain filter values -->
                    <input type="hidden" name="address" value="{{ request()->get('address') }}">
                    <input type="hidden" name="category" value="{{ request()->get('category') }}">
+                   <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
+                   <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
                </div>
            </form>
 

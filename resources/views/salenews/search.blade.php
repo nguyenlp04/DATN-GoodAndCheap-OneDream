@@ -380,8 +380,8 @@
                                 </div>
                                 <!-- Hidden input to retain search keyword -->
                                 <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
-                                <input type="hidden" id="minPrice" name="minPrice" value="">
-                                <input type="hidden" id="maxPrice" name="maxPrice" value="">
+                                <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
+                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
@@ -412,7 +412,7 @@
                 if (priceSlider == null) return;
 
                 noUiSlider.create(priceSlider, {
-                    start: [0, <?php echo $maxPrice / 2; ?>],
+                    start: [0, <?php echo $maxPrice; ?>],
                     connect: true,
                     step: 50,
                     margin: 200,
