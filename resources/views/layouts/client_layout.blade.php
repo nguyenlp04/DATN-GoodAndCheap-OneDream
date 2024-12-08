@@ -62,17 +62,14 @@
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/wNumb.js') }}"></script>
     <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
-<<<<<<< HEAD
     {{-- <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script> --}}
     <!-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> -->
-=======
 
     <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
 
->>>>>>> c65b5128ce8741ae4b1145928cba15b6cdaae165
 
     @yield('script-link-css')
     <!-- Main JS File -->
