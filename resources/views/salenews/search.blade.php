@@ -52,7 +52,7 @@
                                                 <div class="product">
                                                     <figure class="product-media">
                                                         <span class="product-label label-top">Top</span>
-                                                        <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
+                                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
                                                             @if ($item->images->isNotEmpty())
                                                                 <img src="{{ $item->images->first()->image_name }}"
                                                                     alt="Image" class="equal-height-image">
@@ -72,7 +72,7 @@
                                                         </div>
                                                         <h3 class="product-title text-truncate-3">
                                                             <a
-                                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
+                                                                href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
                                                         </h3>
                                                         <div class="product-price">
                                                             ${{ number_format($item->price, 2) }}
@@ -87,7 +87,7 @@
                                                 <div class="product">
                                                     <figure class="product-media">
                                                         <span class="product-label label-top">Top</span>
-                                                        <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
+                                                        <a href="salenew-detail/{{ $item->sale_new_id }}">
                                                             @if ($item->images->isNotEmpty())
                                                                 <img src="{{ $item->images->first()->image_name }}"
                                                                     alt="Image" class="equal-height-image">
@@ -107,7 +107,7 @@
                                                         </div>
                                                         <h3 class="product-title text-truncate-3">
                                                             <a
-                                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
+                                                                href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
                                                         </h3>
                                                         <div class="product-price">
                                                             ${{ number_format($item->price, 2) }}
@@ -206,7 +206,7 @@
                                         <div class="product">
                                             <figure class="product-media">
                                                 <span class="product-label label-top">Top</span>
-                                                <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
+                                                <a href="salenew-detail/{{ $item->sale_new_id }}">
                                                     @if ($item->images->isNotEmpty())
                                                         <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                             class="equal-height-image">
@@ -228,7 +228,7 @@
                                                 </div>
                                                 <h3 class="product-title text-truncate-3">
                                                     <a
-                                                        href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ $item->title }}</a>
+                                                        href="salenew-detail/{{ $item->sale_new_id }}">{{ $item->title }}</a>
                                                 </h3>
                                                 <div class="product-price">
                                                     ${{ number_format($item->price, 2) }}
@@ -304,16 +304,14 @@
 
                     </div>
                     <!-- End .col-lg-9 -->
-
-
+                    
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
                                 <!-- Filter by Address -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
-                                        <a data-toggle="collapse" href="#widget-6" role="button" aria-expanded="true"
-                                            aria-controls="widget-6">
+                                        <a data-toggle="collapse" href="#widget-6" role="button" aria-expanded="true" aria-controls="widget-6">
                                             Address
                                         </a>
                                     </h3>
@@ -324,12 +322,11 @@
                                         </div>
                                     </div>
                                 </div>
-
+                            
                                 <!-- Filter by Category -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
-                                        <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true"
-                                            aria-controls="widget-2">
+                                        <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true" aria-controls="widget-2">
                                             Category
                                         </a>
                                     </h3>
@@ -347,43 +344,32 @@
                                         </div>
                                     </div>
                                 </div>
-
+                            
+                                <!-- Filter by Price -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
-                                        <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
-                                            aria-controls="widget-5">
+                                        <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
                                             Price
                                         </a>
                                     </h3>
-                                    <!-- End .widget-title -->
-
                                     <div class="collapse show" id="widget-5">
                                         <div class="widget-body">
                                             <div class="filter-price">
                                                 <div class="filter-price-text">
                                                     Price Range:
-                                                    <span id="filter-price-range">$0 - $500</span>
+                                                    <span id="filter-price-range">$0 - ${{ $maxPrice ?? 500 }}</span>
                                                 </div>
-                                                <!-- End .filter-price-text -->
-
-                                                <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
-
-
-                                                </div>
-                                                <!-- End #price-slider -->
+                                                <div id="price-slider"></div>
+                                                <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice', 0) }}">
+                                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPrice ?? 500) }}">
                                             </div>
-                                            <!-- End .filter-price -->
                                         </div>
-                                        <!-- End .widget-body -->
                                     </div>
-                                    <!-- End .collapse -->
                                 </div>
+                            
                                 <!-- Hidden input to retain search keyword -->
                                 <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
-
-                                <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
-                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
-
+                            
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
@@ -414,9 +400,7 @@
                 if (priceSlider == null) return;
 
                 noUiSlider.create(priceSlider, {
-
                     start: [0, <?php echo $maxPrice; ?>],
-
                     connect: true,
                     step: 50,
                     margin: 200,
@@ -450,27 +434,13 @@
                         maxInput.value = maxValue; // Set the maximum value
                     }
 
-
-                    const handles = priceSlider.querySelectorAll('.noUi-handle');
-
-                    // Access values from the current handle
-                    if (handle === 0) {
-                        // Lower handle
-                        const minSliderHandle = handles[0];
-                        const minValue = minSliderHandle.getAttribute('aria-valuenow');
-                        console.log('Min Value:', minValue);
-                    } else if (handle === 1) {
-                        // Upper handle
-                        const maxSliderHandle = handles[1];
-                        const maxValue = maxSliderHandle.getAttribute('aria-valuenow');
-                        console.log('Max Value:', maxValue);
-                    }
-
-
+                    console.log(typeof(minValue));
+                    console.log(typeof(maxValue));
 
                     console.log('Min Value:', minValue);
                     console.log('Max Value:', maxValue);
                 });
+
 
 
 

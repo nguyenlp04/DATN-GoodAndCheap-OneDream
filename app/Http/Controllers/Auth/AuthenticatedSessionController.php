@@ -23,29 +23,37 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+{
+    $request->authenticate();
 
-        $user = Auth::user();
-        if ($user->is_delete != 0) {
-            Auth::logout();
-            return redirect()->route('login')->with('alert', [
-                'type' => 'error',
-                'message' => 'Your account has been deleted. Please contact the administrator.',
-            ]);
-        }
-        if ($user->status != 1) {
-            Auth::logout();
-            return redirect()->route('login')->with('alert', [
-                'type' => 'error',
-                'message' => 'Your account has been locked.',
-            ]);
-        }
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('home', absolute: false));
+    $user = Auth::user();
+    if ($user->is_delete != 0) {
+        Auth::logout();
+        return redirect()->route('login')->with('alert', [
+            'type' => 'error',
+            'message' => 'Your account has been deleted. Please contact the administrator.',
+        ]);
     }
+    if ($user->status != 1) {
+        Auth::logout();
+        return redirect()->route('login')->with('alert', [
+            'type' => 'error',
+            'message' => 'Your account has been locked.',
+        ]);
+    }
+
+    $request->session()->regenerate();
+
+    // Thay đổi logic chuyển hướng
+    if (url()->previous() === route('toggleWishlist')) {
+        return redirect()->route('home'); // Luôn chuyển hướng về trang chủ nếu đến từ toggleWishlist
+    }
+
+    $request->session()->forget('url.intended'); // Xóa URL trước đó
+    return redirect()->route('home');
+    
+}
+
 
     /**
      * Destroy an authenticated session.
