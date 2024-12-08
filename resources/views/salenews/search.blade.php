@@ -304,11 +304,11 @@
 
                     </div>
                     <!-- End .col-lg-9 -->
-
-
+                    
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
+                                
                                 {{-- @csrf --}}
                                 <!-- Filter by Address -->
                                 <div class="widget widget-collapsible">
@@ -369,7 +369,8 @@
 
                                                 <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
 
-
+                                                    <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
+                                                    <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
                                                 </div>
                                                 <!-- End #price-slider -->
                                             </div>
@@ -381,10 +382,7 @@
                                 </div>
                                 <!-- Hidden input to retain search keyword -->
                                 <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
-                                <input type="hidden" id="minPrice" name="minPrice"
-                                    value="{{ request()->get('minPrice') }}">
-                                <input type="hidden" id="maxPrice" name="maxPrice"
-                                    value="{{ request()->get('maxPrice') }}">
+
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
@@ -448,6 +446,9 @@
                         minInput.value = minValue; // Set the minimum value
                         maxInput.value = maxValue; // Set the maximum value
                     }
+
+                    console.log(typeof(minValue));
+                    console.log(typeof(maxValue));
 
                     console.log('Min Value:', minValue);
                     console.log('Max Value:', maxValue);
