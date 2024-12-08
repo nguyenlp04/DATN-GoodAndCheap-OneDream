@@ -80,7 +80,9 @@
         <div class="heading heading-flex mb-3">
             <div class="heading-left">
                 <h2 class="title">New Arrivals</h2><!-- End .title -->
-            </div><!-- End .heading-left -->
+            </div>
+           
+            <!-- End .heading-left -->
 
 
         </div><!-- End .heading -->
@@ -421,7 +423,7 @@
             </div><!-- End .heading-left -->
 
             <div class="heading-right">
-                <a href="search" class="title-link">View All Recommendadion <i
+                <a href="{{ url('all-sale-news') }}" class="title-link">View All Recommendadion <i
                         class="icon-long-arrow-right"></i></a>
             </div><!-- End .heading-right -->
         </div><!-- End .heading -->

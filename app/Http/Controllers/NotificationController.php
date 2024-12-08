@@ -114,7 +114,7 @@ class NotificationController extends Controller
         $notification->save();
 
         // Redirect with a success message
-        return redirect()->route('notifications.index')->with('alert', [
+        return redirect()->back()->with('alert', [
             'type' => 'success',
             'message' => 'Notification created successfully!',
         ]);
