@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\VipPackage;
@@ -16,7 +17,7 @@ class VipPackageController extends Controller
 
     public function store(Request $request)
     {
-        try{
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -28,35 +29,20 @@ class VipPackageController extends Controller
 
         $VipPackage = VipPackage::create($request->all());
         if ($VipPackage) {
-                return redirect()->back()->with('alert', [
-                    'type' => 'success',
-                    'message' => 'New VIP package created successfully !'
-                ]);
-            } else {
-                return redirect()->back()->with('alert', [
-                    'type' => 'error',
-                    'message' => 'Failure !'
-                ]);
-            }
-
-        } catch (\Exception $e) {
             return redirect()->back()->with('alert', [
-                'type' => 'error',
-                'message' => 'error: ' . $e->getMessage()
+                'type' => 'success',
+                'message' => 'New VIP package created successfully !'
             ]);
         }
-
-
-
     }
 
     public function updateUnlock(Request $request, string $id)
     {
-        try{
+        try {
 
-            $check=DB::table('vip_packages')->where('vip_package_id',$id)->first();
+            $check = DB::table('vip_packages')->where('vip_package_id', $id)->first();
             if ($check) {
-            DB::table('vip_packages')->where('vip_package_id',$id)->update(['status' => '1']);
+                DB::table('vip_packages')->where('vip_package_id', $id)->update(['status' => '1']);
                 return redirect()->back()->with('alert', [
                     'type' => 'success',
                     'message' => 'Success !'
@@ -76,11 +62,11 @@ class VipPackageController extends Controller
     }
     public function updateLock(Request $request, string $id)
     {
-        try{
+        try {
 
-            $check=DB::table('vip_packages')->where('vip_package_id',$id)->first();
+            $check = DB::table('vip_packages')->where('vip_package_id', $id)->first();
             if ($check) {
-            DB::table('vip_packages')->where('vip_package_id',$id)->update(['status' => '0']);
+                DB::table('vip_packages')->where('vip_package_id', $id)->update(['status' => '0']);
                 return redirect()->back()->with('alert', [
                     'type' => 'success',
                     'message' => 'Success !'

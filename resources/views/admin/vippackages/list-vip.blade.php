@@ -47,19 +47,19 @@
                                         <label class="form-label" for="package_name">Package name</label>
                                         <input type="text" class="form-control" id="package_name"
                                             placeholder="Package name" name="name" aria-label="Package name">
-                                        <x-input-error :messages="$errors->get('package_name')" class="mt-2 text-danger" />
+                                        <x-input-error :messages="$errors->get('name')" class=" text-danger" />
                                     </div>
                                     <div class="mb-6 col-md-4">
                                         <label class="form-label" for="price">Price ($)</label>
                                         <input type="number" class="form-control" id="price" placeholder="price"
                                             name="price" aria-label="price">
-                                        <x-input-error :messages="$errors->get('price')" class="mt-2 text-danger" />
+                                        <x-input-error :messages="$errors->get('price')" class=" text-danger" />
                                     </div>
                                     <div class="mb-6 col-md-4">
                                         <label class="form-label" for="duration">duration (Day)</label>
                                         <input type="number" class="form-control" id="duration" placeholder="duration"
                                             name="duration" aria-label="duration" >
-                                        <x-input-error :messages="$errors->get('duration')" class="mt-2 text-danger" />
+                                        <x-input-error :messages="$errors->get('duration')" class=" text-danger" />
                                     </div>
                                 </div>
                                 <div class="row ">
@@ -67,7 +67,7 @@
                                         <label class=" form-label" for="description">Description</label>
                                         <textarea type="text" class="form-control" id="description" placeholder="description" name="description"
                                             aria-label="description" ></textarea>
-                                        <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
+                                        <x-input-error :messages="$errors->get('description')" class=" text-danger" />
                                     </div>
                                     <div class="mb-6 mt-1 col-md-4">
                                         <label for="type" class="text-black font-semibold pb-1 capitalize">Type:</label>
@@ -76,7 +76,7 @@
                                             <option value="channel">Channel</option>
                                         </select>
 
-                                        <x-input-error :messages="$errors->get('type')" class="mt-2 text-danger" />
+                                        <x-input-error :messages="$errors->get('type')" class=" text-danger" />
 
 
                                     </div>
@@ -87,7 +87,7 @@
                                             <option value="1">Active</option>
                                             <option value="0">Deactive</option>
                                         </select>
-                                        <x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
+                                        <x-input-error :messages="$errors->get('status')" class=" text-danger" />
                                     </div>
                                 </div>
                             </form>

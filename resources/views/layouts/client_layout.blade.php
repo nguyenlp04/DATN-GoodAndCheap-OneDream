@@ -96,8 +96,10 @@
         });
     </script>
     @endif
+    @if(request()->routeIs('salenew.detail'))
      <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>
+    @endif
 </body>
 
 </html>

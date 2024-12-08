@@ -3,8 +3,8 @@
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
             <div class="container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                    {{-- <li class="breadcrumb-item"><a href="#">Shop</a></li> --}}
                     <li class="breadcrumb-item active" aria-current="page">Search</li>
                 </ol>
             </div>
@@ -304,7 +304,7 @@
 
                     </div>
                     <!-- End .col-lg-9 -->
-                    
+
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
@@ -322,7 +322,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Filter by Category -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
@@ -344,7 +344,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Filter by Price -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
@@ -366,10 +366,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Hidden input to retain search keyword -->
                                 <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
-                            
+
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
