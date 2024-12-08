@@ -590,8 +590,10 @@ class SaleNewsController extends Controller
         $subcategoryID = $request->get('subcategory');    // Get address filter
         // dd($subcategoryID);
 
+
         $minPrice = $request->get('minPrice') ?? 0;
         $maxPrice = $request->get('maxPrice') ?? $maxPriceRange;
+
         // dd($minPrice);
 
 
