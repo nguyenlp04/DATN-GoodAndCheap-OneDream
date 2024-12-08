@@ -375,7 +375,7 @@ class SaleNewsController extends Controller
         return SaleNews::where('sale_new_id', '>', $currentId)
             ->where('approved', 1)
             ->where('status', 1)
-            ->where('is_delete', '!=', 1)
+            ->where('is_delete', null)
             ->orderBy('sale_new_id')
             ->first();
     }
@@ -600,7 +600,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
-            ->where('is_delete', '!=', 0)
+            ->where('is_delete', null)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
@@ -625,7 +625,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
-            ->where('is_delete', '!=', 0)
+            ->where('is_delete', null)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
@@ -649,7 +649,7 @@ class SaleNewsController extends Controller
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
-            ->where('is_delete', '!=', 0)
+            ->where('is_delete', null)
             ->where('approved', 1)
             ->whereBetween('price', [$minPrice, $maxPrice]);
 
@@ -775,5 +775,88 @@ class SaleNewsController extends Controller
                 'message' => 'Not found !'
             ]);
         }
+    }
+
+
+    public function search_category(Request $request)
+    {
+
+        $categoryId = $request->get('category');
+        $subcategoryID = $request->get('subcategory');
+        $threeDaysAgo = Carbon::now()->subDays(3);
+
+        // Recent VIP SaleNews (users created within the last 3 days)
+        $recentVipSaleNews = SaleNews::with('categoryToSubcategory', 'user', 'sub_category.category')
+            ->whereNotNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1)
+            ->where('is_delete', null)
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '>=', $threeDaysAgo);
+            });
+        if ($subcategoryID) {
+            $recentVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
+        if ($categoryId) {
+            $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+        $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
+
+        // Older VIP SaleNews (users created more than 3 days ago)
+        $olderVipSaleNews = SaleNews::with('categoryToSubcategory', 'user', 'sub_category.category')
+            ->whereNotNull('vip_package_id')
+            ->where('status', 1)
+            ->where('approved', 1)
+            ->where('is_delete', null)
+            ->whereHas('user', function ($query) use ($threeDaysAgo) {
+                $query->where('created_at', '<', $threeDaysAgo);
+            });
+        if ($subcategoryID) {
+            $olderVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
+        if ($categoryId) {
+            $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+        $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
+        // Non-VIP SaleNews with pagination
+        $perPage = $request->get('perPage', 8);
+        $nonVipSaleNews = SaleNews::with('sub_category.category')
+            ->whereNull('vip_package_id')
+            ->where('status', 1)
+            ->where('is_delete', null)
+            ->where('approved', 1);
+        if ($subcategoryID) {
+            $nonVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
+        if ($categoryId) {
+            $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
+        $nonVipSaleNews = $nonVipSaleNews->paginate($perPage);
+
+        $totalNonVipSaleNews = $nonVipSaleNews->total();
+
+        $category = Category::all();
+
+        $maxPrice = SaleNews::max('price');
+        $keyword = null;
+        $address = null;
+        return view('salenews.search', compact(
+            'recentVipSaleNews',
+            'olderVipSaleNews',
+            'nonVipSaleNews',
+            'keyword',
+            'perPage',
+            'totalNonVipSaleNews',
+            'category',
+            'address',
+            'categoryId',
+            'maxPrice'
+        ));
     }
 }
