@@ -138,7 +138,7 @@
                                     <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
                                     <button type="submit"
                                         class="   add-wishlist  {{ $item->isFavorited ? ' text-white bg-primary' : 'text-primary' }}  rounded-circle    add-to-wishlist-btn"
-                                        title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}  ">  <i class="fas fa-heart"></i></button>
+                                        title="{{ $item->isFavorited ? ' ' : ' Add to wishlist' }}  ">  <i class="fas fa-heart"></i></button>
 
                                     </form> 
                                
@@ -545,71 +545,7 @@
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 
 <script>
-    var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}"; // Lấy user_id nếu người dùng đã đăng nhập
-
-    // Lắng nghe sự kiện click vào nút thêm vào danh sách yêu thích
-    $(document).on('click', '.add-to-wishlist-btn', function(e) {
-        e.preventDefault(); // Ngăn hành vi gửi form mặc định của trình duyệt
-
-        var form = $(this).closest('form'); // Lấy form chứa nút bấm
-        var saleNewId = form.find('input[name="sale_new_id"]').val(); // Lấy giá trị sale_new_id từ input hidden
-
-        // Kiểm tra nếu userId không có giá trị (người dùng chưa đăng nhập)
-        if (!userId) {
-            Swal.fire({
-                icon: 'warning', // Hiển thị biểu tượng cảnh báo
-                title: 'You need to log in to add this to your favorites!', // Thông báo yêu cầu đăng nhập
-                toast: true, // Hiển thị thông báo nhỏ
-                position: 'top-end', // Vị trí thông báo ở góc trên cùng bên phải
-                showConfirmButton: false, // Không hiển thị nút xác nhận
-                timer: 2000, // Thời gian hiển thị thông báo là 2 giây
-                timerProgressBar: true // Hiển thị thanh tiến trình đếm ngược
-            }).then(() => {
-                window.location.href = "{{ route('login') }}"; // Chuyển hướng đến trang đăng nhập
-            });
-            return; // Kết thúc hàm, không thực hiện các bước tiếp theo
-        }
-
-        // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
-        $.ajax({
-            url: form.attr('action'), // Lấy URL từ thuộc tính action của form
-            type: 'POST', // Phương thức gửi yêu cầu là POST
-            data: form.serialize(), // Lấy toàn bộ dữ liệu của form
-            success: function(response) {
-                // Nếu thêm thành công
-                Swal.fire({
-                    icon: response.type === 'success' ? 'success' : 'info', // Hiển thị thông báo dựa trên type
-                    title: response.message || 'Action completed!', // Nội dung từ server
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 2000, // Thời gian hiển thị thông báo
-                    timerProgressBar: true
-                });
-
-                // Cập nhật giao diện cho nút
-                if (response.type === 'success') {
-                    form.find('.add-to-wishlist-btn')
-                        .toggleClass('bg-primary text-white text-primary')
-                        .attr('title', response.isFavorited ? 'Added to wishlist' : 'Add to wishlist')
-                        .html(response.isFavorited ? '<i class="fas fa-heart"></i>  ' : '<i class="fas fa-heart"></i>  ');
-                }
-            },
-            error: function(xhr) {
-                // Nếu xảy ra lỗi
-                Swal.fire({
-                    icon: 'error',
-                    title: xhr.responseJSON?.message || 'An error occurred!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000, // Thời gian hiển thị
-                    timerProgressBar: true
-                });
-            }
-        });
-    });
-
+    var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";
     // Hiển thị thông báo sau khi load trang nếu có từ session
     @if(session('alert'))
     Swal.fire({
