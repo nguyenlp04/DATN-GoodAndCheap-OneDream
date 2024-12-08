@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\File;
 
 use App\Models\SubcategoryAttribute;
 use App\Models\Transactions;
+use Illuminate\Database\Eloquent\Collection;
 
 class SaleNewsController extends Controller
 
@@ -683,23 +684,48 @@ class SaleNewsController extends Controller
             'maxPrice'
         ));
     }
-    public function all_sale_news()
+    public function all_sale_news(Request $request)
     {
-        $data = SaleNews::with(['user', 'sub_category.category', 'images'])
+        $currentCategoryId = $request->input('category', 'all');
+
+        // Lấy danh mục với số lượng tin liên quan
+        $categories = Category::with(['subcategories.salenews' => function ($query) {
+            $query->where('status', 1)
+                ->where('approved', 1)
+                ->where('is_delete', 0);
+        }])
+            ->select('category_id', 'name_category', 'image_category')
+            ->get()
+            ->map(function ($category) {
+                $category->news_count = $category->subcategories->flatMap->salenews->count();
+                return $category;
+            });
+
+        // Lấy sản phẩm theo danh mục
+        $items = SaleNews::with(['user', 'sub_category.category', 'images'])
             ->where('status', 1)
             ->where('approved', 1)
-            ->where('is_delete', '!=', 1)
-            ->get();
+            ->where('is_delete', null)
+            ->when($currentCategoryId !== 'all', function ($query) use ($currentCategoryId) {
+                $query->whereHas('sub_category.category', function ($q) use ($currentCategoryId) {
+                    $q->where('category_id', $currentCategoryId);
+                });
+            })
+            ->paginate(5); // 5 sản phẩm mỗi trang
 
-        $groupedData = $data->groupBy(function ($item) {
-            return $item->sub_category->category_id;
-        });
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('partials.sale-news-items', compact('items'))->render(),
+                'pagination' => (string)$items->links(),
+            ]);
+        }
 
-        $allItems = $data;
-        $groupedData['all'] = $allItems;
-
-        return view('salenews.all-sale-news', compact('groupedData'));
+        return view('salenews.all-sale-news', compact('categories', 'items', 'currentCategoryId'));
     }
+
+
+
+
     public function trash()
     {
 

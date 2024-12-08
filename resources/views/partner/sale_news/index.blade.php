@@ -11,7 +11,7 @@
                 <div
                     class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
                     <div class="d-flex flex-column justify-content-center">
-                        <h4 class="mb-1">Blogs</h4>
+                        <h4 class="mb-1">Sale news My Channels</h4>
                     </div>
 
                 </div>
@@ -30,7 +30,7 @@
                                             <th>Category</th>
                                             <th>Approved</th>
                                             <th>Status</th>
-                                            <th>Actions</th>
+                                           
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,7 +65,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <form action=""
+                                                    <form action="{{route('channel.toggleStatus',$item->sale_new_id)}}"
                                                         method="POST" class="toggle-status-form"
                                                         data-blog-id="{{ $item->sale_new_id }}">
                                                         @csrf
@@ -79,82 +79,12 @@
                                                         </button>
                                                     </form>
                                                 </td>
-                                                <td>
+            
 
-                                                </td>
-
-                                                <!-- Modal -->
-                                                {{-- <div class="modal fade" id="modal{{ $blog->blog_id }}" tabindex="-1"
-                                                    aria-labelledby="exampleModalLabel{{ $blog->blog_id }}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="exampleModalLabel{{ $blog->blog_id }}">Info Blog
-                                                                </h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-
-                                                                    <div class="mx-2 blog-info">
-                                                                        <div class="info-item">
-                                                                            <strong>Image:</strong>
-                                                                            <img src="{{ asset('storage/' . $blog->image) }}"
-                                                                                alt="Blog Image" class="blog-image">
-                                                                        </div>
-
-                                                                        <div class="info-item">
-                                                                            <strong>ID:</strong>
-                                                                            {{ $blog->blog_id }}
-                                                                        </div>
-
-                                                                        <div class="info-item">
-                                                                            <strong>Tags:</strong>
-                                                                            {{ $blog->tags }}
-                                                                        </div>
-                                                                        <div class="info-item">
-                                                                            <strong>Title:</strong>
-                                                                            {{ $blog->title }}
-                                                                        </div>
-
-
-                                                                        <div class="info-item">
-                                                                            <strong>Description:</strong>
-                                                                            {{ $blog->short_description }}
-                                                                        </div>
-
-                                                                        <div class="info-item">
-                                                                            <strong>Content:</strong>
-                                                                            <div class="content-scroll">
-                                                                                {!! $blog->content !!}
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="info-item">
-                                                                            <strong>Start date:</strong>
-                                                                            {{ $blog->created_at->format('Y-m-d') }}
-                                                                        </div>
-
-                                                                        <div class="info-item">
-                                                                            <strong>Status:</strong>
-                                                                            <span
-                                                                                class="modal-status {{ $blog->status == 1 ? 'text-primary' : 'text-secondary' }}">
-                                                                                {{ $blog->status == 1 ? 'Show' : 'Hidden' }}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> --}}
+                                               
+                                               
                                             </tr>
-                                        @endf oreach
+                                        @endforeach
                                     </tbody>
                                 </table>
 
@@ -186,7 +116,7 @@
                                 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
                                 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
                                 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-
+                               
                             </div>
                         </div>
                     </div>
@@ -194,4 +124,5 @@
             </div>
         </div>
     </div>
+     
 @endsection
