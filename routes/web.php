@@ -213,7 +213,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
-Route::get('/category', [SaleNewsController::class, 'search_category'])->name('category');
+Route::get('/seach-category', [SaleNewsController::class, 'search_category'])->name('seach-category');
 Route::post('/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
 Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('salenews.all');

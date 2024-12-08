@@ -183,12 +183,12 @@
 
 
                                                 <a href="{{ route('salenew.detail', $item->sale_new_id) }}" class="mb-1 btn btn-outline-primary btn-rounded" style="width: 100%"><i class="fa-solid fa-eye" style="color: #74C0FC;"></i> <span>Detail</span></a>
-                                                <a href="#" men class="mb-1 btn   btn-rounded" style="width: 100%; background:#E7E7E7 ; cursor: not-allowed;"> <i class="fas fa-heart" style="color: #000;"></i><span>Not Add to wishlist</span></a>
+                                                <a href="#" men class="mb-1 btn disabled  btn-rounded" style="width: 100%; "> <i class="fas fa-heart" ></i><span>Not Add to wishlist</span></a>
 
                                             </div><!-- End .product-list-action -->
                                         </div><!-- End .col-sm-6 col-lg-3 -->
 
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6"> 
                                             <div class="product-body product-action-inner">
 
                                                 <div class="product-cat">

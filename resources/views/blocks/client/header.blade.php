@@ -147,172 +147,176 @@
                         </li>
                      </ul>
                      @else
-                     <p class="text-center" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">No notifications available.</p>
+                     <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <li class="dropdown-notifications-list text-center p-3">
+                           <span class="text-muted">No notifications available.</span>
+                        </li>
+                     </ul>
                      @endif
                   </div>
-               </div>
 
-               @else
-               <div class="wishlist">
-                  <a href="{{ route('login') }}" style="font-size: 1.8rem">
-                     <div class="icon d-flex align-items-center">
-                        <i class="icon-user"></i>
-                        Login
-                     </div>
-                  </a>
-               </div>
-               <div class="wishlist">
-                  <a href="{{ route('register') }}" style="font-size: 1.8rem">
-                     <div class="icon d-flex align-items-center">
-                        {{-- <i class="icon-user"></i> --}}
-                        Sign Up
-                     </div>
-                  </a>
-               </div>
-               @endif
-            </div>
-            <!-- End .header-right -->
-         </div>
-         <!-- End .container -->
-      </div>
-      <!-- End .header-middle -->
-      <div class="header-bottom sticky-header">
-         <div class="container">
-            <div class="header-left">
-               <div class="dropdown category-dropdown">
-                  <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                     aria-expanded="false" data-display="static" title="Browse Categories">
 
-                     Sub Categories <i class="icon-angle-down"></i>
-
-                  </a>
-                  <div class="dropdown-menu">
-                     <nav class="side-nav">
-                        <ul class="menu-vertical sf-arrows">
-                           @foreach ($categories as $category)
-                           @foreach ($category->subCategories as $subCategory)
-                           <li><a href="{{ route('category') }}?subcategory={{ $subCategory->sub_category_id }}">{{ $subCategory->name_sub_category }}</a></li>
-                           @endforeach
-                           @endforeach
-                        </ul>
-                        <!-- End .menu-vertical -->
-                     </nav>
-                     <!-- End .side-nav -->
-                  </div>
-                  <!-- End .dropdown-menu -->
-               </div>
-               <!-- End .category-dropdown -->
-            </div>
-            <!-- End .header-left -->
-            <div class="header-center">
-               <nav class="main-nav">
-                  @if(!empty($floating_notifications))
-                  <span>{{ $floating_notifications }}</span>
                   @else
-                  <span>Welcome to Good & Cheap website wish you a great career</span>
+                  <div class="wishlist">
+                     <a href="{{ route('login') }}" style="font-size: 1.8rem">
+                        <div class="icon d-flex align-items-center">
+                           <i class="icon-user"></i>
+                           Login
+                        </div>
+                     </a>
+                  </div>
+                  <div class="wishlist">
+                     <a href="{{ route('register') }}" style="font-size: 1.8rem">
+                        <div class="icon d-flex align-items-center">
+                           {{-- <i class="icon-user"></i> --}}
+                           Sign Up
+                        </div>
+                     </a>
+                  </div>
                   @endif
-               </nav>
-               <!-- End .main-nav -->
-            </div>
-            <div class="header-right">
-               <div class="row">
-                  @guest
-                  <ul class="menu sf-arrows">
-                     <li class="mx-3">
-                        <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
-                     </li>
-
-
-
-                     <li class="mx-3">
-                        <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
-                     </li>
-
-
-                     <li class="mx-3">
-                        <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>Contact</a>
-
-                     </li>
-
-
-                  </ul>
-
-
-
-                  @endguest
-                  @auth
-                  <!-- Nếu đã đăng nhập -->
-                  <ul class="menu sf-arrows">
-                     <li class="mx-3">
-                        <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
-                     </li>
-
-                     <li class="mx-3">
-                        <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
-                     </li>
-
-                     <li class="mx-3">
-                        <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>contact</a>
-                     </li>
-                     <li class="header-dropdown">
-                        <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
-                           alt="User Avatar" style="width: 30px; height: 30px;border-radius: 50%;" class="btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <ul class="header-menu" style="left: 50%; transform: translateX(-50%);">
-                           <li>
-                              <a class="dropdown-item" href="{{ route('user.manage') }}">
-                                 {{ __('Profile') }}
-                              </a>
-                           </li>
-                           <li>
-                              <a class="dropdown-item" href="{{ route('sl.index') }}">
-                                 {{ __('Salenews Status') }}
-                              </a>
-                           </li>
-                           <li>
-                              <a href="{{ route('user.transaction_history') }}">
-                                 {{ __('Transaction History') }}
-                              </a>
-                           </li>
-                           @if(!auth()->user()->channel || auth()->user()->channel->status === null)
-                           <li>
-                              <a class="dropdown-item" href="{{ url('channels/create') }}">
-                                 {{ __('Upgrage Account') }}
-                              </a>
-                           </li>
-                           @endif
-                           @if(auth()->user()->channel && auth()->user()->channel->status !== null)
-                           <li>
-                              <a class="dropdown-item" href="{{ route('channels.index') }}">
-                                 {{ __('My Channel') }}
-                              </a>
-                           </li>
-                           <li>
-                              <a class="dropdown-item" href="{{ url('partners/profile') }}">
-                                 {{ __('Channel Manager') }}
-                              </a>
-                           </li>
-                           @endif
-                           <li>
-                              <form class="from_logout" method="POST" action="{{ route('logout') }}">
-                                 @csrf
-                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                 </a>
-                              </form>
-                           </li>
-                        </ul>
-                     </li>
-
-
-                  </ul>
-                  @endauth
                </div>
+               <!-- End .header-right -->
             </div>
-            <!-- End .header-center -->
             <!-- End .container -->
          </div>
-      </div>
-      <!-- End .header-bottom -->
+         <!-- End .header-middle -->
+         <div class="header-bottom sticky-header">
+            <div class="container">
+               <div class="header-left">
+                  <div class="dropdown category-dropdown">
+                     <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static" title="Browse Categories">
+
+                        Sub Categories <i class="icon-angle-down"></i>
+
+                     </a>
+                     <div class="dropdown-menu">
+                        <nav class="side-nav">
+                           <ul class="menu-vertical sf-arrows">
+                              @foreach ($categories as $category)
+                              @foreach ($category->subCategories as $subCategory)
+                              <li><a href="{{ route('seach-category') }}?subcategory={{ $subCategory->sub_category_id }}">{{ $subCategory->name_sub_category }}</a></li>
+                              @endforeach
+                              @endforeach
+                           </ul>
+                           <!-- End .menu-vertical -->
+                        </nav>
+                        <!-- End .side-nav -->
+                     </div>
+                     <!-- End .dropdown-menu -->
+                  </div>
+                  <!-- End .category-dropdown -->
+               </div>
+               <!-- End .header-left -->
+               <div class="header-center">
+                  <nav class="main-nav">
+                     @if(!empty($floating_notifications))
+                     <span>{{ $floating_notifications }}</span>
+                     @else
+                     <span>Welcome to Good & Cheap website wish you a great career</span>
+                     @endif
+                  </nav>
+                  <!-- End .main-nav -->
+               </div>
+               <div class="header-right">
+                  <div class="row">
+                     @guest
+                     <ul class="menu sf-arrows">
+                        <li class="mx-3">
+                           <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
+                        </li>
+
+
+
+                        <li class="mx-3">
+                           <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
+                        </li>
+
+
+                        <li class="mx-3">
+                           <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>Contact</a>
+
+                        </li>
+
+
+                     </ul>
+
+
+
+                     @endguest
+                     @auth
+                     <!-- Nếu đã đăng nhập -->
+                     <ul class="menu sf-arrows">
+                        <li class="mx-3">
+                           <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
+                        </li>
+
+                        <li class="mx-3">
+                           <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
+                        </li>
+
+                        <li class="mx-3">
+                           <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>contact</a>
+                        </li>
+                        <li class="header-dropdown">
+                           <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
+                              alt="User Avatar" style="width: 30px; height: 30px;border-radius: 50%;" class="btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                           <ul class="header-menu" style="left: 50%; transform: translateX(-50%);">
+                              <li>
+                                 <a class="dropdown-item" href="{{ route('user.manage') }}">
+                                    {{ __('Profile') }}
+                                 </a>
+                              </li>
+                              <li>
+                                 <a class="dropdown-item" href="{{ route('sl.index') }}">
+                                    {{ __('Salenews Status') }}
+                                 </a>
+                              </li>
+                              <li>
+                                 <a href="{{ route('user.transaction_history') }}">
+                                    {{ __('Transaction History') }}
+                                 </a>
+                              </li>
+                              @if(!auth()->user()->channel || auth()->user()->channel->status === null)
+                              <li>
+                                 <a class="dropdown-item" href="{{ url('channels/create') }}">
+                                    {{ __('Upgrage Account') }}
+                                 </a>
+                              </li>
+                              @endif
+                              @if(auth()->user()->channel && auth()->user()->channel->status !== null)
+                              <li>
+                                 <a class="dropdown-item" href="{{ route('channels.index') }}">
+                                    {{ __('My Channel') }}
+                                 </a>
+                              </li>
+                              <li>
+                                 <a class="dropdown-item" href="{{ url('partners/profile') }}">
+                                    {{ __('Channel Manager') }}
+                                 </a>
+                              </li>
+                              @endif
+                              <li>
+                                 <form class="from_logout" method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault(); this.closest('form').submit();">
+                                       {{ __('Log Out') }}
+                                    </a>
+                                 </form>
+                              </li>
+                           </ul>
+                        </li>
+
+
+                     </ul>
+                     @endauth
+                  </div>
+               </div>
+               <!-- End .header-center -->
+               <!-- End .container -->
+            </div>
+         </div>
+         <!-- End .header-bottom -->
    </header>
    <!-- End .header -->

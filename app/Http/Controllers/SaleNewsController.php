@@ -700,8 +700,6 @@ class SaleNewsController extends Controller
                 $category->news_count = $category->subcategories->flatMap->salenews->count();
                 return $category;
             });
-
-        // Lấy sản phẩm theo danh mục
         $items = SaleNews::with(['user', 'sub_category.category', 'images'])
             ->where('status', 1)
             ->where('approved', 1)
@@ -711,7 +709,7 @@ class SaleNewsController extends Controller
                     $q->where('category_id', $currentCategoryId);
                 });
             })
-            ->paginate(5); // 5 sản phẩm mỗi trang
+            ->paginate(5);
 
         if ($request->ajax()) {
             return response()->json([
