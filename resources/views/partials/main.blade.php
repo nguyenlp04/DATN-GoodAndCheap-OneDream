@@ -56,7 +56,7 @@
             <div class="row">
                 @foreach ($categories as $category)
                 <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="{{ route('search') }}?category={{ $category->category_id }}" class="cat-block">
+                    <a href="{{ route('category') }}?category={{ $category->category_id }}" class="cat-block">
                         <figure>
                             <span>
                                 <img style="max-width: 120px;max-height: 70px;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
