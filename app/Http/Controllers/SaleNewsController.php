@@ -14,8 +14,13 @@ use App\Models\VipPackage;
 use Illuminate\Support\Carbon;
 use App\Models\Channel;
 use App\Models\Subcategory;
+
+use Illuminate\Support\Facades\File;
+
+
 use App\Models\SubcategoryAttribute;
 use App\Models\Transactions;
+use Illuminate\Database\Eloquent\Collection;
 
 class SaleNewsController extends Controller
 
@@ -293,7 +298,7 @@ class SaleNewsController extends Controller
      */
 
 
- 
+
     public function getAllSaleStatus()
     {
         $data = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
@@ -369,6 +374,8 @@ class SaleNewsController extends Controller
     {
         return SaleNews::where('sale_new_id', '>', $currentId)
             ->where('approved', 1)
+            ->where('status', 1)
+            ->where('is_delete', '!=', 1)
             ->orderBy('sale_new_id')
             ->first();
     }
@@ -377,6 +384,7 @@ class SaleNewsController extends Controller
     {
         return SaleNews::where('sale_new_id', '<', $currentId)
             ->where('approved', 1)
+            ->where('status', 1)
             ->orderBy('sale_new_id', 'desc')
             ->first();
     }
@@ -454,6 +462,7 @@ class SaleNewsController extends Controller
             ]);
         }
     }
+
 
     public function list_salenew()
     {
@@ -565,9 +574,15 @@ class SaleNewsController extends Controller
     }
     public function search(Request $request)
     {
-        $keyword = $request->input('keyword');
-        $categoryId = $request->get('category'); // Get category filter
         $address = $request->get('address');    // Get address filter
+        $categoryId = $request->get('category'); // Get category filter
+        $keyword = $request->input('keyword');
+        $minPrice = $request->get('minPrice');
+        $maxPrice = $request->get('maxPrice');
+
+
+        $subcategoryID = $request->get('subcategory');    // Get address filter
+        // dd($subcategoryID);
 
         $minPrice = $request->get('minPrice');
         $maxPrice = $request->get('maxPrice');
@@ -584,6 +599,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->where('is_delete', '!=', 0)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
@@ -608,6 +624,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->where('is_delete', '!=', 0)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
@@ -631,12 +648,9 @@ class SaleNewsController extends Controller
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
-            ->whereBetween('price', [$minPrice, $maxPrice])
-            ->where('approved', 1);
-            // ->where('sub_category_id', $subcategoryID);
-        // if (!empty($subcategoryID)) {
-        //     $nonVipSaleNews->where('sub_category_id', $subcategoryID);
-        // }
+            ->where('is_delete', '!=', 0)
+            ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice]);
 
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
@@ -669,20 +683,96 @@ class SaleNewsController extends Controller
             'maxPrice'
         ));
     }
-    public function all_sale_news()
+    public function all_sale_news(Request $request)
     {
-        $data = SaleNews::with(['user', 'sub_category.category', 'images'])
+        $currentCategoryId = $request->input('category', 'all');
+
+        // Lấy danh mục với số lượng tin liên quan
+        $categories = Category::with(['subcategories.salenews' => function ($query) {
+            $query->where('status', 1)
+                ->where('approved', 1)
+                ->where('is_delete', 0);
+        }])
+            ->select('category_id', 'name_category', 'image_category')
+            ->get()
+            ->map(function ($category) {
+                $category->news_count = $category->subcategories->flatMap->salenews->count();
+                return $category;
+            });
+
+        // Lấy sản phẩm theo danh mục
+        $items = SaleNews::with(['user', 'sub_category.category', 'images'])
             ->where('status', 1)
             ->where('approved', 1)
-            ->get();
+            ->where('is_delete', null)
+            ->when($currentCategoryId !== 'all', function ($query) use ($currentCategoryId) {
+                $query->whereHas('sub_category.category', function ($q) use ($currentCategoryId) {
+                    $q->where('category_id', $currentCategoryId);
+                });
+            })
+            ->paginate(5); // 5 sản phẩm mỗi trang
 
-        $groupedData = $data->groupBy(function ($item) {
-            return $item->sub_category->category_id;
-        });
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('partials.sale-news-items', compact('items'))->render(),
+                'pagination' => (string)$items->links(),
+            ]);
+        }
 
-        $allItems = $data;
-        $groupedData['all'] = $allItems;
+        return view('salenews.all-sale-news', compact('categories', 'items', 'currentCategoryId'));
+    }
 
-        return view('salenews.all-sale-news', compact('groupedData'));
+
+
+
+    public function trash()
+    {
+
+        $data = SaleNews::with('vipPackage', 'images', 'firstImage', 'sub_category')
+            ->where('is_delete', 1)->get();
+        return view('admin.trash.sale-news', compact('data'));
+    }
+    public function restore($id)
+    {
+        try {
+            $item = SaleNews::findOrFail($id);
+
+            // Thay đổi trạng thái giữa 0 và 2
+            $item->is_delete = null;
+            $item->save();
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => ' Reject  successfully!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Error: ' . $th->getMessage()
+            ]);
+        }
+    }
+    public function destroyofadmin(string $id)
+    {
+        $check = SaleNews::findOrFail($id);
+        if ($check) {
+            foreach ($check->images as $photo) {
+                $filePath = public_path($photo->image_name);
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+                $photo->delete();
+            }
+            $check->delete();
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Delete successful !'
+            ]);
+        } else {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Not found !'
+            ]);
+        }
     }
 }
