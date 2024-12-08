@@ -56,7 +56,7 @@
             <div class="row">
                 @foreach ($categories as $category)
                 <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="{{ route('category') }}?category={{ $category->category_id }}" class="cat-block">
+                    <a href="{{ route('seach-category') }}?category={{ $category->category_id }}" class="cat-block">
                         <figure>
                             <span>
                                 <img style="max-width: 120px;max-height: 70px;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
@@ -137,9 +137,9 @@
                                     <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
                                     <button type="submit"
                                         class="   add-wishlist  {{ $item->isFavorited ? ' text-white bg-primary' : 'text-primary' }}  rounded-circle    add-to-wishlist-btn"
- 
-                                        title="{{ $item->isFavorited ? ' ' : ' Add to wishlist' }}  ">  <i class="fas fa-heart"></i></button>
- 
+
+                                        title="{{ $item->isFavorited ? ' ' : ' Add to wishlist' }}  "> <i class="fas fa-heart"></i></button>
+
 
 
                             </div>
