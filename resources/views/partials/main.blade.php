@@ -51,8 +51,7 @@
 
 
     <div class="container">
-        <h2 class="title text-center mb-4"></h2><!-- End .title text-center -->
-
+        <h2 class="title text-center mb-4">Explore Categories</h2><!-- End .title text-center -->
         <div class="cat-blocks-container">
             <div class="row">
                 @foreach ($categories as $category)
@@ -81,7 +80,7 @@
             <div class="heading-left">
                 <h2 class="title">New Arrivals</h2><!-- End .title -->
             </div>
-           
+
             <!-- End .heading-left -->
 
 
@@ -117,15 +116,15 @@
 
 
 
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}" class="image-container">
-                                    @if ($item->images->isNotEmpty())
-                                        <img src="{{asset($item->images->first()->image_name) }}" alt="Image"
-                                            class="equal-height-image">
-                                    @endif
-                                </a>
+                    <div class="product product-2">
+                        <figure class="product-media">
+                            <span class="product-label label-circle label-top">Top</span>
+                            <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}" class="image-container">
+                                @if ($item->images->isNotEmpty())
+                                <img src="{{asset($item->images->first()->image_name) }}" alt="Image"
+                                    class="equal-height-image">
+                                @endif
+                            </a>
 
 
 
@@ -138,10 +137,10 @@
                                     <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
                                     <button type="submit"
                                         class="   add-wishlist  {{ $item->isFavorited ? ' text-white bg-primary' : 'text-primary' }}  rounded-circle    add-to-wishlist-btn"
-                                        title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}  ">  <i class="fas fa-heart"></i></button>
+                                        title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}  "> <i class="fas fa-heart"></i></button>
 
-                                    </form> 
-                               
+                                </form>
+
 
                             </div>
                         </figure>

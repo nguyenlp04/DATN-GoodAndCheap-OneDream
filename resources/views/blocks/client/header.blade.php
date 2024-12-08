@@ -38,39 +38,39 @@
 
 <div class="page-wrapper">
 
-<header class="header header-intro-clearance header-4">
-   <div class="header-middle">
-      <div class="container">
-         <div class="header-left">
-            <button class="mobile-menu-toggler">
-            <span class="sr-only">Toggle mobile menu</span>
-            <i class="icon-bars"></i>
-            </button>
-            <a href="#" class="logo">
-            <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
-            <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
-            </a>
-         </div>
-         <!-- End .header-left -->
-         <div class="header-center">
-            <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
-               <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-              <form action="{{ route('search') }}" method="GET">
-                 <input type="hidden" name="address" value="{{ request()->get('address') }}">
-                 <input type="hidden" name="category" value="{{ request()->get('category') }}">
-               <div class="header-search-wrapper search-wrapper-wide">
-                   <label for="q" class="sr-only">Search</label>
-                   <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                   <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
-                       placeholder="Search product ..." autofocus>
+   <header class="header header-intro-clearance header-4">
+      <div class="header-middle">
+         <div class="container">
+            <div class="header-left">
+               <button class="mobile-menu-toggler">
+                  <span class="sr-only">Toggle mobile menu</span>
+                  <i class="icon-bars"></i>
+               </button>
+               <a href="{{ route('home') }}" class="logo">
+                  <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
+                  <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
+               </a>
+            </div>
+            <!-- End .header-left -->
+            <div class="header-center">
+               <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                  <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                  <form action="{{ route('search') }}" method="GET">
+                     <input type="hidden" name="address" value="{{ request()->get('address') }}">
+                     <input type="hidden" name="category" value="{{ request()->get('category') }}">
+                     <div class="header-search-wrapper search-wrapper-wide">
+                        <label for="q" class="sr-only">Search</label>
+                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                        <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
+                           placeholder="Search product ..." autofocus>
 
 
-                       <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
-                       <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
-                   <!-- Hidden inputs to retain filter values -->
+                        <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
+                        <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
+                        <!-- Hidden inputs to retain filter values -->
 
-               </div>
-           </form>
+                     </div>
+                  </form>
 
 
                </div>
@@ -183,7 +183,7 @@
             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                aria-expanded="false" data-display="static" title="Browse Categories">
 
-               Categories <i class="icon-angle-down"></i>
+               Sub Categories <i class="icon-angle-down"></i>
 
             </a>
             <div class="dropdown-menu">
@@ -251,9 +251,9 @@
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
                </li>
 
-                <li class="mx-3">
+               <li class="mx-3">
                   <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>contact</a>
-               </li> 
+               </li>
                <li class="header-dropdown">
                   <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
                      alt="User Avatar" style="width: 30px; height: 30px;border-radius: 50%;" class="btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -312,7 +312,7 @@
       <!-- End .header-center -->
       <!-- End .container -->
    </div>
-   </div>
-   <!-- End .header-bottom -->
-   </header>
-   <!-- End .header -->
+</div>
+<!-- End .header-bottom -->
+</header>
+<!-- End .header -->
