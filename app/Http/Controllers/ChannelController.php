@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Like;
+
 class ChannelController extends Controller
 {
     /**
@@ -29,19 +30,20 @@ class ChannelController extends Controller
     {
 
         $user = Auth::user();
-        $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Lấy kênh của người dùng
+        $channel = Channel::where('user_id', $user->user_id)->firstOrFail(); // Lấy kênh của người dùng
         // dd($channels);
-        if (!$channels || is_null($channels->status)) {
+        if (!$channel || is_null($channel->status)) {
             return redirect()->route('channels.create') // Chuyển hướng đến trang tạo kênh
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
-        $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
+        $sale_news = $channel->saleNews()->with('sub_category', 'firstImage')
             ->where('approved', 1)
             ->paginate(5);
 
         foreach ($sale_news as $news) {
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
         }
+        $all_sales = SaleNews::where('channel_id', $channel->channel_id)->where('is_delete', null)->where('approved', 1)->get();
 
         // Count records of sub_category based on name
         $subcategory_count = $sale_news->filter(function ($news) {
@@ -49,13 +51,13 @@ class ChannelController extends Controller
         })->countBy('name_sub_category');
 
         // Count the number of news items that the channel has posted
-        $NewsCount = $channels->saleNews()->count();
+        $NewsCount = $channel->saleNews()->count();
         $category = Category::all();
 
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
-            ->where('channel_id', $channels->channel_id)
+            ->where('channel_id', $channel->channel_id)
             ->exists();
-        return view('partner.channels.show_channels', compact('channels', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category'));
+        return view('partner.channels.show_channels', compact('channel', 'all_sales', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category'));
     }
 
 
@@ -138,61 +140,50 @@ class ChannelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
+        $user = Auth::user();
 
-        $user = Auth::user(); // Lấy thông tin người dùng nếu đã đăng nhập
-        $channel = Channel::where('user_id', $user->user_id ?? null)->first(); // Lấy kênh nếu người dùng đã đăng nhập
-
-        // Lấy thông tin của kênh đang được xem
+        $channel = Channel::with('saleNews.sub_category', 'saleNews.firstImage', 'followers')->findOrFail($id);
         $information = ChannelInfo::where('channel_id', $id)->first();
-        $channels = Channel::findOrFail($id); // Lấy kênh theo ID
 
-        // Lấy danh sách tin đã được duyệt thuộc kênh
-
-        $sale_news = $channels->saleNews()->with('sub_category', 'firstImage')
-            ->where('approved', 1)
-            ->paginate(5);
-    
-        foreach ($sale_news as $news) {
-            $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
-    
-            // Check if the sale_new is favorited
-            $news->isFavorited = Like::where('sale_new_id', $news->sale_new_id)
-                                     ->where('user_id', $user->user_id)
-                                     ->exists();
-        }
-
-
-        // Đếm số lượng bản ghi theo sub_category
-        $subcategory_count = $sale_news->filter(function ($news) {
-            return $news->sub_category !== null;
-        })->countBy('name_sub_category');
-        // Đếm số lượng tin mà kênh đã đăng
-        $NewsCount = $channels->saleNews()->count();
-        $category = Category::all();
-        // Kiểm tra nếu người dùng đã theo dõi kênh (nếu đã đăng nhập)
+        // Kiểm tra nếu người dùng đã theo dõi kênh
         $isFollowed = false;
         if ($user) {
             $isFollowed = UserFollowed::where('user_id', $user->user_id)
-                ->where('channel_id', $channels->channel_id)
+                ->where('channel_id', $channel->channel_id)
                 ->exists();
         }
+        // $all_sales = SaleNews::where('')
+        $all_sales = SaleNews::where('channel_id', $id)->where('is_delete', null)->where('approved', 1)->get();
+        // dd($all_sales);
 
-        // Trả về view
+        // Tìm kiếm theo keyword nếu có
+        $sale_news = $channel->saleNews()
+            ->where('approved', 1)
+            ->with('sub_category', 'firstImage')
+            ->when($request->has('keyword'), function ($query) use ($request) {
+                return $query->where('title', 'like', '%' . $request->keyword . '%');
+            })
+            ->paginate(5);
+
+        $subcategory_count = $sale_news->filter(fn($news) => $news->sub_category)->countBy('sub_category.name_sub_category');
+        $NewsCount = $channel->saleNews()->count();
+
+        $category = Category::all();
         return view('partner.channels.show_channels', compact(
-            'channels',
-            'NewsCount',
+            'channel',
             'sale_news',
             'subcategory_count',
+            'NewsCount',
             'isFollowed',
             'information',
-            'category'
+            'category',
+            'all_sales'
         ));
-
-
     }
-    
+
+
 
 
 
@@ -346,20 +337,23 @@ class ChannelController extends Controller
         ]);
         return redirect()->back();
     }
-    public function search_channel(Request $request)
+    public function search_channel(Request $request, string $id)
     {
-        $user = Auth::user();
-        $channels = Channel::where('user_id', $user->user_id)->firstOrFail(); // Get user's channel
+        $channel = Channel::findOrFail($id);
 
-        $keyword = $request->input('keyword');
+        $keyword = $request->input('keyword', '');
         $categoryId = $request->input('category');
-        $perPage = $request->input('perPage', 2); // Default to 2 per page
+        $perPage = $request->input('perPage', 2); // Mặc định 2 trang
         $threeDaysAgo = Carbon::now()->subDays(3);
-        $NewsCount = $channels->saleNews()->count();
-
-        $channelId = $request->input('channel_id');
-
-        $buildQuery = function ($isVip, $isRecent = null) use ($keyword, $categoryId, $threeDaysAgo, $channelId) {
+        $NewsCount = $channel->saleNews()->count();
+        $isFollowed = false;
+        $user = Auth::user();
+        if ($user) {
+            $isFollowed = UserFollowed::where('user_id', $user->user_id)
+                ->where('channel_id', $channel->channel_id)
+                ->exists();
+        }
+        $buildQuery = function ($isVip, $isRecent = null) use ($keyword, $categoryId, $threeDaysAgo) {
             $query = SaleNews::where('title', 'like', "%$keyword%")
                 ->with('categoryToSubcategory', 'user', 'sub_category.category');
 
@@ -381,24 +375,30 @@ class ChannelController extends Controller
             return $query;
         };
 
-        $recentVipSaleNews = $buildQuery(true, true)->inRandomOrder()->get();
-        $olderVipSaleNews = $buildQuery(true, false)->inRandomOrder()->get();
+        $recentVipSaleNews = $buildQuery(true, true)->inRandomOrder()->limit(10)->get();
+        $olderVipSaleNews = $buildQuery(true, false)->inRandomOrder()->limit(10)->get();
         $nonVipSaleNews = $buildQuery(false)->paginate($perPage);
+        $totalNonVipSaleNews = $nonVipSaleNews->total();
 
         $category = Category::all();
 
-        $sale_news = SaleNews::where('channel_id', $channels->channel_id)
+        // $all_sales = SaleNews::all();
+        $all_sales = SaleNews::where('channel_id',  $channel->channel_id)->where('is_delete', null)->where('approved', 1)->get();
+        // dd($all_sales);
+        $sale_news = SaleNews::where('channel_id', $channel->channel_id)
             ->where('title', 'like', "%$keyword%")
             ->when($categoryId, fn($q) => $q->whereHas('sub_category.category', function ($q) use ($categoryId) {
                 $q->where('category_id', $categoryId);
             }))
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->get();
-        if ($sale_news->isEmpty()) {
-            $sale_news = collect();
+
+        // Kiểm tra không có kết quả
+        if ($sale_news->isEmpty() && $recentVipSaleNews->isEmpty() && $olderVipSaleNews->isEmpty() && $nonVipSaleNews->isEmpty()) {
+            // Trả về thông báo không có kết quả tìm kiếm
             if ($request->ajax()) {
                 return response()->json([
-                    'html' => view('partner.channels._sale_news', compact('sale_news'))->render()
+                    'html' => '<p>Không tìm thấy kết quả nào.</p>'
                 ]);
             }
 
@@ -410,11 +410,34 @@ class ChannelController extends Controller
                 'perPage',
                 'category',
                 'categoryId',
-                'channelId',
-                'channels',
+                'channel',
+                'sale_news',
                 'NewsCount',
-                'sale_news'
-            ));
+                'all_sales'
+
+            ))->with('message', 'Không tìm thấy kết quả nào.');
         }
+
+        // Trả về view nếu có kết quả
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('partner.channels._sale_news', compact('sale_news'))->render()
+            ]);
+        }
+
+        return view('partner.channels.show_channels', compact(
+            'recentVipSaleNews',
+            'olderVipSaleNews',
+            'nonVipSaleNews',
+            'keyword',
+            'perPage',
+            'category',
+            'categoryId',
+            'channel',
+            'sale_news',
+            'NewsCount',
+            'all_sales',
+            'isFollowed'
+        ));
     }
 }

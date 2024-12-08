@@ -4,6 +4,8 @@
 @section('content')
 
 <main class="main">
+
+    <div class="container">
     <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
         <div class="container d-flex align-items-center">
             <ol class="breadcrumb">
@@ -135,14 +137,21 @@
 
                                 <div class="row  px-4">
                                                 <div class="col-2">
+                                                    
                                                     @if ($get_user->image_user)
+                                                    <a href="{{route('user.show',$get_user->user_id)}}">
                                                     <img src="{{ asset($get_user->image_user) }}" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
+
+                                                    </a>
+                                                    
                                                     @else
+                                                    <a href="{{route('user.show',$get_user->user_id)}}">
                                                     <img src="https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/06378cbea0004c25b8f835a60c9031f7~tplv-omjb5zjo8w-origin-jpeg.jpeg?from=1995374044" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
+                                                    </a>
                                                     @endif
                                     </div>
                                     <div class="col-9 col-md-10">
-                                        <h6 > {{ $get_user->full_name }} <i class="fa-solid fa-user mx-3" style="color: #74C0FC;"></i></h6>
+                                        <h6 >   <a class="text-dark" href="{{route('user.show',$get_user->user_id)}}">{{ $get_user->full_name }} <i class="fa-solid fa-user mx-3" style="color: #74C0FC;"></i></a></h6>
                                         <i class="fa-solid fa-circle-exclamation" style="color: #e90707;"></i><span class="mx-2 " style="color: #e90707 ">Please pay attention when trading products that do not receive the protection of the exchange !</span>
 
                                     </div>
@@ -294,15 +303,12 @@
 
         </div><!-- End .container -->
     </div><!-- End .page-content -->
+    </div>
 </main><!-- End .main -->
-
-
-
-
-
 
 @endsection
 @section('script-link-css')
+
 <script>
 
     const postTime = new Date('{{ $new->created_at }}');

@@ -16375,13 +16375,59 @@ button:focus {
     margin-bottom: 0 !important;
     margin-left: 5px;
 }
-
-.search-blogs {
+ .no-hover{
+     margin-left: 5px;
+     color: #999999 !important;
+     
+ }
+ .no-hover:hover{
+    margin-left: 5px;
+    color: #3399FF !important;
+    background-color: inherit !important;
+     
+}
+.dropdown-item .btn-link{
+    color: #999999 !important;
+}
+.dropdown-item  .btn-link:hover{
+    color: #3399FF !important;
+}
+.li-pad{
+    padding-right: 100px;
+    
+}
+.no-hover:focus{
+    margin-left: 5px;
+    color: #3399FF !important;
+    background-color: inherit !important;
+}
+.search-blogs { 
     max-width: 400px; /* Điều chỉnh chiều rộng tối đa */
 
 
     text-align: center;
 }
+.add-wishlist {
+  
+    background-color: inherit !important;
+    border: 0.1px solid #3399FF !important;
+}
+.add-wishlist:focus  {
+  color: white !important;
+    background-color: #3399FF !important;
+    transition: 0.2s;
+}
+.add-wishlist:active  {
+    color: white !important;
+      background-color: #3399FF !important;
+      transition: 0.2s;
+  }
+.add-wishlist:hover  {
+  
+    background-color: #f5f6f9bb !important;
+    transition: 0.2s;
+}
+ 
 
 
  
