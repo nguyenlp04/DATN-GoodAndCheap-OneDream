@@ -360,12 +360,12 @@
                                                 <div class="filter-price-text">
                                                     Price Range:
                                                     <span id="filter-price-range">
-                                                        ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPrice ?? 500) }}
+                                                        ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPriceRange) }}
                                                     </span>
                                                 </div>
                                                 <div id="price-slider"></div>
                                                 <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice', 0) }}">
-                                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPrice) }}">
+                                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPriceRange) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -404,13 +404,13 @@
                 if (priceSlider == null) return;
 
                 noUiSlider.create(priceSlider, {
-                    start: [0, <?php echo $maxPrice; ?>],
+                    start: [0, <?php echo $maxPriceRange; ?>],
                     connect: true,
                     step: 50,
                     margin: 200,
                     range: {
                         'min': 0,
-                        'max': <?php echo $maxPrice; ?>
+                        'max': <?php echo $maxPriceRange; ?>
                     },
                     tooltips: true,
                     format: wNumb({
