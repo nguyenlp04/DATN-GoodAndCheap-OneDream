@@ -309,6 +309,8 @@
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
                                 <!-- Filter by Address -->
+                                <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
+
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
                                         <a data-toggle="collapse" href="#widget-6" role="button" aria-expanded="true" aria-controls="widget-6">
@@ -317,8 +319,8 @@
                                     </h3>
                                     <div class="collapse show" id="widget-6">
                                         <div class="widget-body">
-                                            <input type="text" name="address" placeholder="Enter address"
-                                                class="form-control" value="{{ request()->get('address') }}">
+                                            <input type="text" name="address" placeholder="Enter address" class="form-control"
+                                                value="{{ request()->get('address') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -357,22 +359,24 @@
                                             <div class="filter-price">
                                                 <div class="filter-price-text">
                                                     Price Range:
-                                                    <span id="filter-price-range">$0 - ${{ $maxPrice ?? 500 }}</span>
+                                                    <span id="filter-price-range">
+                                                        ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPrice ?? 500) }}
+                                                    </span>
                                                 </div>
                                                 <div id="price-slider"></div>
                                                 <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice', 0) }}">
-                                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPrice ?? 500) }}">
+                                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPrice) }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             
                                 <!-- Hidden input to retain search keyword -->
-                                <input type="hidden" name="keyword" value="{{ request()->get('keyword') }}">
                             
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
+                            
 
 
 
@@ -440,10 +444,6 @@
                     console.log('Min Value:', minValue);
                     console.log('Max Value:', maxValue);
                 });
-
-
-
-
             }
         })
     </script>

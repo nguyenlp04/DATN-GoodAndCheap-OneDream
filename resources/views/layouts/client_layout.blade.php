@@ -28,8 +28,7 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="{{ asset('assets/images/icons/browserconfig.xml') }}">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet"
-        {{-- href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
@@ -63,10 +62,13 @@
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/wNumb.js') }}"></script>
     <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script> --}}
+    <!-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> -->
 
     <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
 
 
     @yield('script-link-css')
