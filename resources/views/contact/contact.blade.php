@@ -32,22 +32,39 @@
 								<ul class="contact-list">
 									<li>
 										<i class="icon-map-marker"></i>
-										70 Washington Square South New York, NY 10012, United States
+										@isset($setting->address)
+										{{ $setting->address }}
+										@else
+										<p>Address has not been set yet.</p>
+										@endisset
+
 									</li>
 									<li>
 										<i class="icon-phone"></i>
-										<a href="tel:#">+92 423 567</a>
+										<a href="tel:#">
+											@isset($setting->contact_phone)
+											{{ $setting->contact_phone }}
+											@else
+											<p>Phone has not been set yet.</p>
+											@endisset
+										</a>
 									</li>
 									<li>
 										<i class="icon-envelope"></i>
-										<a href="mailto:#">info@Molla.com</a>
+										<a href="mailto:#">
+											@isset($setting->contact_email)
+											{{ $setting->contact_email }}
+											@else
+											<p>Phone has not been set yet.</p>
+											@endisset
+										</a>
 									</li>
 								</ul><!-- End .contact-list -->
 							</div><!-- End .contact-info -->
 						</div><!-- End .col-sm-7 -->
 
 						<div class="col-sm-5">
-							<div class="contact-info">
+							<!-- <div class="contact-info">
 								<h3>The Office</h3>
 
 								<ul class="contact-list">
@@ -59,8 +76,8 @@
 										<i class="icon-calendar"></i>
 										<span class="text-dark">Sunday</span> <br>11am-6pm ET
 									</li>
-								</ul><!-- End .contact-list -->
-							</div><!-- End .contact-info -->
+								</ul>
+							</div> -->
 						</div><!-- End .col-sm-5 -->
 					</div><!-- End .row -->
 				</div><!-- End .col-lg-6 -->

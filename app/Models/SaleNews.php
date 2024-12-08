@@ -90,3 +90,4 @@ class SaleNews extends Model
         return $this->likes()->where('user_id', auth()->id())->exists();
     }
 }
+ 

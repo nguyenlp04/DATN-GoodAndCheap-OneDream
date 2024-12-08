@@ -318,23 +318,23 @@
               <div data-i18n="Trash">Trash</div>
             </a>
             <ul class="menu-sub">
-              <li class="menu-item {{ Request::is('trash/sale-news') ? 'active' : '' }}">
-                <a href="{{ url('trash/sale-news') }}" class="menu-link">
+              <li class="menu-item {{ Request::is('trash/trash-sale-news') ? 'active' : '' }}">
+                <a href="{{ route('trash.salenews') }}" class="menu-link">
                   <div data-i18n="Trash Sale News">Sale News</div>
                 </a>
               </li>
-              <li class="menu-item {{ Request::is('trash/channel') ? 'active' : '' }}">
+              {{-- <li class="menu-item {{ Request::is('trash/channel') ? 'active' : '' }}">
                 <a href="{{ url('trash/channel') }}" class="menu-link">
                   <div data-i18n="Trash Channel">Channel</div>
                 </a>
-              </li>
-              <li class="menu-item {{ Request::is('trash/category') ? 'active' : '' }}">
-                <a href="{{ url('trash/category') }}" class="menu-link">
+              </li> --}}
+              <li class="menu-item {{ Request::is('trash/trash-category') ? 'active' : '' }}">
+                <a href="{{ route('trash.category') }}" class="menu-link">
                   <div data-i18n="Trash Category">Category</div>
                 </a>
               </li>
-              <li class="menu-item {{ Request::is('trash/blog') ? 'active' : '' }}">
-                <a href="{{ url('trash/blog') }}" class="menu-link">
+              <li class="menu-item {{ Request::is('trash/trash-blog') ? 'active' : '' }}">
+                <a href="{{ route('trash.blog') }}" class="menu-link">
                   <div data-i18n="Trash Blog">Blog</div>
                 </a>
               </li>

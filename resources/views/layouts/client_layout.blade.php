@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/plugins/magnific-popup/magnific-popup.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/magnific-popup/magnific-popup.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery.countdown.css') }}">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -56,17 +56,24 @@
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script> --}}
     <script src="{{ asset('assets/js/superfish.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/wNumb.js') }}"></script>
     <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
+<<<<<<< HEAD
     {{-- <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script> --}}
     <!-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> -->
+=======
 
-    
+    <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> --}}
+
+>>>>>>> c65b5128ce8741ae4b1145928cba15b6cdaae165
+
     @yield('script-link-css')
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
@@ -94,6 +101,8 @@
         });
     </script>
     @endif
+     <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>
 </body>
 
 </html>

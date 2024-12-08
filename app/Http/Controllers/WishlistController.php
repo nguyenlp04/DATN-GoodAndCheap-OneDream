@@ -107,13 +107,14 @@ try {
 
 public function toggleWishlist(Request $request)
 {
+    if (!Auth::check()) {
+    
+        return response()->json(['type' => 'error', 'message' => 'You need to log in to manage your wishlist.'], 401);
+    }
+
     $user = Auth::user();
 
     try {
-        if (!$user) {
-            return response()->json(['type' => 'error', 'message' => 'You need to log in to manage your wishlist.'], 401);
-        }
-
         $request->validate([
             'sale_new_id' => 'required|integer|exists:sale_news,sale_new_id',
         ]);

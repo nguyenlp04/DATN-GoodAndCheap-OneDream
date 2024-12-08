@@ -152,28 +152,38 @@
    <div class="row">
       <div class="row d-flex justify-content-start">
          <div class="col col-md-9 col-lg-7 col-xl-6">
-            <div style="width: fit-content; min-width:460px;">
-               <div class="card-body">
-                  <div class="d-flex">
-                     <div class="flex-shrink-0">
-                        @if (auth()->user()->image_user)
-                        <img src="{{ Storage('') }}"
-                           alt="User image" class="img-fluid" style="width: 120px; border-radius: 10px;">
-                        @else
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                           alt="Generic placeholder image" class="img-fluid" style="width: 120px; border-radius: 10px;">
-                        @endif
-                     </div>
-                     <div class="flex-grow-1 ms-3">
-                        <h5 class="mb-1">{{ $channels->name_channel }}</h5>
-                        <div class="d-flex justify-content-between align-items-start">
-                           <!-- Phần bên trái -->
-                           <div class="rounded-3 p-2 mb-2 bg-body-tertiary" style="width: fit-content;">
-                              <p class="small text-muted">
-                                 <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i>
-                                 {{ $channels->address }}
-                              </p>
-                           </div>
+
+            <div style="width: fit-content; min-width:400px;">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            @if (auth()->user()->image_user)
+                            <img src="{{ asset(auth()->user()->image_user) }}"
+                                alt="User image" class="img-fluid" style="width: 120px; border-radius: 10px;">
+                            @else
+                            <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+                                alt="Generic placeholder image" class="img-fluid" style="width: 120px; border-radius: 10px;">
+                            @endif
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-1">{{ $channels->name_channel }}</h5>
+                            <div class="d-flex justify-content-between align-items-start">
+                                <!-- Phần bên trái -->
+                                <div class="rounded-3 p-2 mb-2 bg-body-tertiary" style="width: fit-content;">
+                                    <p class="small text-muted">
+                                        <i class="fa-solid fa-file-invoice-dollar" style="color: #74C0FC;"></i>
+                                        {{ $channels->address }}
+                                    </p>
+                                </div>
+
+                                <!-- Phần bên phải -->
+                                <div>
+                                    <div class="d-flex flex-column align-items-start rounded-3 p-2 mb-2 bg-body-tertiary" style="width: fit-content;">
+                                        <p class="small text-muted">
+                                            <i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channels->created_at }}
+                                        </p>
+                                    </div>
+
 
                            <!-- Phần bên phải -->
                            <div>
@@ -185,6 +195,7 @@
 
                            </div>
                         </div>
+
                      </div>
 
                   </div>
@@ -192,6 +203,7 @@
             </div>
          </div>
       </div>
+
 
       <div class="container for-you">
          <!-- Sales News -->
