@@ -117,71 +117,75 @@
                   </a>
                   <div class="dropdown-menu-right">
                      @if (!empty($notifications))
-                     <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
-                        <li class="dropdown-notifications-list scrollable-container" style="max-height: 200px; overflow-y: auto;">
-                           <ul class="list-group list-group-flush">
-                              @for ($i = 0; $i < count($notifications); $i++)
-                                 <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}" class="notification-link">
-                                 <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read border-bottom" style="border-bottom: 1px solid #ddd;">
-                                    <div class="d-flex">
-                                       <div class="flex-grow-1">
-                                          <h6 class="mb-1">{{ Str::limit($notifications[$i]['title_notification'], 27) }}</h6>
-                                          <h5 class="mb-0">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</h5>
-                                          @php
-                                          $createdAt = new DateTime($notifications[$i]['created_at']);
-                                          @endphp
-                                          <small class="text-muted">{{ $createdAt->format('d/m/Y H:i') }}</small>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 </a>
-                                 @endfor
-                           </ul>
-                        </li>
-                        <li class="border-top">
-                           <div class="d-grid p-4">
-                              <a class="btn btn-primary" href="{{ route('notifications.show') }}">
-                                 <small>View all notifications</small>
-                              </a>
-                           </div>
-                        </li>
-                     </ul>
+                         <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
+                             <li class="dropdown-notifications-list scrollable-container" style="max-height: 200px; overflow-y: auto;">
+                                 <ul class="list-group list-group-flush">
+                                     @for ($i = 0; $i < count($notifications); $i++)
+                                         <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}" class="notification-link">
+                                             <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read border-bottom" style="border-bottom: 1px solid #ddd;">
+                                                 <div class="d-flex">
+                                                     <div class="flex-grow-1">
+                                                         <h6 class="mb-1">{{ Str::limit($notifications[$i]['title_notification'], 27) }}</h6>
+                                                         <h5 class="mb-0">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</h5>
+                                                         @php
+                                                         $createdAt = new DateTime($notifications[$i]['created_at']);
+                                                         @endphp
+                                                         <small class="text-muted">{{ $createdAt->format('d/m/Y H:i') }}</small>
+                                                     </div>
+                                                 </div>
+                                             </li>
+                                         </a>
+                                     @endfor
+                                 </ul>
+                             </li>
+                             <li class="border-top">
+                                 <div class="d-grid p-4">
+                                     <a class="btn btn-primary" href="{{ route('notifications.show') }}">
+                                         <small>View all notifications</small>
+                                     </a>
+                                 </div>
+                             </li>
+                         </ul>
                      @else
-                     <p class="text-center" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">No notifications available.</p>
+                         <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
+                             <li class="dropdown-notifications-list text-center p-3">
+                                 <span class="text-muted">No notifications available.</span>
+                             </li>
+                         </ul>
                      @endif
+                 </div>
+                 
+                 
+            @else
+            <div class="wishlist">
+               <a href="{{ route('login') }}" style="font-size: 1.8rem">
+                  <div class="icon d-flex align-items-center">
+                     <i class="icon-user"></i>
+                     Login
                   </div>
-               </div>
-
-               @else
-               <div class="wishlist">
-                  <a href="{{ route('login') }}" style="font-size: 1.8rem">
-                     <div class="icon d-flex align-items-center">
-                        <i class="icon-user"></i>
-                        Login
-                     </div>
-                  </a>
-               </div>
-               <div class="wishlist">
-                  <a href="{{ route('register') }}" style="font-size: 1.8rem">
-                     <div class="icon d-flex align-items-center">
-                        {{-- <i class="icon-user"></i> --}}
-                        Sign Up
-                     </div>
-                  </a>
-               </div>
-               @endif
+               </a>
             </div>
-            <!-- End .header-right -->
+            <div class="wishlist">
+               <a href="{{ route('register') }}" style="font-size: 1.8rem">
+                  <div class="icon d-flex align-items-center">
+                     {{-- <i class="icon-user"></i> --}}
+                     Sign Up
+                  </div>
+               </a>
+            </div>
+            @endif
          </div>
-         <!-- End .container -->
+         <!-- End .header-right -->
       </div>
-      <!-- End .header-middle -->
-      <div class="header-bottom sticky-header">
-         <div class="container">
-            <div class="header-left">
-               <div class="dropdown category-dropdown">
-                  <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                     aria-expanded="false" data-display="static" title="Browse Categories">
+      <!-- End .container -->
+</div>
+<!-- End .header-middle -->
+<div class="header-bottom sticky-header">
+   <div class="container">
+      <div class="header-left">
+         <div class="dropdown category-dropdown">
+            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false" data-display="static" title="Browse Categories">
 
                      Sub Categories <i class="icon-angle-down"></i>
 

@@ -11,8 +11,7 @@
         height: 130px;
     }
     .tablinks img {
-        width: 40px;
-        height: 40px;
+        height: 70px;
     }
 </style>
 
