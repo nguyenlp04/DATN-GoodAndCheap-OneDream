@@ -8,6 +8,7 @@ use App\Http\Controllers\PartnerProfileController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPUnit\Framework\TestStatus\Notice;
+use App\Models\Transactions;
 
 class User extends Authenticatable
 {
@@ -77,4 +78,10 @@ class User extends Authenticatable
     public function listings() {
          return $this->hasMany(SaleNews::class,'user_id');
         }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transactions::class, 'user_id');
+    }
+
 }
