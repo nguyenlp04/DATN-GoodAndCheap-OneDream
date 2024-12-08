@@ -5,7 +5,7 @@
    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
       <div class="container">
          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">My Channel</li>
          </ol>
       </div>
@@ -43,7 +43,7 @@
                                  <div class="mx-3">
                                     <p class="small text-muted "> <i class="fa-solid fa-location-dot" style="color: #74C0FC;"></i> {{ $channel->address }} </p>
                                     <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC;"></i> {{ $channel->created_at->format('d-m-Y') }}</p>
-                                    {{-- 
+                                    {{--
                                     <p class="small text-muted "><i class="fa-solid fa-clipboard-check" style="color: #74C0FC;"></i> 56</p>
                                     --}}
                                  </div>
@@ -201,7 +201,7 @@
                         <input type="text" class="form-control" name="keyword" value="{{ old('keyword') }}" placeholder="Search ..." />
                         <button type="submit" class="btn btn-primary">Apply Filter</button>
                      </form>
-                     {{-- 
+                     {{--
                      <div class="widget widget-collapsible">
                         <h3 class="widget-title">
                            <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
@@ -261,7 +261,7 @@
                @endif
             </div>
             <!-- End .row -->
-           
+
          </div>
          <!-- End .container -->
       </div>

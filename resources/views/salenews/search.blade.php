@@ -304,7 +304,7 @@
 
                     </div>
                     <!-- End .col-lg-9 -->
-                    
+
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
@@ -324,7 +324,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Filter by Category -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
@@ -346,7 +346,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Filter by Price -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
@@ -370,13 +370,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Hidden input to retain search keyword -->
-                            
+
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
                             
+
 
 
 
