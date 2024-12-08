@@ -649,3 +649,4 @@ class SaleNewsController extends Controller
         return view('salenews.all-sale-news', compact('groupedData'));
     }
 }
+
