@@ -38,39 +38,39 @@
 
 <div class="page-wrapper">
 
-<header class="header header-intro-clearance header-4">
-   <div class="header-middle">
-      <div class="container">
-         <div class="header-left">
-            <button class="mobile-menu-toggler">
-            <span class="sr-only">Toggle mobile menu</span>
-            <i class="icon-bars"></i>
-            </button>
-            <a href="#" class="logo">
-            <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
-            <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
-            </a>
-         </div>
-         <!-- End .header-left -->
-         <div class="header-center">
-            <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
-               <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-              <form action="{{ route('search') }}" method="GET">
-                 <input type="hidden" name="address" value="{{ request()->get('address') }}">
-                 <input type="hidden" name="category" value="{{ request()->get('category') }}">
-               <div class="header-search-wrapper search-wrapper-wide">
-                   <label for="q" class="sr-only">Search</label>
-                   <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                   <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
-                       placeholder="Search product ..." autofocus>
+   <header class="header header-intro-clearance header-4">
+      <div class="header-middle">
+         <div class="container">
+            <div class="header-left">
+               <button class="mobile-menu-toggler">
+                  <span class="sr-only">Toggle mobile menu</span>
+                  <i class="icon-bars"></i>
+               </button>
+               <a href="{{ route('home') }}" class="logo">
+                  <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
+                  <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
+               </a>
+            </div>
+            <!-- End .header-left -->
+            <div class="header-center">
+               <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                  <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                  <form action="{{ route('search') }}" method="GET">
+                     <input type="hidden" name="address" value="{{ request()->get('address') }}">
+                     <input type="hidden" name="category" value="{{ request()->get('category') }}">
+                     <div class="header-search-wrapper search-wrapper-wide">
+                        <label for="q" class="sr-only">Search</label>
+                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                        <input type="search" class="form-control" name="keyword" id="keyword" value="{{ request()->get('keyword') }}"
+                           placeholder="Search product ..." autofocus>
 
 
-                       <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
-                       <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
-                   <!-- Hidden inputs to retain filter values -->
+                        <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice') }}">
+                        <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice') }}">
+                        <!-- Hidden inputs to retain filter values -->
 
-               </div>
-           </form>
+                     </div>
+                  </form>
 
 
                </div>
@@ -110,209 +110,209 @@
                <div class="dropdown cart-dropdown">
                   <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                      aria-expanded="false" data-display="static">
-                      <div class="icon">
-                          <i class="fa-regular fa-bell fa-sm"></i>
-                      </div>
-                      <p>notifications</p>
+                     <div class="icon">
+                        <i class="fa-regular fa-bell fa-sm"></i>
+                     </div>
+                     <p>notifications</p>
                   </a>
                   <div class="dropdown-menu-right">
-                      @if (!empty($notifications))
-                          <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
-                              <li class="dropdown-notifications-list scrollable-container" style="max-height: 200px; overflow-y: auto;">
-                                  <ul class="list-group list-group-flush">
-                                      @for ($i = 0; $i < count($notifications); $i++)
-                                          <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}" class="notification-link">
-                                              <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read border-bottom" style="border-bottom: 1px solid #ddd;">
-                                                  <div class="d-flex">
-                                                      <div class="flex-grow-1">
-                                                          <h6 class="mb-1">{{ Str::limit($notifications[$i]['title_notification'], 27) }}</h6>
-                                                          <h5 class="mb-0">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</h5>
-                                                          @php
-                                                          $createdAt = new DateTime($notifications[$i]['created_at']);
-                                                          @endphp
-                                                          <small class="text-muted">{{ $createdAt->format('d/m/Y H:i') }}</small>
-                                                      </div>
-                                                  </div>
-                                              </li>
-                                          </a>
-                                      @endfor
-                                  </ul>
-                              </li>
-                              <li class="border-top">
-                                  <div class="d-grid p-4">
-                                      <a class="btn btn-primary" href="{{ route('notifications.show') }}">
-                                          <small >View all notifications</small>
-                                      </a>
-                                  </div>
-                              </li>
-                          </ul>
-                      @else
-                          <p class="text-center" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">No notifications available.</p>
-                      @endif
+                     @if (!empty($notifications))
+                     <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <li class="dropdown-notifications-list scrollable-container" style="max-height: 200px; overflow-y: auto;">
+                           <ul class="list-group list-group-flush">
+                              @for ($i = 0; $i < count($notifications); $i++)
+                                 <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}" class="notification-link">
+                                 <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read border-bottom" style="border-bottom: 1px solid #ddd;">
+                                    <div class="d-flex">
+                                       <div class="flex-grow-1">
+                                          <h6 class="mb-1">{{ Str::limit($notifications[$i]['title_notification'], 27) }}</h6>
+                                          <h5 class="mb-0">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</h5>
+                                          @php
+                                          $createdAt = new DateTime($notifications[$i]['created_at']);
+                                          @endphp
+                                          <small class="text-muted">{{ $createdAt->format('d/m/Y H:i') }}</small>
+                                       </div>
+                                    </div>
+                                 </li>
+                                 </a>
+                                 @endfor
+                           </ul>
+                        </li>
+                        <li class="border-top">
+                           <div class="d-grid p-4">
+                              <a class="btn btn-primary" href="{{ route('notifications.show') }}">
+                                 <small>View all notifications</small>
+                              </a>
+                           </div>
+                        </li>
+                     </ul>
+                     @else
+                     <p class="text-center" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">No notifications available.</p>
+                     @endif
                   </div>
-              </div>
-                 
-            @else
-            <div class="wishlist">
-               <a href="{{ route('login') }}" style="font-size: 1.8rem">
-                  <div class="icon d-flex align-items-center">
-                     <i class="icon-user"></i>
-                     Login
-                  </div>
-               </a>
+               </div>
+
+               @else
+               <div class="wishlist">
+                  <a href="{{ route('login') }}" style="font-size: 1.8rem">
+                     <div class="icon d-flex align-items-center">
+                        <i class="icon-user"></i>
+                        Login
+                     </div>
+                  </a>
+               </div>
+               <div class="wishlist">
+                  <a href="{{ route('register') }}" style="font-size: 1.8rem">
+                     <div class="icon d-flex align-items-center">
+                        {{-- <i class="icon-user"></i> --}}
+                        Sign Up
+                     </div>
+                  </a>
+               </div>
+               @endif
             </div>
-            <div class="wishlist">
-               <a href="{{ route('register') }}" style="font-size: 1.8rem">
-                  <div class="icon d-flex align-items-center">
-                     {{-- <i class="icon-user"></i> --}}
-                     Sign Up
-                  </div>
-               </a>
-            </div>
-            @endif
+            <!-- End .header-right -->
          </div>
-         <!-- End .header-right -->
+         <!-- End .container -->
       </div>
-      <!-- End .container -->
-</div>
-<!-- End .header-middle -->
-<div class="header-bottom sticky-header">
-   <div class="container">
-      <div class="header-left">
-         <div class="dropdown category-dropdown">
-            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false" data-display="static" title="Browse Categories">
+      <!-- End .header-middle -->
+      <div class="header-bottom sticky-header">
+         <div class="container">
+            <div class="header-left">
+               <div class="dropdown category-dropdown">
+                  <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false" data-display="static" title="Browse Categories">
 
-               Categories <i class="icon-angle-down"></i>
+                     Sub Categories <i class="icon-angle-down"></i>
 
-            </a>
-            <div class="dropdown-menu">
-               <nav class="side-nav">
-                  <ul class="menu-vertical sf-arrows">
-                     @foreach ($categories as $category)
-                     @foreach ($category->subCategories as $subCategory)
-                     <li><a href="{{ route('search') }}?subcategory={{ $subCategory->sub_category_id }}">{{ $subCategory->name_sub_category }}</a></li>
-                     @endforeach
-                     @endforeach
-                  </ul>
-                  <!-- End .menu-vertical -->
+                  </a>
+                  <div class="dropdown-menu">
+                     <nav class="side-nav">
+                        <ul class="menu-vertical sf-arrows">
+                           @foreach ($categories as $category)
+                           @foreach ($category->subCategories as $subCategory)
+                           <li><a href="{{ route('category') }}?subcategory={{ $subCategory->sub_category_id }}">{{ $subCategory->name_sub_category }}</a></li>
+                           @endforeach
+                           @endforeach
+                        </ul>
+                        <!-- End .menu-vertical -->
+                     </nav>
+                     <!-- End .side-nav -->
+                  </div>
+                  <!-- End .dropdown-menu -->
+               </div>
+               <!-- End .category-dropdown -->
+            </div>
+            <!-- End .header-left -->
+            <div class="header-center">
+               <nav class="main-nav">
+                  @if(!empty($floating_notifications))
+                  <span>{{ $floating_notifications }}</span>
+                  @else
+                  <span>Welcome to Good & Cheap website wish you a great career</span>
+                  @endif
                </nav>
-               <!-- End .side-nav -->
+               <!-- End .main-nav -->
             </div>
-            <!-- End .dropdown-menu -->
-         </div>
-         <!-- End .category-dropdown -->
-      </div>
-      <!-- End .header-left -->
-      <div class="header-center">
-         <nav class="main-nav">
-            @if(!empty($floating_notifications))
-            <span>{{ $floating_notifications }}</span>
-            @else
-            <span>Welcome to Good & Cheap website wish you a great career</span>
-            @endif
-         </nav>
-         <!-- End .main-nav -->
-      </div>
-      <div class="header-right">
-         <div class="row">
-            @guest
-            <ul class="menu sf-arrows">
-               <li class="mx-3">
-                  <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
-               </li>
-
-
-
-               <li class="mx-3">
-                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
-               </li>
-
- 
-                <li class="mx-3">
-                  <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>Contact</a>
- 
-               </li>
-
-
-            </ul>
-
-
-
-            @endguest
-            @auth
-            <!-- Nếu đã đăng nhập -->
-            <ul class="menu sf-arrows">
-               <li class="mx-3">
-                  <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
-               </li>
-
-               <li class="mx-3">
-                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
-               </li>
-
-                <li class="mx-3">
-                  <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>contact</a>
-               </li> 
-               <li class="header-dropdown">
-                  <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
-                     alt="User Avatar" style="width: 30px; height: 30px;border-radius: 50%;" class="btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  <ul class="header-menu" style="left: 50%; transform: translateX(-50%);">
-                     <li>
-                        <a class="dropdown-item" href="{{ route('user.manage') }}">
-                           {{ __('Profile') }}
-                        </a>
+            <div class="header-right">
+               <div class="row">
+                  @guest
+                  <ul class="menu sf-arrows">
+                     <li class="mx-3">
+                        <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
                      </li>
-                     <li>
-                        <a class="dropdown-item" href="{{ route('sl.index') }}">
-                           {{ __('Salenews Status') }}
-                        </a>
+
+
+
+                     <li class="mx-3">
+                        <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
                      </li>
-                     <li>
-                        <a href="{{ route('user.transaction_history') }}">
-                           {{ __('Transaction History') }}
-                        </a>
+
+
+                     <li class="mx-3">
+                        <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>Contact</a>
+
                      </li>
-                     @if(!auth()->user()->channel || auth()->user()->channel->status === null)
-                     <li>
-                        <a class="dropdown-item" href="{{ url('channels/create') }}">
-                           {{ __('Upgrage Account') }}
-                        </a>
-                     </li>
-                     @endif
-                     @if(auth()->user()->channel && auth()->user()->channel->status !== null)
-                     <li>
-                        <a class="dropdown-item" href="{{ route('channels.index') }}">
-                           {{ __('My Channel') }}
-                        </a>
-                     </li>
-                     <li>
-                        <a class="dropdown-item" href="{{ url('partners/profile') }}">
-                           {{ __('Channel Manager') }}
-                        </a>
-                     </li>
-                     @endif
-                     <li>
-                        <form class="from_logout" method="POST" action="{{ route('logout') }}">
-                           @csrf
-                           <a class="dropdown-item" href="{{ route('logout') }}"
-                              onclick="event.preventDefault(); this.closest('form').submit();">
-                              {{ __('Log Out') }}
-                           </a>
-                        </form>
-                     </li>
+
+
                   </ul>
-               </li>
 
 
-            </ul>
-            @endauth
+
+                  @endguest
+                  @auth
+                  <!-- Nếu đã đăng nhập -->
+                  <ul class="menu sf-arrows">
+                     <li class="mx-3">
+                        <a href="{{ route("home") }}" class=""><i class="fa-solid fa-house mx-1"></i>Home</a>
+                     </li>
+
+                     <li class="mx-3">
+                        <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
+                     </li>
+
+                     <li class="mx-3">
+                        <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>contact</a>
+                     </li>
+                     <li class="header-dropdown">
+                        <img src="{{ Auth::user()->image_user ? asset(Auth::user()->image_user) : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}"
+                           alt="User Avatar" style="width: 30px; height: 30px;border-radius: 50%;" class="btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <ul class="header-menu" style="left: 50%; transform: translateX(-50%);">
+                           <li>
+                              <a class="dropdown-item" href="{{ route('user.manage') }}">
+                                 {{ __('Profile') }}
+                              </a>
+                           </li>
+                           <li>
+                              <a class="dropdown-item" href="{{ route('sl.index') }}">
+                                 {{ __('Salenews Status') }}
+                              </a>
+                           </li>
+                           <li>
+                              <a href="{{ route('user.transaction_history') }}">
+                                 {{ __('Transaction History') }}
+                              </a>
+                           </li>
+                           @if(!auth()->user()->channel || auth()->user()->channel->status === null)
+                           <li>
+                              <a class="dropdown-item" href="{{ url('channels/create') }}">
+                                 {{ __('Upgrage Account') }}
+                              </a>
+                           </li>
+                           @endif
+                           @if(auth()->user()->channel && auth()->user()->channel->status !== null)
+                           <li>
+                              <a class="dropdown-item" href="{{ route('channels.index') }}">
+                                 {{ __('My Channel') }}
+                              </a>
+                           </li>
+                           <li>
+                              <a class="dropdown-item" href="{{ url('partners/profile') }}">
+                                 {{ __('Channel Manager') }}
+                              </a>
+                           </li>
+                           @endif
+                           <li>
+                              <form class="from_logout" method="POST" action="{{ route('logout') }}">
+                                 @csrf
+                                 <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                 </a>
+                              </form>
+                           </li>
+                        </ul>
+                     </li>
+
+
+                  </ul>
+                  @endauth
+               </div>
+            </div>
+            <!-- End .header-center -->
+            <!-- End .container -->
          </div>
       </div>
-      <!-- End .header-center -->
-      <!-- End .container -->
-   </div>
-   </div>
-   <!-- End .header-bottom -->
+      <!-- End .header-bottom -->
    </header>
    <!-- End .header -->

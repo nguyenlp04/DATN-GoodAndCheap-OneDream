@@ -36,15 +36,18 @@ use App\Http\Controllers\StaffResetPasswordController;
 use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\DashboardController;
 
 require __DIR__ . '/auth.php';
 
 
 // staff
 Route::middleware(['auth.admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.index');
-    })->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return view('admin.index');
+    // })->name('dashboard');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('/blogs', BlogController::class);
@@ -208,6 +211,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+Route::get('/category', [SaleNewsController::class, 'search_category'])->name('category');
 Route::post('/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
 Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('salenews.all');
