@@ -51,8 +51,7 @@
 
 
     <div class="container">
-        <h2 class="title text-center mb-4"></h2><!-- End .title text-center -->
-
+        <h2 class="title text-center mb-4">Explore Categories</h2><!-- End .title text-center -->
         <div class="cat-blocks-container">
             <div class="row">
                 @foreach ($categories as $category)
@@ -115,15 +114,15 @@
 
 
 
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}" class="image-container">
-                                    @if ($item->images->isNotEmpty())
-                                        <img src="{{asset($item->images->first()->image_name) }}" alt="Image"
-                                            class="equal-height-image">
-                                    @endif
-                                </a>
+                    <div class="product product-2">
+                        <figure class="product-media">
+                            <span class="product-label label-circle label-top">Top</span>
+                            <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}" class="image-container">
+                                @if ($item->images->isNotEmpty())
+                                <img src="{{asset($item->images->first()->image_name) }}" alt="Image"
+                                    class="equal-height-image">
+                                @endif
+                            </a>
 
 
 
