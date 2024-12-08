@@ -2,11 +2,7 @@
 
 @section('content')
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-        <div class="container">
-            <h1 class="page-title">{{$blogs->title}}<span>Detail Post</span></h1>
-        </div><!-- End .container -->
-    </div><!-- End .page-header -->
+   
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
         <div class="container">
             <ol class="breadcrumb">

@@ -36,11 +36,11 @@ class BlogController extends Controller
         }])
         ->where('status', '1')
         ->get();    
-        $title = 'Blogs - Good & Cheap';    
+        
         $blogs = Blog::where('status', '1')->with('category')->get();  
         $count = Blog::where('status', '1')->count();
       
-        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count','category','title')); // Trả về view với danh sách blog
+        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count','category',)); // Trả về view với danh sách blog
 
     }
 

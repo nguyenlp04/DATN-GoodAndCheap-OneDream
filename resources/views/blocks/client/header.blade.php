@@ -201,7 +201,7 @@
                </li>
 
                 <li class="mx-3">
-                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-star mx-1"></i>About Us</a>
+                  <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>Contact</a>
                </li>
 
 

@@ -16401,12 +16401,33 @@ button:focus {
     color: #3399FF !important;
     background-color: inherit !important;
 }
-.search-blogs {
+.search-blogs { 
     max-width: 400px; /* Điều chỉnh chiều rộng tối đa */
 
 
     text-align: center;
 }
+.add-wishlist {
+  
+    background-color: inherit !important;
+    border: 0.1px solid #3399FF !important;
+}
+.add-wishlist:focus  {
+  color: white !important;
+    background-color: #3399FF !important;
+    transition: 0.2s;
+}
+.add-wishlist:active  {
+    color: white !important;
+      background-color: #3399FF !important;
+      transition: 0.2s;
+  }
+.add-wishlist:hover  {
+  
+    background-color: #f5f6f9bb !important;
+    transition: 0.2s;
+}
+ 
 
 
  
