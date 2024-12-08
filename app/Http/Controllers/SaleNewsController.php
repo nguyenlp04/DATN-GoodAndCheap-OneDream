@@ -374,7 +374,7 @@ class SaleNewsController extends Controller
     {
         return SaleNews::where('sale_new_id', '>', $currentId)
             ->where('approved', 1)
-            ->where('status ', 1)
+            ->where('status', 1)
             ->where('is_delete', '!=', 1)
             ->orderBy('sale_new_id')
             ->first();
@@ -384,7 +384,7 @@ class SaleNewsController extends Controller
     {
         return SaleNews::where('sale_new_id', '<', $currentId)
             ->where('approved', 1)
-            ->where('status ', 1)
+            ->where('status', 1)
             ->orderBy('sale_new_id', 'desc')
             ->first();
     }
