@@ -44,7 +44,7 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
-    });
+    })->name('dashboard');
     Route::get('/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('/blogs', BlogController::class);
@@ -104,6 +104,21 @@ Route::middleware(['auth.admin'])->group(function () {
 // admin
 
 Route::middleware(['auth.role.admin'])->group(function () {
+
+    Route::prefix('trash')->group(function () {
+        Route::get('/trash-sale-news', [SaleNewsController::class, 'trash'])->name('trash.salenews');
+        Route::post('/sale-news/restore/{id}', [SaleNewsController::class, 'restore'])->name('restore-salenews');
+        Route::delete('/sale-news/delete/{id}', [SaleNewsController::class, 'destroyofadmin'])->name('delete-salenews');
+
+        Route::get('/trash-blog', [BlogController::class, 'trash'])->name('trash.blog');
+        Route::post('/blog/restore/{id}', [BlogController::class, 'restore'])->name('restore-blog');
+        Route::delete('/blog/delete/{id}', [BlogController::class, 'destroyofadmin'])->name('delete-blog');
+
+        Route::get('/trash-categories', [CategoryController::class, 'trash'])->name('trash.category');
+        Route::post('/category/restore/{id}', [CategoryController::class, 'restore'])->name('restore-category');
+        Route::delete('/category/delete/{id}', [CategoryController::class, 'destroyofadmin'])->name('delete-category');
+    });
+
     Route::prefix('config')->group(function () {
         Route::get('/seo', [ConfigController::class, 'index'])->name('seo');
         Route::get('/get-scripts', [ConfigController::class, 'getScripts'])->name('getScripts');
@@ -136,7 +151,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/wishlist/toggle', [WishlistController::class, 'toggleWishlist'])->name('toggleWishlist');
 
-    //end wishlisst 
+    //end wishlisst
 
     Route::post('payment', [VnPayController::class, 'initiatePayment'])->name('vnpay.initiatePayment');
     Route::get('/IPN', [VnpayController::class, 'handleIPN']);
@@ -193,16 +208,18 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
-Route::post('/search-channel', [ChannelController::class, 'search_channel'])->name('search_channel');
+Route::post('/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
 Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
-Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('all_sale_news');
+Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('salenews.all');
 // enduser
 
 
 
 // guest
 
-
+//show user
+Route::get('/user/{id}', [UserManageController::class, 'show'])->name('user.show');
+//end show
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/blog/search', [BlogController::class, 'search'])->name('blog.search');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
@@ -259,14 +276,3 @@ Route::prefix('trash')->group(function () {
         return view('admin.index');
     });
 });
-
-
-
-
-
-
-
-Route::get('/tb', function () {
-    return view('notifications.list');
-});
-Route::get('/testmail', [SendMailController::class, 'sendTestEmail']);

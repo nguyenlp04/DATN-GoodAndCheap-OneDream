@@ -73,9 +73,13 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="{{ url("index.html") }}" class="app-brand-link gap-2">
+                            <a href="{{ url("/") }}" class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">
-                                <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Molla Logo" width="150">
+                                    @if (!empty($setting->logo))
+                                    <img src="{{ asset($setting->logo) }}" alt="Logo" width="150">
+                                    @else
+                                    <img src="{{ asset('assets/images/demos/demo-4/logo.png') }}" alt="Logo" width="150">
+                                    @endif
                                 </span>
                             </a>
                         </div>
@@ -181,6 +185,26 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    @if (session('alert'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "{{ session('alert')['type'] }}",
+            title: "{{ session('alert')['message'] }}"
+        });
+    </script>
+    @endif
 </body>
 
 </html>

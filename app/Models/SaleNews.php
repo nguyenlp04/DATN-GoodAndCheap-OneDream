@@ -84,4 +84,10 @@ class SaleNews extends Model
         return ($this->vip_package_id && $this->vip_start_date <= $currentDate && $this->vip_end_date >= $currentDate) ||
             ($this->channel && $this->channel->isVip());
     }
+    public function getIsFavoritedAttribute()
+    {
+        
+        return $this->likes()->where('user_id', auth()->id())->exists();
+    }
 }
+ 

@@ -14,8 +14,13 @@ use App\Models\VipPackage;
 use Illuminate\Support\Carbon;
 use App\Models\Channel;
 use App\Models\Subcategory;
-use App\Models\SubcategoryAttribute;
 
+use Illuminate\Support\Facades\File;
+
+
+use App\Models\SubcategoryAttribute;
+use App\Models\Transactions;
+use Illuminate\Database\Eloquent\Collection;
 
 class SaleNewsController extends Controller
 
@@ -325,9 +330,9 @@ class SaleNewsController extends Controller
             ->where('approved', 1)->where('user_id', auth()->user()->user_id)
             ->get();
         // dd($list_pending_approval);
+        $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->count();
 
-
-        return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden'));
+        return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden', 'transactionCount'));
     }
     // public function tv2(){
     //     return view('salenews.promote');
@@ -365,6 +370,25 @@ class SaleNewsController extends Controller
         return redirect()->route('listings.index')->with('success', 'Listing promoted successfully.');
     }
 
+    public function getNextSaleNewId($currentId)
+    {
+        return SaleNews::where('sale_new_id', '>', $currentId)
+            ->where('approved', 1)
+            ->where('status', 1)
+            ->where('is_delete', '!=', 1)
+            ->orderBy('sale_new_id')
+            ->first();
+    }
+
+    public function getPreviousSaleNewId($currentId)
+    {
+        return SaleNews::where('sale_new_id', '<', $currentId)
+            ->where('approved', 1)
+            ->where('status', 1)
+            ->orderBy('sale_new_id', 'desc')
+            ->first();
+    }
+
     public function renderSaleNewDetail(string $id)
     {
         // dd($get_data_7subcategory);
@@ -397,6 +421,11 @@ class SaleNewsController extends Controller
             if ($news) {
                 $data = $news->data;
                 $data_json = json_decode($data);
+                $nextNews = $this->getNextSaleNewId($id);
+                $prevNews = $this->getPreviousSaleNewId($id);
+                $nextNewsId = $nextNews ? $nextNews->sale_new_id : null;
+                $prevNewsId = $prevNews ? $prevNews->sale_new_id : null;
+
                 //  dd($data_json);
                 if (!is_null($news->channel_id)) {
                     return view('salenews.detail', [
@@ -406,7 +435,9 @@ class SaleNewsController extends Controller
                         'data_count_news_sold' => $data_count_news_sold,
                         'data_json' => $data_json,
                         // 'variant_data_details' =>$variant_data_details,
-                        'get_data_7subcategory' => $get_data_7subcategory
+                        'get_data_7subcategory' => $get_data_7subcategory,
+                        'nextNewsId' => $nextNewsId,
+                        'prevNewsId' => $prevNewsId
                     ]);
                 }
 
@@ -415,7 +446,9 @@ class SaleNewsController extends Controller
                     'get_user' => $get_user_phone,
                     'data_json' => $data_json,
                     // 'variant_data_details' =>$variant_data_details,
-                    'get_data_7subcategory' => $get_data_7subcategory
+                    'get_data_7subcategory' => $get_data_7subcategory,
+                    'nextNewsId' => $nextNewsId,
+                    'prevNewsId' => $prevNewsId
                 ]);
             }
             return redirect()->back()->with('alert', [
@@ -429,6 +462,7 @@ class SaleNewsController extends Controller
             ]);
         }
     }
+
 
     public function list_salenew()
     {
@@ -546,6 +580,17 @@ class SaleNewsController extends Controller
         $minPrice = $request->get('minPrice');
         $maxPrice = $request->get('maxPrice');
 
+
+        $subcategoryID = $request->get('subcategory');    // Get address filter
+        // dd($subcategoryID);
+
+        $minPrice = $request->get('minPrice');
+        $maxPrice = $request->get('maxPrice');
+
+
+        $subcategoryID = $request->get('subcategory');    // Get address filter
+        // dd($subcategoryID);
+
         $threeDaysAgo = Carbon::now()->subDays(3);
 
         // Recent VIP SaleNews (users created within the last 3 days)
@@ -554,10 +599,14 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->where('is_delete', '!=', 1)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
             });
+        if (!empty($subcategoryID)) {
+            $recentVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
         if ($categoryId) {
             $recentVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -567,7 +616,6 @@ class SaleNewsController extends Controller
         if ($address) {
             $recentVipSaleNews->where('address', 'like', "%$address%");
         }
-
         $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
 
         // Older VIP SaleNews (users created more than 3 days ago)
@@ -576,11 +624,14 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
+            ->where('is_delete', '!=', 1)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
             });
-
+        if (!empty($subcategoryID)) {
+            $olderVipSaleNews->where('sub_category_id', $subcategoryID);
+        }
         if ($categoryId) {
             $olderVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -591,15 +642,16 @@ class SaleNewsController extends Controller
             $olderVipSaleNews->where('address', 'like', "%$address%");
         }
         $olderVipSaleNews = $olderVipSaleNews->inRandomOrder()->get();
-
         // Non-VIP SaleNews with pagination
         $perPage = $request->get('perPage', 8);
         $nonVipSaleNews = SaleNews::where('title', 'like', "%$keyword%")
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
-            ->whereBetween('price', [$minPrice, $maxPrice])
-            ->where('approved', 1);
+            ->where('is_delete', '!=', 1)
+
+            ->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice]);
 
         if ($categoryId) {
             $nonVipSaleNews->whereHas('sub_category.category', function ($query) use ($categoryId) {
@@ -632,20 +684,96 @@ class SaleNewsController extends Controller
             'maxPrice'
         ));
     }
-    public function all_sale_news()
+    public function all_sale_news(Request $request)
     {
-        $data = SaleNews::with(['user', 'sub_category.category', 'images'])
+        $currentCategoryId = $request->input('category', 'all');
+
+        // Lấy danh mục với số lượng tin liên quan
+        $categories = Category::with(['subcategories.salenews' => function ($query) {
+            $query->where('status', 1)
+                ->where('approved', 1)
+                ->where('is_delete', 0);
+        }])
+            ->select('category_id', 'name_category', 'image_category')
+            ->get()
+            ->map(function ($category) {
+                $category->news_count = $category->subcategories->flatMap->salenews->count();
+                return $category;
+            });
+
+        // Lấy sản phẩm theo danh mục
+        $items = SaleNews::with(['user', 'sub_category.category', 'images'])
             ->where('status', 1)
             ->where('approved', 1)
-            ->get();
+            ->where('is_delete', null)
+            ->when($currentCategoryId !== 'all', function ($query) use ($currentCategoryId) {
+                $query->whereHas('sub_category.category', function ($q) use ($currentCategoryId) {
+                    $q->where('category_id', $currentCategoryId);
+                });
+            })
+            ->paginate(5); // 5 sản phẩm mỗi trang
 
-        $groupedData = $data->groupBy(function ($item) {
-            return $item->sub_category->category_id;
-        });
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('partials.sale-news-items', compact('items'))->render(),
+                'pagination' => (string)$items->links(),
+            ]);
+        }
 
-        $allItems = $data;
-        $groupedData['all'] = $allItems;
+        return view('salenews.all-sale-news', compact('categories', 'items', 'currentCategoryId'));
+    }
 
-        return view('salenews.all-sale-news', compact('groupedData'));
+
+
+
+    public function trash()
+    {
+
+        $data = SaleNews::with('vipPackage', 'images', 'firstImage', 'sub_category')
+            ->where('is_delete', 1)->get();
+        return view('admin.trash.sale-news', compact('data'));
+    }
+    public function restore($id)
+    {
+        try {
+            $item = SaleNews::findOrFail($id);
+
+            // Thay đổi trạng thái giữa 0 và 2
+            $item->is_delete = null;
+            $item->save();
+
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => ' Reject  successfully!'
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Error: ' . $th->getMessage()
+            ]);
+        }
+    }
+    public function destroyofadmin(string $id)
+    {
+        $check = SaleNews::findOrFail($id);
+        if ($check) {
+            foreach ($check->images as $photo) {
+                $filePath = public_path($photo->image_name);
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+                $photo->delete();
+            }
+            $check->delete();
+            return redirect()->back()->with('alert', [
+                'type' => 'success',
+                'message' => 'Delete successful !'
+            ]);
+        } else {
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Not found !'
+            ]);
+        }
     }
 }
