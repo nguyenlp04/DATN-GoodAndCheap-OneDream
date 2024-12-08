@@ -137,10 +137,11 @@
                                     @csrf
                                     <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
                                     <button type="submit"
-                                        class=" btn-product-icon btn-wishlist color-danger add-to-wishlist-btn"
-                                        title="Add to WishList  "></button>
+                                        class="   add-wishlist  {{ $item->isFavorited ? ' text-white bg-primary' : 'text-primary' }}  rounded-circle    add-to-wishlist-btn"
+                                        title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}  ">  <i class="fas fa-heart"></i></button>
 
-                                </form>
+                                    </form> 
+                               
 
                             </div>
                         </figure>
@@ -542,6 +543,7 @@
 
 <!-- Trong Blade view -->
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+
 <script>
     var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}"; // Lấy user_id nếu người dùng đã đăng nhập
 
@@ -560,71 +562,59 @@
                 toast: true, // Hiển thị thông báo nhỏ
                 position: 'top-end', // Vị trí thông báo ở góc trên cùng bên phải
                 showConfirmButton: false, // Không hiển thị nút xác nhận
-                timer: 1000, // Thời gian hiển thị thông báo là 1 giây
+                timer: 2000, // Thời gian hiển thị thông báo là 2 giây
                 timerProgressBar: true // Hiển thị thanh tiến trình đếm ngược
             }).then(() => {
-                // Chuyển hướng người dùng đến trang đăng nhập
-                window.location.href = @json(route('login'));
-
+                window.location.href = "{{ route('login') }}"; // Chuyển hướng đến trang đăng nhập
             });
             return; // Kết thúc hàm, không thực hiện các bước tiếp theo
         }
 
         // Gửi yêu cầu AJAX để thêm sản phẩm vào danh sách yêu thích
         $.ajax({
-            url: form.attr('action'), // URL lấy từ thuộc tính action của form
+            url: form.attr('action'), // Lấy URL từ thuộc tính action của form
             type: 'POST', // Phương thức gửi yêu cầu là POST
-            data: {
-                _token: '{{ csrf_token() }}', // CSRF token để xác thực yêu cầu
-                user_id: userId, // ID của người dùng
-                sale_new_id: saleNewId // ID của sản phẩm
-            },
+            data: form.serialize(), // Lấy toàn bộ dữ liệu của form
             success: function(response) {
-                // Xử lý khi server phản hồi thành công
-                if (response.type === 'success') {
-                    Swal.fire({
-                        icon: 'success', // Hiển thị biểu tượng thành công
-                        title: response.message, // Nội dung thông báo từ server
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
-                } else {
-                    // Nếu server trả về lỗi
-                    Swal.fire({
-                        icon: 'error', // Hiển thị biểu tượng lỗi
-                        title: response.message, // Nội dung lỗi từ server
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                // Xử lý khi yêu cầu gặp lỗi
-                var response = JSON.parse(xhr.responseText); // Phân tích lỗi trả về
+                // Nếu thêm thành công
                 Swal.fire({
-                    icon: 'error', // Hiển thị biểu tượng lỗi
-                    title: response.message || 'An error occurred!', // Nội dung lỗi
+                    icon: response.type === 'success' ? 'success' : 'info', // Hiển thị thông báo dựa trên type
+                    title: response.message || 'Action completed!', // Nội dung từ server
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
-                    timer: 3000,
+                    timer: 2000, // Thời gian hiển thị thông báo
+                    timerProgressBar: true
+                });
+
+                // Cập nhật giao diện cho nút
+                if (response.type === 'success') {
+                    form.find('.add-to-wishlist-btn')
+                        .toggleClass('bg-primary text-white text-primary')
+                        .attr('title', response.isFavorited ? 'Added to wishlist' : 'Add to wishlist')
+                        .html(response.isFavorited ? '<i class="fas fa-heart"></i>  ' : '<i class="fas fa-heart"></i>  ');
+                }
+            },
+            error: function(xhr) {
+                // Nếu xảy ra lỗi
+                Swal.fire({
+                    icon: 'error',
+                    title: xhr.responseJSON?.message || 'An error occurred!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000, // Thời gian hiển thị
                     timerProgressBar: true
                 });
             }
         });
     });
 
-    // Hiển thị thông báo nếu có từ session (sau khi load trang)
+    // Hiển thị thông báo sau khi load trang nếu có từ session
     @if(session('alert'))
     Swal.fire({
-        icon: "{{ session('alert')['type'] }}", // Loại thông báo (success, error, warning)
-        title: "{{ session('alert')['message'] }}", // Nội dung thông báo
+        icon: "{{ session('alert')['type'] }}",
+        title: "{{ session('alert')['message'] }}",
         toast: true,
         position: 'top-end',
         showConfirmButton: false,

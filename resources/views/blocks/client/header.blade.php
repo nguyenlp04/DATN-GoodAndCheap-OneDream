@@ -228,8 +228,10 @@
                   <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-pen-nib mx-1"></i>Blog</a>
                </li>
 
-               <li class="mx-3">
-                  <a href="{{route('blogs.listting')}}" class=""><i class="fa-solid fa-star mx-1"></i>About Us</a>
+ 
+                <li class="mx-3">
+                  <a href="{{route('contact')}}" class=""><i class="fa-solid fa-star mx-1"></i>Contact</a>
+ 
                </li>
 
 
