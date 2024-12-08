@@ -777,3 +777,4 @@ class SaleNewsController extends Controller
         }
     }
 }
+
