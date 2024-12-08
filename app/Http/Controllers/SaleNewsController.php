@@ -599,7 +599,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
-            ->where('is_delete', '!=', 1)
+            ->where('is_delete', '!=', 0)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '>=', $threeDaysAgo);
@@ -624,7 +624,7 @@ class SaleNewsController extends Controller
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
             ->where('approved', 1)
-            ->where('is_delete', '!=', 1)
+            ->where('is_delete', '!=', 0)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->whereHas('user', function ($query) use ($threeDaysAgo) {
                 $query->where('created_at', '<', $threeDaysAgo);
@@ -648,7 +648,7 @@ class SaleNewsController extends Controller
             ->with('sub_category.category')
             ->whereNull('vip_package_id')
             ->where('status', 1)
-            ->where('is_delete', '!=', 1)
+            ->where('is_delete', '!=', 0)
 
             ->where('approved', 1)
             ->whereBetween('price', [$minPrice, $maxPrice]);
