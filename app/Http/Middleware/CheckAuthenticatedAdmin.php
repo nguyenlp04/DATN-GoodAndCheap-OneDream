@@ -18,9 +18,19 @@ class CheckAuthenticatedAdmin
     {
 
         if (!Auth::guard('staff')->check() || !isset(Auth::guard('staff')->user()->staff_id)) {
-            return redirect('/staff/login');
+            session()->put('url.intended', url()->current());
+            return redirect()->route('staff.login');
         }
+        //check status &&
 
+
+        if (Auth::guard('staff')->user()->status != 1) {
+            Auth::guard('staff')->logout();
+            return redirect('/staff/login')->with('alert', [
+                'type' => 'error',
+                'message' => 'Your account has been locked. Please contact the administrator.',
+            ]);
+        }
         return $next($request);
     }
 }

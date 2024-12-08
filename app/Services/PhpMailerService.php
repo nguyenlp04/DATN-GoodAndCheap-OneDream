@@ -16,8 +16,8 @@ class PhpMailerService
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com'; // Thay bằng SMTP server của bạn
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'nhungbae2004@gmail.com'; // Email của bạn
-            $mail->Password   = 'zficlqvwhhvulpcr'; // Mật khẩu email
+            $mail->Username   = env('MAIL_USERNAME'); // Email của bạn
+            $mail->Password   = env('MAIL_PASSWORD'); // Mật khẩu email
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 

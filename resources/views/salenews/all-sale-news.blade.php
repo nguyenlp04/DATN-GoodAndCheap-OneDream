@@ -1,117 +1,137 @@
 @extends('layouts.client_layout')
 
+@section('content')
 <style>
-    /* Đảm bảo các ảnh luôn chiếm đầy không gian mà không bị méo */
     .product-media img {
         object-fit: cover;
         width: 100%;
-        height: 200px; /* Chỉnh chiều cao cố định cho ảnh */
-        border-radius: 10px;
+        height: 200px;
     }
-
+    .product-body {
+        height: 130px;
+    }
+    .tablinks img {
+        width: 40px;
+        height: 40px;
+    }
 </style>
 
-@section('content')
 <div class="container">
-    <!-- Tiêu đề -->
-    <h2 class="title text-center mb-4 mt-2">What's Hot Today?</h2>
-
     <!-- Tabs danh mục -->
-    <div class="cat-blocks-container">
+    <div class="cat-blocks-container mt-2">
         <div class="row">
             <!-- Tab "Tất cả tin đăng" -->
-            <div class="col-6 col-sm-4 col-lg-2">
-                <a href="javascript:void(0);" onclick="openTab(event, 'catall')" class="cat-block tablinks active">
-                        <span>
-                            <img src="{{ asset('storage/category/hot.png') }}" alt="All categories" class="img-fluid" width="100px">
-                        </span>
+            <div class="col-4 col-sm-3 col-lg-2">
+                <a href="{{ route('salenews.all', ['category' => 'all']) }}" 
+                   class="cat-block tablinks {{ $currentCategoryId === 'all' ? 'active' : '' }}" data-category-id="all">
+                    <span>
+                        <img src="{{ asset('storage/category/hot.png') }}" alt="All categories" class="img-fluid">
+                    </span>
                     <h3 class="cat-block-title">Hot news</h3>
                 </a>
             </div>
-    
+
             <!-- Các danh mục khác -->
-            @foreach($groupedData as $categoryId => $items)
-                @if ($categoryId !== 'all')
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="javascript:void(0);" onclick="openTab(event, 'cat{{ $categoryId }}')" class="cat-block tablinks">
-                        <figure>
-                            <span>
-                                <img src="{{ asset($items->first()->sub_category->category->image_category ?? 'default-placeholder.jpg') }}" alt="Category image" >
-                            </span>
-                        </figure>
-                        <h3 class="cat-block-title ">{{ $items->first()->sub_category->category->name_category }}</h3>
+            @foreach ($categories as $category)
+                <div class="col-4 col-sm-3 col-lg-2">
+                    <a href="{{ route('salenews.all', ['category' => $category->category_id]) }}" 
+                       class="cat-block tablinks {{ $currentCategoryId == $category->category_id ? 'active' : '' }}" 
+                       data-category-id="{{ $category->category_id }}">
+                        <span>
+                            <img src="{{ asset($category->image_category ?? 'default-placeholder.jpg') }}" alt="{{ $category->name_category }}" class="img-fluid">
+                        </span>
+                        <h3 class="cat-block-title">{{ $category->name_category }}</h3>
                     </a>
                 </div>
-                @endif
             @endforeach
         </div>
     </div>
-    
+
     <!-- Danh sách sản phẩm -->
-    <div class="mb-4">
-        @foreach($groupedData as $categoryId => $items)
-            <div id="cat{{ $categoryId }}" class="tabcontent" style="display: {{ $categoryId === 'all' ? 'block' : 'none' }};">
-                <div class="row">
-                    @foreach ($items as $item)
-                    <div class="col-12 col-sm-6 col-lg-3 mb-4">
-                        <div class="product">
-                            <figure class="product-media">
-                                <a href="salenew-detail/{{ $item->sale_new_id }}" class="image-container">
-                                    @if ($item->images->isNotEmpty())
-                                        <img src="{{ $item->images->first()->image_name }}" alt="{{ $item->title }}" class="img-fluid">
-                                    @else
-                                        <img src="{{ asset('default-placeholder.jpg') }}" alt="No Image" class="img-fluid">
-                                    @endif
-                                </a>
-                                <div class="product-action-vertical">
-                                    <form action="{{ route('addToWishlist') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
-                                        <button type="submit" class="btn-product-icon btn-wishlist color-danger add-to-wishlist-btn"
-                                            title="Add to Wishlist"></button>
-                                    </form>
-                                </div>
-                            </figure>
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">{{ $item->sub_category->name_sub_category }}</a>
-                                </div>
-                                <h3 class="product-title">
-                                    <a href="salenew-detail/{{ $item->sale_new_id }}">
-                                        {{ Str::limit($item->title, 35, '...') }}
-                                    </a>
-                                </h3>
-                                <div class="product-price">${{ number_format($item->price, 2) }}</div>
-                            </div>
+    <div class="row mt-4" id="product-list">
+        @foreach ($items as $item)
+            <div class="col-12 col-sm-6 col-lg-3 mb-4">
+                <div class="product">
+                    <figure class="product-media">
+                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
+                            <img src="{{ $item->images->first()->image_name ?? asset('default-placeholder.jpg') }}" alt="{{ $item->title }}" class="img-fluid">
+                        </a>
+                    </figure>
+                    <div class="product-body">
+                        <div class="product-cat">
+                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
+                                {{ Str::limit($item->title, 35, '...') }}
+                            </a>
+                        </h3>
+                        <div class="product-price">
+                            ${{ number_format($item->price, 2) }}
                         </div>
                     </div>
-                    @endforeach
                 </div>
             </div>
         @endforeach
     </div>
+
+    <!-- Phân trang -->
+    <div class="pagination-wrapper" id="pagination">
+        {{ $items->links() }}
+    </div>
 </div>
 
 <script>
-   document.addEventListener("DOMContentLoaded", function() {
-    var firstTab = document.querySelector('.tablinks.active');
-    if (firstTab) {
-        firstTab.click();
-    }
-});
+    $(document).on('click', '.cat-block.tablinks', function (e) {
+        e.preventDefault();
 
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.classList.add("active");
-}
+        const categoryId = $(this).data('category-id'); // Lấy ID danh mục
+        const url = "{{ route('salenews.all') }}"; // URL gốc
+
+        // Gửi yêu cầu AJAX
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { category: categoryId },
+            beforeSend: function () {
+                $('#product-list').html('<p>Đang tải dữ liệu...</p>'); // Loading
+            },
+            success: function (response) {
+                // Cập nhật danh sách sản phẩm
+                $('#product-list').html(response.html);
+
+                // Cập nhật phân trang
+                $('#pagination').html(response.pagination);
+            },
+            error: function () {
+                alert('Không thể tải dữ liệu.');
+            }
+        });
+    });
+
+    // AJAX cho phân trang
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        const url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () {
+                $('#product-list').html('<p>Đang tải dữ liệu...</p>'); // Loading
+            },
+            success: function (response) {
+                // Cập nhật danh sách sản phẩm
+                $('#product-list').html(response.html);
+
+                // Cập nhật phân trang
+                $('#pagination').html(response.pagination);
+            },
+            error: function () {
+                alert('Không thể tải dữ liệu.');
+            }
+        });
+    });
 </script>
+
 @endsection

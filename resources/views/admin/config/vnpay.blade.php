@@ -30,7 +30,7 @@
                             <!-- Notification Information -->
                             <div class="card mb-6">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0">VnPay</h5>
+                                    <h5 class="card-title mb-0">VNPAY</h5>
                                 </div>
                                 <div class="card-body">
 
