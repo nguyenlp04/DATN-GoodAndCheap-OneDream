@@ -270,5 +270,7 @@
    <!-- End .main -->
    </div>
 </main>
+<script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
+
 @endsection
 <script></script>
