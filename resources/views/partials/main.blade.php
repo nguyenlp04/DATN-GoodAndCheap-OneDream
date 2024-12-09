@@ -75,7 +75,7 @@
     <div class="container new-arrivals">
         <div class="heading heading-flex mb-3">
             <div class="heading-left">
-                <h2 class="title">Top Of page</h2><!-- End .title -->
+                <h2 class="title">Top Sale News</h2><!-- End .title -->
             </div>
 
             <!-- End .heading-left -->
