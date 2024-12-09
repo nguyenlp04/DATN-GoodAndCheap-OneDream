@@ -40,7 +40,7 @@
                     <div class="d-flex align-content-center flex-wrap gap-4">
                         <div class="d-flex gap-4">
                             {{-- <button class="btn btn-label-secondary">Discard</button>    --}}
-                            <div class="btn btn-label-primary">Discard</div>
+                            <a href="{{ route('renderstaff') }}" class="btn btn-label-primary">Discard</a>
                         </div>
                         <input type="submit" class="btn btn-primary" id="btn-publish-product" value="Publish staff">
                     </div>
@@ -68,7 +68,12 @@
                                         @isset($dataStaffID)
                                         value="{{ $dataStaffID->full_name }}"
                                         @endisset>
-                                    <x-input-error :messages="$errors->get('full_name')" class="mt-2 text-danger" />
+                                @error('full_name')
+                                <div class="text-danger">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{ $message }}
+                                </div>
+                                @enderror
                                 </div>
                                 <div class="mb-6 col-md-6">
                                     <label class="form-label" for="email">Email</label>
@@ -76,7 +81,12 @@
                                         @isset($dataStaffID)
                                         value="{{ $dataStaffID->email }}" disabled
                                         @endisset>
-                                    <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
+                                     @error('email')
+                                <div class="text-danger">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{ $message }}
+                                </div>
+                                @enderror
                                 </div>
                             </div>
                             <div class="row ">
@@ -86,7 +96,12 @@
                                         @isset($dataStaffID)
                                         value="{{ $dataStaffID->address }}"
                                         @endisset>
-                                    <x-input-error :messages="$errors->get('address')" class="mt-2 text-danger" />
+                                    @error('address')
+                                <div class="text-danger">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{ $message }}
+                                </div>
+                                @enderror
                                 </div>
                                 <div class="mb-6 col-md-6">
 
@@ -94,13 +109,18 @@
                                     @isset($dataStaffID)
                                     <label for="status" class="text-black font-semibold pb-1 capitalize">Status:</label>
                                     <select id="status" name="status" class="form-control" required>
-                                        <option value="1" {{ $dataStaffID->status == 1 ? 'selected' : '' }}>Hoạt động</option>
-                                        <option value="0" {{ $dataStaffID->status == 0 ? 'selected' : '' }}>Khóa</option>
+                                        <option value="1" {{ $dataStaffID->status == 1 ? 'selected' : '' }}>Activate</option>
+                                        <option value="0" {{ $dataStaffID->status == 0 ? 'selected' : '' }}>inactive</option>
                                     </select>
                                     @else
                                     <label class="form-label" for="password">Pass word</label>
                                     <input type="password" class="form-control" id="password" placeholder="Pass word" name="password" aria-label="password">
-                                    <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
+                                     @error('password')
+                                <div class="text-danger">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    {{ $message }}
+                                </div>
+                                @enderror
                                     @endisset
 
                                 </div>
@@ -165,9 +185,9 @@
                                                 <th>ID-Staff</th>
                                                 <th>Name</th>
                                                 <th>Email</th>
-                                                <th>Trạng thái</th>
-                                                <th>Xem</th>
-                                                <th>Chức năng </th>
+                                                <th>Status</th>
+                                                <th>View</th>
+                                                <th>Action </th>
 
                                             </tr>
                                         </thead>
@@ -181,9 +201,9 @@
                                                 <td>{{ $item ->email }}</td>
                                                 <td>
                                                     @if($item->status == 0)
-                                                    Khóa
+                                                    Inactive
                                                     @else
-                                                    Hoạt động
+                                                    Activate
                                                     @endif
                                                 </td>
 
@@ -210,17 +230,17 @@
                                                                         </div>
                                                                         <div class="col-md-5 mx-2">
 
-                                                                            <p><strong>Tên:</strong><br>{{ $item -> full_name }}</p>
+                                                                            <p><strong>Name:</strong><br>{{ $item -> full_name }}</p>
                                                                             <p><strong>Email:</strong><br>{{ $item ->email }}</p>
-                                                                            <p><strong>Địa chỉ:</strong><br>{{ $item ->address }}</p>
-                                                                            <p><strong>Chức vụ:</strong><br>{{ $item -> role }}</p>
-                                                                            <p><strong>Trạng thái:</strong><br>
+                                                                            <p><strong>Address:</strong><br>{{ $item ->address }}</p>
+                                                                            <p><strong>Roles:</strong><br>{{ $item -> role }}</p>
+                                                                            <p><strong>Status:</strong><br>
                                                                                 @if($item->status == 0)
-                                                                                Khóa
+                                                                                inactive
                                                                                 @else
-                                                                                Hoạt động
+                                                                                activate
                                                                                 @endif </p>
-                                                                            <p><strong>Hoạt động từ ngày:</strong><br>{{ $item -> created_at }}</p>
+                                                                            <p><strong>created_at:</strong><br>{{ $item -> created_at }}</p>
                                                                         </div>
 
                                                                     </div>

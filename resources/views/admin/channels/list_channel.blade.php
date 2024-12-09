@@ -67,12 +67,12 @@
                         </div>
                       </div>
                     </td>
-                 
+
                     <td class="bg-light rounded">
                     <form action="{{route('channel.toggleStatus',$channel->channel_id)}}" method="POST" class="toggle-status-form"   data-blog-id="{{ $channel->channel_id }}" >
                     @csrf
                     <button type="button" class="btn btn-sm {{ $channel->status == 1 ? 'text-primary' : 'text-secondary' }}"  style="position: relative;">
-                     
+
                         <i class="fas {{ $channel->status == 1 ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                           <span class="tooltip-text eye">{{ $channel->status == 1 ? 'Active' : 'Inactive' }}</span>
                             </button>
@@ -92,7 +92,7 @@
                             <li>
                               <a class="dropdown-item" href="{{ route('channels.edit', $channel->channel_id) }}"> <span><i class="fa-solid fa-pen-to-square me-1"></i></span>Edit</a>
                             </li>
-                            <li>
+                            {{-- <li>
                               <a onclick="confirmDelete(event, {{ $channel->channel_id }})">
                                 <form id="delete-form-{{ $channel->channel_id }}" action="{{ route('channels.destroy', $channel->channel_id) }}" method="POST" style="display:inline;">
                                   @csrf
@@ -102,7 +102,7 @@
                                   </button>
                                 </form>
                               </a>
-                            </li>
+                            </li> --}}
                           </ul>
                         </div>
                       </div>
@@ -164,6 +164,6 @@
   <div class="content-backdrop fade"></div>
 </div>
 <!-- Content wrapper -->
- 
+
 
 @endsection

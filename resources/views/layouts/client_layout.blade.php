@@ -28,8 +28,7 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="{{ asset('assets/images/icons/browserconfig.xml') }}">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet"
-        {{-- href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
@@ -53,25 +52,25 @@
 
     @include('blocks.client.footer')
 
+
+
     <!-- Plugins JS File -->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script> --}}
+
     <script src="{{ asset('assets/js/superfish.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/wNumb.js') }}"></script>
-    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
-
     <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>
+
+    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
 
 
+    <script src="{{ asset('assets/js/main.js') }}"></script>
     @yield('script-link-css')
     <!-- Main JS File -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
     {{-- <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script> --}}
 
     {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> --}}
@@ -96,8 +95,9 @@
         });
     </script>
     @endif
+    @if(request()->routeIs('salenew.detail'))
      <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>
+    @endif
 </body>
 
 </html>
