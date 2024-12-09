@@ -517,20 +517,17 @@ class SaleNewsController extends Controller
     }
     public function destroy($id)
     {
-        try { 
+        try {
             $item = SaleNews::findOrFail($id);
 
-            // Nếu is_delete là NULL, gán giá trị là 1
             if (is_null($item->is_delete)) {
                 $item->is_delete = 1;
             }
 
-            // Chuyển trạng thái approved thành 1
             $item->approved = 2;
 
             $item->save();
 
-            // Thông báo
             $message = 'Delete successfully!';
 
             return redirect()->back()->with('alert', [
@@ -695,7 +692,7 @@ class SaleNewsController extends Controller
         $categories = Category::with(['subcategories.salenews' => function ($query) {
             $query->where('status', 1)
                 ->where('approved', 1)
-                ->where('is_delete', 0);
+                ->where('is_delete', null);
         }])
             ->select('category_id', 'name_category', 'image_category')
             ->get()
@@ -855,5 +852,25 @@ class SaleNewsController extends Controller
             'categoryId',
             'maxPriceRange'
         ));
+    }
+    public function toggleStatus($id){
+        
+        try {
+            $sale_news = SaleNews::findOrFail($id);
+            $sale_news->status = $sale_news->status == 1 ? 0 : 1;
+            $sale_news->save();
+
+            $statusMessage = $sale_news->status == 1 ? 'Hiển thị' : 'Ẩn';
+
+            return response()->json([
+                'status' => $sale_news->status,
+                'alert' => "Sale news status updated to {$statusMessage}"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'alert' => 'Error: ' . $e->getMessage()
+            ]);
+        }
     }
 }

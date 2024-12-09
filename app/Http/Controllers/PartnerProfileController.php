@@ -140,18 +140,11 @@ class PartnerProfileController extends Controller
 
         $channel->save();
 
-        return redirect()->route('channels.index')->with('alert', [
+        return redirect()->back()->with('alert', [
             'type' => 'success',
             'message' => 'Update successfully.'
         ]);
     }
-
-
-
-
-
-
-
 
     /**
      * Store a newly created resource in storage.

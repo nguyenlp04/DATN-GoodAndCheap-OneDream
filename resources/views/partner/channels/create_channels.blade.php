@@ -26,7 +26,7 @@
 
             <div class="row d-flex justify-content-Start">
                 <div class="col col-md-9 col-lg-7 col-xl-6">
-                    <div style="width:  fit-content;min-width:460px; ">
+                    <div style="width:  fit-content;min-width:400px; ">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0">

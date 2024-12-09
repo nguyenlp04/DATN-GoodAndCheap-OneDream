@@ -13,13 +13,11 @@
                     <div
                         class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
                         <div class="d-flex flex-column justify-content-center">
-                            <h4 class="mb-1">Add A New Product</h4>
+                            <h4 class="mb-1">Add A Sale new</h4>
                         </div>
                         <div class="d-flex align-content-center flex-wrap gap-4">
-                            <div class="d-flex gap-4"><button class="btn btn-label-secondary">Discard</button>
-                                <button class="btn btn-label-primary">Save draft</button>
-                            </div>
-                            <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish product</button>
+                            
+                            <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish </button>
                         </div>
                     </div>
                     <div class="row" data-select2-id="20">
@@ -28,13 +26,13 @@
                             <!-- Product Information -->
                             <div class="card mb-6">
                                 <div class="card-header">
-                                    <h5 class="card-tile mb-0">Product information</h5>
+                                    <h5 class="card-tile mb-0">Sale new information</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-6">
                                         <label class="form-label" for="ecommerce-product-name">Name</label>
                                         <input type="text" class="form-control" id="ecommerce-product-name"
-                                            placeholder="Product title" name="productTitle" aria-label="Product title">
+                                            placeholder="Sale new title" name="productTitle" aria-label="Product title">
                                         @error('productTitle')
                                             <div class="text-danger">
                                                 <i class="bx bx-error-circle me-2"></i>
@@ -66,7 +64,7 @@
                                 href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
                             <div class="card mb-6">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0 card-title">Product Image</h5>
+                                    <h5 class="mb-0 card-title">Sale new Image</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="dropzone p-0 dz-clickable"

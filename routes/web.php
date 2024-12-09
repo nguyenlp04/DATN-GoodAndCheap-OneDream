@@ -67,7 +67,8 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
         Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
     });
-    Route::post('/channel/{id}/toggleStatus', [ChannelController::class, 'toggleStatus'])->name('channel.toggleStatus');
+    Route::post('/channel/togglestatus/{id}', [ChannelController::class, 'toggleStatus'])->name('channel.toggleStatus');
+    Route::post('/channel/togglesalenew/{id}', [SaleNewsController::class, 'toggleStatus'])->name('sale-news-channel.toggleStatus');
     Route::get('channel', [ChannelController::class, 'list_channel'])->name('channel');
     Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
     Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
@@ -77,7 +78,7 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có Route cho nó
         Route::get('/create', [NotificationController::class, 'create'])->name('create');
         Route::get('/edit/{id}', [NotificationController::class, 'edit'])->name('edit');
-        Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update');
+        Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update'); 
         Route::get('/trashed', [NotificationController::class, 'trashed'])->name('trashed');
         Route::delete('/destroy/{id}', [NotificationController::class, 'destroy'])->name('destroy');
         Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
@@ -217,7 +218,7 @@ Route::middleware('auth')->group(function () {
 
 
 // guest
-// Route::middleware('guest')->group(function () {
+
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
 Route::get('/seach-category', [SaleNewsController::class, 'search_category'])->name('seach-category');
 Route::post('/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
@@ -242,7 +243,7 @@ Route::prefix('staff')->group(function () {
     Route::post('/forgot-password', [StaffForgotPasswordController::class, 'sendResetLinkEmail'])->name('staff.password.email');
     Route::get('/reset-password/{token}', [StaffResetPasswordController::class, 'showResetForm'])->name('staff.password.reset');
     Route::post('/reset-password', [StaffResetPasswordController::class, 'reset'])->name('staff.password.update');
-    // });
+   
     // end guest
 
 
@@ -251,8 +252,7 @@ Route::prefix('staff')->group(function () {
 
 
 
-});
 
 
-// Partners
-// Route::resource('channels', ChannelController::class);
+
+
