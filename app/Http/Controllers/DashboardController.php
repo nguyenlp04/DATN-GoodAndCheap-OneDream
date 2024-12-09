@@ -14,118 +14,120 @@ class DashboardController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $currentDate = Carbon::today();
-    $previousDate = Carbon::yesterday();
+    {
+        $currentDate = Carbon::today();
+        $previousDate = Carbon::yesterday();
 
-    $staffId = Auth::guard('staff')->user()->staff_id;
-    $infoStaff = DB::table('staffs')->where('staff_id', $staffId)->first();
+        $staffId = Auth::guard('staff')->user()->staff_id;
+        $infoStaff = DB::table('staffs')->where('staff_id', $staffId)->first();
 
-    // Tổng doanh thu hôm nay và hôm qua
-    $todayRevenue = DB::table('transactions')
-        ->whereDate('created_at', $currentDate)
-        ->sum('amount');
+        // Tổng doanh thu hôm nay và hôm qua
+        $todayRevenue = DB::table('transactions')
+            ->whereDate('created_at', $currentDate)
+            ->sum('amount');
 
-    $yesterdayRevenue = DB::table('transactions')
-        ->whereDate('created_at', $previousDate)
-        ->sum('amount');
+        $yesterdayRevenue = DB::table('transactions')
+            ->whereDate('created_at', $previousDate)
+            ->sum('amount');
 
-    // Tính toán sự thay đổi phần trăm
-    $percentageDifference = $yesterdayRevenue > 0
-        ? (($todayRevenue - $yesterdayRevenue) / $yesterdayRevenue) * 100
-        : ($todayRevenue > 0 ? 100 : 0); // Tránh chia cho 0
+        // Tính toán sự thay đổi phần trăm
+        $percentageDifference = $yesterdayRevenue > 0
+            ? (($todayRevenue - $yesterdayRevenue) / $yesterdayRevenue) * 100
+            : ($todayRevenue > 0 ? 100 : 0); // Tránh chia cho 0
 
-    $todayTransactionsCount = DB::table('transactions')
-        ->whereDate('created_at', $currentDate) // Lọc theo ngày hôm nay
-        ->count();
+        $todayTransactionsCount = DB::table('transactions')
+            ->whereDate('created_at', $currentDate) // Lọc theo ngày hôm nay
+            ->count();
 
-    $thisMonthRevenue = DB::table('transactions')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->sum('amount');
+        $thisMonthRevenue = DB::table('transactions')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->sum('amount');
 
-    $totalSaleNewsVip = DB::table('vip_packages')
-        ->where('type', 'user') // Lọc theo type = 'user' cho Sale News
-       ->count(); // Tính tổng số tiền hoặc số lượng gói VIP (dựa trên cột 'amount')
+        $totalSaleNewsVip = DB::table('vip_packages')
+            ->where('type', 'user') // Lọc theo type = 'user' cho Sale News
+            ->count(); // Tính tổng số tiền hoặc số lượng gói VIP (dựa trên cột 'amount')
 
-    // Tổng gói VIP của loại 'channel'
-    $totalChannelVip = DB::table('vip_packages')
-        ->where('type', 'channel') // Lọc theo type = 'channel'
-       ->count(); // Tính tổng số tiền hoặc số lượng gói VIP (dựa trên cột 'amount')
+        // Tổng gói VIP của loại 'channel'
+        $totalChannelVip = DB::table('vip_packages')
+            ->where('type', 'channel') // Lọc theo type = 'channel'
+            ->count(); // Tính tổng số tiền hoặc số lượng gói VIP (dựa trên cột 'amount')
 
-    $revenuePackageSaleNews = DB::table('transactions')
-        ->where('upgrade', 'Upgrade Sale News')
-        ->sum('amount');
-    $totalOrdersPackageSaleNews = DB::table('transactions')
-        ->where('upgrade', 'Upgrade Sale News')
-        ->count();
+        $revenuePackageSaleNews = DB::table('transactions')
+            ->where('upgrade', 'Upgrade Sale News')
+            ->sum('amount');
+        $totalOrdersPackageSaleNews = DB::table('transactions')
+            ->where('upgrade', 'Upgrade Sale News')
+            ->count();
 
-    $revenuePackageChannel = DB::table('transactions')
-        ->where('upgrade', 'Upgrade Channel')
-        ->sum('amount');
+        $revenuePackageChannel = DB::table('transactions')
+            ->where('upgrade', 'Upgrade Channel')
+            ->sum('amount');
 
-    $totalOrdersPackageChannel = DB::table('transactions')
-        ->where('upgrade', 'Upgrade Channel')
-        ->count();
-        
-    $totalSaleNews = DB::table('sale_news')
-        ->count();
-        
-    $totalChannels = DB::table('channels')
-        ->count();
-        
-    $totalTarget = $totalSaleNews + $totalChannels;
+        $totalOrdersPackageChannel = DB::table('transactions')
+            ->where('upgrade', 'Upgrade Channel')
+            ->count();
 
-    $percentageSaleNews = ($totalSaleNews / $totalTarget) * 100;
-// Tính phần trăm của Channels
-    $percentageChannels = ($totalChannels / $totalTarget) * 100;
+        $totalSaleNews = DB::table('sale_news')
+            ->count();
 
-    $totalSaleNewsPending = DB::table('sale_news')
+        $totalChannels = DB::table('channels')
+            ->count();
+
+        $totalTarget = $totalSaleNews + $totalChannels;
+        if ($totalTarget == 0) {
+            $totalTarget = 1;
+        }
+        $percentageSaleNews = ($totalSaleNews / $totalTarget) * 100;
+        // Tính phần trăm của Channels
+        $percentageChannels = ($totalChannels / $totalTarget) * 100;
+
+        $totalSaleNewsPending = DB::table('sale_news')
             ->where('approved', 0)
             ->count();
-    $totalSales = $revenuePackageSaleNews + $revenuePackageChannel;
+        $totalSales = $revenuePackageSaleNews + $revenuePackageChannel;
 
-    $fiveTransactions = Transactions::with('user') 
-        ->orderBy('transaction_id', 'desc')
-        ->limit(5) 
-        ->get();    
+        $fiveTransactions = Transactions::with('user')
+            ->orderBy('transaction_id', 'desc')
+            ->limit(5)
+            ->get();
         // dd($fiveTransactions);
 
 
-    $totalOrders = DB::table('transactions')
-    ->count();
-    // Gộp tất cả vào mảng data
-    $data = [
-        'percentageDifference' => round($percentageDifference, 2),
-        'infoStaff' => $infoStaff,
-        'todayRevenue' =>  number_format($todayRevenue, 2),
-        'yesterdayRevenue' => $yesterdayRevenue,
-        'currentDate' => $currentDate,
-        'previousDate' => $previousDate,
-        'todayTransactionsCount' => $todayTransactionsCount, // Thêm số giao dịch vào data
-        'totalSaleNewsVip' => $totalSaleNewsVip, // Tổng gói VIP cho Sale News (type 'user')
-        'totalChannelVip' => $totalChannelVip,
-        'revenuePackageSaleNews' => number_format($revenuePackageSaleNews, 2),
-        'revenuePackageChannel' => number_format($revenuePackageChannel, 2),
-        'totalSales' => number_format($totalSales, 2),
-        'totalOrders' => number_format($totalOrders),
-        'totalOrdersPackageSaleNews' => number_format($totalOrdersPackageSaleNews),
-        'totalOrdersPackageChannel' => number_format($totalOrdersPackageChannel),
-        'totalSaleNews' => number_format($totalSaleNews),
-        'totalChannels' => number_format($totalChannels),
-        'totalSaleNewsPending' => number_format($totalSaleNewsPending),
-        'thisMonthRevenue' => number_format($thisMonthRevenue, 2),
-        'fiveTransactions' => $fiveTransactions,
-        'percentageSaleNews' => ceil($percentageSaleNews),
-        'percentageChannels' => ceil($percentageChannels),
-        // dd($percentageChannels, ceil($percentageChannels))
+        $totalOrders = DB::table('transactions')
+            ->count();
+        // Gộp tất cả vào mảng data
+        $data = [
+            'percentageDifference' => round($percentageDifference, 2),
+            'infoStaff' => $infoStaff,
+            'todayRevenue' =>  number_format($todayRevenue, 2),
+            'yesterdayRevenue' => $yesterdayRevenue,
+            'currentDate' => $currentDate,
+            'previousDate' => $previousDate,
+            'todayTransactionsCount' => $todayTransactionsCount, // Thêm số giao dịch vào data
+            'totalSaleNewsVip' => $totalSaleNewsVip, // Tổng gói VIP cho Sale News (type 'user')
+            'totalChannelVip' => $totalChannelVip,
+            'revenuePackageSaleNews' => number_format($revenuePackageSaleNews, 2),
+            'revenuePackageChannel' => number_format($revenuePackageChannel, 2),
+            'totalSales' => number_format($totalSales, 2),
+            'totalOrders' => number_format($totalOrders),
+            'totalOrdersPackageSaleNews' => number_format($totalOrdersPackageSaleNews),
+            'totalOrdersPackageChannel' => number_format($totalOrdersPackageChannel),
+            'totalSaleNews' => number_format($totalSaleNews),
+            'totalChannels' => number_format($totalChannels),
+            'totalSaleNewsPending' => number_format($totalSaleNewsPending),
+            'thisMonthRevenue' => number_format($thisMonthRevenue, 2),
+            'fiveTransactions' => $fiveTransactions,
+            'percentageSaleNews' => ceil($percentageSaleNews),
+            'percentageChannels' => ceil($percentageChannels),
+            // dd($percentageChannels, ceil($percentageChannels))
 
-        
 
-    ];
 
-    // Trả về view với mảng data
-    return view('admin.index', compact('data'));
-}
+        ];
+
+        // Trả về view với mảng data
+        return view('admin.index', compact('data'));
+    }
 
     /**
      * Show the form for creating a new resource.

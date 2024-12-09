@@ -244,4 +244,5 @@ Route::prefix('staff')->group(function () {
     Route::get('/reset-password/{token}', [StaffResetPasswordController::class, 'showResetForm'])->name('staff.password.reset');
     Route::post('/reset-password', [StaffResetPasswordController::class, 'reset'])->name('staff.password.update');
 });
+Route::resource('channels', ChannelController::class);
     // end guest

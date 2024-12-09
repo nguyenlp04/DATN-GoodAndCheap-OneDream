@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('auth', [
             App\Http\Middleware\CheckAuthenticatedUser::class,
         ]);
+        $middleware->group('guest', [
+            App\Http\Middleware\RedirectIfAuthenticated::class
+        ]);
 
         //
     })
