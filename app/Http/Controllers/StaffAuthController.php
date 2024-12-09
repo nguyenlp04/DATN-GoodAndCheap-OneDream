@@ -10,6 +10,9 @@ class StaffAuthController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::guard('staff')->check()) {
+            return redirect()->route('dashboard');
+        }
         return view('auth.staff-login'); // Tạo view login cho nhân viên
     }
     public function login(Request $request)

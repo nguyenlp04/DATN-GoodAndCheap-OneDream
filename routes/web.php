@@ -78,7 +78,7 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::resource('/', NotificationController::class)->except(['show']); // Trừ show vì không có Route cho nó
         Route::get('/create', [NotificationController::class, 'create'])->name('create');
         Route::get('/edit/{id}', [NotificationController::class, 'edit'])->name('edit');
-        Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update'); 
+        Route::put('/update/{id}', [NotificationController::class, 'update'])->name('update');
         Route::get('/trashed', [NotificationController::class, 'trashed'])->name('trashed');
         Route::delete('/destroy/{id}', [NotificationController::class, 'destroy'])->name('destroy');
         Route::post('restore/{id}/', [NotificationController::class, 'restore'])->name('restore');
@@ -243,16 +243,6 @@ Route::prefix('staff')->group(function () {
     Route::post('/forgot-password', [StaffForgotPasswordController::class, 'sendResetLinkEmail'])->name('staff.password.email');
     Route::get('/reset-password/{token}', [StaffResetPasswordController::class, 'showResetForm'])->name('staff.password.reset');
     Route::post('/reset-password', [StaffResetPasswordController::class, 'reset'])->name('staff.password.update');
-   
+});
+Route::resource('channels', ChannelController::class);
     // end guest
-
-
-
-
-
-
-
-
-
-
-
