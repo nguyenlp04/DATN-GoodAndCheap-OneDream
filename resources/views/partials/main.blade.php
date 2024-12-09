@@ -1,21 +1,21 @@
 <main class="main">
     <style>
-    .image-container {
-        width: 100%;
-        height: 200px;
-        /* Đặt chiều cao cố định cho khung chứa */
-        overflow: hidden;
-        /* Đảm bảo không có phần thừa nào bị hiển thị */
-    }
+        .image-container {
+            width: 100%;
+            height: 200px;
+            /* Đặt chiều cao cố định cho khung chứa */
+            overflow: hidden;
+            /* Đảm bảo không có phần thừa nào bị hiển thị */
+        }
 
-    .equal-height-image {
-        height: 200px;
-        /* Đặt chiều cao cố định cho tất cả các ảnh */
-        width: 100%;
-        /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của khung chứa */
-        object-fit: cover;
-        /* Đảm bảo ảnh phủ kín khung mà không bị méo */
-    }
+        .equal-height-image {
+            height: 200px;
+            /* Đặt chiều cao cố định cho tất cả các ảnh */
+            width: 100%;
+            /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của khung chứa */
+            object-fit: cover;
+            /* Đảm bảo ảnh phủ kín khung mà không bị méo */
+        }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="intro-slider-container mb-5">
@@ -55,7 +55,7 @@
                     <a href="{{ route('seach-category') }}?category={{ $category->category_id }}" class="cat-block">
                         <figure>
                             <span>
-                                <img style="max-width: 120px;max-height: 70px;"
+                                <img style="max-width: 200px;max-height: 90px;"
                                     src="{{ asset($category->image_category ?: '') }}" alt="Category image">
                             </span>
                         </figure>
@@ -582,17 +582,17 @@
 <script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
 
 <script>
-var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";
-// Hiển thị thông báo sau khi load trang nếu có từ session
-@if(session('alert'))
-Swal.fire({
-    icon: "{{ session('alert')['type'] }}",
-    title: "{{ session('alert')['message'] }}",
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true
-});
-@endif
+    var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";
+    // Hiển thị thông báo sau khi load trang nếu có từ session
+    @if(session('alert'))
+    Swal.fire({
+        icon: "{{ session('alert')['type'] }}",
+        title: "{{ session('alert')['message'] }}",
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+    @endif
 </script>
