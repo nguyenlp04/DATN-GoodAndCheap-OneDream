@@ -8,6 +8,7 @@ use App\Models\Notification;
 use App\Models\SaleNews;
 use App\Models\Transactions;
 use App\Models\User;
+use App\Models\UserFollowed;
 use App\Models\VipPackage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -85,38 +86,42 @@ class PartnerController extends Controller
 
     public function dashboard()
     {
+        $user = Auth::user();
+        $channel = Channel::where('user_id', $user->user_id)->firstOrFail();
         $currentDate = Carbon::today();
         $previousDate = Carbon::yesterday();
 
-        $sale_count = SaleNews::count();
-
-        $todayRevenue = DB::table('transactions')
-            ->whereDate('created_at', $currentDate)
-            ->sum('amount');
-
-        $yesterdayRevenue = DB::table('transactions')
-            ->whereDate('created_at', $previousDate)
-            ->sum('amount');
-
-        $percentageDifference = $yesterdayRevenue > 0
-            ? (($todayRevenue - $yesterdayRevenue) / $yesterdayRevenue) * 100
-            : ($todayRevenue > 0 ? 100 : 0);
-
-        $todayTransactionsCount = DB::table('transactions')
-            ->whereDate('created_at', $currentDate)
+        // Lấy số lượng Sale News theo channel_id
+        $saleCount = SaleNews::where('channel_id', $channel->channel_id)
+            ->where('status', 1)
+            ->where('is_delete', null)
+            ->where('approved', 1)
             ->count();
+        $soldnewCount =  SaleNews::where('channel_id', $channel->channel_id)
+            ->where('status', 0)
+            ->where('is_delete', null)
+            ->where('approved', 1)
+            ->count();
+        $followCount = UserFollowed::where('channel_id', $channel->channel_id)->count();
+        $totalViews = SaleNews::where('channel_id', $channel->channel_id)->sum('views');
+        // Lấy 3 sản phẩm có nhiều lượt xem nhất
+        $top3Sales = SaleNews::where('channel_id', $channel->channel_id)
+            ->orderBy('views', 'desc')
+            ->take(3)
+            ->get();
 
-        $thisMonthRevenue = DB::table('transactions')
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->sum('amount');
+        // Tính tổng lượt xem
+        $totalViewshot = $top3Sales->sum('views');
+
 
         return view('partner.dashboard', compact(
-            'todayRevenue',
-            'yesterdayRevenue',
-            'percentageDifference',
-            'todayTransactionsCount',
-            'thisMonthRevenue',
-            'sale_count',
+            'totalViews',
+            'totalViewshot',
+            'saleCount',
+            'followCount',
+            'top3Sales',
+            'soldnewCount'
+
         ));
     }
 }
