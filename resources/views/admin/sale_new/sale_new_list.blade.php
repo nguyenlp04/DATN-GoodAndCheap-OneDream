@@ -134,7 +134,11 @@
 
                                                 </td>
                                                 <td>
-
+                                                    <!-- @if ($item->approved == 0)
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
+@else
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
+    @endif -->
                                                     <div class="row d-flex justify-content-Start text-truncate-3">
 
                                                         {{ $item->title }}
@@ -405,10 +409,10 @@
                         </td>
                         <td>
                             <!-- @if ($item->approved == 0)
-                                                    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
-                                                @else
-                                                    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
-                                                    @endif -->
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
+@else
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
+    @endif -->
                             <div class="row d-flex justify-content-Start text-truncate-3">
 
                                 {{ $item->title }}
@@ -460,9 +464,8 @@
                                                                     <div class="d-flex flex-wrap">
                                                                         @foreach ($item->images as $itemIMG)
                                                                         <div class="avatar avatar me-4 rounded-2 bg-label-secondary" ">
-                                                                                                                        <img src="
-                                                                            {{ $itemIMG->image_name }}" alt="Product-3"
-                                                                            class="rounded"
+                                                                        <img src=" {{ $itemIMG->image_name }}"
+                                                                            alt="Product-3" class="rounded"
                                                                             style="width: 100%; object-fit: cover;">
                                                                         </div>
                                                                         @endforeach
@@ -515,40 +518,39 @@
 
 
         @if ($item->approved == 0)
-        <tr data-dt-row="2" data-dt-column="8">
-            <td class="col-3">Time remaining:</td>
-            <td class="col-8 bg-light rounded">
-                <div class="d-flex align-items-center" style="font-size: 15px; font-weight:700">
-                    <i class="fa-regular fa-clock text-danger me-1"></i>
-                    <!-- Thêm margin-right cho icon để cách ra với chữ -->
+            <tr data-dt-row="2" data-dt-column="8">
+                <td class="col-3">Time remaining:</td>
+                <td class="col-8 bg-light rounded">
+                    <div class="d-flex align-items-center" style="font-size: 15px; font-weight:700">
+                        <i class="fa-regular fa-clock text-danger me-1"></i>
+                        <!-- Thêm margin-right cho icon để cách ra với chữ -->
 
-                    <p class="text-danger mb-0">
-                        <!-- Sử dụng mb-0 để loại bỏ margin-bottom của đoạn văn -->
-                        @php
-                        // Tính số ngày và giờ còn lại đến hết 7 ngày
-                        $endTime = \Carbon\Carbon::parse($item->created_at)->addDays(7); // Thời gian kết thúc sau 7
-                        ngày
-                        $remainingDays = floor(
-                        \Carbon\Carbon::now()->diffInDays($endTime, false),
-                        ); // Số ngày còn lại (làm tròn xuống số nguyên)
-                        $remainingHours = floor(
-                        \Carbon\Carbon::now()->diffInHours($endTime, false) % 24,
-                        ); // Số giờ còn lại (làm tròn xuống số nguyên)
-                        @endphp
+                        <p class="text-danger mb-0">
+                            <!-- Sử dụng mb-0 để loại bỏ margin-bottom của đoạn văn -->
+                            @php
+                            // Tính số ngày và giờ còn lại đến hết 7 ngày
+                            $endTime = \Carbon\Carbon::parse($item->created_at)->addDays(7); // Thời gian kết thúc sau 7 ngày
+                            $remainingDays = floor(
+                            \Carbon\Carbon::now()->diffInDays($endTime, false),
+                            ); // Số ngày còn lại (làm tròn xuống số nguyên)
+                            $remainingHours = floor(
+                            \Carbon\Carbon::now()->diffInHours($endTime, false) % 24,
+                            ); // Số giờ còn lại (làm tròn xuống số nguyên)
+                            @endphp
 
-                        @if ($remainingDays > 0)
-                        {{ $remainingDays }} day
-                        @endif
+                            @if ($remainingDays > 0)
+                            {{ $remainingDays }} day
+                            @endif
 
-                        @if ($remainingHours > 0)
-                        {{ $remainingHours }} hours
-                        @endif
-                    </p>
-            </td>
-        </tr>
-        @else
-        <!-- Nếu approved không bằng 0, không hiển thị gì -->
-        @endif
+                            @if ($remainingHours > 0)
+                            {{ $remainingHours }} hours
+                            @endif
+                        </p>
+                </td>
+            </tr>
+            @else
+            <!-- Nếu approved không bằng 0, không hiển thị gì -->
+            @endif
 
     </div>
 
@@ -658,10 +660,10 @@
                 </td>
                 <td>
                     <!-- @if ($item->approved == 0)
-                                                    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
-                                                @else
-                                                    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
-                                                    @endif -->
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
+@else
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
+    @endif -->
                     <div class="row d-flex justify-content-Start text-truncate-3">
 
                         {{ $item->title }}
@@ -711,9 +713,8 @@
                                                             <div class="d-flex flex-wrap">
                                                                 @foreach ($item->images as $itemIMG)
                                                                 <div class="avatar avatar me-4 rounded-2 bg-label-secondary" ">
-                                                                                                                        <img src="
-                                                                    {{ $itemIMG->image_name }}" alt="Product-3"
-                                                                    class="rounded"
+                                                                        <img src=" {{ $itemIMG->image_name }}"
+                                                                    alt="Product-3" class="rounded"
                                                                     style="width: 100%; object-fit: cover;">
                                                                 </div>
                                                                 @endforeach
@@ -911,10 +912,10 @@
                 </td>
                 <td>
                     <!-- @if ($item->approved == 0)
-                                                    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
-                                                @else
-                                                    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
-                                                    @endif -->
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
+@else
+    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
+    @endif -->
                     <div class="row d-flex justify-content-Start text-truncate-3">
 
                         {{ $item->title }}
@@ -964,9 +965,8 @@
                                                             <div class="d-flex flex-wrap">
                                                                 @foreach ($item->images as $itemIMG)
                                                                 <div class="avatar avatar me-4 rounded-2 bg-label-secondary" ">
-                                                                                                                        <img src="
-                                                                    {{ $itemIMG->image_name }}" alt="Product-3"
-                                                                    class="rounded"
+                                                                        <img src=" {{ $itemIMG->image_name }}"
+                                                                    alt="Product-3" class="rounded"
                                                                     style="width: 100%; object-fit: cover;">
                                                                 </div>
                                                                 @endforeach

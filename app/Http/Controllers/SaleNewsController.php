@@ -695,7 +695,7 @@ class SaleNewsController extends Controller
         $categories = Category::with(['subcategories.salenews' => function ($query) {
             $query->where('status', 1)
                 ->where('approved', 1)
-                ->where('is_delete', 0);
+                ->where('is_delete', null);
         }])
             ->select('category_id', 'name_category', 'image_category')
             ->get()
