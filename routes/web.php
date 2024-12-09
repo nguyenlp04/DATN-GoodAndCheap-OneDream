@@ -97,6 +97,15 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/setting', [SettingsController::class, 'index'])->name('setting.index');
 
     Route::post('/update-settings', [SettingsController::class, 'updateSettings'])->name('settings.update');
+    Route::prefix('payment')->group(function () {
+        Route::get('/preview', function () {
+            return view('admin.payments.preview');
+        });
+        Route::get('/transactions', [TransactionController::class, 'index']);
+        Route::get('/account', function () {
+            return view('admin.payments.receiving-account');
+        });
+    });
 });
 
 
@@ -245,4 +254,5 @@ Route::prefix('staff')->group(function () {
     Route::post('/reset-password', [StaffResetPasswordController::class, 'reset'])->name('staff.password.update');
 });
 Route::resource('channels', ChannelController::class);
+
     // end guest
