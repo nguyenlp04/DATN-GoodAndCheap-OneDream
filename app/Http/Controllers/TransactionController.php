@@ -15,7 +15,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $data = Transactions::with(['user', 'channel'])->get();
+        $data = Transactions::with(['user', 'channel', 'sale_news'])->get();
         return view('admin.payments.transactions', ['data' => $data]);
     }
     public function user_transaction_history()

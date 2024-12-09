@@ -329,7 +329,7 @@
                   <div data-i18n="Trash Channel">Channel</div>
                 </a>
               </li> --}}
-              <li class="menu-item {{ Request::is('trash/trash-category') ? 'active' : '' }}">
+              <li class="menu-item {{ Request::is('trash/trash-categories') ? 'active' : '' }}">
                 <a href="{{ route('trash.category') }}" class="menu-link">
                   <div data-i18n="Trash Category">Category</div>
                 </a>

@@ -41,8 +41,6 @@ class ConfigController extends Controller
                 // return response()->json(['error' => 'Invalid JSON format'], 400);
             }
         }
-
-
         // Trả về view với dữ liệu
         return view('admin.config.telegram', compact('data'));
     }
@@ -53,6 +51,7 @@ class ConfigController extends Controller
     public function storeBotTeleGram(Request $request)
     {
         $message = $request->input('message');
+        $messageContact = $request->input('messageContact');
         $filePath = public_path('admin/js/telegram.json');
 
         $requiredPlaceholders = [
@@ -65,10 +64,23 @@ class ConfigController extends Controller
             '{PAYMENT_DATE}',
         ];
 
+        $requiredPlaceholdersContact = [
+            '{CUSTOMER_NAME}',
+            '{SUBJECT}',
+            '{MESSAGE}',
+            '{DATE_SUBMITTED}',
+        ];
+
         $missingPlaceholders = [];
         foreach ($requiredPlaceholders as $placeholder) {
             if (strpos($message, $placeholder) === false) {
                 $missingPlaceholders[] = $placeholder;
+            }
+        }
+
+        foreach ($requiredPlaceholdersContact as $placeholderContact) {
+            if (strpos($messageContact, $placeholderContact) === false) {
+                $missingPlaceholders[] = $placeholderContact;
             }
         }
 
@@ -84,6 +96,7 @@ class ConfigController extends Controller
         // Lưu message vào file JSON
         $jsonContent = json_encode([
             'message' => $message,
+            'messageContact' => $messageContact,
         ], JSON_PRETTY_PRINT);
 
         try {
@@ -98,11 +111,15 @@ class ConfigController extends Controller
         // Lưu chatID và botToken vào file .env
         $chatID = $request->input('chatID');
         $botToken = $request->input('botToken');
+        $chatIDContact = $request->input('chatIDContact');
+        $botTokenContact = $request->input('botTokenContact');
 
         try {
             $this->updateEnv([
                 'TELEGRAM_CHAT_ID' => $chatID,
                 'TELEGRAM_BOT_TOKEN' => $botToken,
+                'TELEGRAM_CHAT_ID_CONTACT' => $chatIDContact,
+                'TELEGRAM_BOT_TOKEN_CONTACT' => $botTokenContact,
             ]);
 
             return redirect()->back()->with('alert', [

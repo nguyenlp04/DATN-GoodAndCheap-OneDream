@@ -1,3 +1,4 @@
 {
-    "message": "\ud83c\udf89 New Sale Alert! \ud83c\udf89\r\n\ud83c\udd94 Upgrade: {UPGRADE}\r\n\ud83d\udce6 Name Package: {NAME_PACKAGE}\r\n\ud83c\udd94 Channel\/Sale News ID: {CHANNEL\/SALE_NEWS_ID}\r\n\ud83d\udd5b Period: {PERIOD}\r\n\ud83e\udd1d Transaction ID: {TRANSACTION_ID}\r\n\ud83d\udcb5 Amount Paid: {AMOUNT}\r\n\ud83d\udd5b Payment Date: {PAYMENT_DATE}\r\nCongratulations on your sale! \ud83c\udf89"
+    "message": "\ud83c\udf89 New Sale Alert! \ud83c\udf89\r\n\ud83c\udd94 Upgrade: {UPGRADE}\r\n\ud83d\udce6 Name Package: {NAME_PACKAGE}\r\n\ud83c\udd94 Channel\/Sale News ID: {CHANNEL\/SALE_NEWS_ID}\r\n\ud83d\udd5b Period: {PERIOD}\r\n\ud83e\udd1d Transaction ID: {TRANSACTION_ID}\r\n\ud83d\udcb5 Amount Paid: {AMOUNT}\r\n\ud83d\udd5b Payment Date: {PAYMENT_DATE}\r\nCongratulations on your sale! \ud83c\udf89",
+    "messageContact": "\ud83e\uddd1 Customer Name: {CUSTOMER_NAME}\r\n\u2709\ufe0f Subject: {SUBJECT}\r\n\ud83d\udcac Message:\r\n\r\n{MESSAGE}\r\n\r\n\ud83d\udcc5 Date Submitted: {DATE_SUBMITTED}"
 }
