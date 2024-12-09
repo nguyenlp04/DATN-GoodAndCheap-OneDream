@@ -63,11 +63,6 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('deleteCategory');
     });
     Route::prefix('account')->group(function () {
-        Route::get('/employee-management', [StaffController::class, 'index']);
-        Route::post('/employee-management', [StaffController::class, 'store'])->name('addStaff');
-        Route::get('/employee-management/employeedetails/edit/{id}', [StaffController::class, 'edit'])->name('editStaff');
-        Route::put('/employee-management/employeedetails/update/{id}', [StaffController::class, 'update'])->name('updateStaff');
-        Route::delete('/employee-management/employeedetails/delete/{id}', [StaffController::class, 'destroy'])->name('deleteStaff');
         Route::get('/user-account-management', [UsermanagementController::class, 'index']);
         Route::put('/user-account-management/lock/{id}', [UsermanagementController::class, 'updateLock'])->name('updateLock');
         Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
@@ -108,6 +103,13 @@ Route::middleware(['auth.admin'])->group(function () {
 
 Route::middleware(['auth.role.admin'])->group(function () {
 
+    Route::prefix('account')->group(function () {
+        Route::get('/employee-management', [StaffController::class, 'index'])->name('renderstaff');
+        Route::post('/employee-management', [StaffController::class, 'store'])->name('addStaff');
+        Route::get('/employee-management/employeedetails/edit/{id}', [StaffController::class, 'edit'])->name('editStaff');
+        Route::put('/employee-management/employeedetails/update/{id}', [StaffController::class, 'update'])->name('updateStaff');
+        Route::delete('/employee-management/employeedetails/delete/{id}', [StaffController::class, 'destroy'])->name('deleteStaff');
+    });
     Route::prefix('trash')->group(function () {
         Route::get('/trash-sale-news', [SaleNewsController::class, 'trash'])->name('trash.salenews');
         Route::post('/sale-news/restore/{id}', [SaleNewsController::class, 'restore'])->name('restore-salenews');

@@ -33,10 +33,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 order-1">
+                <div class="col-12 col-md-6 col-lg-4 order-3 order-md-2">
                     <div class="row">
-                        <div class="col-6 mb-4">
-                            <div class="card">
+                        <div class="col-6 mb-4 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -55,7 +55,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="fw-semibold d-block mb-1">Total Vip Pakcage Sale News</span>
+                                    <span class="fw-semibold d-block mb-1">Vip Pakcage Sale News</span>
                                     <h3 class="card-title text-nowrap mb-2">{{ $data['totalSaleNewsVip'] }}</h3>
                                     <small class="text-danger fw-semibold">
                                         {{-- <i class="bx bx-down-arrow-alt"></i>
@@ -64,8 +64,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 mb-4">
-                            <div class="card">
+                        <div class="col-6 mb-4 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -84,7 +84,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="fw-semibold d-block mb-1">Total Vip Pakcage Channels</span>
+                                    <span class="fw-semibold d-block mb-1">Vip Pakcage Channels</span>
                                     <h3 class="card-title mb-2">{{ $data['totalChannelVip'] }}</h3>
                                     <small class="text-success fw-semibold">
                                         {{-- <i class="bx bx-up-arrow-alt"></i>
@@ -96,10 +96,10 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+                <div class="col-12 col-md-6 col-lg-4 order-3 order-md-2">
                     <div class="row">
-                        <div class="col-lg-6 col-md-12 col-6 mb-4">
-                            <div class="card">
+                        <div class="col-lg-6 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -127,8 +127,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-6 mb-4">
-                            <div class="card">
+                        <div class="col-lg-6 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -159,10 +159,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+                <div class="col-12 col-md-6 col-lg-4 order-3 order-md-2">
                     <div class="row">
-                        <div class="col-6 mb-4">
-                            <div class="card">
+                        <div class="col-lg-6 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -183,7 +183,7 @@
                                         </div>
                                     </div>
                                     <span class="fw-semibold d-block mb-1">This Month Revenue</span>
-                                    <h3 class="card-title mb-2">{{ $data['thisMonthRevenue'] }}</h3>
+                                    <h3 class="card-title mb-2">${{ $data['thisMonthRevenue'] }}</h3>
                                     <small class="text-success fw-semibold">
                                         {{-- <i class="bx bx-up-arrow-alt"></i>
                                     +28.14% --}}
@@ -191,8 +191,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 mb-4">
-                            <div class="card">
+                        <div class="col-lg-6 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -225,10 +225,10 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+                <div class="col-12 col-md-6 col-lg-4 order-3 order-md-2">
                     <div class="row">
-                        <div class="col-6 mb-4">
-                            <div class="card">
+                        <div class="col-lg-6 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -257,8 +257,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 mb-4">
-                            <div class="card">
+                        <div class="col-lg-6 col-md-6 col-6 mb-4">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
                                         <div class="avatar flex-shrink-0">
@@ -372,8 +372,8 @@
             </div>
             <div class="row">
                 <!-- Order Statistics -->
-                <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
-                    <div class="card">
+                <div class="col-md-12 col-lg-12 col-xl-4 order-0 mb-4">
+                    <div class="card h-100">
                         <div class="card-header d-flex align-items-center justify-content-between pb-0">
                             <div class="card-title mb-0">
                                 <h5 class="m-0 me-2">Order Statistics</h5>
@@ -524,7 +524,7 @@
 
 
                 <!-- Transactions -->
-                <div class="col-md-8 order-3 order-lg-4 mb-8 mb-lg-0">
+                <div class="col-xl-8 col-md-12 order-3 order-lg-4 mb-8 mb-lg-0">
                     <div class="card text-center">
                         <div class="card-header d-flex align-items-center justify-content-between">
                             <h5 class="card-title m-0 me-2">Transactions</h5>

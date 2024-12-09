@@ -132,15 +132,16 @@
                             <div class="product-action-vertical">
 
                                 <!-- Thêm data-product-id để lưu id sản phẩm -->
-                                <form action="{{ route('addToWishlist') }}" method="POST">
+                                <form action="{{ route('addToWishlist') }}" method="POST"  >
                                     @csrf
                                     <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
                                     <button type="submit"
-                                        class="   add-wishlist  {{ $item->isFavorited ? ' text-white bg-primary' : 'text-primary' }}  rounded-circle    add-to-wishlist-btn"
-
-                                        title="{{ $item->isFavorited ? ' ' : ' Add to wishlist' }}  "> <i class="fas fa-heart"></i></button>
-
-
+                                        class="add-wishlist rounded-circle add-to-wishlist-btn {{ $item->isFavorited ? 'text-white bg-primary' : 'text-primary' }}"
+                                        title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}">
+                                        <i class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                    </button>
+                                </form>
+                                
 
                             </div>
                         </figure>

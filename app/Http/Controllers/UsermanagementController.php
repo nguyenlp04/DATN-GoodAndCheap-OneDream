@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class UsermanagementController extends Controller
 {
     /**
@@ -12,7 +13,7 @@ class UsermanagementController extends Controller
     public function index()
     {
         $data = DB::table('users')->get();
-        return view('admin.account.user-account-management',['data'=>$data]);
+        return view('admin.account.user-account-management', ['data' => $data]);
     }
 
     /**
@@ -52,11 +53,11 @@ class UsermanagementController extends Controller
      */
     public function updateUnlock(Request $request, string $id)
     {
-        try{
+        try {
 
-            $check=DB::table('users')->where('user_id',$id)->first();
+            $check = DB::table('users')->where('user_id', $id)->first();
             if ($check) {
-            DB::table('users')->where('user_id',$id)->update(['status' => '1']);
+                DB::table('users')->where('user_id', $id)->update(['status' => '1']);
                 return redirect()->back()->with('alert', [
                     'type' => 'success',
                     'message' => 'Success !'
@@ -76,13 +77,13 @@ class UsermanagementController extends Controller
     }
     public function updateLock(Request $request, string $id)
     {
-        try{
+        try {
 
-            $check=DB::table('users')->where('user_id',$id)->first();
+            $check = DB::table('users')->where('user_id', $id)->first();
 
             if ($check) {
 
-            DB::table('users')->where('user_id',$id)->update(['status' => '0']);
+                DB::table('users')->where('user_id', $id)->update(['status' => '0']);
                 return redirect()->back()->with('alert', [
                     'type' => 'success',
                     'message' => 'Success !'

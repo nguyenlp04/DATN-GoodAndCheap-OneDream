@@ -56,15 +56,20 @@
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script> --}}
+
     <script src="{{ asset('assets/js/superfish.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/wNumb.js') }}"></script>
+<<<<<<< HEAD
     {{-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> --}}
+=======
+    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
+
+>>>>>>> f20d3ad4406c98f9b72c0e5c78896a9e006d2520
     {{-- <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script> --}}
     <!-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> -->
+
 
     <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
@@ -98,8 +103,10 @@
         });
     </script>
     @endif
+    @if(request()->routeIs('salenew.detail'))
      <script src="{{ asset('assets/js/jquery.hoverIntent.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>
+    @endif
 </body>
 
 </html>

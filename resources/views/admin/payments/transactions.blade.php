@@ -41,6 +41,7 @@
                   </tr>
                 </thead>
                 <tbody>
+                  {{-- {{dd($data)}} --}}
                   @foreach($data as $transaction)
                   <tr>
                     <td>
@@ -66,12 +67,20 @@
                     </td>
 
                     <td class="bg-light rounded">
-                      <span class="">{{ $transaction->upgrade }}</span>
-                    </td>
-
-                    
-
-                    
+                      @if ($transaction->upgrade == 'Upgrade Sale News')
+                          <a href="{{ route('salenew.detail', ['id' => $transaction->sale_news->sale_new_id]) }}">
+                              {{ $transaction->upgrade }}
+                              123
+                          </a>
+                      @elseif ($transaction->upgrade == 'Upgrade Channel')
+                      <a href="{{ route('channels.show', ['channel' => $transaction->channel->channel_id]) }}">
+                        {{ $transaction->upgrade }}
+                    </a>
+                      @else
+                          <span>{{ $transaction->upgrade }}</span>
+                      @endif
+                  </td>
+                  
                     <td class="bg-light rounded">
                       <span class="badge bg-primary">{{ $transaction->payment_method }}</span> - 
                       <span class="badge bg-secondary">{{ $transaction->vnp_BankCode }}</span>
@@ -87,7 +96,6 @@
                       <div data-bs-toggle="modal" data-bs-target="#modal{{ $transaction->transaction_id }}">
                         <a class="dropdown-item" href="#"><span><i class="fa-solid fa-eye me-1"></i></span>View</a>
                       </div>
-                     
                       <div class="modal fade" id="modal{{ $transaction->transaction_id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $transaction->transaction_id }}" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
@@ -98,32 +106,57 @@
                               <table class="table">
                                 <tbody>
                                   <tr data-dt-row="2" data-dt-column="2">
-                                    <td class="col-3">Product:</td>
-                                    <td class="col-9">
-                                      <div class="d-flex justify-content-start align-items-center product-name">
-                                        <div class="avatar-wrapper">
-                                          <div class="avatar avatar me-4 rounded-2 bg-label-secondary">
-                                            <img src="{{ asset($transaction->transaction_id) }}" alt="Product-3" class="rounded" style="width: 100%; object-fit: cover;">
-                                          </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                          <h6 class="mb-0 text-truncate-1">{{ $transaction->transaction_id }}</h6>
-                                          <small class="text-truncate-1">{{ $transaction->transaction_id }}</small>
-                                        </div>
-                                      </div>
-                                    </td>
+                                    <td class="col-3">Customer:</td>
+                                    <td class="col-9"><span>{{ $transaction->user->full_name }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="6">
+                                    <td class="col-3">Amount:</td>
+                                    <td class="col-9"><span>${{ number_format($transaction->price, 2) }}</span></td>
+                                  </tr>
+                                  <tr data-dt-row="2" data-dt-column="2">
+                                    <td class="col-3">Upgrade:</td>
+                                    <td class="col-9"><span>{{ $transaction->upgrade }}</span></td>
                                   </tr>
                                   <tr data-dt-row="2" data-dt-column="3">
-                                    <td class="col-3">Category:</td>
+                                    <td class="col-3">Payment Method:</td>
                                     <td class="col-9">
                                       <span class="badge bg-primary">{{ $transaction->payment_method }}</span> - 
                                       <span class="badge bg-secondary">{{ $transaction->vnp_BankCode }}</span>
                                     </td>
+
+                                    <tr data-dt-row="2" data-dt-column="2">
+                                      <td class="col-3">Status:</td>
+                                      <td>@if ($transaction->status == "Success")
+                                      <span class="badge bg-label-success">Success</span>
+                                      @else
+                                      <span class="badge bg-label-danger">Incomplete</span>
+                                      @endif
+                                    </td>
+                                    </tr>
+                                    
+                                    <tr data-dt-row="2" data-dt-column="2">
+                                      <td class="col-3">Vnp Transaction No:</td>
+                                      <td class="col-9"><span>{{ $transaction->vnp_transaction_no }}</span></td>
+                                    </tr>
+                                    <tr data-dt-row="2" data-dt-column="2">
+                                      <td class="col-3">Vnp Txn Ref:</td>
+                                      <td class="col-9"><span>{{ $transaction->vnp_TxnRef }}</span></td>
+                                    </tr>
+                                    <tr data-dt-row="2" data-dt-column="2">
+                                      <td class="col-3">Vnp Tmn Code:</td>
+                                      <td class="col-9"><span>{{ $transaction->vnp_TmnCode }}</span></td>
+                                    </tr>
+                                    <tr data-dt-row="2" data-dt-column="2">
+                                      <td class="col-3">Vnp Bank Tran No:</td>
+                                      <td class="col-9"><span>{{ $transaction->vnp_BankTranNo }}</span></td>
+                                    </tr>
+                                    <tr data-dt-row="2" data-dt-column="2">
+                                      <td class="col-3">Transaction Date:</td>
+                                      <td class="col-9"><span>{{ $transaction->transaction_date }}</span></td>
+                                    </tr>
+                                   
                                   </tr>
-                                  <tr data-dt-row="2" data-dt-column="6">
-                                    <td class="col-3">Price:</td>
-                                    <td class="col-9"><span>${{ number_format($transaction->price, 2) }}</span></td>
-                                  </tr>
+                                 
                                   
                                 </tbody>
                               </table>

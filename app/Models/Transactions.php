@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Channel;
+use App\Models\SaleNews;
 
 class Transactions extends Model
 {
@@ -35,5 +36,9 @@ class Transactions extends Model
     public function channel()
     {
         return $this->belongsTo(Channel::class, 'channel_id');
+    }
+    public function sale_news()
+    {
+        return $this->belongsTo(SaleNews::class, 'sale_news_id', 'sale_new_id');
     }
 }
