@@ -75,7 +75,7 @@
     <div class="container new-arrivals">
         <div class="heading heading-flex mb-3">
             <div class="heading-left">
-                <h2 class="title">New Arrivals</h2><!-- End .title -->
+                <h2 class="title">Top Of page</h2><!-- End .title -->
             </div>
 
             <!-- End .heading-left -->
@@ -191,7 +191,7 @@
         <div class="container trending-products">
             <div class="heading heading-flex mb-3">
                 <div class="heading-left">
-                    <h2 class="title">Trending Products</h2><!-- End .title -->
+                    <h2 class="title">You May Like</h2><!-- End .title -->
                 </div><!-- End .heading-left -->
 
                 <div class="heading-right">
@@ -202,12 +202,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab"
-                                role="tab" aria-controls="trending-best-tab" aria-selected="false">Best
-                                Selling</a>
+                                role="tab" aria-controls="trending-best-tab" aria-selected="false">
+                                Trending</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab"
-                                role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                role="tab" aria-controls="trending-sale-tab" aria-selected="false">Moderate</a>
                         </li>
                     </ul>
                 </div><!-- End .heading-right -->
@@ -320,7 +320,7 @@
                                                 }
                                             }
                                             }'>
-                                @foreach ($bestSelling as $item)
+                                @foreach ($Trending as $item)
 
                                 <div class="product product-2">
                                     <figure class="product-media">
