@@ -1,4 +1,5 @@
 @extends('layouts.client_layout') @section('content')
+
 <main class="main">
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
         <div class="container">
@@ -24,6 +25,7 @@
                     <div class="owl-carousel owl-simple owl-nav-top carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
                         data-toggle="owl"
                         data-owl-options='{
+ 
                                 "nav": true,
                                 "dots": false,
                                 "margin": 20,
@@ -244,6 +246,7 @@
                         </div>
 
 
+
                         @if ($nonVipSaleNews->hasPages())
                         <ul class="pagination justify-content-center">
                             {{-- Nút Previous --}}
@@ -261,6 +264,7 @@
                                     <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                                 </a>
                             </li>
+ 
                             @endif
 
                             {{-- Các số trang --}}
@@ -387,9 +391,10 @@
                 <!-- End .col-lg-3 -->
             </div>
         </div>
+
     </div>
 </main>
-
+<script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -449,3 +454,4 @@
     })
 </script>
 @endsection
+

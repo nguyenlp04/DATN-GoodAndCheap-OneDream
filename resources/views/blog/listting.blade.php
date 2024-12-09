@@ -131,26 +131,59 @@
 
             </div><!-- End .entry-container -->
 
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
-                            aria-disabled="true">
-                            <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
-                        </a>
-                    </li>
-                    <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item">
-                        <a class="page-link page-link-next" href="#" aria-label="Next">
-                            Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+           
             @else
             <p class="text-danger ">Not empty blogs!</p>
             @endif
+            @if ($blogs->hasPages())
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {{-- Nút Previous --}}
+            @if ($blogs->onFirstPage())
+                <li class="page-item disabled">
+                    <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                        <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span> Prev
+                    </a>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link page-link-prev" href="{{ $blogs->previousPageUrl() }}" aria-label="Previous">
+                        <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span> Prev
+                    </a>
+                </li>
+            @endif
+
+            {{-- Các số trang --}}
+            @foreach ($blogs->getUrlRange(1, $blogs->lastPage()) as $page => $url)
+                @if ($page == $blogs->currentPage())
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{ $page }}</a>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                @endif
+            @endforeach
+
+            {{-- Nút Next --}}
+            @if ($blogs->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link page-link-next" href="{{ $blogs->nextPageUrl() }}" aria-label="Next">
+                        Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                    </a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <a class="page-link page-link-next" href="#" aria-label="Next" tabindex="-1" aria-disabled="true">
+                        Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                    </a>
+                </li>
+            @endif
+        </ul>
+    </nav>
+@endif
+
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
