@@ -16,9 +16,10 @@ class BlogController extends Controller
     // Hiển thị danh sách bài viết
     public function index()
     {
-        $blogs = Blog::where('is_delete', 0)->paginate(10); // Sử dụng phân trang
+        $blogs = Blog::whereNull('is_delete')->get();
         return view('admin.blogs.index', compact('blogs'));
     }
+    
     public function create()
     {
         $category = Category::all();
@@ -34,17 +35,17 @@ class BlogController extends Controller
         $alltags = Blog::all();
     
         $category = Category::withCount(['blogs as blogs_count' => function ($query) {
-            $query->where('status', '1');
+            $query->where('status', '1')->whereNull('is_delete');
         }])
         ->where('status', '1')
         ->get();
     
         $perPage = 8; // Số bài viết trên mỗi trang
-        $blogs = Blog::where('status', '1')
+        $blogs = Blog::where('status', '1')->whereNull('is_delete')
             ->with('category')
             ->paginate($perPage); // Sử dụng phân trang
     
-        $count = Blog::where('status', '1')->count();
+        $count = Blog::where('status', '1')->whereNull('is_delete')->count();
     
         return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count', 'category')); // Trả về view với danh sách blog
     }
@@ -172,8 +173,12 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         try {
-            // Xóa bài viết
-            $blog->delete();
+           
+            $blog->is_delete = '1';
+           
+            $blog->save();
+
+
 
             // Trả về thông báo thành công
             return redirect()->route('blogs.index')->with('alert', [
@@ -214,24 +219,30 @@ class BlogController extends Controller
     // Hiển thị chi tiết bài viết
     public function show($id)
     {
+         
         $blog = Blog::findOrFail($id)->with('category');
+        $blog->increment('views');
         return view('admin.blogs.detail', compact('blog'));
     }
     public function detail($id)
     {
+        
         $blogs = Blog::findOrFail($id);
+        $blogs->increment('views');
         $alltags = Blog::all()->take(4);
-        $topBlogs = Blog::where('status', 1) // Lọc bài viết có status = 1
+        
+        $topBlogs = Blog::where('status', 1)->whereNull('is_delete') // Lọc bài viết có status = 1
             ->orderBy('views', 'desc')       // Sắp xếp theo số lượt xem giảm dần
             ->take(4)                         // Lấy 5 bài viết có views cao nhất
             ->get();
         $relatedBlogs = Blog::where('category_id', $blogs->category_id)   // Lọc bài viết theo cùng danh mục
-            ->where('status', 1)  // Lọc bài viết có status = 1
+            ->where('status', 1)
+            ->whereNull('is_delete')  // Lọc bài viết có status = 1
             ->where('blog_id', '!=', $blogs->blog_id)  // Loại trừ bài viết hiện tại
 
             ->get();
         $category = Category::withCount(['blogs as blogs_count' => function ($query) {
-            $query->where('status', '1');
+            $query->where('status', '1')->whereNull('is_delete');
         }])
             ->where('status', '1')
             ->get();
@@ -307,7 +318,7 @@ class BlogController extends Controller
     public function trash()
     {
 
-        $blogs = Blog::where('is_delete', 1)->get();
+        $blogs = Blog::where('is_delete', '1')->get();
         return view('admin.trash.blog', compact('blogs'));
     }
     public function restore($id)
@@ -316,7 +327,7 @@ class BlogController extends Controller
             $item = Blog::findOrFail($id);
 
             // Thay đổi trạng thái giữa 0 và 2
-            $item->is_delete = 0;
+            $item->is_delete = null ;
             $item->save();
 
             return redirect()->back()->with('alert', [

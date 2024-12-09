@@ -17,7 +17,8 @@ class Blog extends Model
         'staff_id',
         'image',
         'short_description',
-        'category_id'
+        'category_id',
+        'is_delete'
     ];
     public function staff()
 {
