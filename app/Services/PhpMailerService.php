@@ -22,7 +22,7 @@ class PhpMailerService
             $mail->Port       = 587;
 
             // Cấu hình người gửi và người nhận
-            $mail->setFrom($from, 'Good & Cheap');
+            $mail->setFrom($from, env('MAIL_FROM_NAME'));
             $mail->addAddress($to);
 
             // Nội dung email
