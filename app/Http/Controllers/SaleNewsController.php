@@ -572,7 +572,7 @@ class SaleNewsController extends Controller
     public function search(Request $request)
     {
 
-        $maxPrice = SaleNews::max('price');
+        $maxPriceRange = SaleNews::max('price');
 
         $keyword = $request->input('keyword');
         $categoryId = $request->get('category'); // Get category filter
@@ -586,8 +586,10 @@ class SaleNewsController extends Controller
         $subcategoryID = $request->get('subcategory');    // Get address filter
         // dd($subcategoryID);
 
+
         $minPrice = $request->get('minPrice') ?? 0;
-        $maxPrice = $request->get('maxPrice') ?? $maxPrice;
+        $maxPrice = $request->get('maxPrice') ?? $maxPriceRange;
+
         // dd($minPrice);
 
 
@@ -682,7 +684,7 @@ class SaleNewsController extends Controller
             'category',
             'address',
             'categoryId',
-            'maxPrice'
+            'maxPriceRange'
         ));
     }
     public function all_sale_news(Request $request)

@@ -312,6 +312,7 @@
 
 
           <!-- Trash -->
+           @if (Auth::guard('staff')->user()->role == 'admin')
           <li class="menu-item {{ Request::is('trash/*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-trash"></i>
@@ -338,6 +339,7 @@
                   <div data-i18n="Trash Blog">Blog</div>
                 </a>
               </li>
+              @endif
 
             </ul>
           </li>
@@ -454,15 +456,7 @@
                       <span class="align-middle">Settings</span>
                     </a>
                   </li>
-                  <!-- <li>
-                    <a class="dropdown-item" href="{{ url('#') }}">
-                      <span class="d-flex align-items-center align-middle">
-                        <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                        <span class="flex-grow-1 align-middle">Billing</span>
-                        <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                      </span>
-                    </a>
-                  </li> -->
+
                   <li>
                     <div class="dropdown-divider"></div>
                   </li>

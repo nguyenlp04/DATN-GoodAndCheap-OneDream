@@ -9,21 +9,35 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
         <div class="container d-flex align-items-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Products</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Sale news</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Default</li>
             </ol>
 
-            <nav class="product-pager ml-auto" aria-label="Product">
-                <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
+           <nav class="product-pager ml-auto" aria-label="Product">
+                @if($prevNewsId)
+                <a class="product-pager-link product-pager-prev" href="{{ route('salenew.detail', $prevNewsId) }}" aria-label="Previous">
                     <i class="icon-angle-left"></i>
                     <span>Prev</span>
                 </a>
+                @else
+                <a class="product-pager-link product-pager-prev disabled" aria-label="Previous">
+                    <i class="icon-angle-left"></i>
+                    <span>Prev</span>
+                </a>
+                @endif
 
-                <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">
+                @if($nextNewsId)
+                <a class="product-pager-link product-pager-next" href="{{ route('salenew.detail', $nextNewsId) }}" aria-label="Next">
                     <span>Next</span>
                     <i class="icon-angle-right"></i>
                 </a>
+                @else
+                <a class="product-pager-link product-pager-next disabled" aria-label="Next">
+                    <span>Next</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+                @endif
             </nav><!-- End .pager-nav -->
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -137,13 +151,13 @@
 
                                 <div class="row  px-4">
                                                 <div class="col-2">
-                                                    
+
                                                     @if ($get_user->image_user)
                                                     <a href="{{route('user.show',$get_user->user_id)}}">
                                                     <img src="{{ asset($get_user->image_user) }}" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
 
                                                     </a>
-                                                    
+
                                                     @else
                                                     <a href="{{route('user.show',$get_user->user_id)}}">
                                                     <img src="https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/06378cbea0004c25b8f835a60c9031f7~tplv-omjb5zjo8w-origin-jpeg.jpeg?from=1995374044" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">

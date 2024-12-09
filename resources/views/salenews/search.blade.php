@@ -304,7 +304,7 @@
 
                     </div>
                     <!-- End .col-lg-9 -->
-                    
+
                     <aside class="col-lg-3 col-xl-5col order-lg-first">
                         <div class="sidebar sidebar-shop">
                             <form method="GET" action="{{ route('search') }}">
@@ -324,7 +324,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Filter by Category -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
@@ -346,7 +346,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Filter by Price -->
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title">
@@ -360,23 +360,24 @@
                                                 <div class="filter-price-text">
                                                     Price Range:
                                                     <span id="filter-price-range">
-                                                        ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPrice ?? 500) }}
+                                                        ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPriceRange) }}
                                                     </span>
                                                 </div>
                                                 <div id="price-slider"></div>
                                                 <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice', 0) }}">
-                                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPrice) }}">
+                                                <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPriceRange) }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Hidden input to retain search keyword -->
-                            
+
                                 <!-- Apply Filters Button -->
                                 <button type="submit" class="btn btn-primary">Apply Filter</button>
                             </form>
                             
+
 
 
 
@@ -404,13 +405,13 @@
                 if (priceSlider == null) return;
 
                 noUiSlider.create(priceSlider, {
-                    start: [0, <?php echo $maxPrice; ?>],
+                    start: [0, <?php echo $maxPriceRange; ?>],
                     connect: true,
                     step: 50,
                     margin: 200,
                     range: {
                         'min': 0,
-                        'max': <?php echo $maxPrice; ?>
+                        'max': <?php echo $maxPriceRange; ?>
                     },
                     tooltips: true,
                     format: wNumb({
