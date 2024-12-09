@@ -1,4 +1,5 @@
 @extends('layouts.client_layout') @section('content')
+
     <main class="main">
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
             <div class="container">
@@ -254,7 +255,7 @@
                                                 <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                                             </a>
                                         </li>
-                                    @else
+                                    @else 
                                         <li class="page-item">
                                             <a class="page-link page-link-prev"
                                                 href="{{ $nonVipSaleNews->previousPageUrl() }}" aria-label="Previous">
@@ -389,7 +390,7 @@
             </div>
         </div>
     </main>
-
+    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {

@@ -27,25 +27,28 @@ class BlogController extends Controller
 
     public function listting()
     {
-
         $topBlogs = Blog::orderBy('views', 'desc') // Sắp xếp theo số lượt xem giảm dần
             ->take(5) // Lấy 5 bài viết có views cao nhất
             ->get();
+    
         $alltags = Blog::all();
+    
         $category = Category::withCount(['blogs as blogs_count' => function ($query) {
             $query->where('status', '1');
         }])
- 
         ->where('status', '1')
-        ->get();    
-        
-        $blogs = Blog::where('status', '1')->with('category')->get();  
+        ->get();
+    
+        $perPage = 8; // Số bài viết trên mỗi trang
+        $blogs = Blog::where('status', '1')
+            ->with('category')
+            ->paginate($perPage); // Sử dụng phân trang
+    
         $count = Blog::where('status', '1')->count();
-      
-        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count','category',)); // Trả về view với danh sách blog
- 
-
+    
+        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count', 'category')); // Trả về view với danh sách blog
     }
+    
 
     // Lưu bài viết mới
     public function store(Request $request)
