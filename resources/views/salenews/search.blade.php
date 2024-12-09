@@ -233,6 +233,22 @@
                                                 class="equal-height-image">
                                             @endif
                                         </a>
+                                        <div class="product-action-vertical">
+
+                                        <!-- Thêm data-product-id để lưu id sản phẩm -->
+                                        <form action="{{ route('addToWishlist') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
+                                            <button type="submit"
+                                                class="add-wishlist rounded-circle add-to-wishlist-btn {{ $item->isFavorited ? 'text-white bg-primary' : 'text-primary' }}"
+                                                title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}">
+                                                <i
+                                                    class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                            </button>
+                                        </form>
+
+
+                                    </div>
                                     </figure>
 
                                     <div class="product-body">
@@ -250,6 +266,7 @@
                                             ${{ number_format($item->price, 2) }}
                                         </div>
                                     </div>
+                                     
                                 </div>
                             </div>
                             @empty
@@ -419,21 +436,20 @@
 <script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
 
 <script>
-   
-    var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";
-    // Hiển thị thông báo sau khi load trang nếu có từ session
-    @if(session('alert'))
-    Swal.fire({
-        icon: "{{ session('alert')['type'] }}",
-        title: "{{ session('alert')['message'] }}",
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-    });
-    @endif
- 
+var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";
+// Hiển thị thông báo sau khi load trang nếu có từ session
+@if(session('alert'))
+Swal.fire({
+    icon: "{{ session('alert')['type'] }}",
+    title: "{{ session('alert')['message'] }}",
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true
+});
+@endif
+
 $(document).ready(function() {
 
     console.log(123);
