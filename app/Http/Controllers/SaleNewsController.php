@@ -329,7 +329,7 @@ class SaleNewsController extends Controller
             ->where('status', 0)
             ->where('approved', 1)->where('user_id', auth()->user()->user_id)->where('is_delete', null)
             ->get();
-        $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->where('is_delete', null)->count();
+        $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->count();
 
         return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden', 'transactionCount'));
     }
@@ -853,8 +853,9 @@ class SaleNewsController extends Controller
             'maxPriceRange'
         ));
     }
-    public function toggleStatus($id){
-        
+    public function toggleStatus($id)
+    {
+
         try {
             $sale_news = SaleNews::findOrFail($id);
             $sale_news->status = $sale_news->status == 1 ? 0 : 1;
