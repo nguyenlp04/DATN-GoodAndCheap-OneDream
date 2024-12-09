@@ -277,7 +277,6 @@ class VnPayController extends Controller
                         </div>
                     </div>';
                     $result = PhpMailerService::sendEmail($to, $subject, $body);
-
                 } else {
                     $transaction = Transactions::where('channel_id', $channel_id)->first();
                     if ($transaction) {
@@ -289,7 +288,7 @@ class VnPayController extends Controller
                         $Channel->vip_start_at = Carbon::now();
                         $Channel->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
                         $Channel->save();
-                        Transactions::where('transaction_id', $transaction->transaction_id)->delete();
+                        // Transactions::where('transaction_id', $transaction->transaction_id)->delete();
 
                         $message = str_replace(
                             [
