@@ -198,63 +198,32 @@
                               </div>
                            </div>
                         </div>
+                        <div class="widget widget-collapsible">
+                           <h3 class="widget-title">
+                               <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
+                                   Price
+                               </a>
+                           </h3>
+                           <div class="collapse show" id="widget-5">
+                               <div class="widget-body">
+                                   <div class="filter-price">
+                                       <div class="filter-price-text">
+                                           Price Range:
+                                           <span id="filter-price-range">
+                                               ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPrice ?? 500) }}
+                                           </span>
+                                       </div>
+                                       <div id="price-slider"></div>
+                                       <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice', 0) }}">
+                                       <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPrice) }}">
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
                         <input type="text" class="form-control" name="keyword" value="{{ old('keyword') }}" placeholder="Search ..." />
                         <button type="submit" class="btn btn-primary">Apply Filter</button>
                      </form>
-                     {{-- 
-                     <div class="widget widget-collapsible">
-                        <h3 class="widget-title">
-                           <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
-                              aria-controls="widget-5">
-                           Price
-                           </a>
-                        </h3>
-                        <!-- End .widget-title -->
-                        <div class="collapse show" id="widget-5">
-                           <div class="widget-body">
-                              <div class="filter-price">
-                                 <div class="filter-price-text">
-                                    Price Range:
-                                    <span id="filter-price-range">$0 - $500</span>
-                                 </div>
-                                 <!-- End .filter-price-text -->
-                                 <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal">
-                                    <div class="noUi-base">
-                                       <div class="noUi-connects">
-                                          <div class="noUi-connect"
-                                             style="transform: translate(0%, 0px) scale(0.5, 1);"></div>
-                                       </div>
-                                       <div class="noUi-origin"
-                                          style="transform: translate(-100%, 0px); z-index: 5;">
-                                          <div class="noUi-handle noUi-handle-lower" data-handle="0"
-                                             tabindex="0" role="slider" aria-orientation="horizontal"
-                                             aria-valuemin="0.0" aria-valuemax="300.0" aria-valuenow="0.0"
-                                             aria-valuetext="$0">
-                                             <div class="noUi-touch-area"></div>
-                                             <div class="noUi-tooltip">$0</div>
-                                          </div>
-                                       </div>
-                                       <div class="noUi-origin"
-                                          style="transform: translate(-50%, 0px); z-index: 6;">
-                                          <div class="noUi-handle noUi-handle-upper" data-handle="1"
-                                             tabindex="0" role="slider" aria-orientation="horizontal"
-                                             aria-valuemin="200.0" aria-valuemax="1000.0"
-                                             aria-valuenow="500.0" aria-valuetext="$500">
-                                             <div class="noUi-touch-area"></div>
-                                             <div class="noUi-tooltip">$500</div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <!-- End #price-slider -->
-                              </div>
-                              <!-- End .filter-price -->
-                           </div>
-                           <!-- End .widget-body -->
-                        </div>
-                        <!-- End .collapse -->
-                     </div>
-                     --}}
+                     
                   </div>
                   <!-- End .sidebar sidebar-shop -->
                </aside>
@@ -270,5 +239,62 @@
    <!-- End .main -->
    </div>
 </main>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            console.log(123);
+
+            // Slider For category pages / filter price
+            if (typeof noUiSlider === 'object') {
+                var priceSlider = document.getElementById('price-slider');
+
+                // Check if #price-slider elem is exists if not return
+                // to prevent error logs
+                if (priceSlider == null) return;
+
+                noUiSlider.create(priceSlider, {
+                    start: [0, <?php echo $maxPrice; ?>],
+                    connect: true,
+                    step: 50,
+                    margin: 200,
+                    range: {
+                        'min': 0,
+                        'max': <?php echo $maxPrice; ?>
+                    },
+                    tooltips: true,
+                    format: wNumb({
+                        decimals: 0,
+                        prefix: '$'
+                    })
+                });
+
+                // Update Price Range
+                priceSlider.noUiSlider.on('update', function(values, handle) {
+                    // Update visible price range text
+                    $('#filter-price-range').text(values.join(' - '));
+
+                    // Select hidden inputs
+                    const minInput = document.getElementById('minPrice');
+                    const maxInput = document.getElementById('maxPrice');
+
+                    // Remove the "$" symbol from the slider values
+                    const minValue = values[0].replace('$', '');
+                    const maxValue = values[1].replace('$', '');
+
+                    // Update hidden inputs with the cleaned slider values
+                    if (minInput && maxInput) {
+                        minInput.value = minValue; // Set the minimum value
+                        maxInput.value = maxValue; // Set the maximum value
+                    }
+
+                    console.log(typeof(minValue));
+                    console.log(typeof(maxValue));
+
+                    console.log('Min Value:', minValue);
+                    console.log('Max Value:', maxValue);
+                });
+            }
+        })
+    </script>
 @endsection
-<script></script>

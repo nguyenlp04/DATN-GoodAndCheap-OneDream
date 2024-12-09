@@ -329,14 +329,10 @@ class SaleNewsController extends Controller
             ->where('status', 0)
             ->where('approved', 1)->where('user_id', auth()->user()->user_id)
             ->get();
-        // dd($list_pending_approval);
         $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->count();
 
         return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden', 'transactionCount'));
     }
-    // public function tv2(){
-    //     return view('salenews.promote');
-    // }
 
     public function getSubcategories($categoryId)
     {
@@ -590,8 +586,8 @@ class SaleNewsController extends Controller
         $subcategoryID = $request->get('subcategory');    // Get address filter
         // dd($subcategoryID);
 
-        $minPrice = $request->get('minPrice') ?? 0; 
-        $maxPrice = $request->get('maxPrice') ?? $maxPrice ;
+        $minPrice = $request->get('minPrice') ?? 0;
+        $maxPrice = $request->get('maxPrice') ?? $maxPrice;
         // dd($minPrice);
 
 
@@ -788,7 +784,6 @@ class SaleNewsController extends Controller
         $subcategoryID = $request->get('subcategory');
         $threeDaysAgo = Carbon::now()->subDays(3);
 
-        // Recent VIP SaleNews (users created within the last 3 days)
         $recentVipSaleNews = SaleNews::with('categoryToSubcategory', 'user', 'sub_category.category')
             ->whereNotNull('vip_package_id')
             ->where('status', 1)
@@ -806,8 +801,6 @@ class SaleNewsController extends Controller
             });
         }
         $recentVipSaleNews = $recentVipSaleNews->inRandomOrder()->get();
-
-        // Older VIP SaleNews (users created more than 3 days ago)
         $olderVipSaleNews = SaleNews::with('categoryToSubcategory', 'user', 'sub_category.category')
             ->whereNotNull('vip_package_id')
             ->where('status', 1)

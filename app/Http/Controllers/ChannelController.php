@@ -30,8 +30,12 @@ class ChannelController extends Controller
     {
 
         $user = Auth::user();
-        $channel = Channel::where('user_id', $user->user_id)->firstOrFail(); // Lấy kênh của người dùng
-        // dd($channels);
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        $maxPrice = SaleNews::max('price');
+        $channel = Channel::where('user_id', $user->user_id)->firstOrFail();
+
         if (!$channel || is_null($channel->status)) {
             return redirect()->route('channels.create') // Chuyển hướng đến trang tạo kênh
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
@@ -50,14 +54,13 @@ class ChannelController extends Controller
             return $news->sub_category !== null;
         })->countBy('name_sub_category');
 
-        // Count the number of news items that the channel has posted
         $NewsCount = $channel->saleNews()->count();
         $category = Category::all();
 
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channel->channel_id)
             ->exists();
-        return view('partner.channels.show_channels', compact('channel', 'all_sales', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category'));
+        return view('partner.channels.show_channels', compact('channel', 'all_sales', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category', 'maxPrice'));
     }
 
 
@@ -340,6 +343,7 @@ class ChannelController extends Controller
     public function search_channel(Request $request, string $id)
     {
         $channel = Channel::findOrFail($id);
+        $maxPrice = SaleNews::max('price');
 
         $keyword = $request->input('keyword', '');
         $categoryId = $request->input('category');
@@ -347,6 +351,9 @@ class ChannelController extends Controller
         $threeDaysAgo = Carbon::now()->subDays(3);
         $NewsCount = $channel->saleNews()->count();
         $isFollowed = false;
+        $minPrice = $request->get('minPrice') ?? 0;
+        $maxPrice = $request->get('maxPrice') ?? $maxPrice;
+
         $user = Auth::user();
         if ($user) {
             $isFollowed = UserFollowed::where('user_id', $user->user_id)
@@ -382,14 +389,15 @@ class ChannelController extends Controller
 
         $category = Category::all();
 
-        // $all_sales = SaleNews::all();
-        $all_sales = SaleNews::where('channel_id',  $channel->channel_id)->where('is_delete', null)->where('approved', 1)->get();
-        // dd($all_sales);
+        $all_sales = SaleNews::where('channel_id',  $channel->channel_id)
+            ->where('is_delete', null)->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
+            ->get();
         $sale_news = SaleNews::where('channel_id', $channel->channel_id)
             ->where('title', 'like', "%$keyword%")
             ->when($categoryId, fn($q) => $q->whereHas('sub_category.category', function ($q) use ($categoryId) {
                 $q->where('category_id', $categoryId);
-            }))
+            }))->whereBetween('price', [$minPrice, $maxPrice])
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->get();
 
@@ -413,7 +421,8 @@ class ChannelController extends Controller
                 'channel',
                 'sale_news',
                 'NewsCount',
-                'all_sales'
+                'all_sales',
+                'maxPrice'
 
             ))->with('message', 'Không tìm thấy kết quả nào.');
         }
@@ -437,7 +446,8 @@ class ChannelController extends Controller
             'sale_news',
             'NewsCount',
             'all_sales',
-            'isFollowed'
+            'isFollowed',
+            'maxPrice'
         ));
     }
 }
