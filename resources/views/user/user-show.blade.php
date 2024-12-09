@@ -244,6 +244,7 @@
 
 
 </main><!-- End .main -->
+<script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
 
 <style>
     .listing-card {

@@ -217,19 +217,6 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item {{ Request::is('Trash/*') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-trash"></i>
-              <div data-i18n="Payment Management">Trash</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item {{ Request::is('payment/method') ? 'active' : '' }}">
-                <a href="{{ url('payment/method') }}" class="menu-link">
-                  <div data-i18n="Payment Method">Trash</div>
-                </a>
-              </li>
-            </ul>
-          </li>
           <li class="menu-header small text-uppercase"><span class="menu-header-text">Support</span></li>
           <li class="menu-item">
             <a
@@ -306,25 +293,7 @@
                       <span class="align-middle">My Profile</span>
                     </a>
                   </li>
-                  <li>
-                    <a class="dropdown-item" href="{{ url("#") }}">
-                      <span class="d-flex align-items-center align-middle">
-                        <i class="bx bx-message-square me-2"></i>
-                        <span class="flex-grow-1 align-middle">Message</span>
-                        <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                      </span>
-
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{{ url("#") }}">
-                      <span class="d-flex align-items-center align-middle">
-                        <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                        <span class="flex-grow-1 align-middle">Billing</span>
-                        <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                      </span>
-                    </a>
-                  </li>
+                  
                   <li>
                     <div class="dropdown-divider"></div>
                   </li>
