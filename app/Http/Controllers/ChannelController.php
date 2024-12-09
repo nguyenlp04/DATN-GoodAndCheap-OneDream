@@ -21,11 +21,7 @@ class ChannelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function list_channel()
-    {
-        $channels = Channel::all();
-        return view('admin.channels.list_channel', compact('channels'));
-    }
+
     public function index()
     {
 
@@ -33,15 +29,17 @@ class ChannelController extends Controller
         if (!$user) {
             return redirect()->route('login');
         }
-        $channel = Channel::where('user_id', $user->user_id)->firstOrFail();
+        $channel = Channel::where('user_id', $user->user_id)->first();
         $information = ChannelInfo::where('channel_id', $user->user_id)->first();
 
         $maxPriceRange = SaleNews::max('price');
-
+        // dd(123);
         if (!$channel || is_null($channel->status)) {
-            return redirect()->route('channels.create') // Chuyển hướng đến trang tạo kênh
+            // dd(1);
+            return redirect()->route('channels.create')
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
         }
+        // if()
         $sale_news = $channel->saleNews()->with('sub_category', 'firstImage')
             ->where('approved', 1)
             ->where('status', 1)
@@ -52,10 +50,10 @@ class ChannelController extends Controller
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
         }
         $all_sales = SaleNews::where('channel_id', $channel->channel_id)
-        ->where('is_delete', null)
-        ->where('approved', 1)
-        ->where('status', 1)
-        ->paginate(4);
+            ->where('is_delete', null)
+            ->where('approved', 1)
+            ->where('status', 1)
+            ->paginate(4);
 
         // Count records of sub_category based on name
         $subcategory_count = $sale_news->filter(function ($news) {
@@ -70,6 +68,11 @@ class ChannelController extends Controller
             ->where('channel_id', $channel->channel_id)
             ->exists();
         return view('partner.channels.show_channels', compact('channel', 'information', 'all_sales', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category', 'maxPriceRange', 'productCount'));
+    }
+    public function list_channel()
+    {
+        $channels = Channel::all();
+        return view('admin.channels.list_channel', compact('channels'));
     }
 
 
