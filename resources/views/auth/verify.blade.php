@@ -109,11 +109,11 @@
             <button type="submit" class="btn btn-primary d-grid w-100 mb-6">
               Verify my account
             </button>
-            <div class="text-center">Didn't get the code?
+            <!-- <div class="text-center">Didn't get the code?
               <a href="javascript:void(0);">
                 Resend
               </a>
-            </div>
+            </div> -->
           </form>
         </div>
       </div>
