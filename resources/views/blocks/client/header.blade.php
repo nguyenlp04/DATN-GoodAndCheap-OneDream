@@ -311,7 +311,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="{{ url('partners/profile') }}">
+                                                <a class="dropdown-item" href="{{ url('partners/') }}">
                                                     {{ __('Channel Manager') }}
                                                 </a>
                                             </li>

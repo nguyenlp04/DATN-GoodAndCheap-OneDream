@@ -11,7 +11,7 @@
                             <img src="{{ asset($profile->image_channel) }}" alt="avatar"
                                  class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
                             <h5 class="my-3">{{ $profile->name_channel }}</h5>
-                            <p class="text-muted mb-1">{{ $profile->vipPackage->name }}</p>
+                            <p class="text-muted mb-1">{{ $profile->vipPackage->name ?? 'Nomal' }}</p>
                             <p class="text-muted mb-4">{{ $profile->address }}</p>
                             <div class="d-flex justify-content-center">
                                 <a href="{{ route('channels.show', ['channel' => $profile->channel_id]) }}" class="btn btn-primary text-white ms-1">View Channel</a>
