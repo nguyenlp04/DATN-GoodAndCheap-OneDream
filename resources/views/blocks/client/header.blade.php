@@ -109,14 +109,14 @@
                         </div>
                         <!-- End .cart-dropdown -->
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                            <a href="#" class="dropdown-toggle d-flex align-items-center" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="fa-regular fa-bell fa-sm"></i>
                                 </div>
                                 <p>notifications</p>
                             </a>
-                            <div class="dropdown-menu-right">
+                            <div>
                                 @if (!empty($notifications))
                                     <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static"
                                         style="border: 1px solid #ddd; border-radius: 5px;">

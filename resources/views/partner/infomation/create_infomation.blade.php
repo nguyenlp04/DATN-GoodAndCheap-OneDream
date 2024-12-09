@@ -62,13 +62,6 @@
 <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
 
 <script>
-    @if(session('message'))
-        alert('Success! {{ session('message') }}');
-    @endif
-
-    @if(session('alert'))
-        alert('{{ ucfirst(session('alert')['type']) }}! {{ session('alert')['message'] }}');
-    @endif
 
     document.getElementById('btnBrowse').addEventListener('click', function() {
         document.getElementById('fileInput').click();

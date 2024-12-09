@@ -42,7 +42,9 @@
                     </td>
                     <td>
                       <div class="align-items-center">
-                        <p class="mb-0 text-truncate-3  ms-3 w-100">{!! Str::limit($channel->about, 50) !!}</p>
+                        <p class="mb-0 text-truncate-3 ms-3 w-100">
+                          {{ Str::limit(strip_tags($channel->about), 100) }}
+                      </p>
                       </div>
                     </td>
                     <td class="bg-light rounded">
@@ -83,7 +85,8 @@
                                 <tbody>
                                   <tr>
                                     <td class="col-3">Channel:</td>
-                                    <td class="col-9">{!! $channel->about !!}</td>
+                                    <td class="col-9"> {{ Str::limit(strip_tags($channel->about), 100) }}</td>
+                                   
                                   </tr>
                                  
                                   <tr>
