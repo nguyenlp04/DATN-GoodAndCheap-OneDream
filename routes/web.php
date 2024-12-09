@@ -208,20 +208,20 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
     Route::get('/transaction-history', [TransactionController::class, 'user_transaction_history'])->name('user.transaction_history');
+    Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
 });
-
-Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
-Route::get('/seach-category', [SaleNewsController::class, 'search_category'])->name('seach-category');
-Route::post('/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
-Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
-Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('salenews.all');
 // enduser
 
 
 
-// guest
 
-//show user
+
+// guest
+// Route::middleware('guest')->group(function () {
+Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
+Route::get('/seach-category', [SaleNewsController::class, 'search_category'])->name('seach-category');
+Route::post('/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
+Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('salenews.all');
 Route::get('/user/{id}', [UserManageController::class, 'show'])->name('user.show');
 //end show
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -242,42 +242,17 @@ Route::prefix('staff')->group(function () {
     Route::post('/forgot-password', [StaffForgotPasswordController::class, 'sendResetLinkEmail'])->name('staff.password.email');
     Route::get('/reset-password/{token}', [StaffResetPasswordController::class, 'showResetForm'])->name('staff.password.reset');
     Route::post('/reset-password', [StaffResetPasswordController::class, 'reset'])->name('staff.password.update');
+    // });
+    // end guest
+
+
+
+
+
+
+
 });
-// end guest
-
-
-
-
-
-// test
-Route::prefix('payment')->group(function () {
-    Route::get('/preview', function () {
-        return view('admin.payments.preview');
-    });
-    Route::get('/transactions', [TransactionController::class, 'index']);
-    Route::get('/account', function () {
-        return view('admin.payments.receiving-account');
-    });
-});
-// endtest
-
-
 
 
 // Partners
-Route::resource('channels', ChannelController::class);
-
-Route::prefix('trash')->group(function () {
-    Route::get('/sale-news', function () {
-        return view('admin.index');
-    });
-    Route::get('/channel', function () {
-        return view('admin.index');
-    });
-    Route::get('/category', function () {
-        return view('admin.index');
-    });
-    Route::get('/blog', function () {
-        return view('admin.index');
-    });
-});
+// Route::resource('channels', ChannelController::class);
