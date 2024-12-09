@@ -221,7 +221,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/search', [SaleNewsController::class, 'search'])->name('search');
 Route::get('/seach-category', [SaleNewsController::class, 'search_category'])->name('seach-category');
-Route::post('/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
+Route::match(['get', 'post'], '/search-channel/{id}', [ChannelController::class, 'search_channel'])->name('search_channel');
 Route::get('all-sale-news', [SaleNewsController::class, 'all_sale_news'])->name('salenews.all');
 Route::get('/user/{id}', [UserManageController::class, 'show'])->name('user.show');
 //end show

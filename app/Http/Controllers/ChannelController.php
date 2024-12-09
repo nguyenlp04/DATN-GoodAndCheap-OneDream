@@ -51,7 +51,11 @@ class ChannelController extends Controller
         foreach ($sale_news as $news) {
             $news->name_sub_category = $news->sub_category ? $news->sub_category->name_sub_category : null;
         }
-        $all_sales = SaleNews::where('channel_id', $channel->channel_id)->where('is_delete', null)->where('approved', 1)->get();
+        $all_sales = SaleNews::where('channel_id', $channel->channel_id)
+        ->where('is_delete', null)
+        ->where('approved', 1)
+        ->where('status', 1)
+        ->paginate(4);
 
         // Count records of sub_category based on name
         $subcategory_count = $sale_news->filter(function ($news) {
@@ -169,6 +173,8 @@ class ChannelController extends Controller
         // Tìm kiếm theo keyword nếu có
         $sale_news = $channel->saleNews()
             ->where('approved', 1)
+            ->where('status', 1)
+            ->where('is_delete', null)
             ->with('sub_category', 'firstImage')
             ->when($request->has('keyword'), function ($query) use ($request) {
                 return $query->where('title', 'like', '%' . $request->keyword . '%');
@@ -366,10 +372,14 @@ class ChannelController extends Controller
                 ->where('channel_id', $channel->channel_id)
                 ->exists();
         }
-        $information = ChannelInfo::where('channel_id', $user->user_id)->first();
+        $information = ChannelInfo::where('channel_id', $channel->channel_id)->first();
+
 
         $buildQuery = function ($isVip, $isRecent = null) use ($keyword, $categoryId, $threeDaysAgo) {
             $query = SaleNews::where('title', 'like', "%$keyword%")
+                ->where('is_delete', null)
+                ->where('approved', 1)
+                ->where('status', 1)
                 ->with('categoryToSubcategory', 'user', 'sub_category.category');
 
             $query->when($isVip, fn($q) => $q->whereNotNull('vip_package_id'));
@@ -398,13 +408,17 @@ class ChannelController extends Controller
         $category = Category::all();
 
         $all_sales = SaleNews::where('channel_id',  $channel->channel_id)
-            ->where('is_delete', null)->where('approved', 1)
+            ->where('is_delete', null)
+            ->where('approved', 1)
             ->where('status', 1)
             ->whereBetween('price', [$minPrice, $maxPrice])
             ->paginate(5);
 
         $sale_news = SaleNews::where('channel_id', $channel->channel_id)
             ->where('title', 'like', "%$keyword%")
+            ->where('is_delete', null)
+            ->where('approved', 1)
+            ->where('status', 1)
             ->when($categoryId, fn($q) => $q->whereHas('sub_category.category', function ($q) use ($categoryId) {
                 $q->where('category_id', $categoryId);
             }))->whereBetween('price', [$minPrice, $maxPrice])
