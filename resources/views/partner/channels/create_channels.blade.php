@@ -117,7 +117,7 @@
                     <label for="city" class="form-label font-weight-bold">Vip Package </label>
                     <select id="vip_package_id" name="vip_package_id" class="form-select form-control">
                         @foreach ($vipPackages as $item)
-                        <option value="{{ $item->vip_package_id }}">{{ $item->name }}-{{ $item->price }}
+                        <option value="{{ $item->vip_package_id }}">{{ $item->name }}  -  ${{ $item->price }}
                         </option>
                         @endforeach
                     </select>

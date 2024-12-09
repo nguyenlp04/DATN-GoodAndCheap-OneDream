@@ -149,11 +149,14 @@ class ConfigController extends Controller
     {
 
         $request->validate([
-            'mailUserName' => 'required|email', // Validate email format
+            'mailUserName' => 'required|email',
+            'MAIL_FROM_NAME' => 'string'
+            // Validate email format
         ]);
 
         $mailUserName = $request->input('mailUserName');
         $mailPassWord = $request->input('mailPassWord');
+        $mailfromName = $request->input('MAIL_FROM_NAME');
         $mailPassWord = str_replace(' ', '', $mailPassWord);
 
 
@@ -162,6 +165,8 @@ class ConfigController extends Controller
                 'MAIL_USERNAME' => $mailUserName,
                 'MAIL_FROM_ADDRESS' => $mailUserName,
                 'MAIL_PASSWORD' => $mailPassWord,
+                'MAIL_FROM_NAME' => "\"" . $mailfromName . "\"",
+                'MAIL_FROM_ADDRESS' => $mailUserName
 
             ]);
 

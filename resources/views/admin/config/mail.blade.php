@@ -33,7 +33,17 @@
                                     <h5 class="card-title mb-0">Mail</h5>
                                 </div>
                                 <div class="card-body">
-
+                                    <div class="mb-6">
+                                        <label class="form-label" for="mailUserName">MAIL_FROM_NAME</label>
+                                        <input type="mail" class="form-control" value="{{ !empty(env('MAIL_FROM_NAME')) ? trim(env('MAIL_FROM_NAME')) : env('MAIL_FROM_NAME') }}" id="mailUserName"
+                                            placeholder="Mail Username" name="MAIL_FROM_NAME"
+                                            value="" aria-label="Notification title">
+                                            @error('MAIL_FROM_NAME')
+                                            <div class="text-danger">
+                                                <i class="bx bx-error-circle me-2"></i>{{ $message }}
+                                            </div>
+                                            @enderror
+                                    </div>
                                     <div class="mb-6">
                                         <label class="form-label" for="mailUserName">MAIL_USERNAME</label>
                                         <input type="mail" class="form-control" value="{{ !empty(env('MAIL_USERNAME')) ? trim(env('MAIL_USERNAME')) : env('MAIL_USERNAME') }}" id="mailUserName"
@@ -72,32 +82,32 @@
                                                 <div class="accordion-body">
                                                     <div
                                                         class="ant-space css-14brfei ant-space-vertical ant-space-gap-row-small ant-space-gap-col-small">
-                                                        <div class="ant-space-item py-1"> 
-                                                            <span class="ant-typography css-14brfei"> 
-                                                                1. Log in to your email provider account (e.g., Gmail, Outlook, etc.). 
+                                                        <div class="ant-space-item py-1">
+                                                            <span class="ant-typography css-14brfei">
+                                                                1. Log in to your email provider account (e.g., Gmail, Outlook, etc.).
                                                             </span>
                                                         </div>
-                                                        <div class="ant-space-item py-1"> 
-                                                            <span class="ant-typography css-14brfei"> 
-                                                                2. Navigate to the account settings or security settings page. 
+                                                        <div class="ant-space-item py-1">
+                                                            <span class="ant-typography css-14brfei">
+                                                                2. Navigate to the account settings or security settings page.
                                                             </span>
                                                         </div>
-                                                        <div class="ant-space-item py-1"> 
-                                                            <span class="ant-typography css-14brfei"> 
+                                                        <div class="ant-space-item py-1">
+                                                            <span class="ant-typography css-14brfei">
                                                                 3. If using Gmail, enable "Allow less secure apps" or set up an <a
                                                                 class="ant-typography css-14brfei"
                                                                 href="https://myaccount.google.com/apppasswords"
-                                                                target="_blank" rel="noopener noreferrer"> App Password </a> in the Google Account Security settings. 
+                                                                target="_blank" rel="noopener noreferrer"> App Password </a> in the Google Account Security settings.
                                                             </span>
                                                         </div>
-                                                        <div class="ant-space-item py-1"> 
-                                                            <span class="ant-typography css-14brfei"> 
-                                                                4. For App Passwords, generate a new App Password for "Mail" or "SMTP" and note down the generated password. 
+                                                        <div class="ant-space-item py-1">
+                                                            <span class="ant-typography css-14brfei">
+                                                                4. For App Passwords, generate a new App Password for "Mail" or "SMTP" and note down the generated password.
                                                             </span>
                                                         </div>
-                                                        <div class="ant-space-item py-1"> 
-                                                            <span class="ant-typography css-14brfei"> 
-                                                                5. Use your email address as the `MAIL_USERNAME` and the App Password as the `MAIL_PASSWORD`. 
+                                                        <div class="ant-space-item py-1">
+                                                            <span class="ant-typography css-14brfei">
+                                                                5. Use your email address as the `MAIL_USERNAME` and the App Password as the `MAIL_PASSWORD`.
                                                             </span>
                                                         </div>
                                                     </div>
@@ -105,7 +115,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
 
                                 </div>
                             </div>
