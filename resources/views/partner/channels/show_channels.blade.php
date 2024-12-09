@@ -239,49 +239,5 @@
    <!-- End .main -->
    </div>
 </main>
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-
-            if (typeof noUiSlider === 'object') {
-                var priceSlider = document.getElementById('price-slider');
-
-                // Check if #price-slider elem is exists if not return
-                // to prevent error logs
-                if (priceSlider == null) return;
-
-                noUiSlider.create(priceSlider, {
-                    start: [0, <?php echo $maxPriceRange; ?>],
-                    connect: true,
-                    step: 50,
-                    margin: 200,
-                    range: {
-                        'min': 0,
-                        'max': <?php echo $maxPriceRange; ?>
-                    },
-                    tooltips: true,
-                    format: wNumb({
-                        decimals: 0,
-                        prefix: '$'
-                    })
-                });
-
-                priceSlider.noUiSlider.on('update', function(values, handle) {
-                    $('#filter-price-range').text(values.join(' - '));
-
-                    const minInput = document.getElementById('minPrice');
-                    const maxInput = document.getElementById('maxPrice');
-                    const minValue = values[0].replace('$', '');
-                    const maxValue = values[1].replace('$', '');
-
-                    // Update hidden inputs with the cleaned slider values
-                    if (minInput && maxInput) {
-                        minInput.value = minValue; // Set the minimum value
-                        maxInput.value = maxValue; // Set the maximum value
-                    }
-
-                });
-            }
-        })
-    </script>
+<script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
 @endsection
