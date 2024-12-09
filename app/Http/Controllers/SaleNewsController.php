@@ -517,7 +517,7 @@ class SaleNewsController extends Controller
     }
     public function destroy($id)
     {
-        try {
+        try { 
             $item = SaleNews::findOrFail($id);
 
             // Nếu is_delete là NULL, gán giá trị là 1
