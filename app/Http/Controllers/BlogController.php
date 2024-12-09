@@ -16,9 +16,10 @@ class BlogController extends Controller
     // Hiển thị danh sách bài viết
     public function index()
     {
-        $blogs = Blog::where('is_delete', 0)->paginate(10); // Sử dụng phân trang
+        $blogs = Blog::whereNull('is_delete')->get();
         return view('admin.blogs.index', compact('blogs'));
     }
+    
     public function create()
     {
         $category = Category::all();
@@ -27,25 +28,28 @@ class BlogController extends Controller
 
     public function listting()
     {
-
         $topBlogs = Blog::orderBy('views', 'desc') // Sắp xếp theo số lượt xem giảm dần
             ->take(5) // Lấy 5 bài viết có views cao nhất
             ->get();
-        $alltags = Blog::all();
+    
+        $alltags = Blog::whereNull('is_delete');
+    
         $category = Category::withCount(['blogs as blogs_count' => function ($query) {
-            $query->where('status', '1');
+            $query->where('status', '1')->whereNull('is_delete');
         }])
- 
         ->where('status', '1')
-        ->get();    
-        
-        $blogs = Blog::where('status', '1')->with('category')->get();  
-        $count = Blog::where('status', '1')->count();
-      
-        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count','category',)); // Trả về view với danh sách blog
- 
-
+        ->get();
+    
+        $perPage = 8; // Số bài viết trên mỗi trang
+        $blogs = Blog::where('status', '1')->whereNull('is_delete')
+            ->with('category')
+            ->paginate($perPage); // Sử dụng phân trang
+    
+        $count = Blog::where('status', '1')->whereNull('is_delete')->count();
+    
+        return view('blog.listting', compact('blogs', 'topBlogs', 'alltags', 'count', 'category')); // Trả về view với danh sách blog
     }
+    
 
     // Lưu bài viết mới
     public function store(Request $request)
@@ -169,8 +173,12 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         try {
-            // Xóa bài viết
-            $blog->delete();
+           
+            $blog->is_delete = '1';
+           
+            $blog->save();
+
+
 
             // Trả về thông báo thành công
             return redirect()->route('blogs.index')->with('alert', [
@@ -211,24 +219,30 @@ class BlogController extends Controller
     // Hiển thị chi tiết bài viết
     public function show($id)
     {
+         
         $blog = Blog::findOrFail($id)->with('category');
+        $blog->increment('views');
         return view('admin.blogs.detail', compact('blog'));
     }
     public function detail($id)
     {
+        
         $blogs = Blog::findOrFail($id);
-        $alltags = Blog::all()->take(4);
-        $topBlogs = Blog::where('status', 1) // Lọc bài viết có status = 1
+        $blogs->increment('views');
+        $alltags = Blog::all()->whereNull('is_delete')->take(4);
+        
+        $topBlogs = Blog::where('status', 1)->whereNull('is_delete') // Lọc bài viết có status = 1
             ->orderBy('views', 'desc')       // Sắp xếp theo số lượt xem giảm dần
             ->take(4)                         // Lấy 5 bài viết có views cao nhất
             ->get();
         $relatedBlogs = Blog::where('category_id', $blogs->category_id)   // Lọc bài viết theo cùng danh mục
-            ->where('status', 1)  // Lọc bài viết có status = 1
+            ->where('status', 1)
+            ->whereNull('is_delete')  // Lọc bài viết có status = 1
             ->where('blog_id', '!=', $blogs->blog_id)  // Loại trừ bài viết hiện tại
 
             ->get();
         $category = Category::withCount(['blogs as blogs_count' => function ($query) {
-            $query->where('status', '1');
+            $query->where('status', '1')->whereNull('is_delete');
         }])
             ->where('status', '1')
             ->get();
@@ -239,17 +253,17 @@ class BlogController extends Controller
 
     public function search(Request $request)
     {
-        // Nếu từ khóa (ws) rỗng, chuyển hướng về trang danh sách
+        // Nếu từ khóa (ws) rỗng, quay lại trang hiện tại
         if (!$request->has('ws') || $request->ws == '') {
-            return redirect()->route('blogs.listting')->with('alert', [
+            return back()->with('alert', [
                 'type' => 'error',
                 'message' => 'Please enter keywords!'
             ]);
         }
-
+    
         // Khởi tạo query cho Blog
         $query = Blog::query();
-
+    
         // Lọc theo từ khóa
         if ($request->has('ws') && $request->ws != '') {
             $query->where(function ($query) use ($request) {
@@ -257,11 +271,11 @@ class BlogController extends Controller
                     ->orWhere('content', 'like', '%' . $request->ws . '%');
             });
         }
-
+    
         // Lọc theo ngày tháng (nếu có)
         if ($request->has('date_filter') && $request->date_filter != '') {
             $dateFilter = $request->date_filter;
-
+    
             switch ($dateFilter) {
                 case 'today':
                     $query->whereDate('created_at', now()->toDateString());
@@ -288,23 +302,26 @@ class BlogController extends Controller
                     break;
             }
         }
-
+    
+        // Thêm điều kiện whereNull('is_delete')
+        $query->whereNull('is_delete');
+    
         $blogs = $query->get();
-        // dd($query->toSql(), $query->getBindings());
-
+    
         // Kiểm tra dữ liệu trống
         if ($blogs->isEmpty()) {
             return view('blog.listting_search', [
                 'message' => 'There are no articles matching the selected keyword or date.'
             ]);
         }
-
+    
         return view('blog.listting_search', compact('blogs'));
     }
+    
     public function trash()
     {
 
-        $blogs = Blog::where('is_delete', 1)->get();
+        $blogs = Blog::where('is_delete', '1')->get();
         return view('admin.trash.blog', compact('blogs'));
     }
     public function restore($id)
@@ -313,7 +330,7 @@ class BlogController extends Controller
             $item = Blog::findOrFail($id);
 
             // Thay đổi trạng thái giữa 0 và 2
-            $item->is_delete = 0;
+            $item->is_delete = null ;
             $item->save();
 
             return redirect()->back()->with('alert', [

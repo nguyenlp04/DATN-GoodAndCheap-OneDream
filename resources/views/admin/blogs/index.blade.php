@@ -51,7 +51,7 @@
                                                 method="POST" class="toggle-status-form"
                                                 data-blog-id="{{ $blog->blog_id }}">
                                                 @csrf
-                                                <button type="button"
+                                                <button type="submit"
                                                     class="btn btn-sm {{ $blog->status == 1 ? 'text-primary' : 'text-secondary' }}"
                                                     style="position: relative;">
                                                     <i
@@ -60,6 +60,7 @@
                                                         class="tooltip-text eye">{{ $blog->status == 1 ? 'Active' : 'Inactive' }}</span>
                                                 </button>
                                             </form>
+
                                         </td>
                                         <td>
                                             <div class="icon-wrapper">
@@ -168,9 +169,9 @@
                             @if(session('message')) <
                                 div class = "alert alert-success" >
                                 <
-                                strong > Success! < /strong> {{ session('message') }} <
-                                /div>
-                            @endif
+                                strong > Success! < /strong> {{ session('message') }} < /
+                                div >
+                                @endif
 
                             @if(session('alert')) <
                                 div class = "alert alert-{{ session('alert')['type'] }}" >
@@ -179,9 +180,9 @@
                                     {
                                         ucfirst(session('alert')['type'])
                                     }
-                                }! < /strong> {{ session('alert')['message'] }} <
-                                /div>
-                            @endif
+                                }! < /strong> {{ session('alert')['message'] }} < /
+                                div >
+                                @endif
                             </script>
 
                             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

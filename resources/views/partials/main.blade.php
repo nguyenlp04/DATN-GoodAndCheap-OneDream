@@ -19,8 +19,7 @@
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="intro-slider-container mb-5">
-        <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl"
-            data-owl-options='{
+        <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" data-owl-options='{
                         "dots": true,
                         "nav": false,
                         "responsive": {
@@ -30,17 +29,14 @@
                             }
                         }
                     }'>
-            <div class="intro-slide"
-                style="background-image: url({{$setting->banner1}});">
+            <div class="intro-slide" style="background-image: url({{$setting->banner1}});">
             </div><!-- End .intro-slide -->
 
-            <div class="intro-slide"
-                style="background-image: url({{$setting->banner2}});">
+            <div class="intro-slide" style="background-image: url({{$setting->banner2}});">
 
             </div><!-- End .intro-slide -->
 
-            <div class="intro-slide"
-                style="background-image: url({{$setting->banner3}});">
+            <div class="intro-slide" style="background-image: url({{$setting->banner3}});">
 
             </div><!-- End .intro-slide -->
         </div><!-- End .intro-slider owl-carousel owl-simple -->
@@ -59,7 +55,8 @@
                     <a href="{{ route('seach-category') }}?category={{ $category->category_id }}" class="cat-block">
                         <figure>
                             <span>
-                                <img style="max-width: 120px;max-height: 70px;" src="{{ asset($category->image_category ?: '') }}" alt="Category image">
+                                <img style="max-width: 200px;max-height: 90px;"
+                                    src="{{ asset($category->image_category ?: '') }}" alt="Category image">
                             </span>
                         </figure>
                         <h3 class="cat-block-title">{{ $category->name_category }}</h3><!-- End .cat-block-title -->
@@ -78,7 +75,7 @@
     <div class="container new-arrivals">
         <div class="heading heading-flex mb-3">
             <div class="heading-left">
-                <h2 class="title">New Arrivals</h2><!-- End .title -->
+                <h2 class="title">Top Of page</h2><!-- End .title -->
             </div>
 
             <!-- End .heading-left -->
@@ -118,7 +115,7 @@
 
                     <div class="product product-2">
                         <figure class="product-media">
-                            <span class="product-label label-circle label-top">Top</span>
+                            <!-- <span class="product-label label-circle label-top">Top</span> -->
                             <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}" class="image-container">
                                 @if ($item->images->isNotEmpty())
                                 <img src="{{asset($item->images->first()->image_name) }}" alt="Image"
@@ -132,7 +129,7 @@
                             <div class="product-action-vertical">
 
                                 <!-- Thêm data-product-id để lưu id sản phẩm -->
-                                <form action="{{ route('addToWishlist') }}" method="POST"  >
+                                <form action="{{ route('addToWishlist') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
                                     <button type="submit"
@@ -141,7 +138,7 @@
                                         <i class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
                                     </button>
                                 </form>
-                                
+
 
                             </div>
                         </figure>
@@ -152,7 +149,8 @@
                                 <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                             </div><!-- End .product-cat -->
                             <h3 class="product-title"><a
-                                    href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }} </a></h3>
+                                    href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
+                                </a></h3>
                             <div class="product-price">
                                 ${{ $item->price }}
                             </div>
@@ -193,24 +191,23 @@
         <div class="container trending-products">
             <div class="heading heading-flex mb-3">
                 <div class="heading-left">
-                    <h2 class="title">Trending Products</h2><!-- End .title -->
+                    <h2 class="title">You May Like</h2><!-- End .title -->
                 </div><!-- End .heading-left -->
 
                 <div class="heading-right">
                     <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="trending-top-link" data-toggle="tab"
-                                href="#trending-top-tab" role="tab" aria-controls="trending-top-tab"
-                                aria-selected="true">Top Rated</a>
+                            <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab"
+                                role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab"
-                                role="tab" aria-controls="trending-best-tab" aria-selected="false">Best
-                                Selling</a>
+                                role="tab" aria-controls="trending-best-tab" aria-selected="false">
+                                Trending</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab"
-                                role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                role="tab" aria-controls="trending-sale-tab" aria-selected="false">Moderate</a>
                         </li>
                     </ul>
                 </div><!-- End .heading-right -->
@@ -230,8 +227,7 @@
                         <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel"
                             aria-labelledby="trending-top-link">
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
-                                data-toggle="owl"
-                                data-owl-options='{
+                                data-toggle="owl" data-owl-options='{
                                             "nav": true,
                                             "dots": false,
                                             "margin": 20,
@@ -264,8 +260,21 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist"
-                                                title="Add to wishlist"></a>
+
+                                            <!-- Thêm data-product-id để lưu id sản phẩm -->
+                                            <form action="{{ route('addToWishlist') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="sale_new_id"
+                                                    value="{{ $item->sale_new_id }}">
+                                                <button type="submit"
+                                                    class="add-wishlist rounded-circle add-to-wishlist-btn {{ $item->isFavorited ? 'text-white bg-primary' : 'text-primary' }}"
+                                                    title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}">
+                                                    <i
+                                                        class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                                </button>
+                                            </form>
+
+
                                         </div><!-- End .product-action -->
 
 
@@ -275,14 +284,12 @@
                                         <div class="product-cat">
                                             <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                         </div><!-- End .product-cat -->
-                                        <h3 class="product-title"><a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">Bose - SoundSport
-                                                wireless headphones</a></h3><!-- End .product-title -->
+                                        <h3 class="product-title"><a
+                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
+                                            </a></h3>
                                         <div class="product-price">
-                                            $199.99
-                                        </div><!-- End .product-price -->
-
-
-
+                                            ${{ $item->price }}
+                                        </div>
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -293,8 +300,7 @@
                         <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel"
                             aria-labelledby="trending-best-link">
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
-                                data-toggle="owl"
-                                data-owl-options='{
+                                data-toggle="owl" data-owl-options='{
                                             "nav": true,
                                             "dots": false,
                                             "margin": 20,
@@ -314,7 +320,7 @@
                                                 }
                                             }
                                             }'>
-                                @foreach ($bestSelling as $item)
+                                @foreach ($Trending as $item)
 
                                 <div class="product product-2">
                                     <figure class="product-media">
@@ -324,8 +330,21 @@
                                                 class="equal-height-image">
                                         </a>
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist"
-                                                title="Add to wishlist"></a>
+
+                                            <!-- Thêm data-product-id để lưu id sản phẩm -->
+                                            <form action="{{ route('addToWishlist') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="sale_new_id"
+                                                    value="{{ $item->sale_new_id }}">
+                                                <button type="submit"
+                                                    class="add-wishlist rounded-circle add-to-wishlist-btn {{ $item->isFavorited ? 'text-white bg-primary' : 'text-primary' }}"
+                                                    title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}">
+                                                    <i
+                                                        class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                                </button>
+                                            </form>
+
+
                                         </div><!-- End .product-action -->
 
 
@@ -335,14 +354,12 @@
                                         <div class="product-cat">
                                             <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                         </div><!-- End .product-cat -->
-                                        <h3 class="product-title"><a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">Bose - SoundSport
-                                                wireless headphones</a></h3><!-- End .product-title -->
+                                        <h3 class="product-title"><a
+                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
+                                            </a></h3>
                                         <div class="product-price">
-                                            $199.99
-                                        </div><!-- End .product-price -->
-
-
-
+                                            ${{ $item->price }}
+                                        </div>
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -352,8 +369,7 @@
                         <div class="tab-pane p-0 fade" id="trending-sale-tab" role="tabpanel"
                             aria-labelledby="trending-sale-link">
                             <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow"
-                                data-toggle="owl"
-                                data-owl-options='{
+                                data-toggle="owl" data-owl-options='{
                                             "nav": true,
                                             "dots": false,
                                             "margin": 20,
@@ -384,8 +400,21 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist"
-                                                title="Add to wishlist"></a>
+
+                                            <!-- Thêm data-product-id để lưu id sản phẩm -->
+                                            <form action="{{ route('addToWishlist') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="sale_new_id"
+                                                    value="{{ $item->sale_new_id }}">
+                                                <button type="submit"
+                                                    class="add-wishlist rounded-circle add-to-wishlist-btn {{ $item->isFavorited ? 'text-white bg-primary' : 'text-primary' }}"
+                                                    title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}">
+                                                    <i
+                                                        class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                                </button>
+                                            </form>
+
+
                                         </div><!-- End .product-action -->
 
 
@@ -395,14 +424,12 @@
                                         <div class="product-cat">
                                             <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                                         </div><!-- End .product-cat -->
-                                        <h3 class="product-title"><a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">Bose - SoundSport
-                                                wireless headphones</a></h3><!-- End .product-title -->
+                                        <h3 class="product-title"><a
+                                                href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
+                                            </a></h3>
                                         <div class="product-price">
-                                            $199.99
-                                        </div><!-- End .product-price -->
-
-
-
+                                            ${{ $item->price }}
+                                        </div>
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
 
@@ -446,8 +473,19 @@
                             </a>
 
                             <div class="product-action-vertical">
-                                <a href="#" class="btn-product-icon btn-wishlist"
-                                    title="Add to wishlist"></a>
+
+                                <!-- Thêm data-product-id để lưu id sản phẩm -->
+                                <form action="{{ route('addToWishlist') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
+                                    <button type="submit"
+                                        class="add-wishlist rounded-circle add-to-wishlist-btn {{ $item->isFavorited ? 'text-white bg-primary' : 'text-primary' }}"
+                                        title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}">
+                                        <i class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                    </button>
+                                </form>
+
+
                             </div><!-- End .product-action -->
 
 
@@ -457,14 +495,12 @@
                             <div class="product-cat">
                                 <a href="#">{{ $item->sub_category->name_sub_category }}</a>
                             </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">Bose - SoundSport
-                                    wireless headphones</a></h3><!-- End .product-title -->
+                            <h3 class="product-title"><a
+                                    href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
+                                </a></h3>
                             <div class="product-price">
-                                $199.99
-                            </div><!-- End .product-price -->
-
-
-
+                                ${{ $item->price }}
+                            </div>
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                 </div>
@@ -543,6 +579,7 @@
 
 <!-- Trong Blade view -->
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
 
 <script>
     var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";

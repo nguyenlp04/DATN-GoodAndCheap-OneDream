@@ -171,9 +171,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/get-messages/{name}', [MessageController::class, 'getMessages'])->name('message.getmessage');
     })->middleware(['auth', 'verified']);
     Route::prefix('partners')->name('partners.')->group(function () {
-        Route::get('/', function () {
-            return view('partner.dashboard');
-        });
+        Route::get('/', [PartnerController::class, 'dashboard'])->name('dashboard');
         Route::get('profile', [PartnerProfileController::class, 'index'])->name('profile');
         Route::patch('/profile/{profile}', [PartnerProfileController::class, 'update'])->name('profile.update');
         Route::get('/infomation/', [PartnerProfileController::class, 'infomation'])->name('infomation');

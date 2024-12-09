@@ -1,6 +1,5 @@
 @extends('layouts.partner_layout')
 @section('content')
-
 <!-- Content wrapper -->
 <div class="content-wrapper">
   <!-- Content -->
@@ -49,9 +48,9 @@
                       </div>
                     </td>
                     <td>
-                        <div class="flex-grow-1 d-flex align-items-center">
-                            <p class="mb-0 text-truncate-3 ms-3 w-100">{!! $notification['content_notification'] !!}</p>
-                          </div>
+                      <div class="flex-grow-1 d-flex align-items-center">
+                        <p class="mb-0 text-truncate-3 ms-3 w-100" style="position:absolute;left: 100px;">{!! Str::limit($notification['content_notification'],70)  !!}</p>
+                      </div>
                     </td>
                    
                     <td>
@@ -85,28 +84,8 @@
                                     <td class="col-3">Content notification:</td>
                                     <td class="col-9">{{ $notification['content_notification'] }}</td>
                                   </tr>
-                                  <tr>
-                                    <td class="col-3">To:</td>
-                                    <td class="col-9">
-                                      @if(!empty($notification['user_names']) && count($notification['user_names']) > 0)
-                                        {{ implode(', ', $notification['user_names']) }}
-                                      @elseif(!empty($notification['channel_names']) && count($notification['channel_names']) > 0)
-                                        {{ implode(', ', $notification['channel_names']) }}
-                                      @else
-                                        {{ 'Global Website' }}
-                                      @endif
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="col-3">Status:</td>
-                                    <td class="col-8 bg-light rounded">
-                                      @if ($notification['status'] === 'public')
-                                      <span class="badge bg-label-success">Active</span>
-                                      @else
-                                      <span class="badge bg-label-danger">Inactive</span>
-                                      @endif
-                                    </td>
-                                  </tr>
+                                  
+                                  
                                   <tr>
                                     <td class="col-3">Created At:</td>
                                     <td class="col-9">{{ date('D, d M Y', strtotime($notification['created_at'])) }}</td>
