@@ -33,9 +33,9 @@
                 </thead>
 
                 <tbody>
-
-
                     @foreach($wishlist as $item)
+                    @if ($item->saleNews && $item->saleNews->approved == 1 && $item->saleNews->is_delete == null)
+                    <!-- Điều kiện kiểm tra -->
                     <tr>
                         <td class="product-col">
                             <div class="product">
@@ -43,19 +43,21 @@
                                     @if ($item->saleNews->images->isNotEmpty())
                                     <img src="{{ $item->saleNews->images->first()->image_name }}" alt="Image">
                                     @endif
-
                                 </figure>
 
                                 <h3 class="product-title">
-                                    <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{$item->saleNews->title}}</a>
+                                    <a
+                                        href="{{ route('salenew.detail', $item->sale_new_id) }}">{{$item->saleNews->title}}</a>
                                 </h3><!-- End .product-title -->
                             </div><!-- End .product -->
                         </td>
-                        <td class="price-col">${{$item->saleNews -> price}}</td>
+                        <td class="price-col">${{$item->saleNews->price}}</td>
 
-                        <td class="stock-col"><span
-                                class=" {{ $item->saleNews ->status == 1 ? 'in-stock' : 'out-of-stock' }}">
-                                {{ $item->saleNews ->status == 1 ? 'in-stock' : 'Out of stock' }}</span></td>
+                        <td class="stock-col">
+                            <span class="{{ $item->saleNews->status == 1 ? 'in-stock' : 'out-of-stock' }}">
+                                {{ $item->saleNews->status == 1 ? 'in-stock' : 'Out of stock' }}
+                            </span>
+                        </td>
                         <td class="action-col">
                             <button
                                 class="btn btn-block btn-outline-primary-2 messenger-btn {{ $item->saleNews->status == 1 ? '' : 'disabled' }}"
@@ -63,9 +65,6 @@
                                 data-name="{{ $item->saleNews->user->full_name }}">
                                 <i class="fa fa-comments"></i> Messenger
                             </button>
-
-
-
                         </td>
 
                         <td class="remove-col">
@@ -78,30 +77,12 @@
                                     <i class="icon-close"></i>
                                 </button>
                             </form>
-
-
-
-
-
-
                         </td>
-
-
-
-                        </td>
-
-                        </td>
-
-
-
-
-
-
                     </tr>
+                    @endif
                     @endforeach
-
-
                 </tbody>
+
                 @else
                 <H4 class="text-danger text-center ">No sale news here</H4>
                 @endif
@@ -151,7 +132,8 @@ $(document).on('click', '.btn-remove', function(e) {
                 // Kiểm tra nếu danh sách không còn sản phẩm nào
                 if ($('tbody tr').length === 0) {
                     // Nếu không còn sản phẩm, hiển thị thông báo "No sale news here"
-                    $('tbody').html('<h4 class="text-danger text-center ">No sale news here</h4>'); // Thay đổi nội dung tbody
+                    $('tbody').html(
+                    '<h4 class="text-danger text-center ">No sale news here</h4>'); // Thay đổi nội dung tbody
                     $('thead').remove(); // Xóa header nếu còn
                 }
 
@@ -183,20 +165,23 @@ $(document).on('click', '.btn-remove', function(e) {
         }
     });
 });
-document.addEventListener("DOMContentLoaded", function () {
-    const messengerButtons = document.querySelectorAll(".messenger-btn"); // Chọn tất cả nút có class messenger-btn
+document.addEventListener("DOMContentLoaded", function() {
+    const messengerButtons = document.querySelectorAll(
+    ".messenger-btn"); // Chọn tất cả nút có class messenger-btn
 
-    messengerButtons.forEach(function (button) {
+    messengerButtons.forEach(function(button) {
         if (!button.classList.contains("disabled")) {
-            button.addEventListener("click", function () {
+            button.addEventListener("click", function() {
                 const recipientId = this.getAttribute("data-id");
                 const recipientName = this.getAttribute("data-name");
 
                 // Gửi yêu cầu kiểm tra cuộc trò chuyện đã tồn tại
                 fetch(`{{ route('message.checkconversations') }}?recipientId=${recipientId}`, {
-                    method: "GET",
-                    headers: { "X-Requested-With": "XMLHttpRequest" },
-                })
+                        method: "GET",
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        },
+                    })
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.channelExists) {
@@ -216,9 +201,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function createNewChannel(recipientId, recipientName) {
         fetch(`{{ route('message.createconversations') }}?recipientId=${recipientId}`, {
-            method: "GET",
-            headers: { "X-Requested-With": "XMLHttpRequest" },
-        })
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+            })
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
@@ -232,7 +219,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.error("Error:", error));
     }
 });
-
 </script>
 
 @endsection
