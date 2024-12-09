@@ -15,7 +15,7 @@
                     </div>
 
                 </div>
-                {{-- {{ dd($data) }}; --}}
+ 
 
                 <!-- Blog Table -->
                 <div class="row">
@@ -65,19 +65,21 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <form action="{{route('channel.toggleStatus',$item->sale_new_id)}}"
-                                                        method="POST" class="toggle-status-form"
-                                                        data-blog-id="{{ $item->sale_new_id }}">
-                                                        @csrf
-                                                        <button type="button"
-                                                            class="btn btn-sm {{ $item->status == 1 ? 'text-primary' : 'text-secondary' }}"
-                                                            style="position: relative;">
-                                                            <i
-                                                                class="fas {{ $item->status == 1 ? 'fa-eye' : 'fa-eye-slash' }}"></i>
-                                                            <span
-                                                                class="tooltip-text eye">{{ $item->status == 1 ? 'Show' : 'Hide' }}</span>
-                                                        </button>
-                                                    </form>
+                                                
+                                                <form action="{{ route('sale-news-channel.toggleStatus', $item->sale_new_id) }}"
+                                                method="POST" class="toggle-status-form"
+                                                data-channel-id="{{ $item->sale_new_id }}">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="btn btn-sm {{ $item->status == 1 ? 'text-primary' : 'text-secondary' }}"
+                                                    style="position: relative;">
+                                                    <i
+                                                        class="fas {{ $item->status == 1 ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                                                    <span
+                                                        class="tooltip-text eye">{{ $item->status == 1 ? 'Active' : 'Inactive' }}</span>
+                                                </button>
+                                            </form>
+
                                                 </td>
             
 
@@ -111,7 +113,9 @@
                                         div >
                                     @endif
                                 </script>
+                                
 
+                              
                                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                                 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
                                 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>

@@ -47,7 +47,7 @@
                                 </figure>
 
                                 <h3 class="product-title">
-                                    <a href="#">{{$item->saleNews->title}}</a>
+                                    <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{$item->saleNews->title}}</a>
                                 </h3><!-- End .product-title -->
                             </div><!-- End .product -->
                         </td>
