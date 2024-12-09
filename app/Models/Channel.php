@@ -21,6 +21,7 @@ class Channel extends Model
         'address',
         'phone_number',
         'status',
+        'sale_new_id',
         'user_id',
         'vip_package_id'  // Cập nhật để sử dụng khóa ngoại đúng
     ];

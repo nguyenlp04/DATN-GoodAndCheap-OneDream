@@ -19,8 +19,12 @@ return Application::configure(basePath: dirname(__DIR__))
             App\Http\Middleware\CheckAuthenticatedAdminRole::class
         ]);
         $middleware->group('auth', [
-            App\Http\Middleware\CheckAuthenticatedUser::class
+            App\Http\Middleware\CheckAuthenticatedUser::class,
         ]);
+        $middleware->group('guest', [
+            App\Http\Middleware\RedirectIfAuthenticated::class
+        ]);
+
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {

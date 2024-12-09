@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -23,36 +24,42 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-{
-    $request->authenticate();
+    {
+        $request->authenticate();
 
-    $user = Auth::user();
-    if ($user->is_delete != 0) {
-        Auth::logout();
-        return redirect()->route('login')->with('alert', [
-            'type' => 'error',
-            'message' => 'Your account has been deleted. Please contact the administrator.',
-        ]);
+        $user = Auth::user();
+        if ($user->is_delete != 0) {
+            Auth::logout();
+            return redirect()->route('login')->with('alert', [
+                'type' => 'error',
+                'message' => 'Your account has been deleted. Please contact the administrator.',
+            ]);
+        }
+        if ($user->status != 1) {
+            Auth::logout();
+            return redirect()->route('login')->with('alert', [
+                'type' => 'error',
+                'message' => 'Your account has been locked.',
+            ]);
+        }
+
+        $request->session()->regenerate();
+
+        $activeSessions = DB::table('sessions')
+            ->where('user_id', $user->user_id)
+            ->get();
+        // Logout tất cả các session khác
+        foreach ($activeSessions as $session) {
+            DB::table('sessions')->where('id', $session->id)->delete();
+        }
+        // Thay đổi logic chuyển hướng
+        if (url()->previous() === route('toggleWishlist')) {
+            return redirect()->route('home'); // Luôn chuyển hướng về trang chủ nếu đến từ toggleWishlist
+        }
+
+        $request->session()->forget('url.intended'); // Xóa URL trước đó
+        return redirect()->route('home');
     }
-    if ($user->status != 1) {
-        Auth::logout();
-        return redirect()->route('login')->with('alert', [
-            'type' => 'error',
-            'message' => 'Your account has been locked.',
-        ]);
-    }
-
-    $request->session()->regenerate();
-
-    // Thay đổi logic chuyển hướng
-    if (url()->previous() === route('toggleWishlist')) {
-        return redirect()->route('home'); // Luôn chuyển hướng về trang chủ nếu đến từ toggleWishlist
-    }
-
-    $request->session()->forget('url.intended'); // Xóa URL trước đó
-    return redirect()->route('home');
-    
-}
 
 
     /**
