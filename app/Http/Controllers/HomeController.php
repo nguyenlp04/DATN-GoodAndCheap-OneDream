@@ -11,12 +11,14 @@ class HomeController extends Controller
         $data = SaleNews::where('status', '1')
             ->with('images')
             ->where('is_delete', null)
+            ->whereNotNull('vip_package_id')
             ->where('approved', '1')
             ->get();
 
         $topRated = SaleNews::where('status', '1')
             ->with('images')
             ->where('is_delete', null)
+            ->whereNull('vip_package_id')
             ->where('approved', '1')
             ->inRandomOrder()
             ->get();
