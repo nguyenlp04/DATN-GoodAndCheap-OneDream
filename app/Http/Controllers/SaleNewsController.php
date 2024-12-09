@@ -88,6 +88,12 @@ class SaleNewsController extends Controller
         ]);
         // dd($validatedData, auth()->user()->user_id);
         try {
+            if (!$request->hasFile('images')) {
+                return redirect()->back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'Please upload at least one image.',
+                ]);
+            }
 
 
             $jsonData = json_encode($validatedData['variant']);
@@ -517,7 +523,7 @@ class SaleNewsController extends Controller
     }
     public function destroy($id)
     {
-        try { 
+        try {
             $item = SaleNews::findOrFail($id);
 
             // Nếu is_delete là NULL, gán giá trị là 1
@@ -765,6 +771,7 @@ class SaleNewsController extends Controller
                 }
                 $photo->delete();
             }
+            $check->likes()->delete();
             $check->delete();
             return redirect()->back()->with('alert', [
                 'type' => 'success',
@@ -863,15 +870,15 @@ class SaleNewsController extends Controller
             $sale_news = SaleNews::findOrFail($id);
             $sale_news->status = $sale_news->status == 1 ? 0 : 1;
             $sale_news->save();
-    
+
             $statusMessage = $sale_news->status == 1 ? 'Active' : 'Inactive';
-    
+
             // Thêm thông báo vào session sau khi thay đổi trạng thái
             session()->flash('alert', [
                 'type' => 'success',
                 'message' => "Status has been updated to{$statusMessage}!"
             ]);
-    
+
             // Redirect về trang trước đó (không trả về JSON nữa)
             return redirect()->back();
         } catch (\Exception $e) {
@@ -880,10 +887,9 @@ class SaleNewsController extends Controller
                 'type' => 'danger',
                 'message' => 'Error!: ' . $e->getMessage()
             ]);
-    
+
             // Redirect về trang trước đó (không trả về JSON nữa)
             return redirect()->back();
         }
     }
-    
 }

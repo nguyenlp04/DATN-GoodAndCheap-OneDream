@@ -160,7 +160,7 @@
 
                                                     @else
                                                     <a href="{{route('user.show',$get_user->user_id)}}">
-                                                    <img src="https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/06378cbea0004c25b8f835a60c9031f7~tplv-omjb5zjo8w-origin-jpeg.jpeg?from=1995374044" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
+                                                    <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
                                                     </a>
                                                     @endif
                                     </div>
@@ -210,7 +210,7 @@
                             <h3>Information</h3>
 
                             <div class="row">
-                                <div class="col-7">
+                                <div class="col-md-7">
                                     @if(isset($data_json))
                                     <table class="table table-bordered ">
                                         <thead>
@@ -232,10 +232,10 @@
                                 </table>
 
                             </div>
-                            <div class="col-5">
+                            <div class="col-md-5">
                                 <ul>
-                                    <li>{{ $get_user->phone_number }}</li>
-                                    <li>{{ $get_user->full_name }}</li>
+                                    <li>phone number : {{ $new->phone }}</li>
+                                    <li>seller name : {{ $get_user->full_name }}</li>
                                     @if($get_user->address)
                                     <li>{{ $get_user->address }}</li>
                                     @endif

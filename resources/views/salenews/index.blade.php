@@ -16,14 +16,6 @@
     <div class="page-content">
         <div class="cart">
             <div class="container">
-
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">New</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">View news status</li>
-                </ol>
-            </div><!-- End .container -->
-            </nav><!-- End .breadcrumb-nav -->
             <div class="page-content">
                 <div class="cart">
                     <div class="container">
