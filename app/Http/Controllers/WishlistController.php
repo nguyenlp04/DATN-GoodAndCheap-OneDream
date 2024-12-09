@@ -77,20 +77,28 @@ try {
 
     
     public function index()
-    {
-        $userId = Auth::id();
+{
+    $userId = Auth::id();
 
-        // Lấy các sản phẩm từ bảng wishlist của người dùng
-        $wishlist = Like::where('user_id', $userId)->with('saleNews.images')->get();
+    // Lấy các sản phẩm từ bảng wishlist của người dùng
+    $wishlist = Like::where('user_id', $userId)
+        ->with(['saleNews' => function($query) {
+            $query->where('approved', 1)  // Chỉ lấy các sản phẩm đã được phê duyệt
+                  ->whereNull('is_delete');  // Chỉ lấy các sản phẩm có is_delete là null
+        }])
+        ->with('saleNews.images') // Lấy các hình ảnh liên quan đến sản phẩm
+        ->get();
 
-        // Lấy chi tiết các sản phẩm đã yêu thích
-        $salenews = SaleNews::with('images')  // Đảm bảo bao gồm mối quan hệ 'images'
-            ->whereIn('sale_new_id', $wishlist->pluck('sale_new_id'))  // Lấy các sale_new_id từ wishlist
-            ->get();  // Lấy tất cả các bản ghi
+    // Lọc những sản phẩm yêu thích có thông tin hợp lệ
+    $salenews = SaleNews::with('images')  // Đảm bảo bao gồm mối quan hệ 'images'
+        ->whereIn('sale_new_id', $wishlist->pluck('sale_new_id'))  // Lấy các sale_new_id từ wishlist
+       
+        ->get();  // Lấy tất cả các bản ghi hợp lệ
 
-        // Truyền các sản phẩm vào view
-        return view('layouts.wishlist', compact('salenews','wishlist'));
-    }
+    // Truyền các sản phẩm vào view
+    return view('layouts.wishlist', compact('salenews', 'wishlist'));
+}
+
 
     public function destroy(Like $like)
 {
