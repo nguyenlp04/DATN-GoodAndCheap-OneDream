@@ -61,20 +61,10 @@
     <script src="{{ asset('assets/js/superfish.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/wNumb.js') }}"></script>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    {{-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> --}}
-=======
+
     <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
 
->>>>>>> f20d3ad4406c98f9b72c0e5c78896a9e006d2520
-    {{-- <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script> --}}
-    <!-- <script src="{{ asset('assets/js/nouislider.min.js') }}"></script> -->
 
-
-=======
->>>>>>> 4a747085a9fd82f39ff714f13089ceb63c6a4fe6
     <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.waypoints.min.js') }}"></script>

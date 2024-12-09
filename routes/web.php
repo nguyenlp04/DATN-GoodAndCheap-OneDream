@@ -227,6 +227,7 @@ Route::get('/user/{id}', [UserManageController::class, 'show'])->name('user.show
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/blog/search', [BlogController::class, 'search'])->name('blog.search');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/blog/listting', [BlogController::class, 'listting'])->name('blogs.listting');
 Route::get('/blog/detail/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
