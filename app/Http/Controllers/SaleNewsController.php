@@ -853,4 +853,24 @@ class SaleNewsController extends Controller
             'maxPriceRange'
         ));
     }
+    public function toggleStatus($id){
+        
+        try {
+            $sale_news = SaleNews::findOrFail($id);
+            $sale_news->status = $sale_news->status == 1 ? 0 : 1;
+            $sale_news->save();
+
+            $statusMessage = $sale_news->status == 1 ? 'Hiển thị' : 'Ẩn';
+
+            return response()->json([
+                'status' => $sale_news->status,
+                'alert' => "Sale news status updated to {$statusMessage}"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'alert' => 'Error: ' . $e->getMessage()
+            ]);
+        }
+    }
 }
