@@ -32,7 +32,7 @@ class BlogController extends Controller
             ->take(5) // Lấy 5 bài viết có views cao nhất
             ->get();
     
-        $alltags = Blog::all();
+        $alltags = Blog::whereNull('is_delete');
     
         $category = Category::withCount(['blogs as blogs_count' => function ($query) {
             $query->where('status', '1')->whereNull('is_delete');
@@ -229,7 +229,7 @@ class BlogController extends Controller
         
         $blogs = Blog::findOrFail($id);
         $blogs->increment('views');
-        $alltags = Blog::all()->take(4);
+        $alltags = Blog::all()->whereNull('is_delete')->take(4);
         
         $topBlogs = Blog::where('status', 1)->whereNull('is_delete') // Lọc bài viết có status = 1
             ->orderBy('views', 'desc')       // Sắp xếp theo số lượt xem giảm dần
@@ -253,17 +253,17 @@ class BlogController extends Controller
 
     public function search(Request $request)
     {
-        // Nếu từ khóa (ws) rỗng, chuyển hướng về trang danh sách
+        // Nếu từ khóa (ws) rỗng, quay lại trang hiện tại
         if (!$request->has('ws') || $request->ws == '') {
-            return redirect()->route('blogs.listting')->with('alert', [
+            return back()->with('alert', [
                 'type' => 'error',
                 'message' => 'Please enter keywords!'
             ]);
         }
-
+    
         // Khởi tạo query cho Blog
         $query = Blog::query();
-
+    
         // Lọc theo từ khóa
         if ($request->has('ws') && $request->ws != '') {
             $query->where(function ($query) use ($request) {
@@ -271,11 +271,11 @@ class BlogController extends Controller
                     ->orWhere('content', 'like', '%' . $request->ws . '%');
             });
         }
-
+    
         // Lọc theo ngày tháng (nếu có)
         if ($request->has('date_filter') && $request->date_filter != '') {
             $dateFilter = $request->date_filter;
-
+    
             switch ($dateFilter) {
                 case 'today':
                     $query->whereDate('created_at', now()->toDateString());
@@ -302,19 +302,22 @@ class BlogController extends Controller
                     break;
             }
         }
-
+    
+        // Thêm điều kiện whereNull('is_delete')
+        $query->whereNull('is_delete');
+    
         $blogs = $query->get();
-        // dd($query->toSql(), $query->getBindings());
-
+    
         // Kiểm tra dữ liệu trống
         if ($blogs->isEmpty()) {
             return view('blog.listting_search', [
                 'message' => 'There are no articles matching the selected keyword or date.'
             ]);
         }
-
+    
         return view('blog.listting_search', compact('blogs'));
     }
+    
     public function trash()
     {
 
