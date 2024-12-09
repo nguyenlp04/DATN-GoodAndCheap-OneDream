@@ -115,7 +115,7 @@
 
                     <div class="product product-2">
                         <figure class="product-media">
-                            <span class="product-label label-circle label-top">Top</span>
+                            <!-- <span class="product-label label-circle label-top">Top</span> -->
                             <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}" class="image-container">
                                 @if ($item->images->isNotEmpty())
                                 <img src="{{asset($item->images->first()->image_name) }}" alt="Image"

@@ -34,7 +34,7 @@ class SaleNewsController extends Controller
     public function index()
     {
 
-        $data = SaleNews::with(['user', 'subcategory', 'firstImage', 'categoryToSubcategory'])->get();
+        $data = SaleNews::with(['user', 'subcategory', 'firstImage', 'categoryToSubcategory'])->where('is_delete', null)->get();
         return view('admin.products.index', ['data' => $data]);
     }
 
@@ -43,7 +43,7 @@ class SaleNewsController extends Controller
 
         $channelId = Channel::where('user_id', auth()->user()->user_id)->value('channel_id');
 
-        $data = SaleNews::with(['user', 'sub_category', 'firstImage', 'categoryToSubcategory'])->where('channel_id', $channelId)->get();
+        $data = SaleNews::with(['user', 'sub_category', 'firstImage', 'categoryToSubcategory'])->where('channel_id', $channelId)->where('is_delete', null)->get();
         return view('partner.sale_news.index', ['data' => $data]);
     }
 
@@ -302,34 +302,34 @@ class SaleNewsController extends Controller
     public function getAllSaleStatus()
     {
         $data = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
-            ->where('status', 1)->where('user_id', auth()->user()->user_id);
+            ->where('status', 1)->where('is_delete', null)->where('user_id', auth()->user()->user_id);
 
-        $count_now_showing = $data->where('approved', 1)->count();
-        $list_now_showing = $data->where('approved', 1)->get();
+        $count_now_showing = $data->where('approved', 1)->where('is_delete', null)->count();
+        $list_now_showing = $data->where('approved', 1)->where('is_delete', null)->get();
 
         $list_pending_approval = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
-            ->where('approved', 0)->where('user_id', auth()->user()->user_id)
+            ->where('approved', 0)->where('is_delete', null)->where('user_id', auth()->user()->user_id)
             ->get();
         $count_pending_approval = SaleNews::with('vipPackage')
-            ->where('approved', 0)->where('user_id', auth()->user()->user_id)->count();
+            ->where('approved', 0)->where('user_id', auth()->user()->user_id)->where('is_delete', null)->count();
 
 
         $count_not_accepted = SaleNews::with('vipPackage')
-            ->where('approved', 2)->where('user_id', auth()->user()->user_id)
+            ->where('approved', 2)->where('user_id', auth()->user()->user_id)->where('is_delete', null)
             ->count();
         $list_not_accepted = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
-            ->where('approved', 2)->where('user_id', auth()->user()->user_id)
+            ->where('approved', 2)->where('user_id', auth()->user()->user_id)->where('is_delete', null)
             ->get();
 
         $count_hidden = SaleNews::with('vipPackage')
             ->where('status', 0)
-            ->where('approved', 1)->where('user_id', auth()->user()->user_id)
+            ->where('approved', 1)->where('user_id', auth()->user()->user_id)->where('is_delete', null)
             ->count();
         $list_hidden = SaleNews::with('vipPackage', 'firstImage', 'sub_category')
             ->where('status', 0)
-            ->where('approved', 1)->where('user_id', auth()->user()->user_id)
+            ->where('approved', 1)->where('user_id', auth()->user()->user_id)->where('is_delete', null)
             ->get();
-        $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->count();
+        $transactionCount = Transactions::where('user_id', auth()->user()->user_id)->where('is_delete', null)->count();
 
         return view('salenews.index', compact('count_now_showing', 'list_now_showing', 'list_pending_approval', 'count_pending_approval', 'list_not_accepted', 'count_not_accepted', 'count_hidden', 'list_hidden', 'transactionCount'));
     }
@@ -348,7 +348,7 @@ class SaleNewsController extends Controller
     public function promote($id)
     {
         $listing = SaleNews::with(['vipPackage', 'firstImage'])->findOrFail($id);
-        $vipPackages = VipPackage::where('type', 'user')->get();
+        $vipPackages = VipPackage::where('type', 'user')->where('status', 1)->get();
         // dd($listing);
         return view('salenews.promote', compact('listing', 'vipPackages'));
     }
@@ -394,12 +394,12 @@ class SaleNewsController extends Controller
 
             $news = SaleNews::with(['channel', 'images', 'firstImage', 'category', 'sub_category'])
                 ->where('sale_new_id', $id)
-                ->where('approved', 1)->first();
+                ->where('approved', 1)->where('is_delete', null)->first();
             // dd($news);
 
             if (!is_null($news->channel_id)) {
-                $data_count_news = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 1)->count();
-                $data_count_news_sold = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 0)->count();
+                $data_count_news = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 1)->where('is_delete', null)->count();
+                $data_count_news_sold = DB::table('sale_news')->where('channel_id', $news->channel_id)->where('approved', 1)->where('status', 0)->where('is_delete', null)->count();
             }
 
 
