@@ -712,7 +712,7 @@ class SaleNewsController extends Controller
                     $q->where('category_id', $currentCategoryId);
                 });
             })
-            ->paginate(5);
+            ->paginate(8);
 
         if ($request->ajax()) {
             return response()->json([

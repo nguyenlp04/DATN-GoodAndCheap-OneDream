@@ -82,7 +82,7 @@
                   <div class="toolbox">
                      <div class="toolbox-left">
                         <div class="toolbox-info">
-                           Showing <span></span> Products
+                           Showing <span>{{ $productCount }}</span> Products
                         </div>
                         <!-- End .toolbox-info -->
                      </div>
@@ -198,7 +198,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="widget widget-collapsible">
+                        <div class="widget widget-collapsible mr-4">
                            <h3 class="widget-title">
                                <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
                                    Price
@@ -210,12 +210,12 @@
                                        <div class="filter-price-text">
                                            Price Range:
                                            <span id="filter-price-range">
-                                               ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPrice ?? 500) }}
+                                               ${{ request()->get('minPrice', 0) }} - ${{ request()->get('maxPrice', $maxPriceRange) }}
                                            </span>
                                        </div>
                                        <div id="price-slider"></div>
                                        <input type="hidden" id="minPrice" name="minPrice" value="{{ request()->get('minPrice', 0) }}">
-                                       <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPrice) }}">
+                                       <input type="hidden" id="maxPrice" name="maxPrice" value="{{ request()->get('maxPrice', $maxPriceRange) }}">
                                    </div>
                                </div>
                            </div>
@@ -243,9 +243,6 @@
     <script>
         $(document).ready(function() {
 
-            console.log(123);
-
-            // Slider For category pages / filter price
             if (typeof noUiSlider === 'object') {
                 var priceSlider = document.getElementById('price-slider');
 
@@ -254,13 +251,13 @@
                 if (priceSlider == null) return;
 
                 noUiSlider.create(priceSlider, {
-                    start: [0, <?php echo $maxPrice; ?>],
+                    start: [0, <?php echo $maxPriceRange; ?>],
                     connect: true,
                     step: 50,
                     margin: 200,
                     range: {
                         'min': 0,
-                        'max': <?php echo $maxPrice; ?>
+                        'max': <?php echo $maxPriceRange; ?>
                     },
                     tooltips: true,
                     format: wNumb({
@@ -269,16 +266,11 @@
                     })
                 });
 
-                // Update Price Range
                 priceSlider.noUiSlider.on('update', function(values, handle) {
-                    // Update visible price range text
                     $('#filter-price-range').text(values.join(' - '));
 
-                    // Select hidden inputs
                     const minInput = document.getElementById('minPrice');
                     const maxInput = document.getElementById('maxPrice');
-
-                    // Remove the "$" symbol from the slider values
                     const minValue = values[0].replace('$', '');
                     const maxValue = values[1].replace('$', '');
 
@@ -288,11 +280,6 @@
                         maxInput.value = maxValue; // Set the maximum value
                     }
 
-                    console.log(typeof(minValue));
-                    console.log(typeof(maxValue));
-
-                    console.log('Min Value:', minValue);
-                    console.log('Max Value:', maxValue);
                 });
             }
         })
