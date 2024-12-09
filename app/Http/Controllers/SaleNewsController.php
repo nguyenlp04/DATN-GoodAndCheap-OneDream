@@ -781,7 +781,7 @@ class SaleNewsController extends Controller
 
     public function search_category(Request $request)
     {
-
+        $maxPriceRange = SaleNews::max('price');
         $categoryId = $request->get('category');
         $subcategoryID = $request->get('subcategory');
         $threeDaysAgo = Carbon::now()->subDays(3);
@@ -841,7 +841,6 @@ class SaleNewsController extends Controller
 
         $category = Category::all();
 
-        $maxPrice = SaleNews::max('price');
         $keyword = null;
         $address = null;
         return view('salenews.search', compact(
@@ -854,7 +853,7 @@ class SaleNewsController extends Controller
             'category',
             'address',
             'categoryId',
-            'maxPrice'
+            'maxPriceRange'
         ));
     }
 }
