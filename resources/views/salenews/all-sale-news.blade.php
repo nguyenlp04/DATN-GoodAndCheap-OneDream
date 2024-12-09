@@ -48,30 +48,36 @@
 
     <!-- Danh sách sản phẩm -->
     <div class="row mt-4" id="product-list">
-        @foreach ($items as $item)
-            <div class="col-12 col-sm-6 col-lg-3 mb-4">
-                <div class="product">
-                    <figure class="product-media">
-                        <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
-                            <img src="{{ $item->images->first()->image_name ?? asset('default-placeholder.jpg') }}" alt="{{ $item->title }}" class="img-fluid">
-                        </a>
-                    </figure>
-                    <div class="product-body">
-                        <div class="product-cat">
-                            <a href="#">{{ $item->sub_category->name_sub_category }}</a>
-                        </div>
-                        <h3 class="product-title">
+        @if ($items->isEmpty())
+            <div class="col-12">
+                <p>No product in this category.</p>
+            </div>
+        @else
+            @foreach ($items as $item)
+                <div class="col-12 col-sm-6 col-lg-3 mb-4">
+                    <div class="product">
+                        <figure class="product-media">
                             <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
-                                {{ Str::limit($item->title, 35, '...') }}
+                                <img src="{{ $item->images->first()->image_name ?? asset('default-placeholder.jpg') }}" alt="{{ $item->title }}" class="img-fluid">
                             </a>
-                        </h3>
-                        <div class="product-price">
-                            ${{ number_format($item->price, 2) }}
+                        </figure>
+                        <div class="product-body">
+                            <div class="product-cat">
+                                <a href="#">{{ $item->sub_category->name_sub_category }}</a>
+                            </div>
+                            <h3 class="product-title">
+                                <a href="{{ route('salenew.detail', $item->sale_new_id) }}">
+                                    {{ Str::limit($item->title, 35, '...') }}
+                                </a>
+                            </h3>
+                            <div class="product-price">
+                                ${{ number_format($item->price, 2) }}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 
     <!-- Phân trang -->

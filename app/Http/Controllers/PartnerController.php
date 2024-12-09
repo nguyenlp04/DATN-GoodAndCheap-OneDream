@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Channel;
 use App\Models\Notification;
+use App\Models\SaleNews;
+use App\Models\Transactions;
 use App\Models\User;
+use App\Models\VipPackage;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PartnerController extends Controller
@@ -78,19 +83,40 @@ class PartnerController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function dashboard()
     {
-        //
-    }
+        $currentDate = Carbon::today();
+        $previousDate = Carbon::yesterday();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $sale_count = SaleNews::count();
+
+        $todayRevenue = DB::table('transactions')
+            ->whereDate('created_at', $currentDate)
+            ->sum('amount');
+
+        $yesterdayRevenue = DB::table('transactions')
+            ->whereDate('created_at', $previousDate)
+            ->sum('amount');
+
+        $percentageDifference = $yesterdayRevenue > 0
+            ? (($todayRevenue - $yesterdayRevenue) / $yesterdayRevenue) * 100
+            : ($todayRevenue > 0 ? 100 : 0);
+
+        $todayTransactionsCount = DB::table('transactions')
+            ->whereDate('created_at', $currentDate)
+            ->count();
+
+        $thisMonthRevenue = DB::table('transactions')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->sum('amount');
+
+        return view('partner.dashboard', compact(
+            'todayRevenue',
+            'yesterdayRevenue',
+            'percentageDifference',
+            'todayTransactionsCount',
+            'thisMonthRevenue',
+            'sale_count',
+        ));
     }
 }

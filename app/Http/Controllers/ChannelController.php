@@ -30,8 +30,13 @@ class ChannelController extends Controller
     {
 
         $user = Auth::user();
-        $channel = Channel::where('user_id', $user->user_id)->firstOrFail(); // Lấy kênh của người dùng
-        // dd($channels);
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        $channel = Channel::where('user_id', $user->user_id)->firstOrFail();
+
+        $maxPriceRange = SaleNews::max('price');
+
         if (!$channel || is_null($channel->status)) {
             return redirect()->route('channels.create') // Chuyển hướng đến trang tạo kênh
                 ->with('error', 'You have not created a channel yet or the channel status is not set.');
@@ -50,14 +55,14 @@ class ChannelController extends Controller
             return $news->sub_category !== null;
         })->countBy('name_sub_category');
 
-        // Count the number of news items that the channel has posted
         $NewsCount = $channel->saleNews()->count();
         $category = Category::all();
+        $productCount = $sale_news->count();
 
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channel->channel_id)
             ->exists();
-        return view('partner.channels.show_channels', compact('channel', 'all_sales', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category'));
+        return view('partner.channels.show_channels', compact('channel', 'all_sales', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category', 'maxPriceRange', 'productCount'));
     }
 
 
@@ -146,6 +151,8 @@ class ChannelController extends Controller
 
         $channel = Channel::with('saleNews.sub_category', 'saleNews.firstImage', 'followers')->findOrFail($id);
         $information = ChannelInfo::where('channel_id', $id)->first();
+        $maxPriceRange = SaleNews::max('price');
+
 
         // Kiểm tra nếu người dùng đã theo dõi kênh
         $isFollowed = false;
@@ -154,9 +161,11 @@ class ChannelController extends Controller
                 ->where('channel_id', $channel->channel_id)
                 ->exists();
         }
-        // $all_sales = SaleNews::where('')
-        $all_sales = SaleNews::where('channel_id', $id)->where('is_delete', null)->where('approved', 1)->get();
-        // dd($all_sales);
+        $all_sales = SaleNews::where('channel_id', $id)
+            ->where('is_delete', null)
+            ->where('approved', 1)
+            ->where('status', '1')
+            ->get();
 
         // Tìm kiếm theo keyword nếu có
         $sale_news = $channel->saleNews()
@@ -166,6 +175,7 @@ class ChannelController extends Controller
                 return $query->where('title', 'like', '%' . $request->keyword . '%');
             })
             ->paginate(5);
+        $productCount = $sale_news->count();
 
         $subcategory_count = $sale_news->filter(fn($news) => $news->sub_category)->countBy('sub_category.name_sub_category');
         $NewsCount = $channel->saleNews()->count();
@@ -179,7 +189,9 @@ class ChannelController extends Controller
             'isFollowed',
             'information',
             'category',
-            'all_sales'
+            'all_sales',
+            'productCount',
+            'maxPriceRange'
         ));
     }
 
@@ -299,7 +311,6 @@ class ChannelController extends Controller
         $userFollowed->channel_id = $channel->channel_id;
         $userFollowed->save();
 
-        // Lưu thông báo vào session
         session()->flash('alert', [
             'type' => 'success',
             'message' => 'You have successfully followed the channel.'
@@ -340,13 +351,16 @@ class ChannelController extends Controller
     public function search_channel(Request $request, string $id)
     {
         $channel = Channel::findOrFail($id);
-
+        $maxPriceRange = SaleNews::max('price');
         $keyword = $request->input('keyword', '');
         $categoryId = $request->input('category');
         $perPage = $request->input('perPage', 2); // Mặc định 2 trang
         $threeDaysAgo = Carbon::now()->subDays(3);
         $NewsCount = $channel->saleNews()->count();
         $isFollowed = false;
+        $minPrice = $request->get('minPrice') ?? 0;
+        $maxPrice = $request->get('maxPrice') ?? $maxPriceRange;
+
         $user = Auth::user();
         if ($user) {
             $isFollowed = UserFollowed::where('user_id', $user->user_id)
@@ -382,16 +396,18 @@ class ChannelController extends Controller
 
         $category = Category::all();
 
-        // $all_sales = SaleNews::all();
-        $all_sales = SaleNews::where('channel_id',  $channel->channel_id)->where('is_delete', null)->where('approved', 1)->get();
-        // dd($all_sales);
+        $all_sales = SaleNews::where('channel_id',  $channel->channel_id)
+            ->where('is_delete', null)->where('approved', 1)
+            ->whereBetween('price', [$minPrice, $maxPrice])
+            ->get();
         $sale_news = SaleNews::where('channel_id', $channel->channel_id)
             ->where('title', 'like', "%$keyword%")
             ->when($categoryId, fn($q) => $q->whereHas('sub_category.category', function ($q) use ($categoryId) {
                 $q->where('category_id', $categoryId);
-            }))
+            }))->whereBetween('price', [$minPrice, $maxPrice])
             ->with('categoryToSubcategory', 'user', 'sub_category.category')
             ->get();
+        $productCount = $sale_news->count();
 
         // Kiểm tra không có kết quả
         if ($sale_news->isEmpty() && $recentVipSaleNews->isEmpty() && $olderVipSaleNews->isEmpty() && $nonVipSaleNews->isEmpty()) {
@@ -413,7 +429,9 @@ class ChannelController extends Controller
                 'channel',
                 'sale_news',
                 'NewsCount',
-                'all_sales'
+                'all_sales',
+                'maxPriceRange',
+                'productCount'
 
             ))->with('message', 'Không tìm thấy kết quả nào.');
         }
@@ -437,7 +455,9 @@ class ChannelController extends Controller
             'sale_news',
             'NewsCount',
             'all_sales',
-            'isFollowed'
+            'isFollowed',
+            'maxPriceRange',
+            'productCount'
         ));
     }
 }
