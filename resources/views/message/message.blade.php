@@ -17,10 +17,10 @@
                     <div  id="conversations" class="list-user-mess  d-md-block"  >
 
                         @foreach ($data as $item )
-                        <a    class="list-group-item list-group-item-action border-0  user-item"  data-id="{{$item['user']->user_id}}" data-name="{{$item['user']->full_name}}">
+                        <a    class="list-group-item list-group-item-action border-0  user-item"  data-img="{{ $item['user']->image_user ? $item['user']->image_user : "https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" }}" data-id="{{$item['user']->user_id}}" data-name="{{$item['user']->full_name}}">
                             <div class="d-flex align-items-start">
                                 @if ($item['user']->image_user == null)
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
+                                <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" class="rounded-circle mr-1" alt="Jennifer Chang"  width="40" height="40">
                                 @else
                                 <img src="{{ asset($item['user']->image_user) }}" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
                                 @endif
@@ -37,8 +37,8 @@
                     <div id="border-bottom" class="py-2 px-4 d-lg-block">
                         <div class="d-flex align-items-center py-1">
 
-                            <div class="position-relative d-none" id="recipientimgContainer"   >
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                            <div class="position-relative d-none" id="recipientimgContainer" >
+                                <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" class="rounded-circle mr-1" id="targetImage" alt="Sharon Lessman" width="40" height="40">
                             </div>
                             <div class="flex-grow-1 pl-3 d-none" id="recipientNameContainer"  >
                                 <strong id="recipient-name-display"></strong>
@@ -92,9 +92,10 @@ if (window.innerWidth <= 768) {
     document.addEventListener('DOMContentLoaded', function() {
         // Lấy tên kênh từ localStorage
         var channelName = localStorage.getItem('channelName');
+        var recipientImage = localStorage.getItem('recipientImage');
 
         var recipientName = localStorage.getItem('recipientName');
-        console.log(recipientName);
+
 
 
         if (channelName) {
@@ -105,9 +106,13 @@ if (window.innerWidth <= 768) {
             $('#showinput').removeClass('d-none');
             $('#border-bottom').addClass('border-bottom');
             $('#recipient-name-display').text(recipientName);
+            let assetPath = "{{ asset('') }}"; // Lấy đường dẫn gốc từ hàm asset var
+            fullImagePath = assetPath + recipientImage; // Ghép đường dẫn gốc với đường dẫn ảnh
+            $('#targetImage').attr('src', fullImagePath);
             // Xóa giá trị channelName khỏi localStorage để tránh gọi lại hàm khi tải lại trang
             localStorage.removeItem('channelName');
             localStorage.removeItem('recipientName');
+            localStorage.removeItem('recipientImage');
         }
     });
 
@@ -137,6 +142,7 @@ if (window.innerWidth <= 768) {
       var recipientId = null;
       var currentChannel = null;
       var recipientName = null;
+      var recipientImage = null;
       var login_userId = '<?php echo $loggedIn_userId; ?>';
       // console.log(login_userId);
       var UserList = $('#conversations');
@@ -145,16 +151,22 @@ if (window.innerWidth <= 768) {
       UserList.on('click', 'a', function() {
           recipientId = $(this).attr('data-id');
           recipientName = $(this).attr('data-name');
+          recipientImage = $(this).attr('data-img');
+
           $('#recipient-name-display').text(recipientName);
           $('#recipientNameContainer').removeClass('d-none');
           $('#recipientimgContainer').removeClass('d-none');
           $('#showinput').removeClass('d-none');
           $('#border-bottom').addClass('border-bottom');
           UserList.find('a').removeClass('selected-user');  // Remove from all anchors
-            $(this).addClass('selected-user');  // Add to the clicked anchor
+          $(this).addClass('selected-user');  // Add to the clicked anchor
+          var assetPath = "{{ asset('') }}"; // Lấy đường dẫn gốc từ hàm asset var
+          fullImagePath = assetPath + recipientImage; // Ghép đường dẫn gốc với đường dẫn ảnh
+          $('#targetImage').attr('src', fullImagePath);
 
             console.log('Recipient ID: ', recipientId);
             console.log('Recipient Name: ', recipientName);
+            console.log('Recipient img: ', recipientImage);
 
 
 
@@ -238,11 +250,11 @@ if (window.innerWidth <= 768) {
 
                   response.messages.forEach((msg) => {
                       oldMessage(msg, recipientName);
-                      console.log(msg.message_person );
+                    //   console.log(msg.message_person );
 
                   });
                   }else{
-                  console.log(5);
+                //   console.log(5);
 
                   }
 

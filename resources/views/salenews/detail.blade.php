@@ -101,7 +101,7 @@
                             <a href="#" class="btn btn-outline-dark btn-rounded mr-4"><i class="fa-solid fa-phone"></i> {{ $get_user->phone_number }}</a>
                             @endif
                             @if(isset(auth()->user()->user_id))
-                            <a id="message-id" href=""  data-id="{{$new->user_id}}" data-name="{{ $get_user->full_name}}"  class="btn btn-primary btn-rounded"> <i class="fa-regular fa-comments"></i>  Message the seller </a>
+                            <a id="message-id" href="" data-img="{{ $get_user->image_user ? $get_user->image_user : 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg' }}" data-id="{{$new->user_id}}" data-name="{{ $get_user->full_name}}"  class="btn btn-primary btn-rounded"> <i class="fa-regular fa-comments"></i>  Message the seller </a>
                             @endif
                         @endif
                         @endif
@@ -369,10 +369,12 @@
     var recipientId = null;
     var currentChannel = null;
     var recipientName = null;
+    var recipientImage = null;
     var login_userId = {{ auth()->user()->user_id }};
     $('#message-id').click(function(){
         recipientId = $(this).attr('data-id');
         recipientName = $(this).attr('data-name');
+        recipientImage = $(this).attr('data-img');
 
         $.ajax({
               url: "{{ route('message.checkconversations') }}",
@@ -383,6 +385,7 @@
                     //   subscribeToChannel(response.channelName);
                       localStorage.setItem('channelName', response.channelName);
                       localStorage.setItem('recipientName', recipientName);
+                      localStorage.setItem('recipientImage', recipientImage);
                       window.location.href = '{{ asset('message/conversations') }}';
 
                   } else {
