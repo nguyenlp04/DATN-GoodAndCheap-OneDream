@@ -49,8 +49,8 @@
                     <a href="{{ route('home') }}" class="logo">
                         <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}"
                             alt="Molla Logo" class="d-none d-sm-block" width="150" height="30">
-                        <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}"
-                            alt="Molla Logo Mobile" class="d-block d-sm-none" width="100" height="35">
+                        <img src="{{ $setting->logo ? asset($setting->logo_mobile) : asset('assets/images/demos/demo-4/logo.png') }}"
+                            alt="Molla Logo Mobile" class="d-block d-sm-none" width="55" height="17">
                     </a>
                 </div>
                 <!-- End .header-left -->
