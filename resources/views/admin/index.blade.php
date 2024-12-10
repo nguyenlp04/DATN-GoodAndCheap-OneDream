@@ -20,6 +20,17 @@
                                         badge in
                                         your profile.
                                     </p>
+                                    <form action="{{ route('dashboard.export.data') }}" method="POST">
+                                        <div class="d-flex">
+                                        @csrf
+                                    <select name="date" id="category_id" class="form-select me-2 w-50">
+                                        <option value="1">This Month</option>
+                                        <option value="2">Last Month</option>
+                                        <option value="3">All</option>
+                                    </select>
+                                        <button type="submit" class="btn btn-primary">Export Data</button>
+                                    </div>
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-sm-5 text-center text-sm-left">
@@ -39,10 +50,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
-                                        </div>
+                                        <div class="avatar flex-shrink-0 me-4">
+                                            <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-cube bx-sm"></i></span>
+                                          </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">
@@ -68,10 +78,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
-                                        </div>
+                                        <div class="avatar flex-shrink-0 me-4">
+                                            <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-cube bx-sm"></i></span>
+                                          </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">
@@ -131,10 +140,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/paypal.png') }}"
-                                                alt="Credit Card" class="rounded" />
-                                        </div>
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded-2 bg-label-primary"><i class="bx bx-dollar bx-sm text-primary"></i></span>
+                                          </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt6"
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -165,10 +173,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
-                                        </div>
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded-2 bg-label-primary"><i class="bx bx-dollar bx-sm text-primary"></i></span>
+                                          </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt1"
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -231,10 +238,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
-                                        </div>
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded-2 bg-label-primary"><i class="bx bx-store-alt bx-sm text-primary"></i></span>
+                                          </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt1"
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -261,10 +267,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
-                                        </div>
+                                        <div class="avatar me-4">
+                                            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-time-five bx-sm"></i></span>
+                                          </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt4"
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
