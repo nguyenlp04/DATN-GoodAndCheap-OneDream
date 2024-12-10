@@ -185,7 +185,7 @@
                                         @foreach($followedChannels as $followedChannel)
                                         <div class="m-2 d-flex justify-content-between align-items-center" id="channel-{{ $followedChannel->channel->channel_id }}">
                                             <a href="{{ url('/channels/' . $followedChannel->channel->channel_id) }}" class="d-flex align-items-center text-decoration-none text-dark">
-                                                <img src="{{ $followedChannel->channel->image_channel ? asset($followedChannel->channel->image_channel) : 'https://via.placeholder.com/50' }}"
+                                                <img src="{{ $followedChannel->channel->image_channel ? asset($followedChannel->channel->image_channel) : 'https://png.pngtree.com/png-vector/20220425/ourmid/pngtree-blue-flower-store-shop-vector-png-png-image_4553779.png' }}"
                                                     alt="Avatar" class="rounded me-3"
                                                     style="width: 50px; height: 50px; object-fit: cover;">
                                                 <span>{{ $followedChannel->channel->name_channel }}</span>
