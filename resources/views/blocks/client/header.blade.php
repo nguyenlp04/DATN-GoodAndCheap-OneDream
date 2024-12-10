@@ -58,181 +58,181 @@
                     <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
                         <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
                         <form action="{{ route('search') }}" method="GET">
-                           <!-- Search Keyword -->
-                           <div class="header-search-wrapper search-wrapper-wide">
-                               <label for="q" class="sr-only">Search</label>
-                               <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                               <input type="search" class="form-control" name="keyword" id="keyword" placeholder="Search product ..."
-                                   value="{{ request()->get('keyword') }}" autofocus>
-                           </div>
-                       
-                           <!-- Retain Filters -->
-                           <input type="hidden" name="address" value="{{ request()->get('address') }}">
-                           <input type="hidden" name="category" value="{{ request()->get('category') }}">
-                           <input type="hidden" name="minPrice" value="{{ request()->get('minPrice') }}">
-                           <input type="hidden" name="maxPrice" value="{{ request()->get('maxPrice') }}">
-                       </form>
-                       
+                            <!-- Search Keyword -->
+                            <div class="header-search-wrapper search-wrapper-wide">
+                                <label for="q" class="sr-only">Search</label>
+                                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                <input type="search" class="form-control" name="keyword" id="keyword" placeholder="Search product ..."
+                                    value="{{ request()->get('keyword') }}" autofocus>
+                            </div>
+
+                            <!-- Retain Filters -->
+                            <input type="hidden" name="address" value="{{ request()->get('address') }}">
+                            <input type="hidden" name="category" value="{{ request()->get('category') }}">
+                            <input type="hidden" name="minPrice" value="{{ request()->get('minPrice') }}">
+                            <input type="hidden" name="maxPrice" value="{{ request()->get('maxPrice') }}">
+                        </form>
+
 
                     </div>
                     <!-- End .header-search -->
                 </div>
                 <div class="header-right">
                     @if (isset(auth()->user()->user_id))
-                        <div class="wishlist" style="white-space: nowrap">
-                            <a href="{{ route('add.sale-news') }}" title="Wishlist">
-                                <div class="icon">
-                                    <i class="fa-regular fa-newspaper"></i>
-                                </div>
-                                <p>News Sale</p>
-                            </a>
-                        </div>
-                        <!-- End .compare-dropdown -->
-                        <div class="dropdown compare-dropdown">
-                            <a href="{{ route('message.conversations') }} " class="dropdown-toggle" role="button"
-                                aria-haspopup="true">
-                                <div class="icon">
-                                    <i class="fa-regular fa-comments"></i> <!-- Thay đổi icon ở đây -->
-                                </div>
-                                <p>Chat</p>
-                            </a>
-                        </div>
-                        <!-- End .compare-dropdown -->
-                        <div class="dropdown cart-dropdown">
-                            <a href="{{ route('wishlist') }}" class="dropdown-toggle" data-display="static">
-                                <div class="icon">
-                                    <i class="icon-heart-o"></i>
-                                    <!-- <span class="cart-count">0</span> Số lượng sẽ được cập nhật qua AJAX -->
-                                </div>
-                                <p>Wishlist</p>
-                            </a>
-                        </div>
-                        <!-- End .cart-dropdown -->
-                        <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle d-flex align-items-center" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <div class="icon">
-                                    <i class="fa-regular fa-bell fa-sm"></i>
-                                </div>
-                                <p>notifications</p>
-                            </a>
-                            <div>
-                                @if (!empty($notifications))
-                                    <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static"
-                                        style="border: 1px solid #ddd; border-radius: 5px;">
-                                        <li class="dropdown-notifications-list scrollable-container"
-                                            style="max-height: 200px; overflow-y: auto;">
-                                            <ul class="list-group list-group-flush">
-                                                @for ($i = 0; $i < count($notifications); $i++)
-                                                    <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}"
-                                                        class="notification-link">
-                                                        <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read border-bottom"
-                                                            style="border-bottom: 1px solid #ddd;">
-                                                            <div class="d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <h6 class="mb-1">
-                                                                        {{ Str::limit($notifications[$i]['title_notification'], 27) }}
-                                                                    </h6>
-                                                                    <h5 class="mb-0">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</h5>
-                                                                    @php
-                                                                        $createdAt = new DateTime(
-                                                                            $notifications[$i]['created_at'],
-                                                                        );
-                                                                    @endphp
-                                                                    <small
-                                                                        class="text-muted">{{ $createdAt->format('d/m/Y H:i') }}</small>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </a>
-                                                @endfor
-                                            </ul>
-                                        </li>
-                                        <li class="border-top">
-                                            <div class="d-grid p-4">
-                                                <a class="btn btn-primary" href="{{ route('notifications.show') }}">
-                                                    <small>View all notifications</small>
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                @else
-                                    <ul class="dropdown-menu dropdown-menu-end p-0 show border"
-                                        data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
-                                        <li class="dropdown-notifications-list text-center p-3">
-                                            <span class="text-muted">No notifications available.</span>
-                                        </li>
-                                    </ul>
-                                @endif
+                    <div class="wishlist" style="white-space: nowrap">
+                        <a href="{{ route('add.sale-news') }}" title="Wishlist">
+                            <div class="icon">
+                                <i class="fa-regular fa-newspaper"></i>
                             </div>
-                        @else
-                            <div class="wishlist">
-                                <a href="{{ route('login') }}" style="font-size: 1.8rem">
-                                    <div class="icon d-flex align-items-center">
-                                        <i class="icon-user"></i>
-                                        Login
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="wishlist">
-                                <a href="{{ route('register') }}" style="font-size: 1.8rem">
-                                    <div class="icon d-flex align-items-center">
-                                        {{-- <i class="icon-user"></i> --}}
-                                        Sign Up
-                                    </div>
-                                </a>
-                            </div>
-                    @endif
-                </div>
-                <!-- End .header-right -->
-            </div>
-            <!-- End .container -->
-        </div>
-        <!-- End .header-middle -->
-        <div class="header-bottom sticky-header">
-            <div class="container">
-                <div class="header-left">
-                    <div class="dropdown category-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" data-display="static"
-                            title="Browse Categories">
-
-                            Sub Categories <i class="icon-angle-down"></i>
-
+                            <p>News Sale</p>
                         </a>
-                        <div class="dropdown-menu">
-                            <nav class="side-nav">
-                                <ul class="menu-vertical sf-arrows">
-                                    @foreach ($categories as $category)
-                                        @foreach ($category->subCategories as $subCategory)
-                                            <li><a
-                                                    href="{{ route('seach-category') }}?subcategory={{ $subCategory->sub_category_id }}">{{ $subCategory->name_sub_category }}</a>
-                                            </li>
-                                        @endforeach
-                                    @endforeach
-                                </ul>
-                                <!-- End .menu-vertical -->
-                            </nav>
-                            <!-- End .side-nav -->
-                        </div>
-                        <!-- End .dropdown-menu -->
                     </div>
-                    <!-- End .category-dropdown -->
-                </div>
-                <!-- End .header-left -->
-                <div class="header-center">
-                    <nav class="main-nav">
-                        @if (!empty($floating_notifications))
-                            <span>{{ $floating_notifications }}</span>
+                    <!-- End .compare-dropdown -->
+                    <div class="dropdown compare-dropdown">
+                        <a href="{{ route('message.conversations') }} " class="dropdown-toggle" role="button"
+                            aria-haspopup="true">
+                            <div class="icon">
+                                <i class="fa-regular fa-comments"></i> <!-- Thay đổi icon ở đây -->
+                            </div>
+                            <p>Chat</p>
+                        </a>
+                    </div>
+                    <!-- End .compare-dropdown -->
+                    <div class="dropdown cart-dropdown">
+                        <a href="{{ route('wishlist') }}" class="dropdown-toggle" data-display="static">
+                            <div class="icon">
+                                <i class="fa-regular fa-heart"></i>
+                                <!-- <span class="cart-count">0</span> Số lượng sẽ được cập nhật qua AJAX -->
+                            </div>
+                            <p>Wishlist</p>
+                        </a>
+                    </div>
+                    <!-- End .cart-dropdown -->
+                    <div class="dropdown cart-dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <div class="icon">
+                                <i class="fa-regular fa-bell fa-sm"></i>
+                            </div>
+                            <p>notifications</p>
+                        </a>
+                        <div>
+                            @if (!empty($notifications))
+                            <ul class="dropdown-menu dropdown-menu-end p-0 show border" data-bs-popper="static"
+                                style="border: 1px solid #ddd; border-radius: 5px;">
+                                <li class="dropdown-notifications-list scrollable-container"
+                                    style="max-height: 200px; overflow-y: auto;">
+                                    <ul class="list-group list-group-flush">
+                                        @for ($i = 0; $i < count($notifications); $i++)
+                                            <a href="{{ route('notifications.detail', ['notification' => $notifications[$i]['notification_id']]) }}"
+                                            class="notification-link">
+                                            <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read border-bottom"
+                                                style="border-bottom: 1px solid #ddd;">
+                                                <div class="d-flex">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1">
+                                                            {{ Str::limit($notifications[$i]['title_notification'], 27) }}
+                                                        </h6>
+                                                        <h5 class="mb-0">{!! Str::limit($notifications[$i]['content_notification'], 40) !!}</h5>
+                                                        @php
+                                                        $createdAt = new DateTime(
+                                                        $notifications[$i]['created_at'],
+                                                        );
+                                                        @endphp
+                                                        <small
+                                                            class="text-muted">{{ $createdAt->format('d/m/Y H:i') }}</small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            </a>
+                                            @endfor
+                                    </ul>
+                                </li>
+                                <li class="border-top">
+                                    <div class="d-grid p-4">
+                                        <a class="btn btn-primary" href="{{ route('notifications.show') }}">
+                                            <small>View all notifications</small>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                            @else
+                            <ul class="dropdown-menu dropdown-menu-end p-0 show border"
+                                data-bs-popper="static" style="border: 1px solid #ddd; border-radius: 5px;">
+                                <li class="dropdown-notifications-list text-center p-3">
+                                    <span class="text-muted">No notifications available.</span>
+                                </li>
+                            </ul>
+                            @endif
+                        </div>
                         @else
-                            <span>Welcome to Good & Cheap website wish you a great career</span>
+                        <div class="wishlist">
+                            <a href="{{ route('login') }}" style="font-size: 1.8rem">
+                                <div class="icon d-flex align-items-center">
+                                    <i class="icon-user"></i>
+                                    Login
+                                </div>
+                            </a>
+                        </div>
+                        <div class="wishlist">
+                            <a href="{{ route('register') }}" style="font-size: 1.8rem">
+                                <div class="icon d-flex align-items-center">
+                                    {{-- <i class="icon-user"></i> --}}
+                                    Sign Up
+                                </div>
+                            </a>
+                        </div>
                         @endif
-                    </nav>
-                    <!-- End .main-nav -->
+                    </div>
+                    <!-- End .header-right -->
                 </div>
-                <div class="header-right">
-                    <div class="row">
-                        @guest
+                <!-- End .container -->
+            </div>
+            <!-- End .header-middle -->
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" data-display="static"
+                                title="Browse Categories">
+
+                                Sub Categories <i class="icon-angle-down"></i>
+
+                            </a>
+                            <div class="dropdown-menu">
+                                <nav class="side-nav">
+                                    <ul class="menu-vertical sf-arrows">
+                                        @foreach ($categories as $category)
+                                        @foreach ($category->subCategories as $subCategory)
+                                        <li><a
+                                                href="{{ route('seach-category') }}?subcategory={{ $subCategory->sub_category_id }}">{{ $subCategory->name_sub_category }}</a>
+                                        </li>
+                                        @endforeach
+                                        @endforeach
+                                    </ul>
+                                    <!-- End .menu-vertical -->
+                                </nav>
+                                <!-- End .side-nav -->
+                            </div>
+                            <!-- End .dropdown-menu -->
+                        </div>
+                        <!-- End .category-dropdown -->
+                    </div>
+                    <!-- End .header-left -->
+                    <div class="header-center">
+                        <nav class="main-nav">
+                            @if (!empty($floating_notifications))
+                            <span>{{ $floating_notifications }}</span>
+                            @else
+                            <span>Welcome to Good & Cheap website wish you a great career</span>
+                            @endif
+                        </nav>
+                        <!-- End .main-nav -->
+                    </div>
+                    <div class="header-right">
+                        <div class="row">
+                            @guest
                             <ul class="menu sf-arrows">
                                 <li class="mx-3">
                                     <a href="{{ route('home') }}" class=""><i
@@ -258,8 +258,8 @@
 
 
 
-                        @endguest
-                        @auth
+                            @endguest
+                            @auth
                             <!-- Nếu đã đăng nhập -->
                             <ul class="menu sf-arrows">
                                 <li class="mx-3">
@@ -298,23 +298,23 @@
                                             </a>
                                         </li>
                                         @if (!auth()->user()->channel || auth()->user()->channel->status === null)
-                                            <li>
-                                                <a class="dropdown-item" href="{{ url('channels/create') }}">
-                                                    {{ __('Upgrage Account') }}
-                                                </a>
-                                            </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ url('channels/create') }}">
+                                                {{ __('Upgrage Account') }}
+                                            </a>
+                                        </li>
                                         @endif
                                         @if (auth()->user()->channel && auth()->user()->channel->status !== null)
-                                            <li>
-                                                <a class="dropdown-item" href="{{ route('channels.index') }}">
-                                                    {{ __('My Channel') }}
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="{{ url('partners/') }}">
-                                                    {{ __('Channel Manager') }}
-                                                </a>
-                                            </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('channels.index') }}">
+                                                {{ __('My Channel') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ url('partners/') }}">
+                                                {{ __('Channel Manager') }}
+                                            </a>
+                                        </li>
                                         @endif
                                         <li>
                                             <form class="from_logout" method="POST" action="{{ route('logout') }}">
@@ -330,13 +330,13 @@
 
 
                             </ul>
-                        @endauth
+                            @endauth
+                        </div>
                     </div>
+                    <!-- End .header-center -->
+                    <!-- End .container -->
                 </div>
-                <!-- End .header-center -->
-                <!-- End .container -->
             </div>
-        </div>
-        <!-- End .header-bottom -->
+            <!-- End .header-bottom -->
     </header>
     <!-- End .header -->

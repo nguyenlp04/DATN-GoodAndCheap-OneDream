@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-xl-7 col-lg-10">
-                        <div class="tabs-vertical">
+                        <div id="mobile" class="tabs-vertical">
                             <ul class="nav nav-tabs flex-column" id="tabs-8" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link {{ !$errors->updatePassword->any() ? 'active' : '' }}"
@@ -92,11 +92,9 @@
                                         Edit Password
                                     </a>
                                 </li>
-
-                                <!-- <li class="nav-item">
-                                    <a class="nav-link" id="tab-Details-tab" data-toggle="tab" href="#tab-Details" role="tab" aria-controls="tab-Details" aria-selected="false">Details</a>
-                                </li> -->
                             </ul>
+
+
                             <div class="tab-content tab-content-border" id="tab-content-8">
                                 <div class="tab-pane fade {{ !$errors->updatePassword->any() ? 'show active' : '' }}" id="tab-Edit_Profile" role="tabpanel" aria-labelledby="tab-Edit_Profile-tab">
                                     <!-- <p>Nobis perspiciatis natus cum, sint dolore earum rerum tempora aspernatur numquam velit tempore omnis, delectus repellat facere voluptatibus nemo non fugiat consequatur repellendus! Enim, commodi, veniam ipsa voluptates quis amet.</p> -->
@@ -187,7 +185,7 @@
                                         @foreach($followedChannels as $followedChannel)
                                         <div class="m-2 d-flex justify-content-between align-items-center" id="channel-{{ $followedChannel->channel->channel_id }}">
                                             <a href="{{ url('/channels/' . $followedChannel->channel->channel_id) }}" class="d-flex align-items-center text-decoration-none text-dark">
-                                                <img src="{{ $followedChannel->channel->image_channel ? asset($followedChannel->channel->image_channel) : 'https://via.placeholder.com/50' }}"
+                                                <img src="{{ $followedChannel->channel->image_channel ? asset($followedChannel->channel->image_channel) : 'https://png.pngtree.com/png-vector/20220425/ourmid/pngtree-blue-flower-store-shop-vector-png-png-image_4553779.png' }}"
                                                     alt="Avatar" class="rounded me-3"
                                                     style="width: 50px; height: 50px; object-fit: cover;">
                                                 <span>{{ $followedChannel->channel->name_channel }}</span>
@@ -208,9 +206,9 @@
                                             @csrf
                                             @method('PUT')
                                             <header class="mt-2">
-                                                <div class="mb-2 d-flex justify-content-between">
-                                                    <h6 class="">Update Password</h6><!-- End .checkout-title -->
-                                                    <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " id="btn-publish-password">{{ __('Change Password') }}</button>
+                                                <div class="mb-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                                                    <h6 class="mb-2 mb-md-0">Update Password</h6>
+                                                    <button type="submit" class="btn btn-outline-primary-2 px-2 py-3 w-md-auto " id="btn-publish-profile">{{ __('Change Password') }}</button>
                                                 </div>
                                                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                                                     {{ __('Ensure your account is using a long, random password to stay secure.') }}
@@ -237,22 +235,7 @@
                                             @endif
                                         </form>
                                     </section>
-                                </div><!-- .End .tab-pane -->
-                                <!-- <div class="tab-pane fade" id="tab-Details" role="tabpanel" aria-labelledby="tab-Details-tab">
-                                    <h6 style="margin-left: 20px; padding-right: 100px;">Your Details Information</h6>
-                                    <div class="card card-dashboard">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Details</h3>
-                                            <p>Full name: {{ Auth::user()->full_name }}<br>
-                                                Address: {{ Auth::user()->address }}<br>
-                                                Phone: {{Auth::user()->phone_number}}<br>
-                                                Email: {{Auth::user()->email}}<br>
-                                                <a id="tab-Edit_Profile-tab" data-toggle="tab" href="#tab-Edit_Profile" role="tab"
-                                                    aria-controls="tab-Edit_Profile">Edit <i class="icon-edit"></i></a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div> -->
+                                </div>
                             </div><!-- End .tab-content -->
                         </div>
                     </div>
@@ -332,5 +315,31 @@
         });
     });
 </script>
+<script>
+    function adjustTabsForMobile() {
+        const tabsElement = document.getElementById('mobile');
 
+        if (window.innerWidth < 768) {
+            // Giao diện mobile
+            tabsElement.classList.remove('tabs-vertical');
+            const navTabs = document.getElementById('tabs-8');
+            if (navTabs) {
+                navTabs.classList.remove('flex-column');
+                navTabs.classList.add('nav-tabs-bg', 'justify-content-center');
+            }
+        } else {
+            // Giao diện desktop
+            tabsElement.classList.add('tabs-vertical');
+            const navTabs = document.getElementById('tabs-8');
+            if (navTabs) {
+                navTabs.classList.add('flex-column');
+                navTabs.classList.remove('nav-tabs-bg', 'justify-content-center');
+            }
+        }
+    }
+
+    // Gọi hàm khi tải trang và khi thay đổi kích thước màn hình
+    window.addEventListener('load', adjustTabsForMobile);
+    window.addEventListener('resize', adjustTabsForMobile);
+</script>
 @endsection
