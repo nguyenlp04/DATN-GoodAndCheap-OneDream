@@ -94,7 +94,9 @@
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="address" class="form-label">Active from date</label>
-                                    <input type="text" class="form-control" id="Creation Date" name="Creation Date" value="{{ Auth::guard('staff')->user()->created_at->format('d/m/Y') }}" placeholder="Creation Date" readonly />
+                                    <input type="text" class="form-control" id="Creation Date" name="Creation Date"
+                                        value="{{Auth::guard('staff')->user()->created_at ? Auth::guard('staff')->user()->created_at->format('d/m/Y') : null }}"
+                                        placeholder="Creation Date" readonly />
                                 </div>
                             </div>
                             <div class="mt-2">
