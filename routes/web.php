@@ -59,7 +59,7 @@ Route::middleware(['auth.admin'])->group(function () {
         Route::put('/user-account-management/unlock/{id}', [UsermanagementController::class, 'updateUnlock'])->name('updateUnlock');
     });
     Route::post('/channel/togglestatus/{id}', [ChannelController::class, 'toggleStatus'])->name('channel.toggleStatus');
-    Route::post('/channel/togglesalenew/{id}', [SaleNewsController::class, 'toggleStatus'])->name('sale-news-channel.toggleStatus');
+    // Route::post('/channel/togglesalenew/{id}', [SaleNewsController::class, 'toggleStatus'])->name('sale-news-channel.toggleStatus');
     Route::get('/channel', [ChannelController::class, 'list_channel'])->name('channel');
     Route::get('/vip-packages', [VipPackageController::class, 'index'])->name('vip-packages.index');
     Route::post('/vip-packages', [VipPackageController::class, 'store'])->name('vip-packages.store');
@@ -149,6 +149,7 @@ Route::middleware(['auth.role.admin'])->group(function () {
 
 
 Route::middleware('auth')->group(function () {
+    Route::post('/channel/togglesalenew/{id}', [SaleNewsController::class, 'toggleStatus'])->name('sale-news-channel.toggleStatus');
 
     Route::delete('wishlist/{like}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
     Route::post('/add-to-wishlist', [WishlistController::class, 'addToWishlist'])->name('addToWishlist');

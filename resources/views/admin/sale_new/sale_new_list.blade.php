@@ -11,7 +11,7 @@
 
 /* Đảm bảo bảng không thay đổi kích thước */
 .table {
-    table-layout: fixed;
+ 
     width: 100%;
 }
 
