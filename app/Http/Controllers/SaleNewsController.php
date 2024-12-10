@@ -394,6 +394,7 @@ class SaleNewsController extends Controller
 
     public function renderSaleNewDetail(string $id)
     {
+        $threeDaysAgo = Carbon::now()->subDays(3);
         // dd($get_data_7subcategory);
         try {
             $update_views = DB::table('sale_news')->where('sale_new_id', $id)->increment('views', 1);
@@ -412,12 +413,24 @@ class SaleNewsController extends Controller
 
             $get_user_phone = DB::table('users')->where('user_id', $news->user_id)->first();
             $get_data_7subcategory = SaleNews::with(['channel', 'images', 'firstImage', 'sub_category'])
-                ->where('sub_category_id', $news->sub_category_id)
-                ->whereNotNull('vip_package_id')
-                ->latest()
+                ->where('sale_news.status', 1)
+                ->whereNull('sale_news.is_delete')
+                ->where('sale_news.vip_package_id', '!=', null)
+                ->where('sale_news.approved', 1)
+                ->where('sale_news.price', '>', 0)
+                ->join('users', 'sale_news.user_id', '=', 'users.user_id')
+                ->select('sale_news.*', 'users.created_at as user_created_at')
+                // Sắp xếp các sản phẩm có vip_package_id lên đầu
+                ->orderByRaw("CASE WHEN sub_category_id = ? THEN 0 ELSE 1 END", [$news->sub_category_id])
+                ->orderByRaw("CASE WHEN users.created_at >= ? THEN 0 ELSE 1 END", [$threeDaysAgo])
+                // Sắp xếp theo thời gian tạo
+                ->orderBy('sale_news.created_at', 'desc')
+
+                // Lấy kết quả ngẫu nhiên
+                ->inRandomOrder()
                 ->take(7)
                 ->get();
-            // dd($news);
+            // dd($get_data_7subcategory);
 
 
 
@@ -437,7 +450,7 @@ class SaleNewsController extends Controller
                         'data_count_news' => $data_count_news,
                         'data_count_news_sold' => $data_count_news_sold,
                         'data_json' => $data_json,
-                        // 'variant_data_details' =>$variant_data_details,
+
                         'get_data_7subcategory' => $get_data_7subcategory,
                         'nextNewsId' => $nextNewsId,
                         'prevNewsId' => $prevNewsId
@@ -448,7 +461,6 @@ class SaleNewsController extends Controller
                     'new' => $news,
                     'get_user' => $get_user_phone,
                     'data_json' => $data_json,
-                    // 'variant_data_details' =>$variant_data_details,
                     'get_data_7subcategory' => $get_data_7subcategory,
                     'nextNewsId' => $nextNewsId,
                     'prevNewsId' => $prevNewsId
