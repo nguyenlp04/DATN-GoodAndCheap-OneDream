@@ -14,7 +14,7 @@
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
     <div class="page-content">
-        <div class="cart">
+        {{-- <div class="cart"> --}}
             <div class="container">
             <div class="page-content">
                 <div class="cart">
@@ -22,7 +22,7 @@
                         <div class="row d-flex justify-content-Start">
                             <div class="col col-md-9 col-lg-7 col-xl-6">
                                 <div style="width:  fit-content;min-width:400px; ">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0.4rem 1.5rem 1.8rem 1.2rem;">
 
                                         <div class="d-flex">
                                             <div class="flex-shrink-0">
@@ -61,7 +61,7 @@
 
 
                         <div class="col-md-12">
-                            <ul class="nav nav-tabs" id="tabs-2" role="tablist">
+                            <ul class="nav nav-tabs nav-tabs-bg" id="tabs-8" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="tab-5-tab" data-toggle="tab" href="#tab-5" role="tab"
                                         aria-controls="tab-5" aria-selected="true">NOW SHOWING ({{ $count_now_showing }})</a>
@@ -80,7 +80,7 @@
                                         aria-controls="tab-8" aria-selected="false">ITEM IS SOLD ({{ $count_hidden }})</a>
                                 </li>
                             </ul>
-                            <div class="tab-content tab-content-border" id="tab-content-2">
+                            <div class="tab-content tab-content-border" id="tab-content-8">
                                 <div class="tab-pane fade active show" id="tab-5" role="tabpanel"
                                     aria-labelledby="tab-5-tab">
 
@@ -359,106 +359,11 @@
                             </div><!-- End .tab-content -->
                         </div>
                     </div>
-                </div>
+                {{-- </div> --}}
 
             </div>
 
 
 </main><!-- End .main -->
-
-<style>
-    .listing-card {
-        /* background: #d7d7d756; */
-        /* border-radius: 8px; */
-        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-        /* padding: 20px; */
-        /* width: 300px; */
-    }
-
-    .card-content {
-        border-radius: 8px 1px;
-        background: #efeeee61;
-        text-align: left;
-    }
-
-    .card-content h2 {
-        font-size: 1.2em;
-        margin-bottom: 10px;
-    }
-
-    .card-content .price {
-        font-size: 1.5em;
-        color: #e74c3c;
-        margin-bottom: 10px;
-    }
-
-    .card-content .location,
-    .date,
-    .expiry,
-    .views,
-    .services {
-        margin-bottom: 10px;
-        color: #555;
-    }
-
-    .card-content .details,
-    .renew {
-        display: inline-block;
-        margin-right: 10px;
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
-
-    .card-content .renew {
-        background-color: #28a745;
-    }
-
-    .card-content .details:hover,
-    .renew:hover {
-        background-color: #0056b3;
-    }
-
-    .page-content {
-        /* max-width: 1px; */
-        margin: 0 auto;
-        padding-left: 20px;
-    }
-
-    .profile {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .profile img {
-        border-radius: 80%;
-        width: 50px;
-        height: 50px;
-        margin-right: 10px;
-    }
-
-    .profile span {
-        font-size: 1.2em;
-        margin-right: auto;
-    }
-
-    .create-store-btn {
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .illustration img {
-        width: 100px;
-        height: auto;
-    }
-</style>
 
 @endsection

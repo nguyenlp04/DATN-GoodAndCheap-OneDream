@@ -33,7 +33,7 @@
                                     <div class="flex-grow-1 ms-3   ">
                                         <h5 class="mb-1">{{ $user->full_name }}</h5>
 
-                                        <p style="color: #ff0000;"><i class="fa-solid fa-face-smile" style="color: #FFD43B;"></i> Please pay attention when trading products that do not receive the protection of the exchange ! </p>
+                                        <p style="color: #ff0000"><i class="fa-solid fa-face-smile" style="color: #FFD43B;"></i> Please pay attention when trading products that do not receive the protection of the exchange ! </p>
                                         <div style="background-color: inherit !important" class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary  " style="width: fit-content">
                                             <div>
                                                 <p class="small text-muted"><i class="fa-solid fa-clock" style="color: #74C0FC; "></i> {{ $user->created_at }}</p>

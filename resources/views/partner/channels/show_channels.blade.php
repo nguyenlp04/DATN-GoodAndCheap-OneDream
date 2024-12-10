@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h5>{{ $channel->name_channel }}</h5>
-                                        <p style="color: #ff0000;position: relative; top:-8px;"><i
+                                        <p style="color: #ff0000;position: relative; top:-8px;" class="d-none d-md-block"><i
                                                 class="fa-solid fa-handshake" style="color: #FFD43B;"></i>
                                             Trusted partners receive the protection of the floor
                                         </p>
@@ -118,7 +118,7 @@
 
                             <div class="row d-flex">
                                 @if ($sale_news->isNotEmpty())
-                                    <div class="col-lg-9">
+                                    <div class="col-lg-9 order-2 col-xl-4-5col px-3">
                                         <div class="toolbox">
                                             <div class="toolbox-left">
                                                 <div class="toolbox-info">
