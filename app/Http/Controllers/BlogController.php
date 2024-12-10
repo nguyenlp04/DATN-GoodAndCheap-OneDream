@@ -16,7 +16,8 @@ class BlogController extends Controller
     // Hiển thị danh sách bài viết
     public function index()
     {
-        $blogs = Blog::whereNull('is_delete')->get();
+        $blogs = Blog::whereNull('is_delete')->orderBy('created_at','desc')
+        ->get();
         return view('admin.blogs.index', compact('blogs'));
     }
     
@@ -75,6 +76,7 @@ class BlogController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|max:255',
                 'content' => 'required|string',
+                 
                 'short_description' => 'min:10|string|max:255', // Kiểm tra mô tả ngắn
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
                 'category_id' => 'required|exists:categories,category_id', // Kiểm tra category_id hợp lệ
@@ -93,6 +95,7 @@ class BlogController extends Controller
             Blog::create([
                 'title' => $validatedData['title'],
                 'tags' => $tags,
+                'created_at'=>now(),
                 'content' => $validatedData['content'],
                 'staff_id' => $userId, // Lưu ID của người dùng đăng nhập vào trường staff_id
                 'image' => $imagePath, // Lưu đường dẫn ảnh
@@ -128,6 +131,7 @@ class BlogController extends Controller
             'content' => 'required|string|min:6',
             'short_description' => 'required|string|min:10|max:255',
             'status' => 'required|in:0,1',
+
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ảnh có thể không bắt buộc
             'category_id' => 'required|exists:categories,category_id', // Kiểm tra category_id hợp lệ
         ]);

@@ -30,10 +30,11 @@
                             <table id="example" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Title</th>
                                         <th>Image</th>
                                         <th class="px-1">Start date</th>
-                                        <th class="px-1">Update date</th>
+
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,11 +42,18 @@
                                 <tbody>
                                     @foreach($blogs as $blog)
                                     <tr>
+                                        <td>
+                                            <div><span class="badge bg-label-secondary my-1">#{{ $blog->blog_id }}
+
+                                                    <!-- Biểu tượng ngôi sao -->
+                                                </span>
+                                            </div>
+                                        </td>
                                         <td>{{ Str::limit($blog->title, 50, '...') }}</td>
                                         <td><img src="{{ asset('storage/' . $blog->image) }}" alt="Blog Image"
                                                 style="width: 70px; height: auto;"></td>
                                         <td class="px-1">{{ $blog->created_at->format('Y-m-d') }}</td>
-                                        <td class="px-1">{{ $blog->updated_at->format('Y-m-d') }}</td>
+
                                         <td>
                                             <form action="{{ route('blogs.toggleStatus', $blog->blog_id) }}"
                                                 method="POST" class="toggle-status-form"
@@ -63,31 +71,48 @@
 
                                         </td>
                                         <td>
-                                            <div class="icon-wrapper">
-                                                <a class="text-warning"
-                                                    href="{{ route('blogs.edit', $blog->blog_id) }}">
-                                                    <i class="fas fa-edit"></i>
-                                                    <span class="tooltip-text">Edit</span>
-                                                </a>
+
+                                            <div class="btn-group">
+                                                <button type="button"
+                                                    class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <button type="button" class="dropdown-item "
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modal{{ $blog->blog_id }}">
+                                                            <span> <i
+                                                                    class="fa-solid fas fa-eye   "></i></span> View
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <form action="{{ route('blogs.edit', $blog->blog_id) }}">
+                                                            <button type="submit" class="dropdown-item ">
+                                                                <span><i class="fas fa-edit"></i> </span>Edit
+                                                           </button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form id="deleteForm_{{ $blog->blog_id }}"
+                                                            action="{{ route('blogs.destroy', $blog->blog_id) }}"
+                                                            method="POST" style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class=" delete-btn dropdown-item "
+                                                                data-blog-id="{{ $blog->blog_id }}">
+                                                              <i class="fas fa-trash"></i>
+                                                                <span> </span>Delete
+                                                            </button>
+                                                        </form>
+                                                    </li>
+
+                                                </ul>
                                             </div>
-                                            <form id="deleteForm_{{ $blog->blog_id }}"
-                                                action="{{ route('blogs.destroy', $blog->blog_id) }}" method="POST"
-                                                style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <div class="icon-wrapper">
-                                                    <button type="button"
-                                                        class="delete-btn border-0 p-0 btn text-danger"
-                                                        data-blog-id="{{ $blog->blog_id }}">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    <span class="tooltip-text">Delete</span>
-                                                </div>
-                                            </form>
-                                            <button type="button" class="p-0 m-0 border-0 bg-transparent"
-                                                data-bs-toggle="modal" data-bs-target="#modal{{ $blog->blog_id }}">
-                                                <span class="text-primary">Detail</span>
-                                            </button>
+
+
+
                                         </td>
 
                                         <!-- Modal -->
@@ -170,7 +195,7 @@
                                 div class = "alert alert-success" >
                                 <
                                 strong > Success! < /strong> {{ session('message') }} < /
-                                div >
+                            div >
                                 @endif
 
                             @if(session('alert')) <
@@ -181,7 +206,7 @@
                                         ucfirst(session('alert')['type'])
                                     }
                                 }! < /strong> {{ session('alert')['message'] }} < /
-                                div >
+                            div >
                                 @endif
                             </script>
 
