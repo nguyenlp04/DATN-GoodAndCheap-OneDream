@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Controller;
@@ -13,18 +12,14 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConversationController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartnerController;
-use App\Http\Controllers\PartnerProductController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\ManageProfileController;
 use App\Http\Controllers\PartnerProfileController;
-use App\Http\Controllers\SaleNewController;
 use App\Http\Controllers\VipPackageController;
 use App\Http\Controllers\UsermanagementController;
 use App\Http\Controllers\VnPayController;
@@ -43,10 +38,6 @@ require __DIR__ . '/auth.php';
 
 // staff
 Route::middleware(['auth.admin'])->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return view('admin.index');
-    // })->name('dashboard');
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');

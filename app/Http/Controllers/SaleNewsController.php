@@ -685,7 +685,7 @@ class SaleNewsController extends Controller
             $nonVipSaleNews->where('address', 'like', "%$address%");
         }
 
-        $nonVipSaleNews = $nonVipSaleNews->paginate($perPage);
+        $nonVipSaleNews = $nonVipSaleNews->inRandomOrder()->paginate($perPage);
 
         $totalNonVipSaleNews = $nonVipSaleNews->total();
 

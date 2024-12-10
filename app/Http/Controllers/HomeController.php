@@ -74,7 +74,7 @@ class HomeController extends Controller
             // Sắp xếp các sản phẩm có user_id mới tạo trong vòng 3 ngày lên đầu
             ->orderByRaw("CASE WHEN users.created_at >= ? THEN 0 ELSE 1 END", [$threeDaysAgo])
             // Sắp xếp theo thời gian tạo
-            ->orderBy('sale_news.views', 'desc')
+            // ->orderBy('sale_news.views', 'desc')
             // Lấy kết quả ngẫu nhiên
             ->inRandomOrder()
             ->get();
@@ -92,7 +92,7 @@ class HomeController extends Controller
             // Sắp xếp các sản phẩm có user_id mới tạo trong vòng 3 ngày lên đầu
             ->orderByRaw("CASE WHEN users.created_at >= ? THEN 0 ELSE 1 END", [$threeDaysAgo])
             // Sắp xếp theo thời gian tạo
-            ->orderBy('sale_news.views', 'desc')
+            // ->orderBy('sale_news.views', 'desc')
             // Lấy kết quả ngẫu nhiên
             ->inRandomOrder()
             ->get();
