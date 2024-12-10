@@ -7,7 +7,7 @@ use App\Models\Category;
 class Blog extends Model
 {
     use HasFactory;
-
+    public $timestamps = true;
     protected $table = 'blogs'; // Tên bảng
     protected $primaryKey = 'blog_id'; // Khóa chính nếu không phải là id mặc định
     protected $fillable = [
@@ -18,7 +18,8 @@ class Blog extends Model
         'image',
         'short_description',
         'category_id',
-        'is_delete'
+        'is_delete',
+        'created_at'
     ];
     public function staff()
 {
