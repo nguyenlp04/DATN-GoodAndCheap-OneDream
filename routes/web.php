@@ -39,6 +39,7 @@ require __DIR__ . '/auth.php';
 // staff
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/export-data', [DashboardController::class, 'exportData'])->name('dashboard.export.data');
     Route::get('/blogs/add', [BlogController::class, 'create'])->name('blogs.create');
     Route::get('/blogs/edit', [BlogController::class, 'update'])->name('blogs.update');
     Route::resource('/blogs', BlogController::class);
