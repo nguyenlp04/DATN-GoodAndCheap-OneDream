@@ -13,7 +13,6 @@
                         <p>We provide an easy-to-use platform where you can easily list your
                             used items for sale or search for items that suit your needs. </p>
                         <div class="social-icons">
-                            <!-- <a href="#" class="social-icon" target="_blank" title="Facebook">login</a> -->
                             @if($setting->facebook_link)
                             <a href="{{ $setting->facebook_link }}" class="social-icon" target="_blank" title="Facebook">
                                 <i class="icon-facebook"></i>
@@ -47,9 +46,13 @@
                         <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="#">About</a></li>
-                            <!-- <li><a href="#">How to shop on Molla</a></li> -->
-                            <li><a href="#">FAQ</a></li>
+                            <li>
+                                <p>About</p>
+                            </li>
+                            <!-- <li><p>How to shop on Molla</p></li> -->
+                            <li>
+                                <p>FAQ</p>
+                            </li>
                             <li><a href="{{ route('contact') }}">Contact us</a></li>
                             <li><a href="{{route('login')}}">Log in</a></li>
                         </ul><!-- End .widget-list -->
@@ -61,11 +64,21 @@
                         <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Return Policy</a></li>
-                            <li><a href="#">Terms and Conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Buying and Selling Guide</a></li>
+                            <li>
+                                <p>Payment Methods</p>
+                            </li>
+                            <li>
+                                <p>Return Policy</p>
+                            </li>
+                            <li>
+                                <p>Terms and Conditions</p>
+                            </li>
+                            <li>
+                                <p>Privacy Policy</p>
+                            </li>
+                            <li>
+                                <p>Buying and Selling Guide</p>
+                            </li>
                         </ul><!-- End .widget-list -->
 
                     </div><!-- End .widget -->
@@ -110,7 +123,7 @@
 
         <form action="{{ route('search') }}" method="GET" class="mobile-search">
             <label for="mobile-search" class="sr-only">Search</label>
-            <input type="search" class="form-control" name="keyword" id="mobile-search" placeholder="Search in..." value="{{ request()->get('keyword') }}" >
+            <input type="search" class="form-control" name="keyword" id="mobile-search" placeholder="Search in..." value="{{ request()->get('keyword') }}">
             <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
             <input type="hidden" name="address" value="{{ request()->get('address') }}">
             <input type="hidden" name="category" value="{{ request()->get('category') }}">
@@ -354,23 +367,6 @@
                                         </div><!-- End .custom-checkbox -->
                                     </div><!-- End .form-footer -->
                                 </form>
-                                <div class="form-choice">
-                                    <p class="text-center">or sign in with</p>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-g">
-                                                <i class="icon-google"></i>
-                                                Login With Google
-                                            </a>
-                                        </div><!-- End .col-6 -->
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login  btn-f">
-                                                <i class="icon-facebook-f"></i>
-                                                Login With Facebook
-                                            </a>
-                                        </div><!-- End .col-6 -->
-                                    </div><!-- End .row -->
-                                </div><!-- End .form-choice -->
                             </div><!-- .End .tab-pane -->
                         </div><!-- End .tab-content -->
                     </div><!-- End .form-tab -->
