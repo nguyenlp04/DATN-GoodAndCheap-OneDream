@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="{{ asset("/../admin/assets/img/favicon/favicon.ico") }}" />
+  <link rel="icon" type="image/x-icon" href="{{ asset('/../admin/assets/img/favicon/favicon.ico') }}" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,24 +46,24 @@
 
 
   <!-- Icons. Uncomment required icon fonts -->
-  <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/fonts/boxicons.css") }}" />
+  <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/fonts/boxicons.css') }}" />
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css" rel="stylesheet">
   <!-- Core CSS -->
-  <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/css/core.css") }}" class="template-customizer-core-css" />
-  <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/css/theme-default.css") }}" class="template-customizer-theme-css" />
-  <link rel="stylesheet" href="{{ asset("/../admin/assets/css/demo.css") }}" />
+  <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="{{ asset('/../admin/assets/css/demo.css') }}" />
 
   <!-- Vendors CSS -->
-  <link rel="stylesheet" href="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css") }}" />
+  <link rel="stylesheet" href="{{ asset('/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
   <!-- Page CSS -->
 
   <!-- Helpers -->
-  <script src="{{ asset("/../admin/assets/vendor/js/helpers.js") }}"></script>
+  <script src="{{ asset('/../admin/assets/vendor/js/helpers.js') }}"></script>
 
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-  <script src="{{ asset("/../admin/assets/js/config.js") }}"></script>
+  <script src="{{ asset('/../admin/assets/js/config.js') }}"></script>
 </head>
 
 <body>
@@ -76,12 +76,12 @@
         <div class="app-brand demo">
             <a href="{{ route('home') }}" class="logo">
               <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}"
-                  alt="Molla Logo" class="d-none d-sm-block" width="130" height="30">
+                  alt="Molla Logo" class="d-none d-sm-block" width="150" height="40">
               <img src="{{ $setting->logo ? asset($setting->logo) : asset('assets/images/demos/demo-4/logo.png') }}"
-                  alt="Molla Logo Mobile" class="d-block d-sm-none" width="70" height="35">
+                  alt="Molla Logo Mobile" class="d-block d-sm-none" width="130" height="40">
           </a>
 
-          <a href="{{ url("javascript:void(0);") }}" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+          <a href="{{ url('javascript:void(0);') }}" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
           </a>
         </div>
@@ -161,7 +161,7 @@
           class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-4" href="{{ url("javascript:void(0)") }}">
+            <a class="nav-item nav-link px-0 me-xl-4" href="{{ url('javascript:void(0)') }}">
               <i class="bx bx-menu bx-sm"></i>
             </a>
           </div>
@@ -186,19 +186,19 @@
 
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow" href="{{ url("javascript:void(0);") }}" data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="{{ url('javascript:void(0);') }}" data-bs-toggle="dropdown">
                   <div class="avatar avatar-online">
 
-                    <img src="{{ asset( auth()->user()->channel->image_channel) }}" alt class="w-px-40 h-40 rounded-circle" />
+                    <img src="{{ asset(auth()->user()->channel->image_channel) }}" alt class="w-px-40 h-40 rounded-circle" />
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a class="dropdown-item" href="{{ url("#") }}">
+                    <a class="dropdown-item" href="{{ url('#') }}">
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="{{ asset( auth()->user()->channel->image_channel) }}" alt class="w-px-40 h-40 rounded-circle" />
+                            <img src="{{ asset(auth()->user()->channel->image_channel) }}" alt class="w-px-40 h-40 rounded-circle" />
                           </div>
                         </div>
                         <div class="flex-grow-1">
@@ -212,7 +212,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="{{ url("partners/profile") }}">
+                    <a class="dropdown-item" href="{{ url('partners/profile') }}">
                       <i class="bx bx-user me-2"></i>
                       <span class="align-middle">My Profile</span>
                     </a>
@@ -255,18 +255,18 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset("/../admin/assets/vendor/libs/jquery/jquery.js") }}"></script>
-    <script src="{{ asset("/../admin/assets/vendor/libs/popper/popper.js") }}"></script>
-    <script src="{{ asset("/../admin/assets/vendor/js/bootstrap.js") }}"></script>
-    <script src="{{ asset("/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js") }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
-    <script src="{{ asset("/../admin/assets/vendor/js/menu.js") }}"></script>
+    <script src="{{ asset('/../admin/assets/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="{{ asset("/../admin/assets/js/main.js") }}"></script>
+    <script src="{{ asset('/../admin/assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
 
