@@ -219,7 +219,7 @@ class VnPayController extends Controller
                     $namePackage = $vipPackage->name;
                     $listing->vip_package_id = $id_package;
                     $listing->vip_start_at = Carbon::now();
-                    $listing->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
+                    $listing->vip_end_at = Carbon::now()->addDays((int)$vipPackage->duration);
                     $listing->save();
 
                     $message = str_replace(
@@ -286,7 +286,7 @@ class VnPayController extends Controller
                         $namePackage = $vipPackage->name;
                         $Channel->vip_package_id = $id_package;
                         $Channel->vip_start_at = Carbon::now();
-                        $Channel->vip_end_at = Carbon::now()->addDays($vipPackage->duration);
+                        $Channel->vip_end_at = Carbon::now()->addDays((int)$vipPackage->duration);
                         $Channel->save();
                         // Transactions::where('transaction_id', $transaction->transaction_id)->delete();
 
