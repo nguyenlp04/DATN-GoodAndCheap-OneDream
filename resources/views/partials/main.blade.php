@@ -151,7 +151,7 @@
                             <h3 class="product-title"><a
                                     href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
                                 </a></h3>
-                            <div class="product-price">
+                            <div class="product-price text-primary">
                                 ${{ $item->price }}
                             </div>
                         </div><!-- End .product-body -->
@@ -286,7 +286,7 @@
                                         <h3 class="product-title"><a
                                                 href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
                                             </a></h3>
-                                        <div class="product-price">
+                                        <div class="product-price text-primary">
                                             ${{ $item->price }}
                                         </div>
                                     </div><!-- End .product-body -->
@@ -356,7 +356,7 @@
                                         <h3 class="product-title"><a
                                                 href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
                                             </a></h3>
-                                        <div class="product-price">
+                                        <div class="product-price text-primary">
                                             ${{ $item->price }}
                                         </div>
                                     </div><!-- End .product-body -->
@@ -426,7 +426,7 @@
                                         <h3 class="product-title"><a
                                                 href="{{ route('salenew.detail' ,$item->sale_new_id) }}">{{ Str::limit($item->title, 35, '...') }}
                                             </a></h3>
-                                        <div class="product-price">
+                                        <div class="product-price text-primary">
                                             ${{ $item->price }}
                                         </div>
                                     </div><!-- End .product-body -->
@@ -515,64 +515,62 @@
     <div class="container">
         <hr class="mb-0">
     </div><!-- End .container -->
-
     <div class="icon-boxes-container bg-transparent">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="icon-box icon-box-side">
+            <div class="row g-4"><!-- Add g-4 for spacing -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="icon-box icon-box-side text-center">
                         <span class="icon-box-icon text-dark">
-                            <i class="icon-rocket"></i>
+                            <i class="fas fa-credit-card"></i>
                         </span>
+                        
                         <div class="icon-box-content">
-                            <h3 class="icon-box-title">Free Shipping</h3><!-- End .icon-box-title -->
-                            <p>Orders $50 or more</p>
-                        </div><!-- End .icon-box-content -->
-                    </div><!-- End .icon-box -->
-                </div><!-- End .col-sm-6 col-lg-3 -->
-
-                <div class="col-sm-6 col-lg-3">
-                    <div class="icon-box icon-box-side">
+                            <h3 class="icon-box-title">Convenient payment
+                            </h3>
+                            <p>Online payment</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="icon-box icon-box-side text-center">
                         <span class="icon-box-icon text-dark">
                             <i class="icon-rotate-left"></i>
                         </span>
-
                         <div class="icon-box-content">
-                            <h3 class="icon-box-title">Free Returns</h3><!-- End .icon-box-title -->
+                            <h3 class="icon-box-title">Free Returns</h3>
                             <p>Within 30 days</p>
-                        </div><!-- End .icon-box-content -->
-                    </div><!-- End .icon-box -->
-                </div><!-- End .col-sm-6 col-lg-3 -->
-
-                <div class="col-sm-6 col-lg-3">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="icon-box icon-box-side">
                         <span class="icon-box-icon text-dark">
-                            <i class="icon-info-circle"></i>
+                            <i class="fas fa-cart-plus"></i>
+
                         </span>
-
                         <div class="icon-box-content">
-                            <h3 class="icon-box-title">Get 20% Off 1 Item</h3><!-- End .icon-box-title -->
-                            <p>when you sign up</p>
-                        </div><!-- End .icon-box-content -->
-                    </div><!-- End .icon-box -->
-                </div><!-- End .col-sm-6 col-lg-3 -->
-
-                <div class="col-sm-6 col-lg-3">
-                    <div class="icon-box icon-box-side">
+                            <h3 class="icon-box-title">Secure Shopping</h3>
+                            <p>Shop with confidence</p>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="icon-box icon-box-side text-center">
                         <span class="icon-box-icon text-dark">
                             <i class="icon-life-ring"></i>
                         </span>
-
                         <div class="icon-box-content">
-                            <h3 class="icon-box-title">We Support</h3><!-- End .icon-box-title -->
+                            <h3 class="icon-box-title">We Support</h3>
                             <p>24/7 amazing services</p>
-                        </div><!-- End .icon-box-content -->
-                    </div><!-- End .icon-box -->
-                </div><!-- End .col-sm-6 col-lg-3 -->
-            </div><!-- End .row -->
-        </div><!-- End .container -->
-    </div><!-- End .icon-boxes-container -->
-
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
 </main><!-- End .main -->
 
 <!-- Trong Blade view -->

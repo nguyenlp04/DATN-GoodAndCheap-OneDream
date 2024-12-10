@@ -280,8 +280,20 @@
                         </a>
 
                         <div class="product-action-vertical">
-                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                        </div><!-- End .product-action-vertical -->
+
+                            <!-- Thêm data-product-id để lưu id sản phẩm -->
+                            <form action="{{ route('addToWishlist') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="sale_new_id" value="{{ $item->sale_new_id }}">
+                                <button type="submit"
+                                    class="add-wishlist rounded-circle add-to-wishlist-btn {{ $item->isFavorited ? 'text-white bg-primary' : 'text-primary' }}"
+                                    title="{{ $item->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}">
+                                    <i class="{{ $item->isFavorited ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                </button>
+                            </form>
+
+
+                        </div>
 
 
                     </figure><!-- End .product-media -->
@@ -349,6 +361,23 @@
 <script src="{{ asset('assets/js/jquery.elevateZoom.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
+
+<script>
+    var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";
+    // Hiển thị thông báo sau khi load trang nếu có từ session
+    @if(session('alert'))
+    Swal.fire({
+        icon: "{{ session('alert')['type'] }}",
+        title: "{{ session('alert')['message'] }}",
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+    @endif
+</script>
 <script>
     $(document).ready(function() {
 

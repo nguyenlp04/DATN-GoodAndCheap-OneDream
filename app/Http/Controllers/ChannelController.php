@@ -63,11 +63,15 @@ class ChannelController extends Controller
         $NewsCount = $channel->saleNews()->count();
         $category = Category::all();
         $productCount = $sale_news->count();
-
+        $sold_sale_news = $channel->saleNews()->with('sub_category', 'firstImage')
+            ->where('approved', 1)
+            ->where('status', 0)
+            ->where('is_delete', null)
+            ->paginate(4);
         $isFollowed = UserFollowed::where('user_id', $user->user_id)
             ->where('channel_id', $channel->channel_id)
             ->exists();
-        return view('partner.channels.show_channels', compact('channel', 'information', 'all_sales', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category', 'maxPriceRange', 'productCount'));
+        return view('partner.channels.show_channels', compact('channel', 'information', 'all_sales', 'sold_sale_news', 'NewsCount', 'sale_news', 'subcategory_count', 'isFollowed', 'category', 'maxPriceRange', 'productCount'));
     }
     public function list_channel()
     {
@@ -187,7 +191,11 @@ class ChannelController extends Controller
 
         $subcategory_count = $sale_news->filter(fn($news) => $news->sub_category)->countBy('sub_category.name_sub_category');
         $NewsCount = $channel->saleNews()->count();
-
+        $sold_sale_news = $channel->saleNews()->with('sub_category', 'firstImage')
+        ->where('approved', 1)
+        ->where('status', 0)
+        ->where('is_delete', null)
+        ->paginate(4);
         $category = Category::all();
         return view('partner.channels.show_channels', compact(
             'channel',
@@ -199,7 +207,7 @@ class ChannelController extends Controller
             'category',
             'all_sales',
             'productCount',
-            'maxPriceRange'
+            'maxPriceRange','sold_sale_news'
         ));
     }
 
@@ -430,7 +438,11 @@ class ChannelController extends Controller
 
 
         $productCount = $sale_news->count();
-
+        $sold_sale_news = $channel->saleNews()->with('sub_category', 'firstImage')
+        ->where('approved', 1)
+        ->where('status', 0)
+        ->where('is_delete', null)
+        ->paginate(4);
         // Kiểm tra không có kết quả
         if ($sale_news->isEmpty() && $recentVipSaleNews->isEmpty() && $olderVipSaleNews->isEmpty() && $nonVipSaleNews->isEmpty()) {
             // Trả về thông báo không có kết quả tìm kiếm
@@ -455,7 +467,8 @@ class ChannelController extends Controller
                 'maxPriceRange',
                 'productCount',
                 'information',
-                'isFollowed'
+                'isFollowed',
+                'sold_sale_news'
 
             ))->with('message', 'Không tìm thấy kết quả nào.');
         }
@@ -482,7 +495,8 @@ class ChannelController extends Controller
             'isFollowed',
             'maxPriceRange',
             'productCount',
-            'information'
+            'information',
+            'sold_sale_news'
         ));
     }
 }

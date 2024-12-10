@@ -2,25 +2,12 @@
 
 @section('content')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
-
+    <style>
+        .entry-content {
+            overflow: hidden;
+        }
+    </style>
     <main class="main">
-
-        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-            <div class="container">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">My Channel</li>
-                </ol>
-            </div>
-            <!-- End .container -->
-        </nav>
-        <!-- End .breadcrumb-nav -->
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        <div class="page-content">
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
             <div class="container">
                 <ol class="breadcrumb">
@@ -41,7 +28,7 @@
             <div class="container">
                 <div class="row d-flex justify-content-Start">
                     <div class="col col-md-9 col-lg-7 col-xl-6">
-                        <div style="width:  fit-content;min-width:460px; ">
+                        <div style="width:  fit-content;min-width:400px; ">
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
@@ -105,8 +92,6 @@
                         @endif
                     @endif
                 </div>
-
-
                 <div class="col-md-12">
                     <ul class="nav justify-content-center nav-tabs" id="tabs-2" role="tablist">
                         <li class="nav-item">
@@ -116,48 +101,21 @@
                                 )</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-uppercase" id="tab-7-tab" data-toggle="tab" href="#tab-7"
-                                role="tab" aria-controls="tab-7" aria-selected="true">Sold
-                                News ({{ $sale_news->where('status', 0)->count() }})
-                            </a>
+                            <a class="nav-link  Bage text-uppercase" id="tab-6-tab" data-toggle="tab" href="#tab-6"
+                                role="tab" aria-controls="tab-6" aria-selected="true">Sold
+                                News({{ $sold_sale_news->where('status', 0)->count() }}
+                                )</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-uppercase" id="tab-6-tab" data-toggle="tab" href="#tab-6"
-                                role="tab" aria-controls="tab-6" aria-selected="false">Infomation Channel
+                            <a class="nav-link text-uppercase" id="tab-7-tab" data-toggle="tab" href="#tab-7"
+                                role="tab" aria-controls="tab-7" aria-selected="false">Infomation Channel
                             </a>
                         </li>
 
                     </ul>
                     <div class="tab-content tab-content-border" id="tab-content-2">
                         <div class="tab-pane fade active show" id="tab-5" role="tabpanel" aria-labelledby="tab-5-tab">
-                    </ul>
-                    <div class="tab-content tab-content-border" id="tab-content-2">
-                        <div class="tab-pane fade active show" id="tab-5" role="tabpanel" aria-labelledby="tab-5-tab">
 
-                            <div class="row d-flex">
-                                @if ($sale_news->isNotEmpty())
-                                    <div class="col-lg-9">
-                                        <div class="toolbox">
-                                            <div class="toolbox-left">
-                                                <div class="toolbox-info">
-                                                    Showing <span>{{ $productCount }}</span> Products
-                                                </div>
-                                                <!-- End .toolbox-info -->
-                                            </div>
-                                            <!-- End .toolbox-left -->
-                                            <div class="toolbox-right" style="visibility: hidden;">
-                                                <div class="toolbox-sort">
-                                                    <div class="select-custom">
-                                                        <select name="sortby" id="sortby" class="form-control">
-                                                            <option value="date">Date</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- End .toolbox-sort -->
-                                            </div>
-                                            <!-- End .toolbox-right -->
-                                        </div>
-                                        <!-- End .toolbox -->
                             <div class="row d-flex">
                                 @if ($sale_news->isNotEmpty())
                                     <div class="col-lg-9">
@@ -326,8 +284,37 @@
                                         </div>
                                     </aside>
                                 @endif
+                            </div>
+                        </div><!-- .End .tab-pane -->
+                        <div class="tab-pane fade" id="tab-6" role="tabpanel" aria-labelledby="tab-6-tab">
+                            <div class="row d-flex">
+                                @if ($sold_sale_news->isNotEmpty())
+                                    <div class="col-lg-12">
+                                        <div class="toolbox">
+                                            <div class="toolbox-left">
+                                                <div class="toolbox-info">
+                                                    Showing <span>{{ $sold_sale_news->where('status', 0)->count() }}</span>
+                                                    Products
+                                                </div>
+                                                <!-- End .toolbox-info -->
+                                            </div>
+                                            <!-- End .toolbox-left -->
+                                            <div class="toolbox-right" style="visibility: hidden;">
+                                                <div class="toolbox-sort">
+                                                    <div class="select-custom">
+                                                        <select name="sortby" id="sortby" class="form-control">
+                                                            <option value="date">Date</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- End .toolbox-sort -->
+                                            </div>
+                                            <!-- End .toolbox-right -->
+                                        </div>
+                                        <!-- End .toolbox -->
+
                                         <div class="products mb-3">
-                                            @foreach ($sale_news as $sale_new)
+                                            @foreach ($sold_sale_news as $sale_new)
                                                 <div class="product product-list">
                                                     <div class="row">
                                                         <div class="col-6 col-lg-3">
@@ -350,14 +337,14 @@
                                                                         data-id="{{ $sale_new->sale_new_id }}">
                                                                         @csrf
                                                                         <button type="button"
-                                                                            class="btn btn-light mb-2 wishlist-btn {{ $sale_new->isFavorited ? 'text-primary' : '' }} color-danger"
+                                                                            class="btn btn-light disabled mb-2 wishlist-btn {{ $sale_new->isFavorited ? '' : '' }} color-danger"
                                                                             title="{{ $sale_new->isFavorited ? 'Remove from wishlist' : 'Add to wishlist' }}">
                                                                             <i class="fas fa-heart"></i>
                                                                             {{ $sale_new->isFavorited ? 'Added to wishlist' : 'Add to wishlist' }}
                                                                         </button>
                                                                     </form>
                                                                     <a href="{{ route('salenew.detail', $sale_new->sale_new_id) }}"
-                                                                        class="btn btn-primary">
+                                                                        class="btn btn-light disabled">
                                                                         <i class="fa-solid fa-eye"></i> Details
                                                                     </a>
                                                                 </div>
@@ -407,124 +394,37 @@
                                         </div>
                                     </div>
                                 @endif
-                                <!-- End .col-lg-9 -->
-                                @if (isset($category) && $category->count())
-                                    <aside class="col-lg-3 col-xl-5col order-lg-first">
-                                        <div class="sidebar sidebar-shop">
-                                            <form method="POST"
-                                                action="{{ route('search_channel', ['id' => $channel->channel_id]) }}">
-                                                @csrf
-                                                <div class="widget widget-collapsible">
-                                                    <h3 class="widget-title">
-                                                        <a data-toggle="collapse" href="#widget-2" role="button"
-                                                            aria-expanded="true" aria-controls="widget-2">
-                                                            Category
-                                                        </a>
-                                                    </h3>
-                                                    <div class="collapse show" id="widget-2">
-                                                        <div class="widget-body">
-                                                            <select class="form-select form-control filter-input"
-                                                                name="category">
-                                                                <option value="">Select Category</option>
-                                                                @foreach ($category as $item)
-                                                                    <option value="{{ $item->category_id }}"
-                                                                        {{ old('category') == $item->category_id ? 'selected' : '' }}>
-                                                                        {{ $item->name_category }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="widget widget-collapsible mr-4">
-                                                    <h3 class="widget-title">
-                                                        <a data-toggle="collapse" href="#widget-5" role="button"
-                                                            aria-expanded="true" aria-controls="widget-5">
-                                                            Price
-                                                        </a>
-                                                    </h3>
-                                                    <div class="collapse show" id="widget-5">
-                                                        <div class="widget-body">
-                                                            <div class="filter-price">
-                                                                <div class="filter-price-text">
-                                                                    Price Range:
-                                                                    <span id="filter-price-range">
-                                                                        ${{ request()->get('minPrice', 0) }} -
-                                                                        ${{ request()->get('maxPrice', $maxPriceRange) }}
-                                                                    </span>
-                                                                </div>
-                                                                <div id="price-slider"></div>
-                                                                <input type="hidden" id="minPrice" name="minPrice"
-                                                                    value="{{ request()->get('minPrice', 0) }}">
-                                                                <input type="hidden" id="maxPrice" name="maxPrice"
-                                                                    value="{{ request()->get('maxPrice', $maxPriceRange) }}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <input type="text" class="form-control" name="keyword"
-                                                    value="{{ old('keyword') }}" placeholder="Search ..." />
-                                                <button type="submit" class="btn btn-primary">Apply Filter</button>
-                                            </form>
-                                        </div>
-                                    </aside>
-                                @endif
-
-
                             </div>
-
-                            </div>
-
-                        </div><!-- .End .tab-pane -->
-                        <div class="tab-pane fade" id="tab-6" role="tabpanel" aria-labelledby="tab-6-tab">
+                        </div>
+                        <div class="tab-pane fade" id="tab-7" role="tabpanel" aria-labelledby="tab-7-tab">
                             @if (isset($information->about))
-                                <div class="mb-2">
+                                <div class="entry-content">
                                     {!! $information->about !!}
-                                </div>
-                            @else
-                                <p class="text-muted">No information available.</p>
-                            @endif
-                        </div><!-- .End .tab-pane -->
-                        <div class="tab-pane fade" id="tab-6" role="tabpanel" aria-labelledby="tab-6-tab">
-                            @if (isset($information->about))
-                                <div class="mb-2">
-                                    {!! $information->about !!}
-                                </div>
+                                </div><!-- End .entry-content -->
                             @else
                                 <p class="text-muted">No information available.</p>
                             @endif
 
                             <div class="row">
                                 @if (isset($information->banner_url))
-                                    <img src="{{ asset('storage/' . $information->banner_url) }}" alt="Banner">
+                                    <div class="col-12 text-center">
+                                        <img src="{{ asset('storage/' . $information->banner_url) }}" alt="Banner"
+                                            class="img-fluid">
+                                    </div>
                                 @else
                                     <p class="text-muted">No banner image available.</p>
                                 @endif
-                            <div class="row">
-                                @if (isset($information->banner_url))
-                                    <img src="{{ asset('storage/' . $information->banner_url) }}" alt="Banner">
-                                @else
-                                    <p class="text-muted">No banner image available.</p>
-                                @endif
-
-                            </div><!-- .End .tab-pane -->
-                            </div><!-- .End .tab-pane -->
+                            </div>
+                        </div>
 
 
-                        </div><!-- End .tab-content -->
-                    </div>
-                </div>
-            </div>
-                        </div><!-- End .tab-content -->
                     </div>
                 </div>
             </div>
 
         </div>
-        </div>
 
 
-    </main><!-- End .main -->
     </main><!-- End .main -->
 
 
@@ -564,45 +464,7 @@
             }
         })
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        var userId = "{{ Auth::check() ? Auth::user()->user_id : '' }}";
-        $(document).ready(function() {
-            if (typeof noUiSlider === 'object') {
-                var priceSlider = document.getElementById('price-slider');
-                if (priceSlider == null) return;
-                noUiSlider.create(priceSlider, {
-                    start: [0, <?php echo $maxPriceRange; ?>],
-                    connect: true,
-                    step: 50,
-                    margin: 200,
-                    range: {
-                        'min': 0,
-                        'max': <?php echo $maxPriceRange; ?>
-                    },
-                    tooltips: true,
-                    format: wNumb({
-                        decimals: 0,
-                        prefix: '$'
-                    })
-                });
-                priceSlider.noUiSlider.on('update', function(values, handle) {
-                    $('#filter-price-range').text(values.join(' - '));
-                    const minInput = document.getElementById('minPrice');
-                    const maxInput = document.getElementById('maxPrice');
-                    const minValue = values[0].replace('$', '');
-                    const maxValue = values[1].replace('$', '');
-                    if (minInput && maxInput) {
-                        minInput.value = minValue;
-                        maxInput.value = maxValue;
-                    }
-                });
-            }
-        })
-    </script>
 
-    <script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
-    <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
     <script src="{{ asset('assets/js/ajax_wishlist.js') }}"></script>
     <script src="{{ asset('assets/js/nouislider.min.js') }}"></script>
 @endsection
