@@ -21,7 +21,7 @@
                     @csrf
                     <!-- {{ Auth::user()->user_id }} -->
                     <div class="d-flex justify-content-between">
-                        <h4 class="">Product information</h4><!-- End .checkout-title -->
+                        <h4 class="">Sale News information</h4><!-- End .checkout-title -->
                         <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish product</button>
                     </div>
                     <div class="row">
@@ -53,7 +53,7 @@
                             </script>
                             <link rel="stylesheet"
                                 href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.css">
-                            <div class="">
+                            <div class="mt-1">
                                 <div class="card-header d-flex align-items-center">
                                     <label for="productImage" class="font-weight-bold form-label">Product Image</label>
                                     @error('images.*')
