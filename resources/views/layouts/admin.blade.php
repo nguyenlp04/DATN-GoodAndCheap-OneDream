@@ -494,6 +494,7 @@
             </div>
 
           </div>
+           
         </footer>
         <!-- / Footer -->
       </div>

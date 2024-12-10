@@ -314,8 +314,9 @@
                             </tr>
 
                             </tbody>
+                            
                             </table>
-
+                           
                         </div>
                     </div>
                 </div>
@@ -1142,22 +1143,6 @@
 </div>
 
 @endsection
-<script>
-@if(session('message')) <
-    div class = "alert alert-success" >
-    <
-    strong > Success! < /strong> {{ session('message') }} < /
-div >
-    @endif
-
-@if(session('alert')) <
-    div class = "alert alert-{{ session('alert')['type'] }}" >
-    <
-    strong > {
-        {
-            ucfirst(session('alert')['type'])
-        }
-    }! < /strong> {{ session('alert')['message'] }} < /
-div >
-    @endif
-</script>
+ 
+ 
+ 
