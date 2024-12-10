@@ -136,8 +136,8 @@
             <p class="text-danger ">Not empty blogs!</p>
             @endif
             @if ($blogs->hasPages())
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
+            <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
             {{-- Nút Previous --}}
             @if ($blogs->onFirstPage())
                 <li class="page-item disabled">
