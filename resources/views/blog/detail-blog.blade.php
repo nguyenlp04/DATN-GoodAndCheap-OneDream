@@ -2,7 +2,7 @@
 
 @section('content')
 <main class="main">
-   
+
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
         <div class="container">
             <ol class="breadcrumb">
@@ -69,11 +69,27 @@
                     </article><!-- End .entry -->
 
 
-
                     <div class="related-posts">
                         <h3 class="title">Related Posts</h3><!-- End .title -->
 
-                        <div class="owl-carousel owl-simple" data-toggle="owl">
+                        <div class="owl-carousel owl-simple" data-toggle="owl"
+                            data-owl-options='{
+                                        "nav": false, 
+                                        "dots": true,
+                                        "margin": 20,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {
+                                                "items":1
+                                            },
+                                            "480": {
+                                                "items":2
+                                            },
+                                            "768": {
+                                                "items":3
+                                            }
+                                        }
+                                    }'>
                             @if(isset($relatedBlogs) && $relatedBlogs->count() > 0)
                             @foreach($relatedBlogs as $blog)
                             <article class="entry entry-grid">
@@ -114,8 +130,10 @@
                             <p>Not empty related blogs!</p>
                             @endif
 
+
                         </div><!-- End .owl-carousel -->
                     </div><!-- End .related-posts -->
+
 
 
 

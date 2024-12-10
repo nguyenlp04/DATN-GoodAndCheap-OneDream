@@ -103,7 +103,7 @@
                                     autofocus
                                     autocomplete="username"
                                     required />
-                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
                             </div>
 
                             <!-- Password -->
@@ -122,7 +122,7 @@
                                         autocomplete="current-password"
                                         required />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                    <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                                 </div>
                             </div>
 
