@@ -50,7 +50,7 @@ class ContactController extends Controller
                 $messageTemplate
             );
 
-            $telegramService->sendMessage($message);
+            $telegramService->sendMessageFeedback($message);
             return redirect()->back()->with('alert', [
                 'type' => 'success',
                 'message' => 'Your message has been sent successfully! Thank you for reaching out.'

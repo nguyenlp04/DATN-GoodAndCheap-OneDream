@@ -160,7 +160,7 @@
 
                                                     @else
                                                     <a href="{{route('user.show',$get_user->user_id)}}">
-                                                    <img src="https://p16-oec-ttp.tiktokcdn-us.com/tos-useast5-i-omjb5zjo8w-tx/06378cbea0004c25b8f835a60c9031f7~tplv-omjb5zjo8w-origin-jpeg.jpeg?from=1995374044" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
+                                                    <img src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg" style="border-radius: 16%; overflow: hidden;" width="60px" alt="">
                                                     </a>
                                                     @endif
                                     </div>
@@ -209,39 +209,27 @@
                         <div class="product-desc-content">
                             <h3>Information</h3>
 
-                            <div class="row">
-                                <div class="col-7">
-                                    @if(isset($data_json))
-                                    <table class="table table-bordered ">
-                                        <thead>
-                                            <tr>
-                                        @foreach($data_json as $variant)
-                                              <th style="text-align: center" scope="col">{{ $variant->name }}</th>
-                                        @endforeach
-                                            </tr>
-                                          </thead>
-                                  <tbody>
-                                      <tr>
+                            <div class="row"> <div class="col-md-7">
+                                @if(isset($data_json))
+                                <div class="product-info">
                                     @foreach($data_json as $variant)
-
-                                      <td style="text-align: center">{{ $variant->option}}</td>
-
-                                      @endforeach
-                                    </tr>
-                                    @endif
-                                </table>
-
-                            </div>
-                            <div class="col-5">
-                                <ul>
-                                    <li>{{ $get_user->phone_number }}</li>
-                                    <li>{{ $get_user->full_name }}</li>
-                                    @if($get_user->address)
-                                    <li>{{ $get_user->address }}</li>
-                                    @endif
-                                </ul>
-                            </div>
-                            </div>
+                                    <div class="product-info-item">
+                                        <span class="product-info-name">
+                                            {{ $variant->name }}</span>: <span class="product-info-option">{{ $variant->option }}</span>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                     @endif
+                                    </div>
+                                    <div class="col-md-5">
+                                        <ul>
+                                            <li>Phone number: {{ $new->phone }}</li>
+                                            <li>Seller name: {{ $get_user->full_name }}</li>
+                                             @if($get_user->address)
+                                             <li>Address: {{ $get_user->address }}</li>
+                                              @endif </ul>
+                                             </div>
+                                            </div>
                         </div><!-- End .product-desc-content -->
                     </div><!-- .End .tab-pane -->
 
@@ -280,14 +268,15 @@
                     }
                 }'>
 
+                {{-- {{dd($get_data_7subcategory)}} --}}
                 @foreach ($get_data_7subcategory as $item )
 
 
                 <div class="product product-7 text-center">
                     <figure class="product-media">
                         <span class="product-label label-new">Operation</span>
-                        <a href="product.html">
-                            <img src="{{ asset($item->firstImage->image_name) }}" alt="Product image" class="product-image">
+                        <a href="{{ route('salenew.detail',$item->sale_new_id) }}">
+                            <img src="{{ asset($item->firstImage->image_name) }}" style="height: 200px;" alt="Product image" class="product-image">
                         </a>
 
                         <div class="product-action-vertical">
@@ -301,7 +290,7 @@
                         {{-- <div class="product-cat">
                             <a href="#">Women</a>
                         </div><!-- End .product-cat --> --}}
-                        <h3 class="product-title"><a href="product.html">{{ $item->title }}</a></h3><!-- End .product-title -->
+                        <h3 class="product-title"><a href="{{ route('salenew.detail',$item->sale_new_id) }}">{{ $item->title }}</a></h3><!-- End .product-title -->
                         <div class="product-price">
                             ${{ $item->price }}
                         </div><!-- End .product-price -->
@@ -354,6 +343,8 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {{-- <script src="{{  asset('assets/js/jquery.min.js')}}"></script> --}}
+    <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
+
 <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.elevateZoom.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap-input-spinner.js') }}"></script>

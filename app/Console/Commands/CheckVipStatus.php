@@ -9,6 +9,7 @@ use App\Models\SaleNews;
 use App\Services\PhpMailerService;
 // use App\Services\PhpMailerService;
 use Carbon\Carbon;
+use App\Models\Setting;
 
 class CheckVipStatus extends Command
 {
@@ -27,6 +28,7 @@ class CheckVipStatus extends Command
     // Phương thức `handle` sẽ được gọi khi chạy command
     public function handle()
     {
+        $setting = Setting::first() ?? new Setting();
         $currentDate = Carbon::now();
         $threeDaysAgo = $currentDate->subDays(3);
         $Check = Channel::with('vipPackage', 'user')->where('vip_end_at', '<', $threeDaysAgo)->get();
@@ -42,7 +44,7 @@ class CheckVipStatus extends Command
                     border="0"
                     width="1"
                     height="1"
-                    src="https://ci3.googleusercontent.com/meips/ADKq_NZczalnaVYGnYrdvaFWfKkm8MYubPmbZKksh79EtOmsJVGumVcFQEkSA3KM0spgbbZe16ndYwTlQ4lW91Bqi6il2kGz4DROkZph8Mw_GL6oI8vlZaDNzVZs_sz82yDTMMtECwkerljbHkAKqAPh784fpZxNEW3LqXOn7H3R0uwF0RF_ix87udY3_4V7xB29GfUEjQE=s0-d-e1-ft#http://click.rayobyte.com/q/deUYDB8guD08uoMF_kvxYg~~/AACLYQA~/RgRpGXGcPVcDc3BjQgpnNxw-OGezTUEPUhBoYXZ5QGxpbmRzZS5zaG9wWAQAAAAA"
+                    src="' . $setting->logo . '"
                     alt=""
                     class="CToWUd"
                     data-bit="iit"

@@ -176,10 +176,9 @@
                 <div class="col-md-12">
                     <div class="cta-content">
                         <div class="cta-text text-right text-white">
-                            <p>Shop Today’s Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
+                            <p><br><strong>A REPUTABLE AND CONVENIENT WEBSITE FOR BUYING AND SELLING USED GOODS</strong></p>
                         </div><!-- End .cta-text -->
-                        <a href="#" class="btn btn-primary btn-round"><span>Shop Now - $429.99</span><i
-                                class="icon-long-arrow-right"></i></a>
+                <div> GOOD & CHEAP</div>
                     </div><!-- End .cta-content -->
                 </div><!-- End .col-md-12 -->
             </div><!-- End .row -->
@@ -252,7 +251,7 @@
 
                                 <div class="product product-2">
                                     <figure class="product-media">
-
+                                    <span class="product-label label-circle label-new">Rate</span>
                                         <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
 
                                             <img src="{{ $item->images->first()->image_name }}" alt="Image"
@@ -324,7 +323,7 @@
 
                                 <div class="product product-2">
                                     <figure class="product-media">
-                                        <span class="product-label label-circle label-new">New</span>
+                                        <span class="product-label label-circle label-new">Tren</span>
                                         <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                             <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                 class="equal-height-image">
@@ -393,7 +392,7 @@
 
                                 <div class="product product-2">
                                     <figure class="product-media">
-                                        <span class="product-label label-circle label-new">Sale</span>
+                                        <span class="product-label label-circle label-new">Mode</span>
                                         <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
                                             <img src="{{ $item->images->first()->image_name }}" alt="Image"
                                                 class="equal-height-image">
@@ -464,7 +463,6 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="product product-2">
                         <figure class="product-media">
-                            {{-- --}}
 
                             <a href="{{ route('salenew.detail' ,$item->sale_new_id) }}">
 
