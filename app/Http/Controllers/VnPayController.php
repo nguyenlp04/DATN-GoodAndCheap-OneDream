@@ -349,7 +349,7 @@ class VnPayController extends Controller
                     }
                 }
 
-                $telegramService->sendMessage($message);
+
 
                 return redirect('/' . $route)->with('alert', [
                     'type' => 'success',

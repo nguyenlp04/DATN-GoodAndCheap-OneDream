@@ -46,7 +46,7 @@
                                 {{ $message }}
                             </span>
                             @enderror
-                            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            <textarea class="form-control" name="description" id="editor" rows="3"></textarea>
                             <!-- Media -->
                             <script
                                 src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/dropzone/dropzone.js">
@@ -153,7 +153,7 @@
                                     {{ $message }}
                                 </span>
                                 @enderror
-                                <select id="category" name="name_category" class="form-control">
+                                <select id="category" name="name_category" class="form-control form-select">
                                     <option value="">Select Category Name</option>
                                     @foreach ($categories as $category)
                                     <option value="{{ $category->category_id }}">{{ $category->name_category }}
@@ -169,7 +169,7 @@
                                         {{ $message }}
                                     </span>
                                     @enderror
-                                    <select id="subcategory" name="subcategory_id" class="form-control">
+                                    <select id="subcategory" name="subcategory_id" class="form-control form-select">
                                     </select>
                                 </div>
 
@@ -182,6 +182,8 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
 {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
+                <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script>

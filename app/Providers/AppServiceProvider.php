@@ -55,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
             $query->where('status', 1);
         }])
             ->where('status', 1)
-            ->where('is_delete', '!=', 0)
+            ->where('is_delete', '0')
             ->get();
         View::share([
             'setting' => $setting,

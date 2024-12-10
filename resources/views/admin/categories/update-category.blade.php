@@ -57,7 +57,7 @@
                                     <div class="mb-6">
                                         <label for="name_category" class="form-label">Category Name:</label>
                                         <input type="text" name="name_category" class="form-control" id="name_category"
-                                            value="{{ $dataCategoryID->category_id }}"
+                                            value="{{ $dataCategoryID->name_category }}"
                                             placeholder="Enter category name">
                                             @error('name_category')
                                     <div class="text-danger">
