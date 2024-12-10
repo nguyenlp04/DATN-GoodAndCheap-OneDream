@@ -108,10 +108,14 @@
     <div class="mobile-menu-wrapper">
         <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
-        <form action="#" method="get" class="mobile-search">
+        <form action="{{ route('search') }}" method="GET" class="mobile-search">
             <label for="mobile-search" class="sr-only">Search</label>
-            <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required="">
+            <input type="search" class="form-control" name="keyword" id="mobile-search" placeholder="Search in..." value="{{ request()->get('keyword') }}" >
             <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            <input type="hidden" name="address" value="{{ request()->get('address') }}">
+            <input type="hidden" name="category" value="{{ request()->get('category') }}">
+            <input type="hidden" name="minPrice" value="{{ request()->get('minPrice') }}">
+            <input type="hidden" name="maxPrice" value="{{ request()->get('maxPrice') }}">
         </form>
         {{-- <div class="pb-2 bg-body-tertiary d-flex justify-content-start" style="padding: 0.8rem 1.5rem"> --}}
 
