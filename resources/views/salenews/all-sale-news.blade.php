@@ -21,10 +21,10 @@
         <div class="row">
             <!-- Tab "Tất cả tin đăng" -->
             <div class="col-4 col-sm-3 col-lg-2">
-                <a href="{{ route('salenews.all', ['category' => 'all']) }}" 
+                <a href="{{ route('salenews.all', ['category' => 'all']) }}"
                    class="cat-block tablinks {{ $currentCategoryId === 'all' ? 'active' : '' }}" data-category-id="all">
                     <span>
-                        <img src="{{ asset('storage/category/hot.png') }}" alt="All categories" class="img-fluid">
+                        <img src="{{ asset('storage/settings/logo_mobile_1733765090.png') }}" alt="All categories" class="img-fluid">
                     </span>
                     <h3 class="cat-block-title">Hot news</h3>
                 </a>
@@ -33,8 +33,8 @@
             <!-- Các danh mục khác -->
             @foreach ($categories as $category)
                 <div class="col-4 col-sm-3 col-lg-2">
-                    <a href="{{ route('salenews.all', ['category' => $category->category_id]) }}" 
-                       class="cat-block tablinks {{ $currentCategoryId == $category->category_id ? 'active' : '' }}" 
+                    <a href="{{ route('salenews.all', ['category' => $category->category_id]) }}"
+                       class="cat-block tablinks {{ $currentCategoryId == $category->category_id ? 'active' : '' }}"
                        data-category-id="{{ $category->category_id }}">
                         <span>
                             <img src="{{ asset($category->image_category ?? 'default-placeholder.jpg') }}" alt="{{ $category->name_category }}" class="img-fluid">

@@ -16,7 +16,7 @@
                             <h4 class="mb-1">Add A Sale new</h4>
                         </div>
                         <div class="d-flex align-content-center flex-wrap gap-4">
-                            
+
                             <button type="submit" class="btn btn-primary" id="btn-publish-product">Publish </button>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                                     <!-- Description -->
                                     <div>
                                         <label for="description" class="form-label">Description</label>
-                                        <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                                        <textarea class="form-control" name="description" id="editor" rows="3"></textarea>
                                         @error('description')
                                             <div class="text-danger">
                                                 <i class="bx bx-error-circle me-2"></i>
@@ -246,6 +246,8 @@
                 </form>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+                <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
+                <script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
                 <script>
                     $(document).ready(function() {
                         // Handle change event for category dropdown

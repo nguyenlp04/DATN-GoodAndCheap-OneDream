@@ -37,10 +37,9 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'full_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
+            'email' => 'required|string|email|max:255|unique:staffs,email',
             'address' => 'required|string|max:255',
             'password' => 'required|string|min:8',
             'avata' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -55,22 +54,34 @@ class StaffController extends Controller
             $imageName = null;
         }
 
+        try {
 
-        $data = [
-            'full_name' => $validatedData['full_name'],
-            'email' => $validatedData['email'],
-            'address' => $validatedData['address'],
-            'password' => Hash::make($validatedData['password']),
-            'avata' => $imageName ? 'storage/avatas/' . $imageName : null,
-            'role' => 'staff',
-            'status' => 1,
-            'created_at' => now(),
-        ];
-        $query = DB::table('staffs')->insert($data);
-        if ($query) {
+            $data = [
+                'full_name' => $validatedData['full_name'],
+                'email' => $validatedData['email'],
+                'address' => $validatedData['address'],
+                'password' => Hash::make($validatedData['password']),
+                'avata' => $imageName ? 'storage/avatas/' . $imageName : null,
+                'role' => 'staff',
+                'status' => 1,
+                'created_at' => now(),
+            ];
+            $query = DB::table('staffs')->insert($data);
+            if ($query) {
+                return redirect()->back()->with('alert', [
+                    'type' => 'success',
+                    'message' => 'More Success !'
+                ]);
+            } else {
+                return redirect()->back()->with('alert', [
+                    'type' => 'error',
+                    'message' => 'Failure !'
+                ]);
+            }
+        } catch (\Exception $e) {
             return redirect()->back()->with('alert', [
-                'type' => 'success',
-                'message' => 'More Success !'
+                'type' => 'error',
+                'message' => 'error: ' . $e->getMessage()
             ]);
         }
     }

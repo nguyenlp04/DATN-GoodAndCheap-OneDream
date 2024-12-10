@@ -109,7 +109,8 @@
         var value = selectedOption.getAttribute("data-v");
         var value_price = selectedOption.getAttribute("data-price");
         document.getElementById("description").textContent = value;
-        document.getElementById("price").textContent = value_price;
+       document.getElementById("price").textContent = 'price:  $' + value_price;
+
     });
 </script>
 @endsection

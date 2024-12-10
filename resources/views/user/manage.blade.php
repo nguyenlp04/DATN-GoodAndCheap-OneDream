@@ -42,7 +42,7 @@
             <div class="container">
                 <div class="row justify-content-Start">
                     <div class="col col-md-9 col-lg-7 col-xl-5">
-                        <div style="width:  fit-content;min-width:430px; ">
+                        <div style="width:  fit-content;min-width:400px; ">
                             <div class="card-body" style="padding: 0.4rem 1.5rem 1.8rem 1.2rem;">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
