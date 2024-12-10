@@ -47,11 +47,11 @@
                         <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="about.html">About</a></li>
+                            <li><a href="#">About</a></li>
                             <!-- <li><a href="#">How to shop on Molla</a></li> -->
                             <li><a href="#">FAQ</a></li>
-                            <li><a href="contact.html">Contact us</a></li>
-                            <li><a href="login.html">Log in</a></li>
+                            <li><a href="{{ route('contact') }}">Contact us</a></li>
+                            <li><a href="{{route('login')}}">Log in</a></li>
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
                 </div><!-- End .col-sm-6 col-lg-3 -->
@@ -76,11 +76,11 @@
                         <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="cart.html">Home</a></li>
-                            <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="{{route('login')}}">Sign In</a></li>
+                            <li><a href="{{route('home')}}">Home</a></li>
+                            <li><a href="{{ route('wishlist') }}">My Wishlist</a></li>
+                            <li><a href="{{ route('blogs.listting') }}">Blog</a></li>
+                            <li><a href="{{ route('contact') }}">Contact</a></li>
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
                 </div><!-- End .col-sm-6 col-lg-3 -->
@@ -93,7 +93,7 @@
             <p class="footer-copyright">Copyright © 2024 One Dream Store. All Rights Reserved.</p>
             <!-- End .footer-copyright -->
             <figure class="footer-payments">
-                <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                <img src="{{ asset('assets/images/payments.png') }}" alt="Payment methods" width="272" height="20">
             </figure><!-- End .footer-payments -->
         </div><!-- End .container -->
     </div><!-- End .footer-bottom -->
@@ -225,10 +225,29 @@
         </div><!-- End .tab-content -->
 
         <div class="social-icons">
-            <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            @if($setting->facebook_link)
+            <a href="{{ $setting->facebook_link }}" class="social-icon" target="_blank" title="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+            @endif
+
+            @if($setting->instagram_link)
+            <a href="{{ $setting->instagram_link }}" class="social-icon" target="_blank" title="Instagram">
+                <i class="icon-instagram"></i>
+            </a>
+            @endif
+
+            @if($setting->twitter_link)
+            <a href="{{ $setting->twitter_link }}" class="social-icon" target="_blank" title="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+            @endif
+
+            @if($setting->youtube_link)
+            <a href="{{ $setting->youtube_link }}" class="social-icon" target="_blank" title="YouTube">
+                <i class="icon-youtube"></i>
+            </a>
+            @endif
         </div><!-- End .social-icons -->
     </div><!-- End .mobile-menu-wrapper -->
 </div>
