@@ -854,7 +854,7 @@ class SaleNewsController extends Controller
                 $query->where('category_id', $categoryId);
             });
         }
-        $nonVipSaleNews = $nonVipSaleNews->paginate($perPage);
+        $nonVipSaleNews = $nonVipSaleNews->inRandomOrder()->paginate($perPage);
 
         $totalNonVipSaleNews = $nonVipSaleNews->total();
 

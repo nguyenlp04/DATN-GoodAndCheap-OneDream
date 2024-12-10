@@ -225,10 +225,29 @@
         </div><!-- End .tab-content -->
 
         <div class="social-icons">
-            <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            @if($setting->facebook_link)
+            <a href="{{ $setting->facebook_link }}" class="social-icon" target="_blank" title="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+            @endif
+
+            @if($setting->instagram_link)
+            <a href="{{ $setting->instagram_link }}" class="social-icon" target="_blank" title="Instagram">
+                <i class="icon-instagram"></i>
+            </a>
+            @endif
+
+            @if($setting->twitter_link)
+            <a href="{{ $setting->twitter_link }}" class="social-icon" target="_blank" title="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+            @endif
+
+            @if($setting->youtube_link)
+            <a href="{{ $setting->youtube_link }}" class="social-icon" target="_blank" title="YouTube">
+                <i class="icon-youtube"></i>
+            </a>
+            @endif
         </div><!-- End .social-icons -->
     </div><!-- End .mobile-menu-wrapper -->
 </div>
