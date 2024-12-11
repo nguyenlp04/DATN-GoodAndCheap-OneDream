@@ -1,6 +1,6 @@
-<div id="waiting" class="container-fluid p-0 tab-pane fade">
-    <h2>Waiting for approved</h2>
-    <table id="waitingNewsTable" class="table table-striped" style="width:100%">
+<div id="rejected" class="container-fluid p-0 tab-pane fade">
+    <h2>Rejected</h2>
+    <table id="rejectedNewsTable" class="table table-striped" style="width:100%">
         <thead>
             <tr>
                 <th>Id news</th>
@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             @foreach ($data as $item)
-            @if ($item->approved == 0)
+            @if ($item->approved == 2)
             <tr>
                 <td>
                     <div><span class="badge bg-label-secondary my-1">#{{ $item->sale_new_id }}
@@ -59,11 +59,11 @@
                 </td>
                 <td>
                     <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;"
-                        data-bs-toggle="modal" data-bs-target="#modal2{{ $item->sale_new_id }}">
+                        data-bs-toggle="modal" data-bs-target="#modal3{{ $item->sale_new_id }}">
                         <i class="fas fa-eye"></i>
                         <span class="tooltip-text eye">View</span>
                     </button>
-                    <div class="modal fade" id="modal2{{ $item->sale_new_id }}" tabindex="-1"
+                    <div class="modal fade" id="modal3{{ $item->sale_new_id }}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
