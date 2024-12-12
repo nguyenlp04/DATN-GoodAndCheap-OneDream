@@ -65,7 +65,7 @@ class BlogController extends Controller
             $staff = Staff::find($userId);
 
             if (!$staff) {
-                // Nếu người dùng không phải là staff, trả về thông báo không đủ quyền
+               
                 return redirect()->back()->with('alert', [
                     'type' => 'error',
                     'message' => 'You do not have sufficient privileges.'

@@ -34,7 +34,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Title:</label>
-                                <input type="text" name="title" class="form-control" placeholder="Enter blog title">
+                                <input type="text" name="title" class="form-control"  placeholder="Enter blog title">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tag:</label>
