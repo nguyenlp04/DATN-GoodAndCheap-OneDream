@@ -180,9 +180,6 @@
                                                             <small class="text-truncate-1">{{ $item->title }}</small>
                                                         </div>
                                                     </div>
-
-
-
                                 </div>
                                 </td>
                                 </tr>

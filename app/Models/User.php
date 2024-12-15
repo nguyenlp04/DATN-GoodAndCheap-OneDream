@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPUnit\Framework\TestStatus\Notice;
 use App\Models\Transactions;
+use Illuminate\Notifications\Notification;
 
 class User extends Authenticatable
 {

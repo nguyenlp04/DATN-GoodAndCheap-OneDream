@@ -20,15 +20,9 @@
       </div>
 
       <div class="row" data-select2-id="20">
-
-        <!-- First column-->
         <div class="col-12 col-lg-12">
-          <!-- Product Information -->
           <div class="card mb-6">
             <div class="card-body">
-               <!-- <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
-            {{-- {{ json_encode($data, JSON_PRETTY_PRINT) }} --}}
-        </pre> -->
               <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                   <tr>

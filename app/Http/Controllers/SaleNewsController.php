@@ -706,41 +706,52 @@ class SaleNewsController extends Controller
         ));
     }
     public function all_sale_news(Request $request)
-    {
-        $currentCategoryId = $request->input('category', 'all');
+{
+    $currentCategoryId = $request->input('category', 'all');
 
-        // Lấy danh mục với số lượng tin liên quan
-        $categories = Category::with(['subcategories.salenews' => function ($query) {
-            $query->where('status', 1)
-                ->where('approved', 1)
-                ->where('is_delete', null);
-        }])
-            ->select('category_id', 'name_category', 'image_category')
-            ->get()
-            ->map(function ($category) {
-                $category->news_count = $category->subcategories->flatMap->salenews->count();
-                return $category;
-            });
-        $items = SaleNews::with(['user', 'sub_category.category', 'images'])
-            ->where('status', 1)
+    // Lấy danh mục với số lượng tin liên quan
+    $categories = Category::with(['subcategories.salenews' => function ($query) {
+        $query->where('status', 1)
             ->where('approved', 1)
-            ->where('is_delete', null)
-            ->when($currentCategoryId !== 'all', function ($query) use ($currentCategoryId) {
-                $query->whereHas('sub_category.category', function ($q) use ($currentCategoryId) {
-                    $q->where('category_id', $currentCategoryId);
-                });
-            })
-            ->paginate(8);
+            ->where('is_delete', null);
+    }])
+        ->select('category_id', 'name_category', 'image_category')
+        ->get()
+        ->map(function ($category) {
+            $category->news_count = $category->subcategories->flatMap->salenews->count();
+            return $category;
+        });
+    $items = SaleNews::with(['user', 'sub_category.category', 'images'])
+    ->leftJoin('channels', 'sale_news.channel_id', '=', 'channels.channel_id')
+    ->where(function ($query) {
+        $query->where('channels.status', 1)
+            ->orWhereNull('channels.channel_id');
+    })
+    ->join('users', 'sale_news.user_id', '=', 'users.user_id')
+    ->where(function ($query) {
+        $query->where('users.status', 1)
+            ->orWhereNull('users.user_id');
+    })
+    ->where('sale_news.status', 1)  // Thêm tiền tố 'sale_news.' cho cột status
+    ->where('sale_news.approved', 1)
+    ->where('sale_news.is_delete', null)
+    ->when($currentCategoryId !== 'all', function ($query) use ($currentCategoryId) {
+        $query->whereHas('sub_category.category', function ($q) use ($currentCategoryId) {
+            $q->where('category_id', $currentCategoryId);
+        });
+    })
+    ->paginate(8);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'html' => view('partials.sale-news-items', compact('items'))->render(),
-                'pagination' => (string)$items->links(),
-            ]);
-        }
-
-        return view('salenews.all-sale-news', compact('categories', 'items', 'currentCategoryId'));
+    if ($request->ajax()) {
+        return response()->json([
+            'html' => view('partials.sale-news-items', compact('items'))->render(),
+            'pagination' => (string)$items->links(),
+        ]);
     }
+
+    return view('salenews.all-sale-news', compact('categories', 'items', 'currentCategoryId'));
+}
+
 
 
 

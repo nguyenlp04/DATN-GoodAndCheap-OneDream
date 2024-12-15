@@ -143,11 +143,7 @@ Route::middleware(['auth.role.admin'])->group(function () {
         Route::post('/mail', [ConfigController::class, 'storeMail'])->name('store.mail');
     });
 });
-
-
 // user
-
-
 Route::middleware('auth')->group(function () {
     Route::post('/channel/togglesalenew/{id}', [SaleNewsController::class, 'toggleStatus'])->name('sale-news-channel.toggleStatus');
 
@@ -210,7 +206,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/unfollow/{id}', [UserManageController::class, 'unfollow'])->name('channels.unfollow');
     Route::get('/transaction-history', [TransactionController::class, 'user_transaction_history'])->name('user.transaction_history');
-    Route::get('partners/list', [PartnerController::class, 'list_notification'])->name('list_notification');
+    Route::get('partners/list-notification', [PartnerController::class, 'list_notification'])->name('list_notification');
 });
 // enduser
 
