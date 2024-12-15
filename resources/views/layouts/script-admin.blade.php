@@ -1,6 +1,8 @@
+ 
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     new DataTable('#example');
@@ -24,7 +26,27 @@
     });
 </script>
 @endif
+<script>
+      
+ $(document).ready(function() {
+     // Khôi phục trạng thái tab từ localStorage
+     var activeTab = localStorage.getItem('activeTab');
+   
+     
+     if (activeTab) {
+         $('a[data-bs-toggle="tab"][href="' + activeTab + '"]').tab('show');
+     } else {
+         $('#tab-all').tab('show');
+     }
 
+     $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+         var targetTab = $(e.target).attr("href");
+        
+         localStorage.setItem('activeTab', targetTab);
+     });
+ });
+
+</script>
 
 <script>
     function confirmDelete(event, articleId) {

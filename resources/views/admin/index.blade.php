@@ -20,6 +20,17 @@
                                         badge in
                                         your profile.
                                     </p>
+                                    <form action="{{ route('dashboard.export.data') }}" method="POST">
+                                        <div class="d-flex">
+                                            @csrf
+                                            <select name="date" id="category_id" class="form-select me-2 w-50">
+                                                <option value="1">This Month</option>
+                                                <option value="2">Last Month</option>
+                                                <option value="3">All</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary">Export Data</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-sm-5 text-center text-sm-left">
@@ -39,9 +50,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
+                                        <div class="avatar flex-shrink-0 me-4">
+                                            <span class="avatar-initial rounded bg-label-primary"><i
+                                                    class="bx bx-cube bx-sm"></i></span>
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
@@ -68,9 +79,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
+                                        <div class="avatar flex-shrink-0 me-4">
+                                            <span class="avatar-initial rounded bg-label-primary"><i
+                                                    class="bx bx-cube bx-sm"></i></span>
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown"
@@ -114,7 +125,8 @@
                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
                                                 <a class="dropdown-item" href="{{ url('javascript:void(0);') }}">View
                                                     More</a>
-                                                <a class="dropdown-item" href="{{ url('javascript:void(0);') }}">Delete</a>
+                                                <a class="dropdown-item"
+                                                    href="{{ url('javascript:void(0);') }}">Delete</a>
                                             </div>
                                         </div>
                                     </div>
@@ -131,9 +143,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/paypal.png') }}"
-                                                alt="Credit Card" class="rounded" />
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded-2 bg-label-primary"><i
+                                                    class="bx bx-dollar bx-sm text-primary"></i></span>
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt6"
@@ -165,9 +177,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded-2 bg-label-primary"><i
+                                                    class="bx bx-dollar bx-sm text-primary"></i></span>
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt1"
@@ -231,9 +243,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
+                                        <div class="avatar me-2">
+                                            <span class="avatar-initial rounded-2 bg-label-primary"><i
+                                                    class="bx bx-store-alt bx-sm text-primary"></i></span>
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt1"
@@ -261,9 +273,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <div class="card-title d-flex align-items-start justify-content-between">
-                                        <div class="avatar flex-shrink-0">
-                                            <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
-                                                alt="Credit Card" class="rounded" />
+                                        <div class="avatar me-4">
+                                            <span class="avatar-initial rounded bg-label-info"><i
+                                                    class="bx bx-time-five bx-sm"></i></span>
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="cardOpt4"
@@ -402,8 +414,8 @@
                             <ul class="p-0 m-0">
                                 <li class="d-flex mb-4 pb-1">
                                     <div class="avatar flex-shrink-0 me-3">
-                                        <span class="avatar-initial rounded bg-label-primary"><i
-                                                class="bx bx-mobile-alt"></i></span>
+                                        <img src="{{ asset('/../admin/assets/img/icons/unicons/wallet-info.png') }}"
+                                            alt="Credit Card" class="rounded" />
                                     </div>
                                     <div class="d-flex w-100 flex-wrap align-items-top justify-content-between gap-2">
                                         <div class="me-2">
@@ -416,9 +428,9 @@
                                     </div>
                                 </li>
                                 <li class="d-flex pb-1">
-                                    <div class="avatar flex-shrink-0 me-3">
-                                        <span class="avatar-initial rounded bg-label-success"><i
-                                                class="bx bx-closet"></i></span>
+                                    <div class="avatar me-3">
+                                        <span class="avatar-initial rounded-2 bg-label-primary"><i
+                                                class="bx bx-store-alt bx-sm text-primary"></i></span>
                                     </div>
                                     <div class="d-flex w-100 flex-wrap align-items-top justify-content-between gap-2">
                                         <div class="me-2">
@@ -430,61 +442,35 @@
                                         </div>
                                     </div>
                                 </li>
-                                {{-- <li class="d-flex mb-4 pb-1">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-info"><i
-                                            class="bx bx-home-alt"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">Decor</h6>
-                                        <small class="text-muted">Fine Art, Dining</small>
-                                    </div>
-                                    <div class="user-progress">
-                                        <small class="fw-semibold">849k</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="d-flex">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-secondary"><i
-                                            class="bx bx-football"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">Sports</h6>
-                                        <small class="text-muted">Football, Cricket Kit</small>
-                                    </div>
-                                    <div class="user-progress">
-                                        <small class="fw-semibold">99</small>
-                                    </div>
-                                </div>
-                            </li> --}}
+                            
                             </ul>
                         </div>
                     </div>
                 </div>
                 <!--/ Order Statistics -->
 
-                <!-- Expense Overview -->
-                {{-- <div class="col-md-6 col-lg-4 order-1 mb-4">
+        
+
+                {{-- {{ dd($data['dataWeeklyRevenue']['daysOfWeek']) }} --}}
+
+                <div class="col-md-6 col-lg-8 order-1 mb-6">
+                    
                     <div class="card h-100">
-                        <div class="card-header">
-                            <ul class="nav nav-pills" role="tablist">
-                                <li class="nav-item">
-                                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                                        data-bs-target="#navs-tabs-line-card-income"
-                                        aria-controls="navs-tabs-line-card-income" aria-selected="true">
-                                        Income
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <button type="button" class="nav-link" role="tab">Expenses</button>
-                                </li>
-                                <li class="nav-item">
-                                    <button type="button" class="nav-link" role="tab">Profit</button>
-                                </li>
-                            </ul>
+                        <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                            <div class="card-title mb-0">
+                                <h5 class="m-0 me-2">Weekly Revenue Chart</h5>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                                    <a class="dropdown-item" href="{{ url('javascript:void(0);') }}">Select All</a>
+                                    <a class="dropdown-item" href="{{ url('javascript:void(0);') }}">Refresh</a>
+                                    <a class="dropdown-item" href="{{ url('javascript:void(0);') }}">Share</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body px-0">
                             <div class="tab-content p-0">
@@ -495,36 +481,23 @@
                                                 alt="User" />
                                         </div>
                                         <div>
-                                            <small class="text-muted d-block">Total Balance</small>
+                                            <small class="text-muted d-block">Total Weekly Revenue</small>
                                             <div class="d-flex align-items-center">
-                                                <h6 class="mb-0 me-1">$459.10</h6>
-                                                <small class="text-success fw-semibold">
-                                                    <i class="bx bx-chevron-up"></i>
-                                                    42.9%
-                                                </small>
+                                                <h6 class="mb-0 me-1">${{$data['dataWeeklyRevenue']['totalWeeklyRevenue']}}</h6>
                                             </div>
                                         </div>
                                     </div>
                                     <div id="incomeChart"></div>
-                                    <div class="d-flex justify-content-center pt-4 gap-2">
-                                        <div class="flex-shrink-0">
-                                            <div id="expensesOfWeek"></div>
-                                        </div>
-                                        <div>
-                                            <p class="mb-n1 mt-1">Expenses This Week</p>
-                                            <small class="text-muted">$39 less than last week</small>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> --}}
-                <!--/ Expense Overview -->
 
+                </div>
+    
 
                 <!-- Transactions -->
-                <div class="col-xl-8 col-md-12 order-3 order-lg-4 mb-8 mb-lg-0">
+                <div class="col-xl-12 col-md-12 order-3 order-lg-4 mb-12 mb-lg-0">
                     <div class="card text-center">
                         <div class="card-header d-flex align-items-center justify-content-between">
                             <h5 class="card-title m-0 me-2">Transactions</h5>
@@ -551,6 +524,7 @@
                                                 <th>Amount</th>
                                                 <th>Upgrade</th>
                                                 <th>Status</th>
+                                                <th>Transaction Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -568,6 +542,7 @@
                                                             <span class="badge bg-label-danger">Incomplete</span>
                                                         @endif
                                                     </td>
+                                                    <td>{{ $item->transaction_date }}</td>
                                                 </tr>
                                             @endforeach
 
@@ -578,14 +553,19 @@
                         </div>
                     </div>
                 </div>
+
+
                 <!--/ Transactions -->
             </div>
+
+            
+
         </div>
         <!-- / Content -->
 
         <div class="content-backdrop fade"></div>
     </div>
-    
+
 
     <script src="{{ asset('/../admin/assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('/../admin/assets/vendor/libs/popper/popper.js') }}"></script>
@@ -625,7 +605,7 @@
                         type: 'donut'
                     },
                     labels: ['Sale News', 'Channel'],
-                    series: [<?php echo $data['percentageSaleNews'] ?>, <?php echo $data['percentageChannels'] ?>],
+                    series: [<?php echo $data['percentageSaleNews']; ?>, <?php echo $data['percentageChannels']; ?>],
                     colors: [config.colors.info, config.colors.success],
                     stroke: {
                         width: 5,
@@ -684,7 +664,108 @@
                 const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
                 statisticsChart.render();
             }
+
+
+              // Income Chart - Area chart
+  // --------------------------------------------------------------------
+  const incomeChartEl = document.querySelector('#incomeChart'),
+    incomeChartConfig = {
+      series: [
+        {
+          data: <?php echo json_encode($data['dataWeeklyRevenue']['weeklyRevenueData']); ?>
+        }
+      ],
+      chart: {
+        height: 215,
+        parentHeightOffset: 0,
+        parentWidthOffset: 0,
+        toolbar: {
+          show: false
+        },
+        type: 'area'
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 2,
+        curve: 'smooth'
+      },
+      legend: {
+        show: false
+      },
+      markers: {
+        size: 6,
+        colors: 'transparent',
+        strokeColors: 'transparent',
+        strokeWidth: 4,
+        discrete: [
+          {
+            fillColor: config.colors.white,
+            seriesIndex: 0,
+            dataPointIndex: 7,
+            strokeColor: config.colors.primary,
+            strokeWidth: 2,
+            size: 6,
+            radius: 8
+          }
+        ],
+        hover: {
+          size: 7
+        }
+      },
+      colors: [config.colors.primary],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: shadeColor,
+          shadeIntensity: 0.6,
+          opacityFrom: 0.5,
+          opacityTo: 0.25,
+          stops: [0, 95, 100]
+        }
+      },
+      grid: {
+        borderColor: borderColor,
+        strokeDashArray: 3,
+        padding: {
+          top: -20,
+          bottom: -8,
+          left: -10,
+          right: 8
+        }
+      },
+      xaxis: {
+        categories: <?php echo json_encode($data['dataWeeklyRevenue']['daysOfWeek']); ?>,
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          show: true,
+          style: {
+            fontSize: '13px',
+            colors: axisColor
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          show: false
+        },
+        min: 10,
+        max: 50,
+        tickAmount: 4
+      }
+    };
+  if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {
+    const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
+    incomeChart.render();
+  }
+
+  
         })();
     </script>
-
 @endsection

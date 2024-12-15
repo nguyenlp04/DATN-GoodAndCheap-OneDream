@@ -1,6 +1,6 @@
-<div id="waiting" class="container-fluid p-0 tab-pane fade">
-    <h2>Waiting for approved</h2>
-    <table id="waitingNewsTable" class="table table-striped" style="width:100%">
+<div id="approved" class="container-fluid p-0 tab-pane fade">
+    <h2>Approved</h2>
+    <table id="approvedNewsTable" class="table table-striped" style="width:100%">
         <thead>
             <tr>
                 <th>Id news</th>
@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             @foreach ($data as $item)
-            @if ($item->approved == 0)
+            @if ($item->approved == 1)
             <tr>
                 <td>
                     <div><span class="badge bg-label-secondary my-1">#{{ $item->sale_new_id }}
@@ -30,11 +30,7 @@
 
                 </td>
                 <td>
-                    <!-- @if ($item->approved == 0)
-    <span>{{ \Carbon\Carbon::parse($item->created_at)->addDays(7)->diffForHumans() }}</span>
-@else
-    <span>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</span>
-    @endif -->
+
                     <div class="row d-flex justify-content-Start text-truncate-3">
 
                         {{ $item->title }}
@@ -42,10 +38,11 @@
 
                 </td>
                 <td class="bg-light rounded">
-                    <span class="badge bg-label-primary"> {{ $item->sub_category->category->name_category }}
-                    </span>
+                    <span class="badge bg-label-primary">
+                        {{ $item->sub_category->category->name_category }} </span>
                     <span class="text-muted"> &#8594; </span>
-                    <span class="badge text-secondary"> {{ $item->sub_category->name_sub_category }}</span>
+                    <span class="badge text-secondary">
+                        {{ $item->sub_category->name_sub_category }}</span>
                 </td>
 
                 <td class="bg-light rounded">
@@ -59,11 +56,11 @@
                 </td>
                 <td>
                     <button type="button" class="btn btn-sm text-center text-primary" style="position: relative;"
-                        data-bs-toggle="modal" data-bs-target="#modal2{{ $item->sale_new_id }}">
+                        data-bs-toggle="modal" data-bs-target="#modal1{{ $item->sale_new_id }}">
                         <i class="fas fa-eye"></i>
                         <span class="tooltip-text eye">View</span>
                     </button>
-                    <div class="modal fade" id="modal2{{ $item->sale_new_id }}" tabindex="-1"
+                    <div class="modal fade" id="modal1{{ $item->sale_new_id }}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -114,8 +111,6 @@
                         </div>
                     </div>
 
-
-
 </div>
 </td>
 </tr>
@@ -149,14 +144,14 @@
             <p class="text-danger mb-0">
                 <!-- Sử dụng mb-0 để loại bỏ margin-bottom của đoạn văn -->
                 @php
-                // Tính số ngày và giờ còn lại đến hết 7 ngày
-                $endTime = \Carbon\Carbon::parse($item->created_at)->addDays(7); // Thời gian kết thúc sau 7 ngày
-                $remainingDays = floor(
-                \Carbon\Carbon::now()->diffInDays($endTime, false),
-                ); // Số ngày còn lại (làm tròn xuống số nguyên)
-                $remainingHours = floor(
-                \Carbon\Carbon::now()->diffInHours($endTime, false) % 24,
-                ); // Số giờ còn lại (làm tròn xuống số nguyên)
+
+                $endTime = \Carbon\Carbon::parse($item->created_at)->addDays(7);
+
+                $remainingDays = floor(\Carbon\Carbon::now()->diffInDays($endTime, false), );
+
+                $remainingHours = floor(\Carbon\Carbon::now()->diffInHours($endTime, false) % 24, );
+
+
                 @endphp
 
                 @if ($remainingDays > 0)
